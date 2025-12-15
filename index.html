@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Robot Lantern</title>
+
+  <meta name="description" content="Handmade art & objects with a friendly spark. Launching soon." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Robot Lantern" />
+  <meta property="og:description" content="Handmade art & objects with a friendly spark. Launching soon." />
+  <meta property="og:image" content="assets/og-1200x630.jpg" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon-180.png" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <main class="hero" aria-label="Robot Lantern landing page">
+
+    <!-- OPTIONAL INTRO VIDEO (enabled if assets/intro.mp4 exists; script handles gracefully) -->
+    <div class="intro" id="intro" hidden>
+      <video
+        id="introVideo"
+        class="intro__video"
+        autoplay
+        muted
+        playsinline
+        preload="auto"
+        poster="assets/intro-poster.jpg"
+        aria-hidden="true"
+      >
+        <!-- webm optional -->
+        <source src="assets/intro.webm" type="video/webm" />
+        <source src="assets/intro.mp4" type="video/mp4" />
+      </video>
+
+      <div class="intro__fade" id="introFade" aria-hidden="true"></div>
+    </div>
+
+    <!-- STILL HERO BACKGROUND -->
+    <picture class="hero__bg" aria-hidden="true">
+      <source srcset="assets/hero-1920.webp" type="image/webp" media="(min-width: 900px)">
+      <source srcset="assets/hero-1280.webp" type="image/webp">
+      <source srcset="assets/hero-1920.jpg" type="image/jpeg" media="(min-width: 900px)">
+      <img src="assets/hero-1280.jpg" alt="" />
+    </picture>
+
+    <div class="hero__overlay" aria-hidden="true"></div>
+
+    <section class="content" id="content">
+      <h1 class="wordmark">Robot Lantern</h1>
+      <p class="tagline">Handmade art & objects with a friendly spark.</p>
+
+      <p class="blurb">
+        A  workshop making print-and-light creations, portraits, and odd little inventions.
+        Launching soon—join the list for the first drops.
+      </p>
+
+      <div class="cta">
+		  <a
+		    class="button"
+		    href="mailto:signup@robotlantern.com?subject=Robot%20Lantern%20Launch%20Updates&body=Hello%2C%0A%0APlease%20sign%20me%20up%20for%20updates%20and%20launch%20information%20about%20Robot%20Lantern.%0A%0AThank%20you."
+		  >
+		    GET ILLUMINATED
+		  </a>
+                </div>
+
+      <footer class="footer">
+        © <span id="year"></span> Robot Lantern LLC
+      </footer>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
