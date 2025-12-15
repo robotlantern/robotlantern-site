@@ -138,6 +138,36 @@ body {
 
 .intro--fadeout .intro__fade { opacity: 1; }
 
+/* Mobile layout: top-anchored copy, portrait hero */
+@media (max-width: 700px) {
+  .content {
+    align-content: start;              /* stop vertical centering */
+    padding-top: 28px;                 /* breathing room at top */
+    padding-bottom: 24px;
+    max-width: 92vw;
+  }
+
+  .wordmark {
+    font-size: clamp(28px, 8vw, 40px);
+    letter-spacing: 0.10em;
+  }
+
+  .blurb {
+    max-width: 42ch;
+  }
+
+  .hero__bg img {
+    object-position: center bottom;    /* keep robot in frame */
+  }
+
+  /* Adjust overlay so text remains readable over a brighter hero */
+  .hero__overlay {
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.65), rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.0)),
+      radial-gradient(circle at 50% 15%, rgba(0,0,0,0.25), rgba(0,0,0,0.60));
+  }
+}
+
 /* Reduce motion accessibility */
 @media (prefers-reduced-motion: reduce) {
   .intro { display: none !important; }
