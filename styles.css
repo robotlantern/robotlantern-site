@@ -157,7 +157,7 @@ body {
   }
 
   .hero__bg img {
-    object-position: center bottom;    /* keep robot in frame */
+    object-position: center top;    /* keep robot in frame */
   }
 
   /* Adjust overlay so text remains readable over a brighter hero */
