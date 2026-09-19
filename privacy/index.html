@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy · Robot Lantern</title>
+  <meta name="description" content="Privacy policy for Robot Lantern Uploader, an internal YouTube upload tool operated by Robot Lantern LLC." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+  <style>
+    :root { color-scheme: dark; --text: rgba(255,255,255,0.92); --muted: rgba(255,255,255,0.72); --accent: rgba(255,214,140,0.96); }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #050505; color: var(--text); font-family: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.6; }
+    main { max-width: 42rem; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+    h1 { font-size: 2rem; margin: 0 0 .25rem; }
+    h2 { font-size: 1.15rem; margin: 2rem 0 .5rem; color: var(--accent); }
+    p, li { color: var(--muted); }
+    a { color: var(--accent); }
+    .updated { font-size: .9rem; }
+    .back { display: inline-block; margin-bottom: 2rem; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="/">← Robot Lantern</a>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: September 19, 2026</p>
+
+    <p>
+      Robot Lantern Uploader (the “App”) is a private tool operated by Robot Lantern LLC.
+      It exists for one purpose: uploading videos, using the YouTube API Services, to YouTube channels
+      owned by the person who runs it. It is not offered to the public, and it has no accounts, sign-ups, or customers.
+    </p>
+
+    <h2>What the App accesses</h2>
+    <p>
+      When its operator signs in with Google, the App asks for a single permission: the YouTube upload scope
+      (<code>https://www.googleapis.com/auth/youtube.upload</code>). That permission lets the App upload videos
+      and set their title, description, and visibility on the channel the operator chose. It does not let the App
+      read your watch history, comments, subscriptions, or private videos.
+    </p>
+
+    <h2>What is stored</h2>
+    <p>
+      The App stores an OAuth refresh token so it can upload without asking the operator to sign in each time.
+      That token is kept in a restricted file on the operator’s own computer. No other Google user data is collected,
+      copied, or retained by the App.
+    </p>
+
+    <h2>Sharing</h2>
+    <p>
+      Robot Lantern LLC does not sell, rent, or share Google user data with anyone, and does not use it for
+      advertising or to train any machine-learning model. The only data the App sends anywhere is the video
+      and its details, to YouTube, at the operator’s direction.
+    </p>
+
+    <h2>YouTube and Google</h2>
+    <p>
+      The App uses YouTube API Services and is subject to the
+      <a href="https://www.youtube.com/t/terms">YouTube Terms of Service</a> and the
+      <a href="https://policies.google.com/privacy">Google Privacy Policy</a>.
+      You can review and revoke the App’s access at any time in your
+      <a href="https://myaccount.google.com/permissions">Google Account permissions</a>.
+    </p>
+
+    <h2>Changes and contact</h2>
+    <p>
+      If this policy changes, the date above will change with it. Questions:
+      <a href="mailto:admin@robotlantern.com">admin@robotlantern.com</a>.
+    </p>
+
+    <p class="updated">© Robot Lantern LLC</p>
+  </main>
+</body>
+</html>
