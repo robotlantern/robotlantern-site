@@ -6,13 +6,10 @@ _Last updated 2026-09-23._
 
 Each task fits in one sitting or can stop cleanly partway. Pick any task that isn't blocked.
 
-1. **Charges reference.** Needed before Shopify rebills on 2026-10-02.
-   - Start: Shopify's and Gelato's own help docs.
-     `../robot-lantern-shopify/docs/INTEGRATIONS.md` has partial notes.
-   - Do: write `docs/CHARGES.md`, listing every action that costs money on Shopify and Gelato,
-     with sources. Include what still works if Shopify is paused or downgraded: Storefront API,
-     test checkout, draft products, the Gelato app.
-   - Done when RJ can decide from that doc alone whether to keep, pause or downgrade Shopify.
+1. **Charges reference.** Written: [docs/CHARGES.md](docs/CHARGES.md). It recommends pausing
+   Shopify before 2026-10-02.
+   - Done when RJ has decided from it (see Open decisions). If it wasn't enough to decide, say
+     what's missing.
 2. **Framework sign-off (RJ).** Read `docs/FRAMEWORK.md` and decide. Done when the "Stack"
    section in AGENTS.md names the framework.
 3. **Attribution fix.**
@@ -42,7 +39,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    - Start: the prototype's catalog candidates and placement previews.
    - Do: RJ picks 2 to 4 designs. Create the Gelato products and linked Shopify drafts, and build a
      shop page that hands off to Shopify checkout.
-   - Done when a test checkout completes without a real charge.
+   - Done when a test checkout completes without a real charge. Follow "Test checkout without a
+     real charge" in docs/CHARGES.md. Gelato imports paid test orders by default.
 8. **Cutover.** Choose the host, switch Pages to deploy through Actions, and merge to `main`. RJ
    changes DNS if needed.
 
@@ -51,7 +49,9 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 - Framework (task 2).
 - Copyedit rule (task 3): do edits of one or two words inside a sentence count as editing or as
   authorship? On the essay body, that decides between 92% and 96% RJ.
-- Shopify on 2026-10-02: keep, pause or downgrade. Task 1 informs this.
+- Shopify on 2026-10-02: keep Basic ($39 per 30 days) or pause ($9). The Starter downgrade no
+  longer exists. The recommendation is to pause, and it has to be chosen in Settings > Plan
+  before 2026-10-02. See docs/CHARGES.md.
 - Hosting at cutover: GitHub Pages or Cloudflare Pages.
 
 ## Parked
@@ -69,3 +69,6 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     post's characters, so the whole post reads 52% / 48%.
   - Copyedits are painted as authorship across RJ's sentences.
   - The matcher lets GPT's first draft claim spaces and common words in text RJ wrote later.
+- 2026-09-23: Wrote docs/CHARGES.md (task 1). Shopify no longer offers Starter to new stores, so
+  the real choice is keeping Basic or pausing. Gelato's default instant approval means a Shopify
+  test order for a Gelato product can be produced and charged.
