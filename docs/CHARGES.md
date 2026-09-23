@@ -9,14 +9,16 @@ The account state was last observed in the Shopify admin on 2026-09-16.
 ## Current state
 
 - **Shopify:** Basic plan, billed monthly at $39 per 30 days. No paid apps and no other Shopify
-  subscriptions. The next bill is on 2026-10-02. Confirm it under Settings > Billing.
+  subscriptions. Bills arrive every 30 days: the last one was 2026-09-01, so the next is
+  **2026-10-01**. Each bill adds 6% tax, so Basic actually costs $41.34, and the pause would cost
+  about $9.54.
 - **Gelato:** free plan. The dashboard was still offering the Gelato+ trial, so there is no
   subscription. The Gelato app is installed in Shopify, and the app is free.
 - **Starter is gone.** Shopify stopped offering the $5 Starter plan to new stores. Merchants who
   leave Starter can't return to it, and this store was never on it. That leaves only two ways to
   cut the Shopify bill: pause the store or close it.
 
-## The October 2 decision
+## The October 1 decision
 
 | Option | Cost | What you get |
 | --- | --- | --- |
@@ -30,7 +32,7 @@ The account state was last observed in the Shopify admin on 2026-09-16.
 Community answers and 2026 third-party guides. The admin shows the exact price before you
 confirm.
 
-**Recommendation: pause before October 2.** Nothing planned for the next 30 days needs a live
+**Decided (RJ, 2026-09-23): pause by 2026-09-30 unless the shop is built.** Nothing planned for the next 30 days needs a live
 checkout. The framework decision, the scaffold and the Gelato/Shopify product setup for task 7
 all work while paused. Only the test checkout at the end of task 7 needs a paid plan. When the
 shop page is ready for it, unpause and pick Basic monthly. Upgrades are billed right away, prorated
@@ -40,7 +42,7 @@ generally, not for unpausing specifically.
 
 How pausing works:
 
-- The pause starts at the end of the current billing cycle. Choose it before 2026-10-02, and until
+- The pause starts at the end of the current billing cycle. Choose it by 2026-09-30, and until
   then the store runs normally.
 - To unpause, you choose a plan again, because the old one lapses. Basic's list price is the same
   $39 you pay now, so nothing is lost.

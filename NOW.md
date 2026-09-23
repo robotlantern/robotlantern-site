@@ -6,10 +6,8 @@ _Last updated 2026-09-23._
 
 Each task fits in one sitting or can stop cleanly partway. Pick any task that isn't blocked.
 
-1. **Charges reference.** Written: [docs/CHARGES.md](docs/CHARGES.md). It recommends pausing
-   Shopify before 2026-10-02.
-   - Done when RJ has decided from it (see Open decisions). If it wasn't enough to decide, say
-     what's missing.
+1. **Pause Shopify (RJ), by 2026-09-30.** Do it in Settings > Plan unless the shop is built by
+   then. The next bill is 2026-10-01. See [docs/CHARGES.md](docs/CHARGES.md).
 2. **Framework sign-off (RJ).** Read `docs/FRAMEWORK.md` and decide. Done when the "Stack"
    section in AGENTS.md names the framework.
 3. **Attribution fix.**
@@ -49,9 +47,6 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 - Framework (task 2).
 - Copyedit rule (task 3): do edits of one or two words inside a sentence count as editing or as
   authorship? On the essay body, that decides between 92% and 96% RJ.
-- Shopify on 2026-10-02: keep Basic ($39 per 30 days) or pause ($9). The Starter downgrade no
-  longer exists. The recommendation is to pause, and it has to be chosen in Settings > Plan
-  before 2026-10-02. See docs/CHARGES.md.
 - Hosting at cutover: GitHub Pages or Cloudflare Pages.
 
 ## Parked
@@ -72,3 +67,5 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 - 2026-09-23: Wrote docs/CHARGES.md (task 1). Shopify no longer offers Starter to new stores, so
   the real choice is keeping Basic or pausing. Gelato's default instant approval means a Shopify
   test order for a Gelato product can be produced and charged.
+- 2026-09-23: RJ decided to pause Shopify before the next bill unless the shop is built. The billing
+  history shows bills every 30 days (last one 2026-09-01), so the next is 2026-10-01, not 10-02.
