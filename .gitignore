@@ -1,2 +1,15 @@
 .DS_Store
 **/.DS_Store
+
+# build
+node_modules/
+dist/
+.astro/
+
+# private working material: never commit
+.private/
+.env
+.env.*
+
+# local-only launch configs (point at sibling folders on this machine)
+.claude/launch.json
