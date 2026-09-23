@@ -8,26 +8,35 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 
 1. **Pause Shopify (RJ), by 2026-09-30.** Do it in Settings > Plan unless the shop is built by
    then. The next bill is 2026-10-01. See [docs/CHARGES.md](docs/CHARGES.md).
-2. **Framework sign-off (RJ).** Read `docs/FRAMEWORK.md` and decide. Done when the "Stack"
-   section in AGENTS.md names the framework.
-3. **Attribution fix.**
-   - Start: `.private/analysis/README.md`, then the prototype's `tools/wording.py`.
-   - Do:
-     - Attribute through the revision chain instead of matching every draft independently.
-     - Keep the original author's color on copyedits (case, punctuation, possessives, spelling),
-       marking them with their own subtle style and count.
-     - Report the essay body and the footnotes separately in the footer.
-   - Done when the top of the essay has no copyedit confetti and RJ has spot-checked the numbers.
+2. **Framework sign-off (RJ).** Done 2026-09-23: Astro.
+3. **Attribution tool.**
+   - Start: `.private/analysis/README.md` (findings and a working revision-chain counterfactual),
+     then the prototype's `tools/wording.py`.
+   - Do: build one tool whose input is an ordered list of versions, each with an author. It has
+     two sources:
+     - An article's Git history, following [docs/WRITING.md](docs/WRITING.md). This is the main
+       path.
+     - The first essay's drafts, taken from its writing chat.
+   - Attribute through the version chain (word-level blame). Copyedits keep the original author's
+     color and get their own subtle mark and count. The footer reports the body and the footnotes
+     separately.
+   - Done when both sources produce attribution JSON, the top of the first essay has no copyedit
+     confetti, and RJ has spot-checked the numbers.
 4. **Sunset scroll prototype.**
    - Start: `sunset.jpg`, `stars.jpeg` and `IMG_9356.jpeg` (the wordmark) in the prototype's
      `site-design-inspo/`.
    - Do: build a standalone page. Scrolling moves from sunset to night, stars appear, and the
      lantern brightens with them.
+   - Approach: paint the sky and stars as one tall CSS background, which works in every browser.
+     A script of under 1 KB sets a single `--progress` value (0 at the top, 1 at the bottom), and
+     CSS drives the lantern glow, star twinkle and color depth from it. Turn off the twinkle when
+     the visitor's device is set to reduce motion.
    - Done when RJ says it matches the vision. It doesn't depend on the framework, so it can start
      now.
 5. **Scaffold and port** (after task 2).
-   - Do: set up the site on `rebuild`. Port the prototype's essay and conversation designs as they
-     are, and leave a home page slot for task 4.
+   - Do: set up Astro on `rebuild`. Port the layout and behavior of the prototype's essay and
+     conversation pages, restyled with the night-sky palette (see README, "Look"). Leave a home
+     page slot for task 4.
    - Done when an essay and a conversation render locally from files in this repo.
 6. **Launch conversation.**
    - RJ picks a text chat; voice transcripts read poorly.
@@ -44,7 +53,6 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 
 ## Open decisions (RJ)
 
-- Framework (task 2).
 - Copyedit rule (task 3): do edits of one or two words inside a sentence count as editing or as
   authorship? On the essay body, that decides between 92% and 96% RJ.
 - Hosting at cutover: GitHub Pages or Cloudflare Pages.
@@ -69,3 +77,6 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
   test order for a Gelato product can be produced and charged.
 - 2026-09-23: RJ decided to pause Shopify before the next bill unless the shop is built. The billing
   history shows bills every 30 days (last one 2026-09-01), so the next is 2026-10-01, not 10-02.
+- 2026-09-23: RJ signed off on Astro (task 2). The site's overall look is the night sky, replacing
+  the prototype's light cream. Task 3 was reframed: attribution comes from Git history for new
+  articles, and the first essay's chat drafts are a second input to the same tool.

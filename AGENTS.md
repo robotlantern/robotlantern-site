@@ -38,5 +38,7 @@ Read [README.md](README.md) for direction and [NOW.md](NOW.md) for current state
 
 ## Stack
 
-Not chosen yet. Astro is proposed in [docs/FRAMEWORK.md](docs/FRAMEWORK.md), pending RJ's
-sign-off. Record the decision here.
+- Astro with static output, adopted 2026-09-23 (see [docs/FRAMEWORK.md](docs/FRAMEWORK.md)).
+  Content goes under `src/content/`, with schemas in the content config.
+- Plain `<script>` tags for interactivity. No UI framework until a page actually needs one.
+- Node version pinned in `.node-version`.

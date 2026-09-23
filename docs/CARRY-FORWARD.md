@@ -13,8 +13,8 @@ http://127.0.0.1:4173/.
 
 - **Essay page design:** the journal page, which has a regular view, contribution highlighting,
   "Inside this post" (the editing conversation as JSON) and the Exact Markdown link, plus the
-  contributor footer. It's close to final, so port it as it is. The attribution needs fixing
-  first (NOW.md task 3).
+  contributor footer. Its layout and behavior are close to final. Restyle it from light cream
+  to the night-sky palette (README, "Look"). The attribution tool is being rebuilt (NOW.md task 3).
 - **Conversation page design:** the reader's template and CSS. Leave out the parts that split a
   conversation across several Shopify articles; those were workarounds for Shopify's limits.
   The sample conversation was a voice chat and reads poorly, so it won't be the launch piece.

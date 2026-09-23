@@ -21,6 +21,12 @@ the base for Robot Lantern's creative and product work.
 Later: interactive project pages (such as the Celebration Clock), the webcomic, and custom
 children's books.
 
+## Look
+
+The night sky, across the whole site: deep blues and near-black, starlight, and the warm orange
+of the lantern and the sunset used as accent. The home page is the one place that starts at
+sunset and scrolls into night. Every other page lives in the night.
+
 ## Shape
 
 - **Git is the source of truth.** Content, code, assets and schemas live here. To publish, build
