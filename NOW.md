@@ -47,8 +47,7 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 
 ## Parked
 
-- Attribution: warn when a commit marked `Contribution: copyedit` changes wording, so an
-  overreaching copyedit agent gets caught instead of quietly crediting someone else.
+- Nothing yet.
 
 ## Log
 
