@@ -1,6 +1,6 @@
 # Now
 
-_Last updated 2026-09-23._
+_Last updated 2026-09-24._
 
 ## Tasks
 
@@ -9,19 +9,15 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 1. **Pause Shopify (RJ), by 2026-09-30.** Do it in Settings > Plan unless the shop is built by
    then. The next bill is 2026-10-01. See [docs/CHARGES.md](docs/CHARGES.md).
 2. **Framework sign-off (RJ).** Done 2026-09-23: Astro.
-3. **Attribution tool.**
-   - Start: `.private/analysis/README.md` (findings and a working revision-chain counterfactual),
-     then the prototype's `tools/wording.py`.
-   - Do: build one tool whose input is an ordered list of versions, each with an author. It has
-     two sources:
-     - An article's Git history, following [docs/WRITING.md](docs/WRITING.md). This is the main
-       path.
-     - The first essay's drafts, taken from its writing chat.
-   - Attribute through the version chain (word-level blame). Copyedits keep the original author's
-     color and get their own subtle mark and count. The footer reports the body and the footnotes
-     separately.
-   - Done when both sources produce attribution JSON, the top of the first essay has no copyedit
-     confetti, and RJ has spot-checked the numbers.
+3. **Attribution tool.** Built 2026-09-24; waiting on RJ's spot-check.
+   - The tool is `tools/attribution/`, documented in [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md). The Git and
+     chat sources both produce attribution JSON, and the top of the first essay has no copyedit
+     confetti.
+   - Start: open `.private/first-essay/preview-authorship.html`. Hover a highlight to see which
+     version it came from. Regenerate with
+     `python3 tools/attribution/attribution.py chat .private/first-essay/chat-manifest.json
+     -o .private/first-essay/attribution-authorship.json --preview .private/first-essay/preview-authorship.html`.
+   - Done when RJ has spot-checked the numbers and settled the copyedit rule (below).
 4. **Sunset scroll prototype.**
    - Start: `sunset.jpg`, `stars.jpeg` and `IMG_9356.jpeg` (the wordmark) in the prototype's
      `site-design-inspo/`.
@@ -54,7 +50,7 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 ## Open decisions (RJ)
 
 - Copyedit rule (task 3): do edits of one or two words inside a sentence count as editing or as
-  authorship? On the essay body, that decides between 92% and 96% RJ.
+  authorship? On the essay body, that's now 91% RJ (authorship, the default) or 92% (editing).
 - Hosting at cutover: GitHub Pages or Cloudflare Pages.
 
 ## Parked
@@ -80,3 +76,7 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 - 2026-09-23: RJ signed off on Astro (task 2). The site's overall look is the night sky, replacing
   the prototype's light cream. Task 3 was reframed: attribution comes from Git history for new
   articles, and the first essay's chat drafts are a second input to the same tool.
+- 2026-09-24: Built the attribution tool (task 3). First essay: body 91% RJ / 9% GPT, footnotes 13%
+  RJ / 87% GPT, with GPT's 22 surviving copyedits kept in RJ's color. The new rules fold stray
+  matched words into rewrites and stop spaces and word fragments from switching owner, which
+  also narrows the copyedit decision from 92/96 to 91/92.

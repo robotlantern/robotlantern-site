@@ -23,3 +23,9 @@ attribution tool reads that history and writes the final text and the attributio
 5. **Never squash, rebase or amend.** The history is the evidence.
 6. **Keep the conversation too.** Save the chat alongside the drafts, privately, for the "Inside
    this post" view. Git records who changed the text. The chat records how the changes came about.
+
+## Publishing
+
+Run `python3 tools/attribution/attribution.py git --repo <drafts repo> --file <folder>/article.md
+-o attribution.json --preview check.html` and look over the preview before copying the article
+and its JSON here. See [ATTRIBUTION.md](ATTRIBUTION.md).

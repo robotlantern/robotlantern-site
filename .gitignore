@@ -13,3 +13,4 @@ dist/
 
 # local-only launch configs (point at sibling folders on this machine)
 .claude/launch.json
+__pycache__/
