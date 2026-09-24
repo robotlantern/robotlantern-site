@@ -20,8 +20,8 @@ example:
 
 - `essays/cogito-ergo-so-what/` holds the final text, the original draft and the generated
   attribution data. The schema requires a title, contributors and an attribution file.
-- `conversations/<slug>.json` holds a transcript excerpt. The schema requires speakers, turns
-  and timestamps.
+- `conversations/<slug>/` holds a transcript excerpt as `conversation.md`, plus its images. The
+  schema requires a title, a date and participants (see [CONVERSATIONS.md](CONVERSATIONS.md)).
 - `products/<slug>.md` holds a product's story, images and Shopify product ID.
 
 At build time, Astro loads the files, checks them against the schema, and stops with a clear

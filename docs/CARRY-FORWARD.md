@@ -17,7 +17,8 @@ http://127.0.0.1:4173/.
   to the night-sky palette (README, "Look"). The attribution tool is being rebuilt (NOW.md task 3).
 - **Conversation page design:** the reader's template and CSS. Leave out the parts that split a
   conversation across several Shopify articles; those were workarounds for Shopify's limits.
-  The sample conversation was a voice chat and reads poorly, so it won't be the launch piece.
+  Its sample conversation (a voice chat) is replaced by `its-always-the-pleiades`, a text chat
+  with inline photos, in `src/content/conversations/`.
 - **Attribution tool:** `tools/wording.py` and `tools/wording.ts`. It's the starting point for the
   fix. The rules are described in the "exact_wording_v1" section of `docs/CONTENT-CONTRACT.md`.
 - **Content principles:** "Invariants" 1–7 in `docs/CONTENT-CONTRACT.md`.
