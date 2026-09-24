@@ -23,8 +23,7 @@ There are two sources:
   drafts, how to cut each draft out of its message, any author corrections, and attached files.
   The first essay's manifest is in `.private/first-essay/`.
 
-`--preview page.html` also writes a spot-check page. `--small-edits copyedit` treats 1–2 word
-edits as copyedits instead of authorship. That choice is still RJ's to make.
+`--preview page.html` also writes a spot-check page.
 
 ## Rules
 
@@ -41,6 +40,22 @@ edits as copyedits instead of authorship. That choice is still RJ's to make.
 5. Only visible prose counts: Markdown syntax, URLs, code, images and footnote navigation don't.
    Everything from a `Footnotes`/`Notes` heading or the first `[^n]:` definition on is the
    footnotes section.
+
+## Decision: copyedits are judged by form, not size
+
+Adopted 2026-09-24. A change counts as a copyedit only when rule 2 says so, or when it comes from a
+commit declared as a copyedit. A one- or two-word change that alters wording (adding "now",
+changing "You" to "We") is authorship, whoever made it. Reasons:
+
+- Word count doesn't measure meaning. One word can qualify an argument or change its voice.
+  A form test can be checked from the diff, and a size threshold can't.
+- RJ publishes his own essays, so a looser rule would credit the publisher. The strict rule makes
+  a claim any reader can verify against the drafts.
+- In Git, a copyedit pass is declared with a trailer by whoever made it, so the tool doesn't have
+  to guess. A copyediting agent works under its own identity, and its edits show in its own
+  copyedit count, not as authorship.
+
+On the first essay, the looser rule would have given 92% instead of 91% RJ in the body.
 
 ## Output
 

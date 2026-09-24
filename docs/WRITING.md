@@ -19,7 +19,10 @@ attribution tool reads that history and writes the final text and the attributio
    model's suggested sentence into the draft, that commit's author is the model.
 4. **Mark copyedit passes.** A commit that only fixes case, punctuation, spelling or grammar gets
    the trailer `Contribution: copyedit`. Its changes keep the original author's credit, so the
-   tool doesn't have to guess.
+   tool doesn't have to guess. A copyedit agent is scoped to form only (case, punctuation,
+   spelling, grammar), commits under its own name, and marks every commit this way. Any change
+   to wording goes in an ordinary commit and counts as authorship, even a single word. See
+   "Decision" in [ATTRIBUTION.md](ATTRIBUTION.md).
 5. **Never squash, rebase or amend.** The history is the evidence.
 6. **Keep the conversation too.** Save the chat alongside the drafts, privately, for the "Inside
    this post" view. Git records who changed the text. The chat records how the changes came about.

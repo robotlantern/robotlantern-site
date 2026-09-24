@@ -8,9 +8,9 @@ def owners(result, md):
     return [(s['author'][0] + ('*' if 'copyedit' in s else ''), md[s['start']:s['end']]) for s in result['spans']]
 
 
-def run(*versions, small_edits='authorship'):
+def run(*versions):
     entries = [{'author': a, 'role': r, 'text': t} for a, r, t in versions]
-    return build({'versions': entries}, small_edits)
+    return build({'versions': entries})
 
 
 class Projection(unittest.TestCase):
@@ -56,11 +56,9 @@ class Chain(unittest.TestCase):
         # the closing period survives from RJ's sentence
         self.assertEqual(owners(r, final), [('r', 'I slew the demon with '), ('g', 'a better argument about equivalence'), ('r', '.')])
 
-    def test_small_edit_policy(self):
+    def test_one_word_edit_is_authorship(self):
         final = 'The cat sat quietly on the mat.'
         self.assertIn(('g', ' quietly'), owners(run(('rj', 'draft', 'The cat sat on the mat.'), ('gpt', 'draft', final)), final))
-        r = run(('rj', 'draft', 'The cat sat on the mat.'), ('gpt', 'draft', final), small_edits='copyedit')
-        self.assertEqual(set(r['totals']['body']['authors']), {'rj'})
 
     def test_copyedit_role_keeps_everything(self):
         final = 'A dog stood beside the rug.'

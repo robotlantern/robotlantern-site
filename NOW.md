@@ -9,15 +9,9 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 1. **Pause Shopify (RJ), by 2026-09-30.** Do it in Settings > Plan unless the shop is built by
    then. The next bill is 2026-10-01. See [docs/CHARGES.md](docs/CHARGES.md).
 2. **Framework sign-off (RJ).** Done 2026-09-23: Astro.
-3. **Attribution tool.** Built 2026-09-24; waiting on RJ's spot-check.
-   - The tool is `tools/attribution/`, documented in [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md). The Git and
-     chat sources both produce attribution JSON, and the top of the first essay has no copyedit
-     confetti.
-   - Start: open `.private/first-essay/preview-authorship.html`. Hover a highlight to see which
-     version it came from. Regenerate with
-     `python3 tools/attribution/attribution.py chat .private/first-essay/chat-manifest.json
-     -o .private/first-essay/attribution-authorship.json --preview .private/first-essay/preview-authorship.html`.
-   - Done when RJ has spot-checked the numbers and settled the copyedit rule (below).
+3. **Attribution tool.** Done 2026-09-24. The tool is `tools/attribution/`, documented in
+   [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md). The first essay's output and preview are in
+   `.private/first-essay/`. They move into the content folders in task 5.
 4. **Sunset scroll prototype.**
    - Start: `sunset.jpg`, `stars.jpeg` and `IMG_9356.jpeg` (the wordmark) in the prototype's
      `site-design-inspo/`.
@@ -49,13 +43,12 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 
 ## Open decisions (RJ)
 
-- Copyedit rule (task 3): do edits of one or two words inside a sentence count as editing or as
-  authorship? On the essay body, that's now 91% RJ (authorship, the default) or 92% (editing).
 - Hosting at cutover: GitHub Pages or Cloudflare Pages.
 
 ## Parked
 
-- Nothing yet.
+- Attribution: warn when a commit marked `Contribution: copyedit` changes wording, so an
+  overreaching copyedit agent gets caught instead of quietly crediting someone else.
 
 ## Log
 
@@ -80,3 +73,6 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
   RJ / 87% GPT, with GPT's 22 surviving copyedits kept in RJ's color. The new rules fold stray
   matched words into rewrites and stop spaces and word fragments from switching owner, which
   also narrows the copyedit decision from 92/96 to 91/92.
+- 2026-09-24: RJ spot-checked the first essay's preview and approved it. He adopted the strict copyedit
+  rule (copyedits are judged by form, never by size), and a copyedit agent commits under its own
+  name with the trailer. Task 3 is done.

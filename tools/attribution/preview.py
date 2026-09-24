@@ -31,5 +31,5 @@ def write_preview(md, result, path):
 <style>body{{background:#0b1020;color:#ddd;font:16px/1.6 Georgia,serif;max-width:48rem;margin:2rem auto;padding:0 1rem}}
 pre{{white-space:pre-wrap;font:inherit}} .x{{color:#556}} .human{{background:{COLORS['human']}33}}
 .ai{{background:{COLORS['ai']}33}} .unknown{{background:#8883}} .ce{{text-decoration:underline dotted #fff9}}</style>
-{rows}<p>Policy: small edits count as {result['policy']['small_edits']}.</p><pre>{''.join(parts)}</pre>'''
+{rows}<pre>{''.join(parts)}</pre>'''
     open(path, 'w').write(page)

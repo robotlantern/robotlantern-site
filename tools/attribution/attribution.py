@@ -205,7 +205,7 @@ def opcodes(prev, cur):
 
 
 # ---------------------------------------------------------------- chain blame
-def attribute(entries, small_edits='authorship'):
+def attribute(entries):
     """entries: [{author, role: draft|copyedit|message, text, label}]. Returns (final Doc, owners).
 
     An owner is {author, from, copyedit?: {by, version, op}} per final token."""
@@ -232,9 +232,9 @@ def attribute(entries, small_edits='authorship'):
             op_id += 1
             old, new = pt[a:b], t[c:d]
             ow, nw = whole_words(pt, a, b), whole_words(t, c, d)
+            # Copyedits are decided by form, never by size: a one-word change can carry meaning.
             copy = (e['role'] == 'copyedit' or words(new) == 0
-                    or (len(ow) == len(nw) and all(map(mechanical, ow, nw)))
-                    or (small_edits == 'copyedit' and words(old) <= 2 and words(new) <= 2))
+                    or (len(ow) == len(nw) and all(map(mechanical, ow, nw))))
             if copy:
                 for k in range(c, d):
                     j = a + (k - c)
@@ -292,10 +292,10 @@ def largest_remainder(counts):
     return out
 
 
-def build(data, small_edits='authorship', source_kind='versions'):
+def build(data, source_kind='versions'):
     entries = data['versions']
     assert entries and entries[0]['role'] != 'message', 'the first entry must be a draft'
-    final, owners = attribute(entries, small_edits)
+    final, owners = attribute(entries)
     md = final.md
     # per character owner, counted characters only
     char_owner = {}
@@ -338,7 +338,7 @@ def build(data, small_edits='authorship', source_kind='versions'):
         'schema': SCHEMA,
         'method': 'revision-chain word blame',
         'source': source_kind,
-        'policy': {'small_edits': small_edits, 'message_match_min_words': MESSAGE_MIN_WORDS},
+        'policy': {'copyedits': 'form only', 'message_match_min_words': MESSAGE_MIN_WORDS},
         'article_sha256': hashlib.sha256(md.encode()).hexdigest(),
         'offset_unit': 'Unicode code points in the article Markdown',
         'participants': [{'id': k, **v} for k, v in participants.items()],
@@ -430,13 +430,11 @@ def main(argv=None):
     v.add_argument('path')
     for s in (g, c, v):
         s.add_argument('-o', '--out', help='write JSON here (default: stdout)')
-        s.add_argument('--small-edits', choices=['authorship', 'copyedit'], default='authorship',
-                       help='whether 1-2 word edits count as authorship or as copyedits')
         s.add_argument('--preview', help='also write an HTML page for spot-checking')
     a = p.parse_args(argv)
     data = (from_git(a.repo, a.file) if a.source == 'git' else from_chat(a.manifest) if a.source == 'chat'
             else json.load(open(a.path)))
-    result = build(data, a.small_edits, a.source)
+    result = build(data, a.source)
     out = json.dumps(result, ensure_ascii=False, indent=1) + '\n'
     if a.out:
         open(a.out, 'w').write(out)
