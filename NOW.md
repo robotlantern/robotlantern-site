@@ -56,13 +56,9 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    (AGENTS.md, rule 7): text, links, file names, image metadata and Git history.
 9. **Cutover.** Choose the host, switch Pages to deploy through Actions, and merge to `main`. RJ
    changes DNS if needed.
-10. **Samwise previews** (next; the work happens in `~/work/services`). Set up what
-    [docs/PREVIEW.md](docs/PREVIEW.md) describes:
-    - a static preview stack behind `web-gateway`;
-    - bare repos and a build-on-push hook for this repo and both `unprojection-*` repos;
-    - the `rblt.io` names in the service registry, with public DNS failing closed.
-
-    Done when RJ opens all three previews on his phone.
+10. **Samwise previews.** Set up 2026-09-25 ([docs/PREVIEW.md](docs/PREVIEW.md)). Pushing `rebuild`
+    to `samwise` publishes https://rl.rblt.io/; the task 4 prototype is at
+    `/prototypes/sunset-scroll/`. Done when RJ opens all three previews on his phone.
 
 ## Open decisions (RJ)
 
@@ -126,3 +122,6 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 - 2026-09-25: Adopted Samwise previews: build on Sarcean, push to Samwise, test on the phone over
   trusted HTTPS on the LAN. GitHub keeps only the live site until something is published
   (docs/PREVIEW.md). The site repo's remote now uses the `github.com-robotlantern` SSH alias.
+- 2026-09-25: Set up the Samwise previews: a `static-preview` stack behind `web-gateway`, bare
+  repos with a build-on-push hook, LAN DNS for rl, sky-astra and sky-opus under rblt.io, and
+  public records failing closed at 192.0.2.1 (Porkbun API, snapshots in ~/work/admin/domains).

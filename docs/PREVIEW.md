@@ -1,6 +1,15 @@
 # Previews on Samwise
 
-Status: adopted 2026-09-25. Setup is a task in NOW.md.
+Status: adopted and set up 2026-09-25.
+
+| Repo | Preview branch | URL |
+|---|---|---|
+| this repo | `rebuild` | https://rl.rblt.io/ |
+| `unprojection-astra` | `main` | https://sky-astra.rblt.io/ |
+| `unprojection-opus` | `main` | https://sky-opus.rblt.io/ |
+
+The infrastructure is the `static-preview` stack in `~/work/services`, whose README covers
+adding a site.
 
 ## Policy
 
@@ -23,9 +32,9 @@ until RJ decides to publish them.
 4. Previews are served with `Cache-Control: no-cache`, so a reload on the phone always shows
    the latest push.
 
-Preview names are `<name>.rblt.io`, reachable only on the LAN or over the VPN. Split-horizon
-DNS points them at Samwise, and public DNS for them fails closed at `192.0.2.1`. The
-infrastructure is a stack in `~/work/services` and follows that repo's rules.
+Preview names are reachable only on the LAN or over the VPN. Split-horizon DNS points them at
+Samwise, and public DNS for them fails closed at `192.0.2.1`. The first build of a new Node
+version pulls its image, so it's slower.
 
 ## Live reload
 
