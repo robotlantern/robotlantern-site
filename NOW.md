@@ -12,24 +12,11 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 3. **Attribution tool.** Done 2026-09-24. The tool is `tools/attribution/`, documented in
    [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md). The first essay's output and preview are in
    `.private/first-essay/`. They move into the content folders in task 5.
-4. **Sunset scroll prototype.**
-   - Start: `sunset.jpg`, `stars.jpeg` and `IMG_9356.jpeg` (the wordmark) in the prototype's
-     `site-design-inspo/`.
-   - Do: build a standalone page. Scrolling moves from sunset to night, stars appear, and the
-     lantern brightens with them.
-   - Approach: paint the sky and stars as one tall CSS background, which works in every browser.
-     A script of under 1 KB sets a single `--progress` value (0 at the top, 1 at the bottom), and
-     CSS drives the lantern glow, star twinkle and color depth from it. Turn off the twinkle when
-     the visitor's device is set to reduce motion.
-   - Built 2026-09-25 in `prototypes/sunset-scroll/`, previewed at
-     https://rl.rblt.io/prototypes/sunset-scroll/. The wordmark's period is the lantern.
-   - RJ's first review (2026-09-25) approved the colors, the lantern and the lettering, and asked
-     for four changes: a "Scroll down" hint with chevrons, solid silhouette below the treeline,
-     his night photo on a nearly fixed star layer, and an enhanced version of that photo. Round
-     two is up. RJ picked the enhanced photo. iOS Safari tinted its bottom toolbar orange from
-     the horizon glow; a 24px solid ground strip fixed it (checked on RJ's iPhone, 2026-09-25).
-     Waiting on RJ's sign-off.
-   - Done when RJ says it matches the vision. Task 5 then moves it into the home page slot.
+4. **Sunset scroll prototype.** Done 2026-09-25: RJ says it matches the vision. It lives in
+   `prototypes/sunset-scroll/` (tag `sunset-scroll-v1`), previewed at
+   https://rl.rblt.io/prototypes/sunset-scroll/. The wordmark's period is the lantern. The stars
+   are RJ's contrast-enhanced Pleiades photo. A 24px solid ground strip keeps iOS Safari's
+   toolbar dark. Still open: how content enters (see "Open decisions").
 5. **Scaffold and port** (after task 2).
    - Do: set up Astro on `rebuild`. Port the layout and behavior of the prototype's essay and
      conversation pages, restyled with the night-sky palette (see README, "Look"). Leave a home
@@ -68,6 +55,9 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 ## Open decisions (RJ)
 
 - Hosting at cutover: GitHub Pages or Cloudflare Pages.
+- Home page flow: the sunset scroll shouldn't be the whole landing page. The first content
+  should arrive as the wordmark rises and shrinks and the site's navigation becomes clear. Not
+  designed yet (RJ, 2026-09-25).
 
 ## Parked
 
