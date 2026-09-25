@@ -4,9 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Robot Lantern</title>
+<meta name="theme-color" content="#05070d">
 <meta name="description" content="Sunset scroll prototype for the robotlantern.com home page.">
-<script>/* Prototype only: ?stars=deep shows the enhanced night photo. */
-  if (new URLSearchParams(location.search).get('stars') === 'deep') document.documentElement.classList.add('deep');</script>
 <style>
   /* One number drives everything: --progress, 0 at the top of the page, 1 at the bottom. */
   :root {
@@ -37,9 +36,8 @@
       #3c5b88 0%, #395785 8%, #2c4675 20%, #1d325a 34%,
       #132343 48%, #0c1730 62%, #080f21 76%, #050914 90%, var(--night) 100%);
   }
-  /* Stars: RJ's night photo on a fixed layer that fades in over the sunset. Across the
-     whole scroll it drifts up only 6vh, so the sky reads as still. Add ?stars=deep to the
-     URL for the contrast-enhanced photo. */
+  /* Stars: RJ's night photo, contrast-enhanced, on a fixed layer that fades in over the
+     sunset. Across the whole scroll it drifts up only 6vh, so the sky reads as still. */
   .stars {
     position: fixed;
     left: 0;
@@ -51,7 +49,6 @@
     transform: translateY(calc(var(--progress) * -6vh));
     pointer-events: none;
   }
-  .deep .stars { background-image: url(night-deep.jpg); }
   /* Twinkle: three sparse layers of bright points pulsing on unrelated periods. */
   .twinkle {
     position: absolute;
@@ -87,9 +84,11 @@
 
   /* Fixed atmosphere: the warm horizon of the reference photo, then a dusky afterglow.
      Both follow --progress. */
+  /* They stop just short of the bottom edge, so no orange touches it: iOS Safari tints its
+     toolbar from whatever fixed layer meets the edge. */
   .horizon, .afterglow {
     position: fixed;
-    inset: 0;
+    inset: 0 0 4px;
     pointer-events: none;
   }
   .horizon {
@@ -109,6 +108,12 @@
     height: max(5.2vw, 56px);
     background: url(treeline.png) center bottom / auto 100% repeat-x;
     pointer-events: none;
+  }
+  .ground {
+    position: fixed;
+    inset: auto 0 0;
+    height: 4px;
+    background-color: #05070d;
   }
   .treeline::after {
     content: "";
@@ -257,6 +262,7 @@
   </nav>
 
   <div class="treeline" aria-hidden="true"></div>
+  <div class="ground" aria-hidden="true"></div>
 
   <script>
     (() => {

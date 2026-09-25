@@ -26,7 +26,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    - RJ's first review (2026-09-25) approved the colors, the lantern and the lettering, and asked
      for four changes: a "Scroll down" hint with chevrons, solid silhouette below the treeline,
      his night photo on a nearly fixed star layer, and an enhanced version of that photo. Round
-     two is up. Add `?stars=deep` to the URL for the enhanced photo. Waiting on RJ to pick one.
+     two is up. RJ picked the enhanced photo. Open: iOS Safari's toolbar showed orange at the
+     bottom; round three keeps orange off the bottom edge. Waiting on RJ to confirm on the phone.
    - Done when RJ says it matches the vision. Task 5 then moves it into the home page slot.
 5. **Scaffold and port** (after task 2).
    - Do: set up Astro on `rebuild`. Port the layout and behavior of the prototype's essay and
