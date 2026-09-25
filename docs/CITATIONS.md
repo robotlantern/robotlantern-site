@@ -1,8 +1,9 @@
 # Recovering citations from a chat
 
-Status: proposed 2026-09-25, from the Pleiades conversation. Exports and shared-chat links drop
-the sources behind a reply's citations. Instead, at the end of the conversation, we ask the model
-for them in the same app, then check every link ourselves.
+Status: approved by RJ 2026-09-25, from the Pleiades conversation. v2 is the current prompt.
+
+Exports and shared-chat links drop the sources behind a reply's citations. Instead, at the end
+of the conversation, we ask the model for them in the same app, then check every link ourselves.
 
 ## What the site needs
 
@@ -36,7 +37,7 @@ note. Titles were marked unverified for about half. Positions were missing, so f
 citations had to be inferred. It also included sources from turns after the published range.
 Good enough to recover a conversation, with a check.
 
-### v2: proposed, not yet run
+### v2: ChatGPT app, ChatGPT-5.6-sol (2026-09-25)
 
 The `{{…}}` value is filled in per conversation.
 
@@ -71,6 +72,21 @@ Set "visible" to true if the source's details are still available to you in this
 and false if you're going from memory of having cited it. Use null for anything you can't see
 rather than filling it in. I'll open and check every link before publishing.
 ````
+
+Result: 27 of the capture's 28 web citations in the range, in order, with repeats. It confirmed
+3 of the 4 positions inferred from v1 and missed one citation. Every `after` quote was real
+text. 24 sat right before their marker, two were a sentence early, and one came from a later
+reply. Every source was marked `visible`, and titles were null where v1 had flagged them as
+unverified. URLs carry `?utm_source=chatgpt.com`, which we strip.
+
+So match by order within each reply and check the count against the capture's markers. Treat
+`after` as a hint.
+
+## Titles we can't fetch
+
+Reddit is blocked in the built-in browser, and some sites answer scripts with a bot check. We
+don't try to get around either. The title is ChatGPT's if the URL slug matches it; otherwise it's
+a label taken from the URL, such as "Post in r/Stargazing".
 
 ## Not yet tried
 

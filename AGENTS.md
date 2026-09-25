@@ -28,6 +28,8 @@ Read [README.md](README.md) for direction and [NOW.md](NOW.md) for current state
 7. **Nothing private in Git.** No credentials, account IDs, local absolute paths, private source
    captures or unreviewed conversation text. Private working material goes in `.private/`, which
    is gitignored. This repo is public.
+   Before launch, a privacy pass covers everything public. The aim is "don't make it any worse":
+   nothing that narrows RJ's location or identity beyond what's already public.
 
 ## Branches
 

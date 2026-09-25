@@ -1,6 +1,6 @@
 # Importing a conversation
 
-Status: proposed 2026-09-24, from the first import (`its-always-the-pleiades`). RJ to confirm.
+Status: approved by RJ 2026-09-25, from the first import (`its-always-the-pleiades`).
 
 ## Two copies
 
@@ -14,10 +14,20 @@ Status: proposed 2026-09-24, from the first import (`its-always-the-pleiades`). 
 ## Format of `conversation.md`
 
 - Frontmatter: `title`, `date`, `source`, `participants` (`id`, `name`, `kind`, and `model` for
-  an AI, `unknown` unless the model is confirmed), `range`.
+  an AI), `timezone`, `range`. `model` is the name the app showed for the conversation, as RJ
+  confirms it, or `unknown`. A chat app may route single turns to other models, and only the
+  account export records that, so this is the model as the speaker saw it.
+- `timezone` is RJ's local zone at the time. Message times, once a capture keeps them, show
+  in that zone: a header at each new calendar day, and a message's time when it's tapped.
 - Each message starts with `## <Speaker>`, followed by the message's Markdown. Images go inline
   where they were attached, with real alt text.
 - Editor's notes are their own paragraph: `*[Editor’s note: …]*`.
+- Citations are HTML so the page can style them: `<sup class="cite"><a href="…" title="…">1</a></sup>`
+  where cited, then `<ol class="sources">` after the message, one `<li>` per source with the
+  title linked and the site after a `·`. A withheld link keeps its number and is marked
+  `[link removed]`.
+- Reasoning goes in a fenced block with the app's "Worked for …" time, if shown:
+  ```` ```reasoning worked="47s" ````. The page shows it collapsed.
 
 ## Rules
 
@@ -33,7 +43,9 @@ Status: proposed 2026-09-24, from the first import (`its-always-the-pleiades`). 
    these collapsed. Never reconstruct them.
 3. **Missing pieces get a note, never a guess.** If a message, an image or a reply's text is
    missing, add an editor's note where it belongs.
-4. **Redact in the speaker's voice.** Replace private details with brackets that read naturally
+4. **Don't make it any worse.** Some of RJ's details are already public. Publish nothing that
+   narrows his location or identity further, including in links, file names and image
+   metadata. **Redact in the speaker's voice.** Replace private details with brackets that read naturally
    where they appear, for example "[your town]" in the model's reply and "[exact coordinates
    removed]". Crop an image rather than blurring it. Strip image metadata and keep the color
    profile.
