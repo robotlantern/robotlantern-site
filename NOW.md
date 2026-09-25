@@ -21,8 +21,10 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
      A script of under 1 KB sets a single `--progress` value (0 at the top, 1 at the bottom), and
      CSS drives the lantern glow, star twinkle and color depth from it. Turn off the twinkle when
      the visitor's device is set to reduce motion.
-   - Done when RJ says it matches the vision. It doesn't depend on the framework, so it can start
-     now.
+   - Built 2026-09-25 in `prototypes/sunset-scroll/`. View it with
+     `python3 -m http.server -d prototypes/sunset-scroll` and open http://localhost:8000/.
+     The wordmark's period is the lantern. Waiting on RJ's review.
+   - Done when RJ says it matches the vision. Task 5 then moves it into the home page slot.
 5. **Scaffold and port** (after task 2).
    - Do: set up Astro on `rebuild`. Port the layout and behavior of the prototype's essay and
      conversation pages, restyled with the night-sky palette (see README, "Look"). Leave a home
@@ -107,3 +109,9 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
   titles, and withheld the timeanddate link because it names the town. The image reply was the
   image alone; its reasoning summary came from the iPhone app. RJ approved the import and
   citation rules and adopted "don't make it any worse" for privacy, with a pass before cutover.
+- 2026-09-25: Built the sunset scroll prototype (task 4). The sky is one tall gradient taken from
+  the sunset photo's colors, with the star photo fading in below it. The Pleiades appear once, in
+  the last screen. A fixed horizon glow, afterglow and treeline (cut from the sunset photo)
+  give each screen a real-sky shape. The wordmark starts as a silhouette, and its period lights
+  up as the lantern and warms the letters. The script is 566 bytes. Photo metadata, including the
+  sunset photo's GPS, is stripped.
