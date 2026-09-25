@@ -52,12 +52,18 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     to `samwise` publishes https://rl.rblt.io/; the task 4 prototype is at
     `/prototypes/sunset-scroll/`. Done when RJ opens all three previews on his phone.
 
+11. **Home page flow, first slice.** Designed with RJ on 2026-09-25; not started.
+    - Start: [docs/HOME.md](docs/HOME.md). Build on `prototypes/sunset-scroll/`, keeping v1 at its
+      tag.
+    - Do: wordmark docks with the shooting-star period, the first card draws from the Pleiades
+      (opening lines of the Pleiades conversation), and a second card draws from its own star.
+      Scrolling up reverses them.
+    - Done when RJ approves it on his phone.
+
 ## Open decisions (RJ)
 
 - Hosting at cutover: GitHub Pages or Cloudflare Pages.
-- Home page flow: the sunset scroll shouldn't be the whole landing page. The first content
-  should arrive as the wordmark rises and shrinks and the site's navigation becomes clear. Not
-  designed yet (RJ, 2026-09-25).
+- Home page open questions: see [docs/HOME.md](docs/HOME.md), "Open".
 
 ## Parked
 
@@ -128,3 +134,6 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
   above the bottom edge, ignoring that layer's opacity. A 4px dark strip wasn't enough, and a
   24px one works. Checked on RJ's iPhone through iPhone Mirroring. The simulator's Safari
   settings page was blank, so the simulator couldn't switch to the Bottom tab layout.
+- 2026-09-25: RJ signed off on the sunset scroll (task 4). He and Claude designed how content
+  enters the home page and how a constellation map could work as navigation. Recorded in
+  docs/HOME.md, with the first slice as task 11.
