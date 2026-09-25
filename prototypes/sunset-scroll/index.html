@@ -14,6 +14,7 @@
     --night: #04060d;
     --lantern: #ffd28a;
     --sky-height: 500vh;
+    --ground: 24px; /* solid strip under the treeline; iOS Safari samples its toolbar color here */
     background: var(--night);
   }
   * { box-sizing: border-box; }
@@ -88,7 +89,7 @@
      toolbar from whatever fixed layer meets the edge. */
   .horizon, .afterglow {
     position: fixed;
-    inset: 0 0 4px;
+    inset: 0 0 var(--ground);
     pointer-events: none;
   }
   .horizon {
@@ -104,7 +105,7 @@
   }
   .treeline {
     position: fixed;
-    inset: auto 0 0;
+    inset: auto 0 calc(var(--ground) - 4px);
     height: max(5.2vw, 56px);
     background: url(treeline.png) center bottom / auto 100% repeat-x;
     pointer-events: none;
@@ -112,7 +113,7 @@
   .ground {
     position: fixed;
     inset: auto 0 0;
-    height: 4px;
+    height: var(--ground);
     background-color: #05070d;
   }
   .treeline::after {
@@ -176,7 +177,7 @@
     font-size: .75rem;
   }
   .hint {
-    bottom: calc(max(5.2vw, 56px) + 1.25rem);
+    bottom: calc(max(5.2vw, 56px) + var(--ground) + 1rem);
     display: flex;
     flex-direction: column;
     align-items: center;
