@@ -49,7 +49,7 @@ Status: approved by RJ 2026-09-25, from the first import (`its-always-the-pleiad
    where they appear, for example "[your town]" in the model's reply and "[exact coordinates
    removed]". Crop an image rather than blurring it. Strip image metadata and keep the color
    profile.
-5. **Links added by the editor are marked** with the link title `"Editor’s link"`, so they can be
+5. **Links added by the editor are marked** (how they're chosen: [LINKS.md](LINKS.md)) with the link title `"Editor’s link"`, so they can be
    styled differently from links the speakers wrote.
 6. **No cleanup of substance.** Typos, hedges and asides stay. Only the redactions above change
    the text.

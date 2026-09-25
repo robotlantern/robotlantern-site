@@ -28,7 +28,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
      conversation pages, restyled with the night-sky palette (see README, "Look"). Leave a home
      page slot for task 4. The conversation to render is `its-always-the-pleiades`. It needs
      inline images, tables, a code block and LaTeX with `\[ \]` and `\( \)` delimiters, plus
-     the citation classes and a collapsed `reasoning` block (docs/CONVERSATIONS.md).
+     the citation classes, a collapsed `reasoning` block (docs/CONVERSATIONS.md) and editor's links
+     applied at build time from `links.json` (docs/LINKS.md).
    - Done when an essay and a conversation render locally from files in this repo.
 6. **Launch conversation: "It's Always the Pleiades".** RJ picked and selected it on 2026-09-24.
    - Captured privately in `.private/conversations/pleiades/`, where `NOTES.md` lists the open
@@ -37,8 +38,10 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
      [docs/CITATIONS.md](docs/CITATIONS.md), both approved 2026-09-25.
    - Done 2026-09-25: citations (28, with checked links), the image-only reply with its
      reasoning and "Worked for 47s", model confirmed as ChatGPT-5.6-sol.
-   - Open (RJ): pick wiki links from the candidates in `NOTES.md`; check whether other replies
-     showed reasoning or search steps worth including.
+   - Links: RJ picked every "likely" and "maybe" candidate in `NOTES.md` (2026-09-25). Add them
+     as the first run of the reference-link step ([docs/LINKS.md](docs/LINKS.md)), with RJ's picks
+     as the answer key.
+   - Open (RJ): check whether other replies showed reasoning or search steps worth including.
    - Not for launch: per-message times. The capture has none. The next capture should keep them.
    - Done when RJ has approved the public text.
 7. **First products** (after task 1).
