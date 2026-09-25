@@ -26,7 +26,7 @@ Status: proposed 2026-09-24, from the first import (`its-always-the-pleiades`). 
    with the URL and title. A source that hasn't been recovered yet is listed as not recovered.
    Until citations are recovered, one editor's note says they're missing, and the capture
    keeps their positions. ChatGPT's `:chatgpt-content-reference` tokens and the Claude app's
-   search results both map to this.
+   search results both map to this. How to recover them: [CITATIONS.md](CITATIONS.md).
 2. **Reasoning and tool use: only what the app showed.** Include the summarized reasoning,
    search queries and tool steps the app displayed to the user. Put each in a fenced block
    (```` ```reasoning ```` or ```` ```tool ````) before the message it led to. The page shows
