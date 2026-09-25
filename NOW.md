@@ -21,9 +21,9 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
      A script of under 1 KB sets a single `--progress` value (0 at the top, 1 at the bottom), and
      CSS drives the lantern glow, star twinkle and color depth from it. Turn off the twinkle when
      the visitor's device is set to reduce motion.
-   - Built 2026-09-25 in `prototypes/sunset-scroll/`. View it with
-     `python3 -m http.server -d prototypes/sunset-scroll` and open http://localhost:8000/.
-     The wordmark's period is the lantern. Waiting on RJ's review.
+   - Built 2026-09-25 in `prototypes/sunset-scroll/`, previewed at
+     https://rl.rblt.io/prototypes/sunset-scroll/. The wordmark's period is the lantern.
+     Waiting on RJ's review.
    - Done when RJ says it matches the vision. Task 5 then moves it into the home page slot.
 5. **Scaffold and port** (after task 2).
    - Do: set up Astro on `rebuild`. Port the layout and behavior of the prototype's essay and
