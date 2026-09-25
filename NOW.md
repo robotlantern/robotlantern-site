@@ -56,6 +56,13 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    (AGENTS.md, rule 7): text, links, file names, image metadata and Git history.
 9. **Cutover.** Choose the host, switch Pages to deploy through Actions, and merge to `main`. RJ
    changes DNS if needed.
+10. **Samwise previews** (next; the work happens in `~/work/services`). Set up what
+    [docs/PREVIEW.md](docs/PREVIEW.md) describes:
+    - a static preview stack behind `web-gateway`;
+    - bare repos and a build-on-push hook for this repo and both `unprojection-*` repos;
+    - the `rblt.io` names in the service registry, with public DNS failing closed.
+
+    Done when RJ opens all three previews on his phone.
 
 ## Open decisions (RJ)
 
@@ -69,7 +76,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 - The sky/galaxy "unprojection" visualization from the Pleiades conversation is being built
   outside this repo, twice: `unprojection-astra` (GPT-6-Astra, open brief) and `unprojection-opus`
   (Opus 5.5, from RJ's photo). Both follow a shared contract (static, relative paths,
-  `?object=` deep links). Cross-link it with the conversation once there's a permanent URL.
+  `?object=` deep links). Both are previewed on Samwise and stay off GitHub for now. Cross-link
+  the visualization with the conversation once there's a permanent URL.
 
 ## Log
 
@@ -115,3 +123,6 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
   give each screen a real-sky shape. The wordmark starts as a silhouette, and its period lights
   up as the lantern and warms the letters. The script is 566 bytes. Photo metadata, including the
   sunset photo's GPS, is stripped.
+- 2026-09-25: Adopted Samwise previews: build on Sarcean, push to Samwise, test on the phone over
+  trusted HTTPS on the LAN. GitHub keeps only the live site until something is published
+  (docs/PREVIEW.md). The site repo's remote now uses the `github.com-robotlantern` SSH alias.
