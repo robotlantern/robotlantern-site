@@ -23,7 +23,10 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
      the visitor's device is set to reduce motion.
    - Built 2026-09-25 in `prototypes/sunset-scroll/`, previewed at
      https://rl.rblt.io/prototypes/sunset-scroll/. The wordmark's period is the lantern.
-     Waiting on RJ's review.
+   - RJ's first review (2026-09-25) approved the colors, the lantern and the lettering, and asked
+     for four changes: a "Scroll down" hint with chevrons, solid silhouette below the treeline,
+     his night photo on a nearly fixed star layer, and an enhanced version of that photo. Round
+     two is up. Add `?stars=deep` to the URL for the enhanced photo. Waiting on RJ to pick one.
    - Done when RJ says it matches the vision. Task 5 then moves it into the home page slot.
 5. **Scaffold and port** (after task 2).
    - Do: set up Astro on `rebuild`. Port the layout and behavior of the prototype's essay and
@@ -125,3 +128,7 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 - 2026-09-25: Set up the Samwise previews: a `static-preview` stack behind `web-gateway`, bare
   repos with a build-on-push hook, LAN DNS for rl, sky-astra and sky-opus under rblt.io, and
   public records failing closed at 192.0.2.1 (Porkbun API, snapshots in ~/work/admin/domains).
+- 2026-09-25: Sunset scroll round two (task 4). The stars are now RJ's Pleiades photo on a fixed
+  layer that fades in and drifts 6vh over the whole scroll, replacing the tall tiled field. There
+  are two versions of the photo, as taken and contrast-enhanced. The tree in the photo's corner is
+  cropped out and its GPS is stripped.
