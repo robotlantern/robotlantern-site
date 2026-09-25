@@ -26,8 +26,9 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    - RJ's first review (2026-09-25) approved the colors, the lantern and the lettering, and asked
      for four changes: a "Scroll down" hint with chevrons, solid silhouette below the treeline,
      his night photo on a nearly fixed star layer, and an enhanced version of that photo. Round
-     two is up. RJ picked the enhanced photo. Open: iOS Safari's toolbar showed orange at the
-     bottom; round three keeps orange off the bottom edge. Waiting on RJ to confirm on the phone.
+     two is up. RJ picked the enhanced photo. iOS Safari tinted its bottom toolbar orange from
+     the horizon glow; a 24px solid ground strip fixed it (checked on RJ's iPhone, 2026-09-25).
+     Waiting on RJ's sign-off.
    - Done when RJ says it matches the vision. Task 5 then moves it into the home page slot.
 5. **Scaffold and port** (after task 2).
    - Do: set up Astro on `rebuild`. Port the layout and behavior of the prototype's essay and
@@ -133,3 +134,7 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
   layer that fades in and drifts 6vh over the whole scroll, replacing the tall tiled field. There
   are two versions of the photo, as taken and contrast-enhanced. The tree in the photo's corner is
   cropped out and its GPS is stripped.
+- 2026-09-25: iOS 26 Safari colors its bottom toolbar from the fixed layer it finds a little way
+  above the bottom edge, ignoring that layer's opacity. A 4px dark strip wasn't enough, and a
+  24px one works. Checked on RJ's iPhone through iPhone Mirroring. The simulator's Safari
+  settings page was blank, so the simulator couldn't switch to the Bottom tab layout.
