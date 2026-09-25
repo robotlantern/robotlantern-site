@@ -64,8 +64,10 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 - Post: what "the model" means in a chat app. Per-turn routing, personalization and the
   in-app context all shape a reply, and only the account export records which model answered.
 
-- Build the sky/galaxy "projection/unprojection" visualization from the Pleiades conversation, and
-  cross-link it with the conversation.
+- The sky/galaxy "unprojection" visualization from the Pleiades conversation is being built
+  outside this repo, twice: `unprojection-astra` (GPT-6-Astra, open brief) and `unprojection-opus`
+  (Opus 5.5, from RJ's photo). Both follow a shared contract (static, relative paths,
+  `?object=` deep links). Cross-link it with the conversation once there's a permanent URL.
 
 ## Log
 
