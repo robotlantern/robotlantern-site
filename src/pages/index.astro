@@ -47,7 +47,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Robot Lantern</title>
 <meta name="theme-color" content="#05070d">
 <meta name="description" content="Robot Lantern: thoughts, chats, builds and a shop, from sunset into night.">
@@ -62,8 +62,6 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     --sky-height: 500vh;
     --ground: 24px; /* solid strip under the treeline; iOS Safari samples its toolbar color here */
     --edge: clamp(1rem, 3.5vw, 2rem);
-    /* The status bar's height where the page runs under it (viewport-fit=cover), else 0. */
-    --top: env(safe-area-inset-top, 0px);
     --text: #e9e2d2;
     --muted: #a3acbd;
     --faint: #737f96;
@@ -249,25 +247,14 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   .hint svg { width: 1.4rem; height: auto; }
 
   /* Docking (docs/HOME.md, "Sequence"). The script flies the wordmark from the middle of the
-     screen to the header's place on every other page. Without the script it stays centered. */
-  /* Stacking: cards pass behind the trees, and under the header's fade, the mark and the nav. */
+     screen to the header's place on every other page. Once the period has landed, the header
+     scrolls away with the page, and docks again on the way back up. Without the script the
+     wordmark stays centered. */
+  /* Stacking: cards pass behind the trees, and under the mark and the nav. */
   .treeline, .ground { z-index: 2; }
-  .dock-fade, .dock-cap { z-index: 3; }
   .brand, .dock-nav { z-index: 4; }
   .comet, .comet-trail { z-index: 5; }
   .js .brand { left: 0; top: 0; margin: 0; transform-origin: 0 0; transform: translate(var(--mx, 0), var(--my, 0)) scale(var(--ms, 1)); }
-  .dock-fade {
-    position: fixed;
-    inset: 0 0 auto;
-    height: calc(var(--top) + var(--edge) * 2 + 8.5rem * .436 + 2rem);
-    background: linear-gradient(rgba(4, 6, 13, .94) 70%, rgba(4, 6, 13, 0));
-    opacity: var(--dock, 0);
-    pointer-events: none;
-  }
-  /* Once the mark has docked, a solid strip covers the band under the status bar, so content
-     doesn't scroll visibly behind it on iPhones (the page runs under it: viewport-fit=cover). */
-  .dock-cap { position: fixed; inset: 0 0 auto; height: var(--top); background-color: #04060d; visibility: hidden; pointer-events: none; }
-  .docked .dock-cap { visibility: visible; }
   .comet { position: fixed; left: 0; top: 0; width: 0; height: 0; visibility: hidden; pointer-events: none; }
   .comet i { position: absolute; left: calc(var(--r) * -1); top: calc(var(--r) * -1); width: calc(var(--r) * 2); height: calc(var(--r) * 2); border-radius: 50%; background: #fff6df; box-shadow: 0 0 calc(var(--r) * 1.5) var(--lantern); }
   /* The tail is the comet's own recent path, drawn as short segments that thin and fade. */
@@ -275,7 +262,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   .comet-trail path { fill: none; stroke: rgb(255, 214, 140); stroke-linecap: butt; }
 
   /* The nav, as on every other page (src/layouts/Base.astro), appearing once the mark lands. */
-  .dock-nav { position: fixed; top: calc(var(--edge) + var(--top)); right: var(--edge); display: flex; gap: 1.2rem; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; }
+  .dock-nav { position: fixed; top: var(--edge); right: var(--edge); display: flex; gap: 1.2rem; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; }
   .docked .dock-nav { visibility: visible; }
   .dock-nav a { display: flex; align-items: center; min-height: 2.75rem; padding-right: calc(var(--reach, 1em) - .14em + .3em); color: #f4f1ea; text-decoration: none; font: 700 .72rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; transition: color .2s; }
   .dock-nav .nav-label { position: relative; line-height: 1; --mark-tracking: .14em; }
@@ -334,8 +321,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   .instant .card, .instant .card *, .instant .card::before { transition: none !important; }
 
   @media (max-width: 600px) {
-    .dock-fade { height: calc(var(--top) + var(--edge) + 7rem * .436 + 1.1rem + 2.75rem + 3.5rem); background: linear-gradient(rgba(4, 6, 13, .97) 78%, rgba(4, 6, 13, 0)); }
-    .dock-nav { top: calc(var(--top) + var(--edge) + 7rem * .436 + 1.1rem); left: var(--edge); justify-content: space-between; gap: .5rem; }
+    .dock-nav { top: calc(var(--edge) + 7rem * .436 + 1.1rem); left: var(--edge); justify-content: space-between; gap: .5rem; }
     .dock-nav a { font-size: .66rem; }
   }
 
@@ -447,8 +433,6 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
 
   <div class="treeline" aria-hidden="true"></div>
   <div class="ground" aria-hidden="true"></div>
-  <div class="dock-fade" aria-hidden="true"></div>
-  <div class="dock-cap" aria-hidden="true"></div>
   <svg class="comet-trail" aria-hidden="true"></svg>
   <div class="comet" aria-hidden="true"><i></i></div>
   <nav class="dock-nav" aria-label="Main">
@@ -473,10 +457,6 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       const PERIOD = [.9627, .9198], ASPECT = 334 / 766;
       let queued = false, first = true;
 
-      // The status bar's height where the page runs under it (the --top token), read once.
-      let top = null;
-      const statusBar = () => top ?? (top = parseFloat(getComputedStyle(document.querySelector('.dock-cap')).height) || 0);
-
       // The wordmark's box: centered (t = 0) or docked where every other page has it (t = 1).
       const box = (t) => {
         const rem = parseFloat(getComputedStyle(r).fontSize);
@@ -484,7 +464,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
         const w1 = (innerWidth <= 600 ? 7 : 8.5) * rem;
         const edge = Math.min(2 * rem, Math.max(rem, innerWidth * .035));
         const x = lerp(innerWidth / 2 - w0 / 2, edge, t);
-        const y = lerp(innerHeight * .4 - w0 * ASPECT / 2, edge + statusBar(), t);
+        const y = lerp(innerHeight * .4 - w0 * ASPECT / 2, edge, t);
         return { x, y, w: lerp(w0, w1, t), s: lerp(1, w1 / w0, t), w0 };
       };
       const periodAt = (b) => ({ x: b.x + PERIOD[0] * b.w, y: b.y + PERIOD[1] * b.w * ASPECT, r: 17.2 / 766 * b.w });
@@ -503,6 +483,10 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       // The shooting star: a curve from where the period breaks away to where it docks, with a
       // trail that grows with speed.
       let fTarget = 0, fShown = 0, animating = false, last = 0, vel = 0;
+      // How far the page has scrolled past the landing. The docked header lets go there and
+      // scrolls away with the page, like the header on every other page.
+      let lift = 0;
+      const nav = document.querySelector('.dock-nav');
       const trail = document.querySelector('.comet-trail');
       const SEGMENTS = 16;
       const segs = Array.from({ length: SEGMENTS }, () => trail.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'path')));
@@ -510,6 +494,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       const path = () => {
         const s = periodAt(box(ease(clamp((FLIGHT[0] - DOCK[0]) / (DOCK[1] - DOCK[0])))));
         const e = periodAt(box(1));
+        e.y -= lift;
         const c = { x: s.x - (s.x - e.x) * .15, y: e.y - innerHeight * .05 };
         return (f) => {
           const u = ease(clamp(f)), v = 1 - u;
@@ -565,7 +550,9 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
         let b, o = 1;
         if (reduced) { b = box(t < .5 ? 0 : 1); o = Math.abs(1 - 2 * t); } else b = box(ease(t));
         mark.style.setProperty('--mx', b.x + 'px');
-        mark.style.setProperty('--my', b.y + 'px');
+        lift = Math.max(0, scrollY - FLIGHT[1] * run);
+        mark.style.setProperty('--my', (b.y - lift) + 'px');
+        nav.style.transform = lift ? `translateY(${-lift}px)` : '';
         mark.style.setProperty('--ms', b.s.toFixed(4));
         mark.style.opacity = o;
         r.style.setProperty('--dock', t.toFixed(3));
@@ -593,7 +580,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       };
       const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
       addEventListener('scroll', queue, { passive: true });
-      addEventListener('resize', () => { top = null; layout(); update(); });
+      addEventListener('resize', () => { layout(); update(); });
       new ResizeObserver(layout).observe(document.querySelector('.cards'));
       layout();
       update();

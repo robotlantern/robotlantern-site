@@ -32,7 +32,10 @@ https://rl.rblt.io/prototypes/sunset-scroll/). Timings below are measured agains
   It doesn't stretch over the whole page.
 - A quick flick past several cards draws them one after another. After a reload, cards already
   above the screen are simply there.
-- The docked header gets a soft dark fade, so cards passing under it don't collide with it.
+- Once the period has landed, the docked header scrolls away with the page, like the header on
+  every other page, and docks again on the way back up. (A pinned header with a dark fade was
+  tried and dropped on 2026-09-27: iOS Safari showed content behind the status bar, and the dark
+  bar broke the sunset.)
 - Reduced motion: a simple fade replaces the flight and the line drawing.
 - All content is in the page. Without the script or the animation, everything still reads.
 - Card fill: about 75% night color with a light blur behind it.
