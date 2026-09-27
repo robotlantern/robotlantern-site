@@ -1,0 +1,27 @@
+---
+// A chat page: the Chats list beside the chat, and the next chats below it as the reader scrolls.
+// /chats/ is the newest chat; /chats/<id>/ starts at that one.
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Reader from './Reader.astro';
+import ChatEntry from './ChatEntry.astro';
+import ChatDashes from './ChatDashes.astro';
+import { chatFeed, nextAfter } from '../lib/feeds';
+import { getAuthors } from '../lib/authors';
+
+interface Props { id: string }
+const { id } = Astro.props;
+const entry = (await getEntry('conversations', id))!;
+const feed = await chatFeed();
+const all = await getAuthors();
+const names = entry.data.participants.map((p) => all[p.author]?.name ?? p.name).join(' and ');
+if (entry.data.postedPlaceholder) {
+  console.warn(`[robot-lantern] src/content/conversations/${id}/post.json: the posted date is a placeholder. Set it at launch (NOW.md, task 9).`);
+}
+---
+<Base title={entry.data.title} section="chats" description={`A chat between ${names}.`} canonical={`/chats/${id}/`}>
+  <Reader section="chats" label="Chats" feed={feed} current={id} next={nextAfter(feed, id)} tools>
+    <ChatEntry entry={entry} />
+    <ChatDashes slot="after" />
+  </Reader>
+</Base>

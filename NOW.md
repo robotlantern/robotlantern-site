@@ -26,6 +26,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
      drawer on phones), and dashes on the left for position. Editor's links come from
      `links.json`.
    - RJ picked full-column replies and set his bio (2026-09-27).
+   - 2026-09-27: Thoughts and Chats became list and detail with endless scrolling; `/thoughts/`
+     and `/chats/` open on the newest piece. Chats sort by posted or chat date, and search.
    - Done when RJ approves both pages on his phone.
 6. **Launch conversation: "It's Always the Pleiades".** RJ picked and selected it on 2026-09-24.
    - Captured privately in `.private/conversations/pleiades/`, where `NOTES.md` lists the open
@@ -51,7 +53,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    Fairmont, Bogotá and the machines' names can all be public. Rerun before cutover.
 9. **Cutover.** Choose the host, switch Pages to deploy through Actions, and merge to `main`. RJ
    changes DNS if needed. Set every essay date marked `datePlaceholder` to the launch date (the
-   build warns about each one). Launch checklist:
+   build warns about each one), and every chat's `postedPlaceholder` in its `post.json`.
+   Launch checklist:
    - Done 2026-09-27: 404 page, `robots.txt`, `/sitemap.xml`.
    - Brand assets (RJ's separate task): favicon, Apple touch icon, and a social-card image with
      Open Graph tags. Until then every page requests a missing `/favicon.ico`.
@@ -240,3 +243,5 @@ One list, so they can be answered in one sitting. Details and sources for the le
   drafted), and embedded The Sky, Unprojected as the first build.
 - 2026-09-27: RJ's section marks in the nav; the comet glides. Brand exploration started (task 16):
   spark concepts, wordmark lockups, and a sheet of every Google Fonts asterisk.
+- 2026-09-27: Builds run full screen and the Builds page has screenshot cards. Thoughts and
+  Chats open on the newest piece, list and detail, endless. The chat links to its build.

@@ -12,13 +12,21 @@ Status: RJ's direction from reviewing the first preview, 2026-09-27.
 - No labels that state the obvious: no "Essay" or "Conversation" kicker above a title, no names
   or numbers on chat messages, no note saying a transcript was edited when the brackets show it.
 - The wordmark's top margin equals its left margin.
+- Thoughts and Chats are list and detail, like a chat app (`src/components/Reader.astro`).
+  `/thoughts/` and `/chats/` open on the newest piece, with the list beside it on desktop and
+  in a drawer on phones. There are no separate list pages. The column is endless: near the end
+  of a piece, the next one (newest posted first) is appended, and the address, page title and
+  list follow whichever piece is in view.
+- Builds run full screen with no site chrome, except a quiet way home in the top-left corner:
+  the small wordmark, or the lantern alone on phones (`src/layouts/BuildLayout.astro`).
 
 ## Thoughts (essays)
 
 - Under the title, in place of a byline: the attribution block. It shows each author with
   their icon, linked to their entry on the authors page, the essay and footnote percentages, a
   ring showing the essay body's split, and one toggle that highlights who wrote which words.
-- Desktop: author cards (a sentence or two each) in the left margin. Phones hide them.
+- Wide screens: author cards (a sentence or two each) in the right margin; the list takes the
+  left. Narrower screens hide them.
 - No "Inside this post" and no Markdown download. If the chat behind an essay is worth reading,
   it's published as a chat and cross-linked.
 
@@ -31,7 +39,16 @@ Status: RJ's direction from reviewing the first preview, 2026-09-27.
   `time` phrase. Nothing else before the first message. When scrolling, a small copy of the
   title stays at the top.
 - List and detail: on desktop, a sidebar lists the chats, like the ChatGPT and Claude apps. On a
-  phone, the list opens as a drawer from a menu button.
+  phone, the list opens as a drawer from a menu button. The list sorts by when a chat was posted
+  here (the default) or when it happened, and has a search box. The posted date lives in
+  `post.json` beside the transcript.
+- A chat that led to a build ends with a link to it.
 - Position: a column of faint dashes along the right edge, colored by speaker and sized by message
   length. Dashes near the reader's position grow taller and wider, and tapping or dragging on
   the column jumps there. They're dim, and appear only once the title has scrolled under the bar. No summaries or section headings.
+
+## Builds
+
+- The Builds page shows one card per build (`src/content/builds/*.json`): a screenshot from
+  inside it behind a headline, a line saying what it is, a Launch button, and the chat it came
+  from.

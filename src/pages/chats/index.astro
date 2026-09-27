@@ -1,15 +1,8 @@
 ---
-import Base from '../../layouts/Base.astro';
-import ChatList from '../../components/ChatList.astro';
----
-<Base title="Chats" section="chats">
-  <main class="reading index">
-    <h1>Chats</h1>
-    <ChatList />
-  </main>
-</Base>
+// Chats opens on the newest chat, with the list beside it (docs/PAGES.md).
+import ChatPage from '../../components/ChatPage.astro';
+import { chatFeed } from '../../lib/feeds';
 
-<style>
-  .index { padding-block: 2.5rem 1rem; max-width: 30rem; }
-  h1 { margin: 0 0 1.2rem; font: 400 2.4rem/1 var(--serif); }
-</style>
+const [newest] = await chatFeed();
+---
+<ChatPage id={newest.id} />

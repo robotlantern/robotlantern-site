@@ -22,7 +22,11 @@ const conversations = defineCollection({
         const source = fs.readFileSync(filePath, 'utf8');
         const match = /^---\n([\s\S]*?)\n---\n?/.exec(source);
         if (!match) throw new Error(`${filePath}: missing frontmatter`);
-        const data = await parseData({ id, data: parseYaml(match[1]), filePath });
+        // post.json, beside the transcript, holds publishing facts that aren't part of the chat:
+        // when it was posted here (which can differ from when the chat happened).
+        const postFile = `${conversationDir}/${id}/post.json`;
+        const post = fs.existsSync(postFile) ? JSON.parse(fs.readFileSync(postFile, 'utf8')) : {};
+        const data = await parseData({ id, data: { ...parseYaml(match[1]), ...post }, filePath });
         store.set({ id, data, body: source.slice(match[0].length), filePath });
       }
     },
@@ -45,6 +49,9 @@ const conversations = defineCollection({
       .min(2),
     timezone: z.string(),
     range: z.string(),
+    // When it was posted here. Defaults to the chat's own date; a placeholder until launch.
+    posted: z.coerce.date().optional(),
+    postedPlaceholder: z.boolean().default(false),
   }),
 });
 

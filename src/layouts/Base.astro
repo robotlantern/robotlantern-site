@@ -10,8 +10,10 @@ interface Props {
   title: string;
   description?: string;
   section?: Section;
+  // The page's canonical path, when it shows another page's content (/chats/ shows the newest chat).
+  canonical?: string;
 }
-const { title, description, section } = Astro.props;
+const { title, description, section, canonical } = Astro.props;
 const pageTitle = title === 'Robot Lantern' ? title : `${title} · Robot Lantern`;
 const sections: { id: Section; label: string }[] = [
   { id: 'thoughts', label: 'Thoughts' },
@@ -28,7 +30,7 @@ const sections: { id: Section; label: string }[] = [
   <title>{pageTitle}</title>
   {description && <meta name="description" content={description}>}
   <meta name="theme-color" content="#04060d">
-  <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}>
+  <link rel="canonical" href={new URL(canonical ?? Astro.url.pathname, Astro.site)}>
   <slot name="head" />
 </head>
 <body>
