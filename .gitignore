@@ -15,6 +15,5 @@ dist/
 .claude/launch.json
 __pycache__/
 
-# brand specimen sheets: large, rebuilt by tools/brand/
 .cache/
 design/brand/asterisks-*
