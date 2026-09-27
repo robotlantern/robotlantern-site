@@ -47,7 +47,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Robot Lantern</title>
 <meta name="theme-color" content="#05070d">
 <meta name="description" content="Robot Lantern: thoughts, chats, builds and a shop, from sunset into night.">
@@ -62,6 +62,8 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     --sky-height: 500vh;
     --ground: 24px; /* solid strip under the treeline; iOS Safari samples its toolbar color here */
     --edge: clamp(1rem, 3.5vw, 2rem);
+    /* The status bar's height where the page runs under it (viewport-fit=cover), else 0. */
+    --top: env(safe-area-inset-top, 0px);
     --text: #e9e2d2;
     --muted: #a3acbd;
     --faint: #737f96;
@@ -257,14 +259,14 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   .dock-fade {
     position: fixed;
     inset: 0 0 auto;
-    height: calc(var(--edge) * 2 + 8.5rem * .436 + 2rem);
+    height: calc(var(--top) + var(--edge) * 2 + 8.5rem * .436 + 2rem);
     background: linear-gradient(rgba(4, 6, 13, .94) 70%, rgba(4, 6, 13, 0));
     opacity: var(--dock, 0);
     pointer-events: none;
   }
-  /* A solid strip at the top edge once the mark has docked: iOS Safari tints its status bar
-     from a solid fixed layer touching the edge (it ignores gradients), as at the bottom. */
-  .dock-cap { position: fixed; inset: 0 0 auto; height: var(--ground); background-color: #04060d; visibility: hidden; pointer-events: none; }
+  /* Once the mark has docked, a solid strip covers the band under the status bar, so content
+     doesn't scroll visibly behind it on iPhones (the page runs under it: viewport-fit=cover). */
+  .dock-cap { position: fixed; inset: 0 0 auto; height: var(--top); background-color: #04060d; visibility: hidden; pointer-events: none; }
   .docked .dock-cap { visibility: visible; }
   .comet { position: fixed; left: 0; top: 0; width: 0; height: 0; visibility: hidden; pointer-events: none; }
   .comet i { position: absolute; left: calc(var(--r) * -1); top: calc(var(--r) * -1); width: calc(var(--r) * 2); height: calc(var(--r) * 2); border-radius: 50%; background: #fff6df; box-shadow: 0 0 calc(var(--r) * 1.5) var(--lantern); }
@@ -273,7 +275,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   .comet-trail path { fill: none; stroke: rgb(255, 214, 140); stroke-linecap: butt; }
 
   /* The nav, as on every other page (src/layouts/Base.astro), appearing once the mark lands. */
-  .dock-nav { position: fixed; top: var(--edge); right: var(--edge); display: flex; gap: 1.2rem; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; }
+  .dock-nav { position: fixed; top: calc(var(--edge) + var(--top)); right: var(--edge); display: flex; gap: 1.2rem; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; }
   .docked .dock-nav { visibility: visible; }
   .dock-nav a { display: flex; align-items: center; min-height: 2.75rem; padding-right: calc(var(--reach, 1em) - .14em + .3em); color: #f4f1ea; text-decoration: none; font: 700 .72rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; transition: color .2s; }
   .dock-nav .nav-label { position: relative; line-height: 1; --mark-tracking: .14em; }
@@ -332,8 +334,8 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   .instant .card, .instant .card *, .instant .card::before { transition: none !important; }
 
   @media (max-width: 600px) {
-    .dock-fade { height: calc(var(--edge) + 7rem * .436 + 1.1rem + 2.75rem + 3.5rem); background: linear-gradient(rgba(4, 6, 13, .97) 78%, rgba(4, 6, 13, 0)); }
-    .dock-nav { top: calc(var(--edge) + 7rem * .436 + 1.1rem); left: var(--edge); justify-content: space-between; gap: .5rem; }
+    .dock-fade { height: calc(var(--top) + var(--edge) + 7rem * .436 + 1.1rem + 2.75rem + 3.5rem); background: linear-gradient(rgba(4, 6, 13, .97) 78%, rgba(4, 6, 13, 0)); }
+    .dock-nav { top: calc(var(--top) + var(--edge) + 7rem * .436 + 1.1rem); left: var(--edge); justify-content: space-between; gap: .5rem; }
     .dock-nav a { font-size: .66rem; }
   }
 
@@ -471,6 +473,10 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       const PERIOD = [.9627, .9198], ASPECT = 334 / 766;
       let queued = false, first = true;
 
+      // The status bar's height where the page runs under it (the --top token), read once.
+      let top = null;
+      const statusBar = () => top ?? (top = parseFloat(getComputedStyle(document.querySelector('.dock-cap')).height) || 0);
+
       // The wordmark's box: centered (t = 0) or docked where every other page has it (t = 1).
       const box = (t) => {
         const rem = parseFloat(getComputedStyle(r).fontSize);
@@ -478,7 +484,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
         const w1 = (innerWidth <= 600 ? 7 : 8.5) * rem;
         const edge = Math.min(2 * rem, Math.max(rem, innerWidth * .035));
         const x = lerp(innerWidth / 2 - w0 / 2, edge, t);
-        const y = lerp(innerHeight * .4 - w0 * ASPECT / 2, edge, t);
+        const y = lerp(innerHeight * .4 - w0 * ASPECT / 2, edge + statusBar(), t);
         return { x, y, w: lerp(w0, w1, t), s: lerp(1, w1 / w0, t), w0 };
       };
       const periodAt = (b) => ({ x: b.x + PERIOD[0] * b.w, y: b.y + PERIOD[1] * b.w * ASPECT, r: 17.2 / 766 * b.w });
@@ -587,7 +593,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       };
       const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
       addEventListener('scroll', queue, { passive: true });
-      addEventListener('resize', () => { layout(); update(); });
+      addEventListener('resize', () => { top = null; layout(); update(); });
       new ResizeObserver(layout).observe(document.querySelector('.cards'));
       layout();
       update();
