@@ -3,6 +3,7 @@
 // a quiet way home in the top-left corner: the small wordmark, or on phones just its lantern.
 import '../styles/global.css';
 import Wordmark from '../components/Wordmark.astro';
+import HeadMeta from '../components/HeadMeta.astro';
 
 interface Props { title: string; description?: string }
 const { title, description } = Astro.props;
@@ -16,6 +17,7 @@ const { title, description } = Astro.props;
   {description && <meta name="description" content={description}>}
   <meta name="theme-color" content="#04060d">
   <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}>
+  <HeadMeta title={`${title} · Robot Lantern`} description={description} path={Astro.url.pathname} />
 </head>
 <body class="build-page">
   <a class="build-home" href="/" aria-label="Robot Lantern home">

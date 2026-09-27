@@ -10,6 +10,7 @@ import AuthorName from '../components/AuthorName.astro';
 import SectionMark from '../components/SectionMark.astro';
 import { markReach } from '../lib/section-marks';
 import Footer from '../components/Footer.astro';
+import HeadMeta from '../components/HeadMeta.astro';
 import { splitMessages } from '../lib/conversation';
 import { convertMathDelimiters, renderMarkdown } from '../lib/markdown';
 import { getAuthors, authorOf, shortDate } from '../lib/authors';
@@ -60,6 +61,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
 <title>Robot Lantern</title>
 <meta name="description" content="Robot Lantern: thoughts, chats, builds and a shop, from sunset into night.">
 <link rel="canonical" href="https://robotlantern.com/">
+<HeadMeta title="Robot Lantern" path="/" />
 <style is:global>
   /* One number drives everything: --progress, 0 at the top of the page, 1 at the bottom. */
   :root {

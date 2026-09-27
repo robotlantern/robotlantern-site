@@ -18,6 +18,13 @@ Decided by RJ on 2026-09-27. The sources are his SVGs in `design/brand/`; the si
   robot's head. It's the favicon, and the site's menu button: the wordmark collapses into it,
   because its three parts are the wordmark's own "t" and period.
 
+## Icons and the social image
+
+`tools/brand/make_icons.py` makes `public/favicon.svg`, `favicon.ico`, `apple-touch-icon.png`
+and `og.png` (the wordmark on the night photo, for link previews) from the monogram, in one of
+the four tile colorings in `design/brand/favicon-options/`. The choice is `FAVICON` at the top
+of the script. `src/components/HeadMeta.astro` puts them on every page.
+
 ## Rules
 
 - **Never two ovaloids at the same angle.** Each takes an angle from its name (`turnFor` in

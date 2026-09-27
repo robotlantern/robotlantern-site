@@ -4,6 +4,7 @@ import Wordmark from '../components/Wordmark.astro';
 import SectionMark from '../components/SectionMark.astro';
 import { markReach } from '../lib/section-marks';
 import Footer from '../components/Footer.astro';
+import HeadMeta from '../components/HeadMeta.astro';
 
 type Section = 'thoughts' | 'chats' | 'builds' | 'shop';
 interface Props {
@@ -31,6 +32,7 @@ const sections: { id: Section; label: string }[] = [
   {description && <meta name="description" content={description}>}
   <meta name="theme-color" content="#04060d">
   <link rel="canonical" href={new URL(canonical ?? Astro.url.pathname, Astro.site)}>
+  <HeadMeta title={pageTitle} description={description} path={canonical ?? Astro.url.pathname} />
   <slot name="head" />
 </head>
 <body>

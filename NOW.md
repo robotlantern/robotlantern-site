@@ -56,8 +56,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    build warns about each one), and every chat's `postedPlaceholder` in its `post.json`.
    Launch checklist:
    - Done 2026-09-27: 404 page, `robots.txt`, `/sitemap.xml`.
-   - Brand assets (RJ's separate task): favicon, Apple touch icon, and a social-card image with
-     Open Graph tags. Until then every page requests a missing `/favicon.ico`.
+   - Done 2026-09-27: favicon, Apple touch icon and a social image with Open Graph tags, from the
+     monogram (docs/BRAND.md). The tile coloring is RJ's pick (option A until he says).
    - Done 2026-09-27: removed the old landing page's files from the root (`index.html`,
      `script.js`, `styles.css`, `assets/`, `privacy/`); they're in Git history. `CNAME` stays until
      the host is chosen. Decide whether `public/prototypes/` ships.
