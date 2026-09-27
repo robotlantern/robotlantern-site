@@ -97,8 +97,41 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 
 ## Open decisions (RJ)
 
-- Hosting at cutover: GitHub Pages or Cloudflare Pages.
-- Home page open questions: see [docs/HOME.md](docs/HOME.md), "Open".
+One list, so they can be answered in one sitting. Details and sources for the legal ones are in
+`.private/legal/privacy-notes.md` and `.private/legal/terms-credits-notes.md`.
+
+**Launch and hosting**
+- [ ] Host at cutover: GitHub Pages or Cloudflare Pages. (If Cloudflare: Bot Fight Mode,
+  challenges, rate limiting and Web Analytics stay off, or the privacy page's "no cookies" is
+  false.)
+
+**Rights and licensing** (task 13)
+- [ ] Content licence for essays and chats: CC BY-NC 4.0 is recommended ("CC-NY" isn't a
+  licence; this is the likely meaning).
+- [ ] Who holds copyright: RJ or Robot Lantern LLC. The footer says "© Robot Lantern LLC".
+- [ ] Are RJ's photos under the licence, or all rights reserved?
+- [ ] Send the drafted permission request to ESA for the Hipparcos/Gaia data (the site has a
+  shop)? Drafted in the terms notes, not sent.
+- [ ] Was the home page's treeline cut from RJ's sunset photo? (Credits page.)
+- [ ] Was AI used for any shop art? (Terms page.)
+
+**The LLC and the shop** (tasks 7, 13)
+- [ ] State where the LLC is organized (also the terms' governing law).
+- [ ] Public address and phone for Shopify, which its terms require.
+- [ ] Turn off the marketing opt-in in Shopify's checkout.
+- [ ] How long order records are kept (privacy page).
+- [ ] Confirm the mailbox is Google Workspace (privacy page).
+
+**Robot Lantern Uploader** (the privacy page now promises these)
+- [ ] It keeps no local log of uploaded videos.
+- [ ] Its token file is deleted within 7 days of a revocation or a request.
+
+**Check in a browser** (the agents couldn't load them)
+- [ ] Gelato's privacy wording; OpenAI's terms on output ownership.
+
+**Review on the phone**
+- [ ] Home page choices (docs/HOME.md, "Built choices to review"), the About page's copy and
+  cast, the nav marks, the interactive.
 
 ## Parked
 
