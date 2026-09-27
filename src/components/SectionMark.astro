@@ -7,22 +7,12 @@
 // Geometry is in em of the label's font size, measured from the end of the word (x) and the middle
 // of the capitals (y), so the mark scales with the label. The component goes inside the label's
 // span, which must be position: relative with line-height 1.
-interface Props { name: 'thoughts' | 'chats' | 'builds' | 'shop' }
+import { marks, type Section } from '../lib/section-marks';
+
+interface Props { name: Section }
+
 const { name } = Astro.props;
 
-type Star = [number, number, number]; // x, y, half-width
-const marks: Record<Props['name'], { stars: Star[]; ring?: [number, number, number]; poly?: [number, number][] }> = {
-  thoughts: { stars: [[1.104, -0.379, 0.806]] },
-  chats: { ring: [-0.819, 0.026, 1.291], stars: [[0.118, -0.861, 0.448], [-1.193, 1.261, 0.346]] },
-  builds: {
-    poly: [[-2.542, 0.152], [-1.374, -1.455], [0.515, -0.841], [0.515, 1.146], [-1.374, 1.759]],
-    stars: [[-1.374, -1.455, 0.332], [0.515, -0.841, 0.244], [0.515, 1.146, 0.367]],
-  },
-  shop: {
-    poly: [[-1.943, -1.481], [0.244, -0.403], [-0.024, 2.014], [-2.216, 0.924]],
-    stars: [[-1.943, -1.481, 0.367], [0.244, -0.403, 0.154], [-0.024, 2.014, 0.244], [-2.216, 0.924, 0.284]],
-  },
-};
 const m = marks[name];
 // RJ's asterisks: three strokes at 0°, 60° and 120°, the stroke 1/7.7 of the star's width.
 const arms = [0, 60, 120].map((a) => [Math.cos((a * Math.PI) / 180), Math.sin((a * Math.PI) / 180)]);
@@ -43,12 +33,12 @@ const f = (n: number) => Math.round(n * 1000) / 1000;
 <style>
   /* Anchored at the end of the word (less the trailing letter-spacing) and the middle of its box. */
   .mark { position: absolute; left: calc(100% - var(--mark-tracking, 0em)); top: 50%; width: 1em; height: 1em; overflow: visible; pointer-events: none; }
-  .mark__line { fill: none; stroke: currentColor; stroke-width: .071; stroke-dasharray: .71 .43; stroke-linecap: square; opacity: var(--mark-line, .1); }
+  .mark__line { fill: none; stroke: currentColor; stroke-width: .071; stroke-dasharray: .71 .43; stroke-linecap: square; opacity: var(--mark-line, .3); }
   /* Chats' ring keeps RJ's own rhythm: long dash, long gap, short dash, short gap. */
   .mark__line--ring { stroke-width: .08; stroke-dasharray: .24 .48 .16 .08; }
   .mark__star { fill: none; stroke: currentColor; stroke-linecap: round; animation: mark-twinkle 3.2s ease-in-out infinite alternate; }
   /* The trail runs from under the start of the word up to the star. */
   .mark-trail { position: absolute; left: .13em; width: calc(100% - var(--mark-tracking, 0em) - .13em + 1.33em); top: .83em; height: .77em; overflow: visible; pointer-events: none; }
-  .mark-trail path { fill: none; stroke: currentColor; stroke-width: .071em; stroke-dasharray: .52em .38em; vector-effect: non-scaling-stroke; opacity: var(--mark-line, .1); }
+  .mark-trail path { fill: none; stroke: currentColor; stroke-width: .071em; stroke-dasharray: .52em .38em; vector-effect: non-scaling-stroke; opacity: var(--mark-line, .3); }
   @keyframes mark-twinkle { from { opacity: .6; } to { opacity: 1; } }
 </style>

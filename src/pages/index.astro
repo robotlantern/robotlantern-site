@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import { getCollection } from 'astro:content';
 import AuthorName from '../components/AuthorName.astro';
 import SectionMark from '../components/SectionMark.astro';
+import { markReach } from '../lib/section-marks';
 import Footer from '../components/Footer.astro';
 import { splitMessages } from '../lib/conversation';
 import { convertMathDelimiters, renderMarkdown } from '../lib/markdown';
@@ -268,7 +269,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   /* The nav, as on every other page (src/layouts/Base.astro), appearing once the mark lands. */
   .dock-nav { position: fixed; top: var(--edge); right: var(--edge); display: flex; gap: 1.2rem; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; }
   .docked .dock-nav { visibility: visible; }
-  .dock-nav a { display: flex; align-items: center; min-height: 2.75rem; padding-right: 1.5em; color: #f4f1ea; text-decoration: none; font: 700 .72rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; transition: color .2s; }
+  .dock-nav a { display: flex; align-items: center; min-height: 2.75rem; padding-right: calc(var(--reach, 1em) - .14em + .3em); color: #f4f1ea; text-decoration: none; font: 700 .72rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; transition: color .2s; }
   .dock-nav .nav-label { position: relative; line-height: 1; --mark-tracking: .14em; }
   .dock-nav a:hover { color: var(--lantern); }
 
@@ -441,7 +442,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   <div class="dock-fade" aria-hidden="true"></div>
   <div class="comet" aria-hidden="true"><b></b><i></i></div>
   <nav class="dock-nav" aria-label="Main">
-    {sections.map(([id, label]) => <a href={`/${id}/`}><span class="nav-label">{label}<SectionMark name={id} /></span></a>)}
+    {sections.map(([id, label]) => <a href={`/${id}/`} style={`--reach:${markReach(id).toFixed(2)}em`}><span class="nav-label">{label}<SectionMark name={id} /></span></a>)}
   </nav>
 
   <script is:inline>
@@ -485,6 +486,37 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
         }
       };
 
+      // The shooting star: a curve from where the period breaks away to where it docks, with a
+      // trail that grows with speed.
+      let fTarget = 0, fShown = 0, animating = false, last = 0;
+      const drawComet = (f) => {
+        const flying = !reduced && f > 0.001 && f < 0.999;
+        mark.classList.toggle('flying', flying);
+        comet.style.visibility = flying ? 'visible' : 'hidden';
+        if (!flying) return;
+        const s = periodAt(box(ease(clamp((FLIGHT[0] - DOCK[0]) / (DOCK[1] - DOCK[0])))));
+        const e = periodAt(box(1));
+        const c = { x: s.x - (s.x - e.x) * .15, y: e.y - innerHeight * .05 };
+        const u = ease(f), v = 1 - u;
+        const x = v * v * s.x + 2 * v * u * c.x + u * u * e.x;
+        const y = v * v * s.y + 2 * v * u * c.y + u * u * e.y;
+        const dx = 2 * v * (c.x - s.x) + 2 * u * (e.x - c.x);
+        const dy = 2 * v * (c.y - s.y) + 2 * u * (e.y - c.y);
+        comet.style.transform = `translate(${x}px, ${y}px)`;
+        comet.style.setProperty('--r', lerp(s.r, e.r, u).toFixed(2) + 'px');
+        comet.style.setProperty('--angle', Math.atan2(dy, dx) + 'rad');
+        comet.style.setProperty('--trail', (Math.sin(Math.PI * f) * Math.min(140, innerWidth * .25)).toFixed(1) + 'px');
+      };
+      const tick = (now) => {
+        const dt = Math.min(64, now - (last || now));
+        last = now;
+        fShown += (fTarget - fShown) * (1 - Math.exp(-dt / 110));
+        if (Math.abs(fTarget - fShown) < .0008) fShown = fTarget;
+        drawComet(fShown);
+        if (fShown !== fTarget) requestAnimationFrame(tick);
+        else { animating = false; last = 0; }
+      };
+
       const update = () => {
         queued = false;
         const docH = r.scrollHeight;
@@ -503,25 +535,11 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
         r.style.setProperty('--dock', t.toFixed(3));
         r.classList.toggle('docked', t > .9);
 
-        // The period's flight: a shooting star on a curve, with a trail that grows with speed.
-        const f = clamp((p - FLIGHT[0]) / (FLIGHT[1] - FLIGHT[0]));
-        const flying = !reduced && f > 0 && f < 1;
-        mark.classList.toggle('flying', flying);
-        comet.style.visibility = flying ? 'visible' : 'hidden';
-        if (flying) {
-          const s = periodAt(box(ease(clamp((FLIGHT[0] - DOCK[0]) / (DOCK[1] - DOCK[0])))));
-          const e = periodAt(box(1));
-          const c = { x: s.x - (s.x - e.x) * .15, y: e.y - innerHeight * .05 };
-          const u = ease(f), v = 1 - u;
-          const x = v * v * s.x + 2 * v * u * c.x + u * u * e.x;
-          const y = v * v * s.y + 2 * v * u * c.y + u * u * e.y;
-          const dx = 2 * v * (c.x - s.x) + 2 * u * (e.x - c.x);
-          const dy = 2 * v * (c.y - s.y) + 2 * u * (e.y - c.y);
-          comet.style.transform = `translate(${x}px, ${y}px)`;
-          comet.style.setProperty('--r', lerp(s.r, e.r, u).toFixed(2) + 'px');
-          comet.style.setProperty('--angle', Math.atan2(dy, dx) + 'rad');
-          comet.style.setProperty('--trail', (Math.sin(Math.PI * f) * Math.min(140, innerWidth * .25)).toFixed(1) + 'px');
-        }
+        // The period's flight follows the scroll through its own easing loop (below), so it
+        // glides along the curve instead of jumping with each scroll step.
+        fTarget = clamp((p - FLIGHT[0]) / (FLIGHT[1] - FLIGHT[0]));
+        if (first || reduced) { fShown = fTarget; drawComet(fShown); }
+        else if (!animating) { animating = true; requestAnimationFrame(tick); }
 
         // Cards. The first draws once the mark has landed and its top is on screen; each later
         // one when the card above it reaches the middle of the screen.
