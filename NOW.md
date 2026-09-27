@@ -71,7 +71,11 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     `src/data/asterisms.json`. (c) done: the nav draws them
     (`src/components/Asterism.astro`), each word centered on its asterism, lit for the current
     section. Rerun both scripts to refit; tune shapes in `TEMPLATES` and regions in `REGIONS`.
-    Done when RJ approves the nav on his phone.
+    Built and on the preview, but RJ judged the fitted shapes overfitted (only Shop reads).
+    Rethinking before any more code: symbol-first shapes versus real constellations with a
+    fitting myth (docs/HOME.md, "Asterism icons"). RJ is sketching on the crops in
+    `design/asterisms/`. Next: record his pick, then redraw the nav from it. Done when RJ
+    approves the nav on his phone.
 
 ## Open decisions (RJ)
 

@@ -64,11 +64,29 @@ The content is a network, and the navigation uses a constellation metaphor.
 
 ## Open
 
-- **Asterism icons (RJ's idea, 2026-09-27; built as NOW.md task 12).** Draw each section's icon as an asterism: points
-  on real stars picked from RJ's night photo, roughly tracing the thought cloud, speech
-  bubbles, blocks and bag, with the section's name centered inside instead of under an icon.
-  It ties the navigation to "the sky is the map" (each section a region of the sky, each item a
-  star). The icon shapes may need to get more abstract to fit real stars.
+- **Asterism icons (RJ's idea, 2026-09-27; NOW.md task 12).** Each section's nav icon is a set
+  of stars with the section's name centered on it. The first build fitted the icon outlines
+  to detected stars, and RJ judged it overfitted: only Shop read clearly. Two approaches are
+  now on the table:
+  1. **Symbol first:** a simple shape that means something on its own, in five to seven
+     points, for example a cube's vertices or a hammer for Builds.
+  2. **Myth first:** real constellations from the photo whose stories fit the section. The
+     four sections then become four real, neighboring parts of one sky, which the home page's
+     map can reuse. Candidates (from memory, to be double-checked before publishing):
+     - Chats → the **Pleiades**. Maia, one of the seven sisters, is Hermes' mother, and the
+       site's first chat is about them.
+     - Builds → **Auriga**, usually identified with Erichthonius, a son of Hephaestus raised by
+       Athena and credited with inventing the four-horse chariot. It's a clean pentagon
+       (Capella, Elnath and three more).
+     - Thoughts → **Perseus**. Athena's polished shield let him face Medusa by reflection,
+       and her head, now on Athena's aegis, is Algol. The shape is loose.
+     - Shop → the **Hyades V with Aldebaran** (Taurus: Venus rules it in astrology, and
+       Europa was a Phoenician, from the great merchant traders), or keep the bag. Libra,
+       the scales, fits best but isn't in the photo.
+  Claude recommended a hybrid: myth first for Chats, Builds and Thoughts, and the bag or the
+  Hyades for Shop. RJ is sketching on crops in `design/asterisms/`, cut from
+  `sky-photo.jpg`, which is labeled in `sky-photo-annotated.jpg`. Coordinates can come from a
+  star catalog and be checked against the photo, with no fitting.
 
 - Where the navigation sits before the full map exists: beside the docked wordmark?
 - The order of cards after the first. For launch: the essay, then products.
