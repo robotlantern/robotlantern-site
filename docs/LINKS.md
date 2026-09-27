@@ -32,7 +32,23 @@ the obvious home for the term and no article fits, such as a subreddit, and RJ a
    (docs/CONVERSATIONS.md, rule 5). The source text isn't changed, so attribution isn't
    affected.
 
-## First run
+Step 2 is `tools/links/check.py <links.json>`. It fails on a disambiguation page or a dead URL,
+notes redirects, and writes each article's canonical title and description back into the file.
 
-The Pleiades conversation. RJ picked every "likely" and "maybe" candidate in its private
-`NOTES.md`, so that list is the answer key for judging how well the proposing model does.
+## First run (2026-09-27)
+
+The Pleiades chat. RJ's picks from its private `NOTES.md` are the answer key and the published
+list: 37 links. Dropped: September ε-Perseids (no article) and Proxima Centauri (already cited
+to its article in the same sentence). Two sentences carry two links (Algol and Mirfak, Bellatrix
+and Rigel) because RJ picked all four.
+
+Haiku, proposing blind, returned 58 terms and found 29 of the 37 (78%). It missed the
+subreddit, the "Howl" allusion, Bortle, stereopsis, GRB 080319B, the inverse-square law, the
+Perseids, and core-collapse supernova (it chose Type II supernova instead). Its mistakes:
+a disambiguation page (the check caught it), "red supergiant" linked to Red giant (the check
+can't catch that; the match step must), a term that isn't in the text, and two already-cited
+terms, against the rule. Its extras were mostly reasonable (Aldebaran, Perseus, Orion, the
+planets, the Milky Way).
+
+Verdict: a Haiku-class proposer is usable only with the check and a real match step, and RJ's
+skim stays necessary. It finds common terms well and misses allusions and community names.

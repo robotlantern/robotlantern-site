@@ -1,0 +1,260 @@
+[
+  {
+    "text": "Pleiades",
+    "url": "https://en.wikipedia.org/wiki/Pleiades",
+    "sense": "the star cluster",
+    "title": "Pleiades",
+    "description": "Star cluster in the constellation of Taurus"
+  },
+  {
+    "text": "r/ItsAlwaysPleiades",
+    "url": "https://www.reddit.com/r/itsalwayspleiades/",
+    "sense": "the subreddit behind the meme",
+    "title": "https://www.reddit.com/r/itsalwayspleiades/"
+  },
+  {
+    "text": "Taurus",
+    "url": "https://en.wikipedia.org/wiki/Taurus_(constellation)",
+    "sense": "the constellation",
+    "title": "Taurus (constellation)",
+    "description": "Zodiac constellation straddling the celestial equator"
+  },
+  {
+    "text": "Mirfak",
+    "url": "https://en.wikipedia.org/wiki/Alpha_Persei",
+    "sense": "Alpha Persei, the star",
+    "title": "Alpha Persei",
+    "description": "Brightest star in the constellation Perseus"
+  },
+  {
+    "text": "Algol",
+    "url": "https://en.wikipedia.org/wiki/Algol",
+    "sense": "the eclipsing binary star in Perseus",
+    "title": "Algol",
+    "description": "Eclipsing variable star in the constellation Perseus"
+  },
+  {
+    "text": "Hyades",
+    "url": "https://en.wikipedia.org/wiki/Hyades_(star_cluster)",
+    "sense": "the star cluster in Taurus",
+    "title": "Hyades (star cluster)",
+    "description": "Open cluster in the constellation Taurus"
+  },
+  {
+    "text": "Capella",
+    "url": "https://en.wikipedia.org/wiki/Capella",
+    "sense": "the star in Auriga",
+    "title": "Capella",
+    "description": "Brightest star in the constellation Auriga"
+  },
+  {
+    "text": "Betelgeuse",
+    "url": "https://en.wikipedia.org/wiki/Betelgeuse",
+    "sense": "the star in Orion",
+    "title": "Betelgeuse",
+    "description": "Red supergiant star in the constellation Orion"
+  },
+  {
+    "text": "Orion Nebula",
+    "url": "https://en.wikipedia.org/wiki/Orion_Nebula",
+    "sense": "M42",
+    "title": "Orion Nebula",
+    "description": "Diffuse nebula in the constellation Orion"
+  },
+  {
+    "text": "Sirius",
+    "url": "https://en.wikipedia.org/wiki/Sirius",
+    "sense": "the brightest star",
+    "title": "Sirius",
+    "description": "Brightest star in Earth's night sky"
+  },
+  {
+    "text": "Andromeda Galaxy",
+    "url": "https://en.wikipedia.org/wiki/Andromeda_Galaxy",
+    "sense": "M31",
+    "title": "Andromeda Galaxy",
+    "description": "Barred spiral galaxy in the Local Group"
+  },
+  {
+    "text": "Double Cluster",
+    "url": "https://en.wikipedia.org/wiki/Double_Cluster",
+    "sense": "the pair of open clusters in Perseus",
+    "title": "Double Cluster",
+    "description": "Open clusters in the constellation Perseus"
+  },
+  {
+    "text": "Triangulum Galaxy",
+    "url": "https://en.wikipedia.org/wiki/Triangulum_Galaxy",
+    "sense": "M33",
+    "title": "Triangulum Galaxy",
+    "description": "Spiral galaxy in the constellation Triangulum"
+  },
+  {
+    "text": "Bortle",
+    "url": "https://en.wikipedia.org/wiki/Bortle_scale",
+    "sense": "the dark-sky scale",
+    "title": "Bortle scale",
+    "description": "Scale for measuring the brightness of the night sky"
+  },
+  {
+    "text": "zodiacal light",
+    "url": "https://en.wikipedia.org/wiki/Zodiacal_light",
+    "sense": "the faint glow along the ecliptic",
+    "title": "Zodiacal light",
+    "description": "Faint solar glow caused by interplanetary dust at sunset and sunrise"
+  },
+  {
+    "text": "Alpha Persei Cluster",
+    "url": "https://en.wikipedia.org/wiki/Alpha_Persei_Cluster",
+    "sense": "the open cluster around Mirfak",
+    "title": "Alpha Persei Cluster",
+    "description": "Open cluster in the constellation Perseus"
+  },
+  {
+    "text": "Elnath",
+    "url": "https://en.wikipedia.org/wiki/Beta_Tauri",
+    "sense": "Beta Tauri, the star",
+    "title": "Beta Tauri",
+    "description": "Star in the constellation Taurus"
+  },
+  {
+    "text": "Bellatrix",
+    "url": "https://en.wikipedia.org/wiki/Bellatrix",
+    "sense": "the star in Orion",
+    "title": "Bellatrix",
+    "description": "Star in the constellation Orion"
+  },
+  {
+    "text": "Rigel",
+    "url": "https://en.wikipedia.org/wiki/Rigel",
+    "sense": "the star in Orion",
+    "title": "Rigel",
+    "description": "Brightest star in the constellation Orion"
+  },
+  {
+    "text": "stereopsis",
+    "url": "https://en.wikipedia.org/wiki/Stereopsis",
+    "sense": "depth perception from two eyes",
+    "title": "Stereopsis",
+    "description": "Visual sensation of spatial awareness"
+  },
+  {
+    "text": "parallax",
+    "url": "https://en.wikipedia.org/wiki/Parallax",
+    "sense": "apparent shift from different viewpoints",
+    "title": "Parallax",
+    "description": "Difference in apparent position with viewing angle"
+  },
+  {
+    "text": "Orion Spur",
+    "url": "https://en.wikipedia.org/wiki/Orion_Arm",
+    "sense": "the spiral arm the Sun sits in",
+    "title": "Orion Arm",
+    "description": "Minor spiral arm of the Milky Way galaxy; contains the Solar System"
+  },
+  {
+    "text": "Local Group",
+    "url": "https://en.wikipedia.org/wiki/Local_Group",
+    "sense": "the galaxy group containing the Milky Way",
+    "title": "Local Group",
+    "description": "Group of galaxies that includes the Milky Way"
+  },
+  {
+    "text": "Gaia",
+    "url": "https://en.wikipedia.org/wiki/Gaia_(spacecraft)",
+    "sense": "ESA's astrometry mission",
+    "title": "Gaia (spacecraft)",
+    "description": "European space observatory for astrometry (2013–2025)"
+  },
+  {
+    "text": "Magellanic Clouds",
+    "url": "https://en.wikipedia.org/wiki/Magellanic_Clouds",
+    "sense": "the two satellite galaxies",
+    "title": "Magellanic Clouds",
+    "description": "Two dwarf galaxies orbiting the Milky Way"
+  },
+  {
+    "text": "Alpha Centauri",
+    "url": "https://en.wikipedia.org/wiki/Alpha_Centauri",
+    "sense": "the nearest star system",
+    "title": "Alpha Centauri",
+    "description": "Star system in the Centaurus constellation"
+  },
+  {
+    "text": "M81",
+    "url": "https://en.wikipedia.org/wiki/Messier_81",
+    "sense": "Bode's Galaxy",
+    "title": "Messier 81",
+    "description": "Spiral galaxy in the constellation Ursa Major"
+  },
+  {
+    "text": "Virgo Cluster",
+    "url": "https://en.wikipedia.org/wiki/Virgo_Cluster",
+    "sense": "the galaxy cluster",
+    "title": "Virgo Cluster",
+    "description": "Galaxy cluster in the constellation Virgo"
+  },
+  {
+    "text": "GRB 080319B",
+    "url": "https://en.wikipedia.org/wiki/GRB_080319B",
+    "sense": "the naked-eye gamma-ray burst of 2008",
+    "title": "GRB 080319B",
+    "description": "Gamma-ray burst in the constellation Boötes"
+  },
+  {
+    "text": "3C 273",
+    "url": "https://en.wikipedia.org/wiki/3C_273",
+    "sense": "the brightest quasar",
+    "title": "3C 273",
+    "description": "Brightest quasar from Earth located in the constellation Virgo"
+  },
+  {
+    "text": "Alcyone",
+    "url": "https://en.wikipedia.org/wiki/Alcyone_(star)",
+    "sense": "the brightest star of the Pleiades",
+    "title": "Alcyone (star)",
+    "description": "Star system in the constellation Taurus"
+  },
+  {
+    "text": "inverse-square law",
+    "url": "https://en.wikipedia.org/wiki/Inverse-square_law",
+    "sense": "the physical law",
+    "title": "Inverse-square law",
+    "description": "Physical law"
+  },
+  {
+    "text": "apparent magnitude",
+    "url": "https://en.wikipedia.org/wiki/Apparent_magnitude",
+    "sense": "brightness as seen from Earth",
+    "title": "Apparent magnitude",
+    "description": "Brightness of a celestial object observed from the Earth"
+  },
+  {
+    "text": "core-collapse supernova",
+    "url": "https://en.wikipedia.org/wiki/Supernova",
+    "sense": "a massive star's collapse and explosion",
+    "title": "Supernova",
+    "description": "Astrophysical phenomenon"
+  },
+  {
+    "text": "Perseids",
+    "url": "https://en.wikipedia.org/wiki/Perseids",
+    "sense": "the August meteor shower",
+    "title": "Perseids",
+    "description": "Prolific meteor shower associated with the comet Swift-Tuttle"
+  },
+  {
+    "text": "Comet 109P/Swift–Tuttle",
+    "url": "https://en.wikipedia.org/wiki/Comet_Swift%E2%80%93Tuttle",
+    "sense": "the Perseids' parent comet",
+    "title": "Comet Swift–Tuttle",
+    "description": "Halley-type comet and parent body of the Perseid meteors"
+  },
+  {
+    "text": "starry dynamo in the machinery of night",
+    "url": "https://en.wikipedia.org/wiki/Howl_(poem)",
+    "sense": "Ginsberg's poem, which the line quotes",
+    "title": "Howl (poem)",
+    "description": "1955 poem by Allen Ginsberg, part of the Beat Generation movement"
+  }
+]
