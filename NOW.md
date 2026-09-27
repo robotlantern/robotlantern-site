@@ -45,9 +45,10 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
      shop page that hands off to Shopify checkout.
    - Done when a test checkout completes without a real charge. Follow "Test checkout without a
      real charge" in docs/CHARGES.md. Gelato imports paid test orders by default.
-8. **Privacy pass** (before cutover). First run done 2026-09-27; findings are in
-   `.private/privacy/`. Waiting on RJ's decisions there. Rerun before cutover. Check everything public against "don't make it any worse"
-   (AGENTS.md, rule 7): text, links, file names, image metadata and Git history.
+8. **Privacy pass** (before cutover). Check everything public against "don't make it any worse"
+   (AGENTS.md, rule 7): text, links, file names, image metadata and Git history. First run done
+   2026-09-27; findings are in `.private/privacy/`, waiting on RJ's decisions. Rerun before
+   cutover.
 9. **Cutover.** Choose the host, switch Pages to deploy through Actions, and merge to `main`. RJ
    changes DNS if needed. Set every essay date marked `datePlaceholder` to the launch date (the
    build warns about each one).
