@@ -64,7 +64,7 @@ The content is a network, and the navigation uses a constellation metaphor.
 
 ## Open
 
-- **Asterism icons (RJ's idea, 2026-09-27).** Draw each section's icon as an asterism: points
+- **Asterism icons (RJ's idea, 2026-09-27; built as NOW.md task 12).** Draw each section's icon as an asterism: points
   on real stars picked from RJ's night photo, roughly tracing the thought cloud, speech
   bubbles, blocks and bag, with the section's name centered inside instead of under an icon.
   It ties the navigation to "the sky is the map" (each section a region of the sky, each item a

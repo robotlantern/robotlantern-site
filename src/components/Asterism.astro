@@ -1,0 +1,33 @@
+---
+// A section's asterism: its stars from RJ's night photo (src/data/asterisms.json), drawn as
+// points with faint joining lines. Coordinates keep the photo's proportions; the longer side
+// is 100 units.
+import sky from '../data/asterisms.json';
+
+interface Props { name: 'thoughts' | 'chats' | 'builds' | 'shop' }
+const a = sky.asterisms[Astro.props.name];
+const px = a.stars.map((s) => ({ x: s.x * sky.width, y: s.y * sky.height, mag: s.mag }));
+const xs = px.map((p) => p.x);
+const ys = px.map((p) => p.y);
+const [x0, y0] = [Math.min(...xs), Math.min(...ys)];
+const k = 100 / Math.max(Math.max(...xs) - x0, Math.max(...ys) - y0);
+const pad = 6;
+const pts = px.map((p) => ({ x: (p.x - x0) * k + pad, y: (p.y - y0) * k + pad, r: Math.max(2.2, 4.6 - p.mag * 0.7) }));
+const w = (Math.max(...xs) - x0) * k + 2 * pad;
+const h = (Math.max(...ys) - y0) * k + 2 * pad;
+const r1 = (n: number) => Math.round(n * 10) / 10;
+---
+<svg class="asterism" viewBox={`0 0 ${r1(w)} ${r1(h)}`} aria-hidden="true" preserveAspectRatio="xMidYMid meet">
+  <g class="asterism__lines">
+    {a.lines.map(([u, v]) => <line x1={r1(pts[u].x)} y1={r1(pts[u].y)} x2={r1(pts[v].x)} y2={r1(pts[v].y)} />)}
+  </g>
+  <g class="asterism__stars">
+    {pts.map((p) => <circle cx={r1(p.x)} cy={r1(p.y)} r={r1(p.r)} />)}
+  </g>
+</svg>
+
+<style>
+  .asterism { display: block; overflow: visible; }
+  .asterism__lines line { stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; opacity: .35; }
+  .asterism__stars circle { fill: currentColor; }
+</style>

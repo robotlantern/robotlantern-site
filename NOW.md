@@ -68,8 +68,10 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     `src/data/night-stars.json` (positions as fractions, relative magnitude). (b) done:
     `tools/sky/asterisms.py` fits each icon's template to real stars (no star shared, each
     section in its own region; the chat bubble's tail points at the Pleiades), saved in
-    `src/data/asterisms.json`. (c) next: draw them in the nav, with the word centered on its
-    asterism. Done when RJ approves the nav on his phone.
+    `src/data/asterisms.json`. (c) done: the nav draws them
+    (`src/components/Asterism.astro`), each word centered on its asterism, lit for the current
+    section. Rerun both scripts to refit; tune shapes in `TEMPLATES` and regions in `REGIONS`.
+    Done when RJ approves the nav on his phone.
 
 ## Open decisions (RJ)
 
@@ -157,3 +159,6 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
   app. Design rules are in docs/PAGES.md.
 - 2026-09-27: RJ picked full-column chat replies and set his bio. Added the Pleiades chat's 37
   editor's links (task 6) and a link checker. Haiku, proposing blind, found 78% of RJ's picks.
+- 2026-09-27: The sunset scroll is now the live home page (`/`). Chat dashes moved to the right
+  edge, fainter. Task 12: the nav's section icons are asterisms fitted to real stars in RJ's
+  photo.
