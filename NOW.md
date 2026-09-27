@@ -55,9 +55,9 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     `/prototypes/sunset-scroll/`. Done when RJ opens all three previews on his phone.
 
 11. **Home page flow, first slice.** Designed with RJ on 2026-09-25; not started.
-    - Start: [docs/HOME.md](docs/HOME.md). Build it as the Astro home page (`src/pages/index.astro`,
-      now a placeholder) from `public/prototypes/sunset-scroll/`, keeping v1 at its tag. The first
-      card can reuse the conversation page's styles.
+    - Start: [docs/HOME.md](docs/HOME.md). The home page (`src/pages/index.astro`) is already the
+      sunset scroll, live since 2026-09-27 with its closing nav pointing at the sections. Build
+      on it; the frozen prototype stays at its tag. The first card can reuse the chat styles.
     - Do: wordmark docks with the shooting-star period, the first card draws from the Pleiades
       (opening lines of the Pleiades conversation), and a second card draws from its own star.
       Scrolling up reverses them.
