@@ -80,8 +80,13 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     `src/content/pages/`, served at `/<name>/` and linked from the footer
     (`src/components/Footer.astro`). Two subagents are drafting them from current research,
     with notes and open questions in `.private/legal/`. `/privacy/` must keep the Robot Lantern
-    Uploader section: its Google OAuth consent screen likely points there. Done when RJ
-    approves the text.
+    Uploader section: its Google OAuth consent screen likely points there. First drafts of all
+    three are in (2026-09-27); `[TBD]` and `[DECIDE]` marks show on the pages. RJ's decisions
+    are listed in `.private/legal/` (both notes files): the content licence (CC BY-NC 4.0
+    recommended), who holds copyright (RJ or the LLC), whether photos are licensed, the ESA
+    email (drafted, not sent), the governing-law state, Shopify's required public contact
+    details, AI use in shop art, and the Uploader's 7-day deletion promise. Done when RJ
+    approves the text and the marks are gone.
 14. **About page and the cast.** Built 2026-09-27 at `/about/`: a short intro and the named
     machines, each with an icon. Done when RJ approves the copy.
 15. **Builds: The Sky, Unprojected.** Embedded 2026-09-27 at `/builds/the-sky-unprojected/`,
