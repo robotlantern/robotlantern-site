@@ -23,3 +23,24 @@ export const turnFor = (name: string) => {
   for (const c of name) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
   return ((h >>> 0) % 3600) / 10;
 };
+
+/** How the "t" halves and the period move (wordmark units) to become the monogram, which sits at
+ * the wordmark's top-left corner: the collapse behind the menu button (SiteMenu.astro). In RJ's
+ * monogram the t's upper half is flipped top to bottom (it reads as an r), so the hook turns over
+ * about its center as it slides. Returns the hook's move, the base's move, the period's move,
+ * then the hook's center. */
+export const collapseFor = (w: typeof brand.twoLine) => {
+  const m = brand.monogram;
+  const d = (a: number[], b: number[]) => [+(b[0] - a[0]).toFixed(2), +(b[1] - a[1]).toFixed(2)];
+  const [x0, y0, x1, y1] = w.t.hookBox;
+  return [...d(w.t.hookBox, m.hookBox), ...d(w.t.baseBox, m.baseBox), ...d(w.periodBox, m.dotBox), +((x0 + x1) / 2).toFixed(2), +((y0 + y1) / 2).toFixed(2)].join(' ');
+};
+
+/** Where the monogram's center sits in the wordmark's drawn box (with its 4-unit padding), as
+ * fractions: the menu button is centered there. */
+export const monogramCenter = (w: typeof brand.twoLine, pad = 4) => {
+  const m = brand.monogram;
+  const x = (Math.min(m.hookBox[0], m.baseBox[0]) + m.dotBox[2]) / 2;
+  const y = (m.hookBox[1] + m.baseBox[3]) / 2;
+  return [(x + pad) / (w.width + pad * 2), (y + pad) / (w.height + pad * 2)];
+};

@@ -3,7 +3,7 @@
 // the lantern's light and the period, the ovaloid, is the lantern. Two lines (left-aligned) or one.
 // The "t" of "Lantern" and the period are grouped apart, because with the ovaloid beside it that
 // "t" is the monogram (the menu button collapses into it).
-import { brand } from '../lib/brand';
+import { brand, collapseFor } from '../lib/brand';
 
 interface Props { layout?: 'two-line' | 'landscape'; class?: string }
 const { layout = 'two-line', class: className } = Astro.props;
@@ -15,7 +15,7 @@ const cx = (px0 + px1) / 2, cy = (py0 + py1) / 2;
 const id = `wm-${layout}`;
 const pad = 4;
 ---
-<svg class:list={['wordmark', className]} viewBox={`${-pad} ${-pad} ${w.width + pad * 2} ${w.height + pad * 2}`} role="img" aria-label="Robot Lantern">
+<svg class:list={['wordmark', className]} viewBox={`${-pad} ${-pad} ${w.width + pad * 2} ${w.height + pad * 2}`} role="img" aria-label="Robot Lantern" data-collapse={collapseFor(w)}>
   <defs>
     <radialGradient id={`${id}-light`} gradientUnits="userSpaceOnUse" cx={cx} cy={cy} r={w.width * .95}>
       <stop offset="0" stop-color="#ffd79a"/>
@@ -32,7 +32,8 @@ const pad = 4;
   <circle class="wordmark__glow" cx={cx} cy={cy} r={(px1 - px0) * 2.4} fill={`url(#${id}-glow)`}/>
   <g fill={`url(#${id}-light)`}>
     <g class="wordmark__letters">{rest.map((d) => <path d={d}/>)}</g>
-    <g class="wordmark__t"><path d={w.t.hook}/><path d={w.t.base}/></g>
+    <path class="wordmark__hook" d={w.t.hook}/>
+    <path class="wordmark__base" d={w.t.base}/>
   </g>
   <path class="wordmark__period" d={w.period} fill="#ffd28a"/>
 </svg>

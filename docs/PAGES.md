@@ -14,11 +14,16 @@ Status: RJ's direction from reviewing the first preview, 2026-09-27.
 - The wordmark's top margin equals its left margin.
 - Thoughts and Chats are list and detail, like a chat app (`src/components/Reader.astro`).
   `/thoughts/` and `/chats/` open on the newest piece, with the list beside it on desktop and
-  in a drawer on phones. There are no separate list pages. The column is endless: near the end
+  in the site menu on phones. There are no separate list pages. The column is endless: near the end
   of a piece, the next one (newest posted first) is appended, and the address, page title and
   list follow whichever piece is in view.
+- The site menu is the same everywhere: Home (the ovaloid under a roof), the four sections, the
+  footer pages, and on Thoughts and Chats that section's list with search. It opens from the
+  monogram: as the reader scrolls, the wordmark stays in the corner and collapses into it (its
+  letters fade; the t's halves and the period slide together, the upper half turning over). At
+  the top of a page the full wordmark links home (`src/components/SiteMenu.astro`).
 - Builds run full screen with no site chrome, except a quiet way home in the top-left corner:
-  the small wordmark, or the lantern alone on phones (`src/layouts/BuildLayout.astro`).
+  the monogram in its tile (`src/layouts/BuildLayout.astro`).
 
 ## Thoughts (essays)
 
@@ -39,7 +44,7 @@ Status: RJ's direction from reviewing the first preview, 2026-09-27.
   `time` phrase. Nothing else before the first message. When scrolling, a small copy of the
   title stays at the top.
 - List and detail: on desktop, a sidebar lists the chats, like the ChatGPT and Claude apps. On a
-  phone, the list opens as a drawer from a menu button. The list sorts by when a chat was posted
+  phone, the list is in the site menu. The list sorts by when a chat was posted
   here (the default) or when it happened, and has a search box. The posted date lives in
   `post.json` beside the transcript.
 - A chat that led to a build ends with a link to it.

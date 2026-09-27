@@ -1,54 +1,24 @@
 ---
-// List and detail, like a chat app: the section's list beside the reading column (a drawer on
-// phones), a small title that stays at the top, and an endless column. Near the end of a piece,
+// List and detail, like a chat app: the section's list beside the reading column (in the site
+// menu on phones), a small title that stays at the top, and an endless column. Near the end of a piece,
 // the next one in reading order is fetched from its own page and appended; as each piece comes
 // into view, the address, the page title, the small title and the list follow it.
 //
 // Each piece goes in the default slot as an element with data-entry, data-url and data-name,
 // containing one [data-title] (its big title). Chats can sort by posted or chat date and search.
-import Icon from './Icon.astro';
-import SectionIcon from './SectionIcon.astro';
-import { shortDate } from '../lib/authors';
+import ReaderList from './ReaderList.astro';
 import type { FeedItem } from '../lib/feeds';
 
 interface Props { section: 'chats' | 'thoughts'; label: string; feed: FeedItem[]; current: string; next?: FeedItem; tools?: boolean }
 const { section, label, feed, current, next, tools = false } = Astro.props;
 ---
 <div class="reader" data-reader>
-  <aside class="reader__list" id="reader-list" aria-label={label}>
-    <div class="reader__list-head">
-      <a href={`/${section}/`}><SectionIcon name={section} />{label}</a>
-      <button class="reader__close" type="button" aria-label="Close" data-drawer-close><Icon name="close" /></button>
-    </div>
-    {tools && (
-      <div class="reader__tools">
-        <input class="reader__search" type="search" placeholder="Search" aria-label={`Search ${label.toLowerCase()}`} data-search />
-        <label class="reader__sort">
-          <span>Sort</span>
-          <select data-sort>
-            <option value="posted">Newest posted</option>
-            <option value="date">Newest chat</option>
-          </select>
-        </label>
-      </div>
-    )}
-    <ul class="reader__items" data-items>
-      {feed.map((f) => (
-        <li data-posted={+f.posted} data-date={+f.date} data-text={f.search}>
-          <a href={f.href} aria-current={f.id === current ? 'page' : undefined}>
-            <span class="reader__item-title">{f.title}</span>
-            <span class="reader__item-date">{shortDate(tools ? f.date : f.posted)}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-    <p class="reader__none" data-none hidden>Nothing matches.</p>
+  <aside class="reader__list" aria-label={label}>
+    <ReaderList section={section} label={label} feed={feed} current={current} tools={tools} where="sidebar" />
   </aside>
-  <button class="reader__backdrop" type="button" tabindex="-1" aria-label={`Close the ${label.toLowerCase()} list`} data-drawer-close></button>
 
   <main class="reader__main">
     <div class="reader__bar" data-bar>
-      <button class="reader__menu" type="button" aria-controls="reader-list" aria-expanded="false" aria-label={label} data-drawer-open><Icon name="menu" /></button>
       <p class="reader__bar-title" aria-hidden="true" data-bar-title></p>
     </div>
     <div class="reader__entries" data-entries>
@@ -61,33 +31,12 @@ const { section, label, feed, current, next, tools = false } = Astro.props;
 
 <style>
   .reader { --list: 17rem; display: grid; grid-template-columns: var(--list) minmax(0, 1fr); margin-top: 1rem; }
-  .reader__list { position: sticky; top: 0; align-self: start; height: 100vh; overflow: auto; padding: .6rem .7rem 2rem var(--edge); border-right: 1px solid var(--line); }
-  .reader__list-head { display: flex; align-items: center; justify-content: space-between; padding: .4rem .85rem .8rem; }
-  .reader__list-head a { display: flex; align-items: center; gap: .5rem; color: var(--muted); font: 700 .7rem/1 var(--sans); letter-spacing: .14em; text-decoration: none; text-transform: uppercase; }
-  .reader__list-head a:hover { color: var(--lantern); }
-  .reader__list-head :global(.section-icon) { width: 1.3rem; height: 1.3rem; color: var(--text); }
-  .reader__close, .reader__backdrop, .reader__menu { display: none; }
-
-  .reader__tools { display: grid; gap: .5rem; padding: 0 .35rem .8rem; }
-  .reader__search { width: 100%; padding: .55rem .8rem; border: 1px solid var(--line); border-radius: .7rem; background: rgba(190, 205, 235, .05); color: var(--text); font: .9rem/1.2 var(--sans); }
-  .reader__search::placeholder { color: var(--faint); }
-  .reader__sort { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: 0 .3rem; color: var(--faint); font: .72rem/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; }
-  .reader__sort select { padding: .3rem .4rem; border: 1px solid var(--line); border-radius: .5rem; background: var(--night-2); color: var(--muted); font: .8rem/1.2 var(--sans); letter-spacing: 0; text-transform: none; }
-
-  .reader__items { margin: 0; padding: 0; list-style: none; display: grid; gap: .15rem; }
-  .reader__items [hidden] { display: none; }
-  .reader__items a { display: grid; gap: .2rem; padding: .7rem .85rem; border-radius: .8rem; color: var(--text); text-decoration: none; }
-  .reader__items a:hover { background: rgba(190, 205, 235, .06); }
-  .reader__items a[aria-current='page'] { background: rgba(190, 205, 235, .11); }
-  .reader__item-title { overflow: hidden; font: 500 .95rem/1.3 var(--sans); text-overflow: ellipsis; white-space: nowrap; }
-  .reader__item-date { color: var(--faint); font: .72rem/1 var(--sans); letter-spacing: .05em; }
-  .reader__none { margin: .6rem .85rem; color: var(--faint); font: .85rem/1.4 var(--sans); }
-  .reader__none[hidden] { display: none; }
-
+  /* The sidebar starts below the corner, where the collapsed monogram (the menu) sits. */
+  .reader__list { position: sticky; top: 0; align-self: start; height: 100vh; overflow: auto; padding: 3.6rem .7rem 2rem var(--edge); border-right: 1px solid var(--line); }
   .reader__main { --pad-left: var(--edge); min-width: 0; padding: 0 var(--edge) 0 var(--pad-left); }
 
   /* The small title stays at the top once the first big one scrolls away. */
-  .reader__bar { position: sticky; top: 0; z-index: 8; display: flex; align-items: center; gap: .6rem; height: 3.2rem; margin: 0 calc(-1 * var(--edge)) 0 calc(-1 * var(--pad-left)); padding: 0 var(--edge) 0 var(--pad-left); transition: background .2s; }
+  .reader__bar { position: sticky; top: 0; z-index: 8; display: flex; align-items: center; gap: .6rem; height: 3.2rem; margin: 0 calc(-1 * var(--edge)) 0 calc(-1 * var(--pad-left)); padding: 0 var(--edge) 0 max(var(--pad-left), 4.2rem); transition: background .2s; }
   .reader__bar-title { margin: 0 auto; max-width: 46rem; flex: 1; overflow: hidden; padding: .2em 0; font: 400 1.1rem/1.3 var(--serif); text-overflow: ellipsis; white-space: nowrap; opacity: 0; transform: translateY(.4rem); transition: opacity .2s, transform .2s; }
   .reader.is-stuck .reader__bar { background: rgba(4, 6, 13, .86); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--line); }
   .reader.is-stuck .reader__bar-title { opacity: 1; transform: none; }
@@ -98,13 +47,7 @@ const { section, label, feed, current, next, tools = false } = Astro.props;
 
   @media (max-width: 900px) {
     .reader { grid-template-columns: minmax(0, 1fr); margin-top: .4rem; }
-    .reader__list { position: fixed; inset: 0 auto 0 0; z-index: 20; width: min(20rem, calc(100vw - 3.5rem)); height: auto; align-self: stretch; padding-top: 1rem; background: var(--night-2); box-shadow: 1rem 0 3rem rgba(0, 0, 0, .5); transform: translateX(-105%); visibility: hidden; transition: transform .22s ease, visibility .22s; }
-    .reader.is-open .reader__list { transform: none; visibility: visible; }
-    .reader.is-open .reader__backdrop { display: block; position: fixed; inset: 0; z-index: 19; border: 0; background: rgba(0, 0, 0, .5); }
-    .reader__close { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; padding: 0; border: 0; border-radius: 50%; background: rgba(190, 205, 235, .08); color: var(--text); cursor: pointer; }
-    .reader__close :global(.icon) { width: 1.1rem; height: 1.1rem; }
-    .reader__menu { display: grid; place-items: center; flex: none; width: 2.5rem; height: 2.5rem; margin-left: -.5rem; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--text); cursor: pointer; }
-    .reader__menu :global(.icon) { width: 1.5rem; height: 1.5rem; }
+    .reader__list { display: none; }
     .reader__main { padding-right: calc(var(--edge) + .5rem); }
   }
 </style>
@@ -113,19 +56,7 @@ const { section, label, feed, current, next, tools = false } = Astro.props;
   const root = document.querySelector<HTMLElement>('[data-reader]')!;
   const entries = root.querySelector<HTMLElement>('[data-entries]')!;
   const barTitle = root.querySelector<HTMLElement>('[data-bar-title]')!;
-  const links = () => [...root.querySelectorAll<HTMLAnchorElement>('[data-items] a')];
-
-  // Drawer (phones)
-  const openBtn = root.querySelector<HTMLButtonElement>('[data-drawer-open]')!;
-  const setOpen = (open: boolean) => {
-    root.classList.toggle('is-open', open);
-    openBtn.setAttribute('aria-expanded', String(open));
-    if (open) root.querySelector<HTMLElement>('[data-search], [data-items] a[aria-current]')?.focus();
-    else openBtn.focus();
-  };
-  openBtn.addEventListener('click', () => setOpen(true));
-  root.querySelectorAll('[data-drawer-close]').forEach((b) => b.addEventListener('click', () => setOpen(false)));
-  addEventListener('keydown', (e) => { if (e.key === 'Escape' && root.classList.contains('is-open')) setOpen(false); });
+  const links = () => [...document.querySelectorAll<HTMLAnchorElement>('[data-list] [data-items] a')];
 
   // The small title appears once the first big title has scrolled under the bar.
   const firstTitle = root.querySelector('[data-title]');
@@ -187,24 +118,26 @@ const { section, label, feed, current, next, tools = false } = Astro.props;
   const endless = new IntersectionObserver(([e]) => { if (e.isIntersecting) loadNext(); }, { rootMargin: '0px 0px 1200px 0px' });
   if (more) endless.observe(more);
 
-  // Search and sort (chats).
-  const search = root.querySelector<HTMLInputElement>('[data-search]');
-  const sort = root.querySelector<HTMLSelectElement>('[data-sort]');
-  const list = root.querySelector<HTMLElement>('[data-items]')!;
-  const none = root.querySelector<HTMLElement>('[data-none]')!;
-  const refine = () => {
-    const q = (search?.value ?? '').trim().toLowerCase();
-    const items = [...list.children] as HTMLElement[];
-    const key = sort?.value === 'date' ? 'date' : 'posted';
-    items.sort((a, b) => Number(b.dataset[key]) - Number(a.dataset[key])).forEach((li) => list.append(li));
-    let shown = 0;
-    for (const li of items) {
-      const hit = !q || q.split(/\s+/).every((w) => li.dataset.text!.includes(w));
-      li.hidden = !hit;
-      shown += Number(hit);
-    }
-    none.hidden = shown > 0;
-  };
-  search?.addEventListener('input', refine);
-  sort?.addEventListener('change', refine);
+  // Search and sort (chats), in each copy of the list.
+  for (const box of document.querySelectorAll<HTMLElement>('[data-list]')) {
+    const search = box.querySelector<HTMLInputElement>('[data-search]');
+    const sort = box.querySelector<HTMLSelectElement>('[data-sort]');
+    const list = box.querySelector<HTMLElement>('[data-items]')!;
+    const none = box.querySelector<HTMLElement>('[data-none]')!;
+    const refine = () => {
+      const q = (search?.value ?? '').trim().toLowerCase();
+      const items = [...list.children] as HTMLElement[];
+      const key = sort?.value === 'date' ? 'date' : 'posted';
+      items.sort((a, b) => Number(b.dataset[key]) - Number(a.dataset[key])).forEach((li) => list.append(li));
+      let shown = 0;
+      for (const li of items) {
+        const hit = !q || q.split(/\s+/).every((w) => li.dataset.text!.includes(w));
+        li.hidden = !hit;
+        shown += Number(hit);
+      }
+      none.hidden = shown > 0;
+    };
+    search?.addEventListener('input', refine);
+    sort?.addEventListener('change', refine);
+  }
 </script>

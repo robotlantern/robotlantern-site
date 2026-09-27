@@ -4,6 +4,7 @@
 import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Reader from './Reader.astro';
+import ReaderList from './ReaderList.astro';
 import ThoughtEntry from './ThoughtEntry.astro';
 import { thoughtFeed, nextAfter } from '../lib/feeds';
 
@@ -13,6 +14,7 @@ const entry = (await getEntry('essays', id))!;
 const feed = await thoughtFeed();
 ---
 <Base title={entry.data.title} section="thoughts" canonical={`/thoughts/${id}/`}>
+  <ReaderList slot="menu" section="thoughts" label="Thoughts" feed={feed} current={id} where="menu" />
   <Reader section="thoughts" label="Thoughts" feed={feed} current={id} next={nextAfter(feed, id)}>
     <ThoughtEntry entry={entry} />
   </Reader>

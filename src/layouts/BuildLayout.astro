@@ -1,8 +1,8 @@
 ---
 // A build (interactive) runs full screen, with no site header or footer. The only site chrome is
-// a quiet way home in the top-left corner: the small wordmark, or on phones just its lantern.
+// a quiet way home in the top-left corner: the monogram in its tile.
 import '../styles/global.css';
-import Wordmark from '../components/Wordmark.astro';
+import Monogram from '../components/Monogram.astro';
 import HeadMeta from '../components/HeadMeta.astro';
 
 interface Props { title: string; description?: string }
@@ -20,13 +20,7 @@ const { title, description } = Astro.props;
   <HeadMeta title={`${title} · Robot Lantern`} description={description} path={Astro.url.pathname} />
 </head>
 <body class="build-page">
-  <a class="build-home" href="/" aria-label="Robot Lantern home">
-    <span class="build-home__mark"><Wordmark /></span>
-    <svg class="build-home__lantern" viewBox="-20 -20 40 40" aria-hidden="true">
-      <circle r="18" fill="url(#bh-glow)" /><circle r="7" fill="#ffd28a" /><circle r="3.7" fill="#fff6df" />
-      <defs><radialGradient id="bh-glow"><stop offset="0" stop-color="#ffd28a" stop-opacity=".55" /><stop offset="1" stop-color="#ffd28a" stop-opacity="0" /></radialGradient></defs>
-    </svg>
-  </a>
+  <a class="build-home" href="/" aria-label="Robot Lantern home"><Monogram /></a>
   <slot />
 </body>
 </html>
@@ -36,14 +30,8 @@ const { title, description } = Astro.props;
   .build-page::before { display: none; }
 </style>
 <style>
-  .build-home { position: fixed; z-index: 20; top: .7rem; left: .8rem; display: block; line-height: 0; opacity: .72; transition: opacity .2s; }
+  /* The monogram in its tile, as on the site once the wordmark has collapsed. */
+  .build-home { position: fixed; z-index: 20; top: .55rem; left: .55rem; display: grid; place-items: center; width: 2.9rem; height: 2.9rem; border-radius: .9rem; background: rgba(8, 13, 28, .82); box-shadow: 0 0 0 1px rgba(190, 205, 235, .12); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); opacity: .85; transition: opacity .2s; }
   .build-home:hover, .build-home:focus-visible { opacity: 1; }
-  .build-home__mark { display: block; width: 4.6rem; }
-  .build-home__mark :global(.wordmark) { width: 100%; height: auto; overflow: visible; }
-  .build-home__lantern { display: none; width: 2.2rem; height: 2.2rem; }
-  @media (max-width: 700px) {
-    .build-home { top: .55rem; left: .45rem; opacity: .9; }
-    .build-home__mark { display: none; }
-    .build-home__lantern { display: block; }
-  }
+  .build-home :global(.monogram) { width: auto; height: 1.9rem; }
 </style>

@@ -102,15 +102,12 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     `assets/`, `data/` and `photo/` again). Open: ESA's non-commercial licence for the
     Hipparcos and Gaia data on a site that also has a shop (task 13's notes). Done when RJ checks
     it on his phone.
-16. **Brand mark.** Started 2026-09-27 ([docs/BRAND.md](docs/BRAND.md)). One mark for the
-    logo, the favicon and the motif (nav stars, the card-drawing star), replacing the period
-    with an asymmetric, skewed spark. Materials in `design/brand/`: six spark concepts at
-    favicon sizes, wordmark lockups (one line; stacked left, centered, right), and every Google
-    Fonts asterisk (512 distinct shapes). RJ chose a direction on 2026-09-27: the eclipse (the
-    period is the moon, a frozen frame of its corona is the mark); prototype at
-    `/prototypes/eclipse/`. Next: RJ freezes a frame he likes; then the home page's comet becomes
-    the sun and the mark collapses into the menu button (docs/HOME.md, "Open"). Done when RJ picks a mark;
-    then the favicon, touch icon and social card follow (task 9's checklist).
+16. **Brand.** Decided and rolled out 2026-09-27 ([docs/BRAND.md](docs/BRAND.md)): RJ's
+    ovaloid period, the left-aligned two-line wordmark (and a one-line version), and the monogram.
+    The ovaloid is the flying lantern, the card stars and the nav stars; the wordmark collapses
+    into the monogram, the site menu button (with Home). Favicon, touch icon and social image are
+    made by `tools/brand/make_icons.py`. Open (RJ): the favicon tile coloring (A until he picks
+    from `design/brand/favicon-options/`). Done when RJ approves it on his phone.
 
 ## Open decisions (RJ)
 
@@ -248,3 +245,5 @@ One list, so they can be answered in one sitting. Details and sources for the le
   spark concepts, wordmark lockups, and a sheet of every Google Fonts asterisk.
 - 2026-09-27: Builds run full screen and the Builds page has screenshot cards. Thoughts and
   Chats open on the newest piece, list and detail, endless. The chat links to its build.
+- 2026-09-27: The brand rolled out site-wide: ovaloid period and stars, new wordmark, favicon
+  set, and the wordmark collapsing into the monogram menu on every page.

@@ -4,6 +4,7 @@
 import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Reader from './Reader.astro';
+import ReaderList from './ReaderList.astro';
 import ChatEntry from './ChatEntry.astro';
 import ChatDashes from './ChatDashes.astro';
 import { chatFeed, nextAfter } from '../lib/feeds';
@@ -20,6 +21,7 @@ if (entry.data.postedPlaceholder) {
 }
 ---
 <Base title={entry.data.title} section="chats" description={`A chat between ${names}.`} canonical={`/chats/${id}/`}>
+  <ReaderList slot="menu" section="chats" label="Chats" feed={feed} current={id} tools where="menu" />
   <Reader section="chats" label="Chats" feed={feed} current={id} next={nextAfter(feed, id)} tools>
     <ChatEntry entry={entry} />
     <ChatDashes slot="after" />

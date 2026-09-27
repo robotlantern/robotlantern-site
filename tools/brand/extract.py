@@ -65,7 +65,8 @@ def main():
     out = {
         'source': 'design/brand/*.svg, via tools/brand/extract.py',
         'ovaloid': {'width': ow, 'height': oh, 'd': ovaloid, 'box': box(ovaloid)},
-        'monogram': {'width': mw, 'height': mh, 'hook': mono[rest[0]], 'base': mono[rest[1]], 'dot': mono[dot], 'dotBox': mboxes[dot]},
+        'monogram': {'width': mw, 'height': mh, 'hook': mono[rest[0]], 'base': mono[rest[1]], 'dot': mono[dot],
+                     'hookBox': mboxes[rest[0]], 'baseBox': mboxes[rest[1]], 'dotBox': mboxes[dot]},
         'twoLine': wordmark('wordmark-two-lines.svg'),
         'landscape': wordmark('wordmark-landscape.svg'),
     }

@@ -34,8 +34,8 @@ https://rl.rblt.io/prototypes/sunset-scroll/). Timings below are measured agains
   above the screen are simply there.
 - The section nav is anchored at the bottom, on the tree silhouette, with a haze rising behind it;
   the top stays clear for the sky and the wordmark (RJ, 2026-09-27).
-- Once the period has landed, the docked header scrolls away with the page, like the header on
-  every other page, and docks again on the way back up. (A pinned header with a dark fade was
+- Once the period has landed, the wordmark collapses into the monogram in the corner (the menu
+  button), as on every other page, and unfolds again on the way back up. (A pinned header with a dark fade was
   tried and dropped on 2026-09-27: iOS Safari showed content behind the status bar, and the dark
   bar broke the sunset.)
 - Reduced motion: a simple fade replaces the flight and the line drawing.
@@ -85,9 +85,8 @@ The content is a network, and the navigation uses a constellation metaphor.
 
 ## Open
 
-- **The mark becomes the menu (RJ, 2026-09-27; waits on the mark, NOW.md task 16).** Scrolling
-  further collapses the wordmark into the small mark, which sits where the period is. That mark
-  replaces the hamburger on every page as the button that opens the site menu.
+- **The mark becomes the menu.** Done 2026-09-27: once the lantern has landed, the wordmark
+  collapses into the monogram, which opens the site menu (docs/PAGES.md).
 
 - **Section marks (decided 2026-09-27; NOW.md task 12).** RJ drew them in Affinity
   (`design/asterisms/section-marks-scratch-rj.svg`). The stars count up: THOUGHTS has one large

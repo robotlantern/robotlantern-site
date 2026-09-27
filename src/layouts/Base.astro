@@ -5,6 +5,9 @@ import SectionMark from '../components/SectionMark.astro';
 import { markReach } from '../lib/section-marks';
 import Footer from '../components/Footer.astro';
 import HeadMeta from '../components/HeadMeta.astro';
+import SiteMenu from '../components/SiteMenu.astro';
+import MenuButton from '../components/MenuButton.astro';
+import { brand, monogramCenter } from '../lib/brand';
 
 type Section = 'thoughts' | 'chats' | 'builds' | 'shop';
 interface Props {
@@ -15,6 +18,8 @@ interface Props {
   canonical?: string;
 }
 const { title, description, section, canonical } = Astro.props;
+const [monoX, monoY] = monogramCenter(brand.twoLine);
+const aspect = (brand.twoLine.height + 8) / (brand.twoLine.width + 8);
 const pageTitle = title === 'Robot Lantern' ? title : `${title} · Robot Lantern`;
 const sections: { id: Section; label: string }[] = [
   { id: 'thoughts', label: 'Thoughts' },
@@ -36,8 +41,12 @@ const sections: { id: Section; label: string }[] = [
   <slot name="head" />
 </head>
 <body>
-  <header class="site-header">
-    <a class="site-header__mark" href="/"><Wordmark /></a>
+  <header class="site-header" style={`--mono-x:${monoX.toFixed(4)};--mono-y:${monoY.toFixed(4)};--aspect:${aspect.toFixed(4)}`}>
+    <div class="site-header__spacer" aria-hidden="true"></div>
+    <div class="brand-dock" data-dock>
+      <a class="site-header__mark" href="/"><Wordmark /></a>
+      <MenuButton />
+    </div>
     <nav aria-label="Main">
       {sections.map((s) => (
         <a href={`/${s.id}/`} aria-current={section === s.id ? 'page' : undefined} style={`--reach:${markReach(s.id).toFixed(2)}em`}>
@@ -48,13 +57,25 @@ const sections: { id: Section; label: string }[] = [
   </header>
   <slot />
   <Footer />
+  <SiteMenu><slot name="menu" /></SiteMenu>
 </body>
 </html>
 
 <style>
   /* The wordmark's top margin equals its left margin (docs/PAGES.md). */
   .site-header { position: relative; z-index: 10; display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; padding: var(--edge) var(--edge) 0; }
-  .site-header__mark { display: block; width: 8.5rem; line-height: 0; flex: none; }
+  /* The wordmark stays in the corner as the page scrolls and collapses into the monogram, which
+     is the menu button (SiteMenu.astro). Collapsed, it rises to sit centered in the 3.2rem bar
+     that reading pages pin to the top. */
+  .site-header { --mark-w: 8.5rem; }
+  .site-header__spacer { width: var(--mark-w); aspect-ratio: 1 / var(--aspect); flex: none; }
+  .brand-dock { position: fixed; z-index: 30; top: var(--edge); left: var(--edge); width: var(--mark-w); isolation: isolate;
+    --rise: calc(1.6rem - var(--edge) - var(--mono-y) * var(--mark-w) * var(--aspect));
+    --grow: calc(1 + .4 * var(--k, 0));
+    transform-origin: calc(var(--mono-x) * 100%) calc(var(--mono-y) * 100%);
+    transform: translateY(calc(var(--k, 0) * var(--rise))) scale(var(--grow)); }
+  .site-header__mark { display: block; width: 100%; line-height: 0; }
+  .brand-dock.is-collapsed .site-header__mark { pointer-events: none; }
   .site-header__mark :global(.wordmark) { width: 100%; height: auto; overflow: visible; }
   /* Each section's name carries its mark: stars counting up from one to four, drawn by RJ
      (docs/HOME.md, "Section marks"). White label; lines faint, stars bright. */
@@ -64,7 +85,7 @@ const sections: { id: Section; label: string }[] = [
   nav a:hover, nav a[aria-current='page'] { color: var(--lantern); }
   @media (max-width: 600px) {
     .site-header { flex-direction: column; gap: 1.1rem; }
-    .site-header__mark { width: 7rem; }
+    .site-header { --mark-w: 7rem; }
     nav { width: 100%; justify-content: space-between; gap: .5rem; }
     nav a { font-size: .66rem; }
   }

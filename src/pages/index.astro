@@ -11,10 +11,12 @@ import SectionMark from '../components/SectionMark.astro';
 import { markReach } from '../lib/section-marks';
 import Footer from '../components/Footer.astro';
 import HeadMeta from '../components/HeadMeta.astro';
+import SiteMenu from '../components/SiteMenu.astro';
+import MenuButton from '../components/MenuButton.astro';
 import { splitMessages } from '../lib/conversation';
 import { convertMathDelimiters, renderMarkdown } from '../lib/markdown';
 import { getAuthors, authorOf, shortDate } from '../lib/authors';
-import { brand, OVALOID, ovaloidAt, turnFor } from '../lib/brand';
+import { brand, OVALOID, ovaloidAt, turnFor, collapseFor, monogramCenter } from '../lib/brand';
 
 const all = await getAuthors();
 const noCites = (html: string) => html.replace(/<sup class="cite">.*?<\/sup>/g, '');
@@ -51,6 +53,9 @@ const box = { w: wm.width + PAD * 2, h: wm.height + PAD * 2 };
 const [wx0, wy0, wx1, wy1] = wm.periodBox;
 const period = { x: (wx0 + wx1) / 2, y: (wy0 + wy1) / 2, size: Math.max(wx1 - wx0, wy1 - wy0) };
 const periodFrac = [(period.x + PAD) / box.w, (period.y + PAD) / box.h, period.size / 2 / box.w, box.h / box.w].map((n) => +n.toFixed(5));
+const [monoX, monoY] = monogramCenter(wm);
+const tParts = new Set([wm.t.hook, wm.t.base]);
+const restLetters = wm.letters.filter((d) => !tParts.has(d));
 const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Builds'], ['shop', 'Shop']] as const;
 ---
 <!doctype html>
@@ -206,6 +211,9 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     transform: translate(-50%, -50%);
   }
   .brand svg { display: block; width: 100%; height: auto; overflow: visible; }
+  /* Collapsed, the monogram is the menu button underneath (MenuButton.astro): taps pass through. */
+  .brand.is-collapsed svg { pointer-events: none; }
+  .brand { isolation: isolate; }
   .ink { fill: var(--ink); }
   .lit { opacity: calc((var(--progress) - .1) * 5.5); }
   .lit-dot { fill: var(--lantern); opacity: calc((var(--progress) - .08) * 1.4); }
@@ -216,7 +224,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     width: 170%;
     aspect-ratio: 1;
     transform: translate(-50%, -50%) scale(calc(.55 + var(--progress) * .6));
-    opacity: calc((var(--progress) - .1) * 1.2);
+    opacity: calc((var(--progress) - .1) * 1.2 * (1 - var(--k, 0)));
     mix-blend-mode: screen;
     pointer-events: none;
   }
@@ -358,9 +366,9 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   <div class="horizon" aria-hidden="true"></div>
   <div class="afterglow" aria-hidden="true"></div>
 
-  <h1 class="brand" data-period={periodFrac.join(" ")}>
+  <h1 class="brand" data-period={periodFrac.join(" ")} data-dock style={`--mono-x:${monoX.toFixed(4)};--mono-y:${monoY.toFixed(4)}`}>
     <span class="halo" aria-hidden="true" style={`left:${(periodFrac[0] * 100).toFixed(2)}%;top:${(periodFrac[1] * 100).toFixed(2)}%`}><i></i></span>
-    <svg viewBox={`${-PAD} ${-PAD} ${box.w} ${box.h}`} role="img" aria-label="Robot Lantern">
+    <svg viewBox={`${-PAD} ${-PAD} ${box.w} ${box.h}`} role="img" aria-label="Robot Lantern" data-collapse={collapseFor(wm)}>
       <defs>
         <radialGradient id="lanternlight" gradientUnits="userSpaceOnUse" cx={period.x} cy={period.y} r={wm.width * .95}>
           <stop offset="0" stop-color="#ffd79a"/>
@@ -368,16 +376,20 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
           <stop offset=".6" stop-color="#ddd5c4"/>
           <stop offset="1" stop-color="#b3bccf"/>
         </radialGradient>
-        <g id="letters">{wm.letters.map((d) => <path d={d}/>)}</g>
+        <g id="letters">{restLetters.map((d) => <path d={d}/>)}</g>
+        <path id="t-hook" d={wm.t.hook}/>
+        <path id="t-base" d={wm.t.base}/>
       </defs>
-      <use href="#letters" class="ink"/>
-      <use href="#letters" class="lit" fill="url(#lanternlight)"/>
-      <g class="period">
+      <g class="wordmark__letters"><use href="#letters" class="ink"/><use href="#letters" class="lit" fill="url(#lanternlight)"/></g>
+      <g class="wordmark__hook"><use href="#t-hook" class="ink"/><use href="#t-hook" class="lit" fill="url(#lanternlight)"/></g>
+      <g class="wordmark__base"><use href="#t-base" class="ink"/><use href="#t-base" class="lit" fill="url(#lanternlight)"/></g>
+      <g class="period wordmark__period">
         <path class="ink" d={wm.period}/>
         <path class="lit-dot" d={wm.period}/>
         <path class="core" d={wm.period} transform={`translate(${period.x} ${period.y}) scale(.5) translate(${-period.x} ${-period.y})`}/>
       </g>
     </svg>
+    <MenuButton />
   </h1>
 
   <div class="hint" aria-hidden="true">
@@ -435,6 +447,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   <div class="ground" aria-hidden="true"></div>
   <svg class="comet-trail" aria-hidden="true"></svg>
   <div class="comet" aria-hidden="true"><svg viewBox={`${brand.ovaloid.box[0]} ${brand.ovaloid.box[1]} ${brand.ovaloid.box[2] - brand.ovaloid.box[0]} ${brand.ovaloid.box[3] - brand.ovaloid.box[1]}`}><path d={OVALOID}/></svg></div>
+  <SiteMenu />
   <nav class="dock-nav" aria-label="Main">
     {sections.map(([id, label]) => <a href={`/${id}/`} style={`--reach:${markReach(id).toFixed(2)}em`}><span class="nav-label">{label}<SectionMark name={id} /></span></a>)}
   </nav>
@@ -485,9 +498,11 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       // The shooting star: a curve from where the period breaks away to where it docks, with a
       // trail that grows with speed.
       let fTarget = 0, fShown = 0, animating = false, last = 0, vel = 0;
-      // How far the page has scrolled past the landing. The docked header lets go there and
-      // scrolls away with the page, like the header on every other page.
-      let lift = 0;
+      // Once the lantern has landed, the wordmark collapses into the monogram, the menu button
+      // (SiteMenu.astro runs the letters; this moves the whole mark): it grows a little around the
+      // monogram and rises to the top corner, as on every other page.
+      const COLLAPSE = 110;
+      const [MX, MY] = [parseFloat(mark.style.getPropertyValue('--mono-x')), parseFloat(mark.style.getPropertyValue('--mono-y'))];
       const trail = document.querySelector('.comet-trail');
       const SEGMENTS = 16;
       const segs = Array.from({ length: SEGMENTS }, () => trail.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'path')));
@@ -495,7 +510,6 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       const path = () => {
         const s = periodAt(box(ease(clamp((FLIGHT[0] - DOCK[0]) / (DOCK[1] - DOCK[0])))));
         const e = periodAt(box(1));
-        e.y -= lift;
         const c = { x: s.x - (s.x - e.x) * .15, y: e.y - innerHeight * .05 };
         return (f) => {
           const u = ease(clamp(f)), v = 1 - u;
@@ -552,10 +566,15 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
         const t = clamp((p - DOCK[0]) / (DOCK[1] - DOCK[0]));
         let b, o = 1;
         if (reduced) { b = box(t < .5 ? 0 : 1); o = Math.abs(1 - 2 * t); } else b = box(ease(t));
-        mark.style.setProperty('--mx', b.x + 'px');
-        lift = Math.max(0, scrollY - FLIGHT[1] * run);
-        mark.style.setProperty('--my', (b.y - lift) + 'px');
-        mark.style.setProperty('--ms', b.s.toFixed(4));
+        const start = FLIGHT[1] * run;
+        if (mark.dataset.collapseStart !== String(start)) { mark.dataset.collapseStart = String(start); dispatchEvent(new Event('rl:collapse')); }
+        const k = clamp((scrollY - start) / COLLAPSE), ke = k * k * (3 - 2 * k), g = 1 + .4 * ke;
+        const h = b.w * ASPECT;
+        const cx = b.x + MX * b.w, cy = b.y + MY * h;
+        const ty = lerp(cy, parseFloat(getComputedStyle(r).fontSize) * 1.6, ke);
+        mark.style.setProperty('--mx', (cx - MX * b.w * g) + 'px');
+        mark.style.setProperty('--my', (ty - MY * h * g) + 'px');
+        mark.style.setProperty('--ms', (b.s * g).toFixed(4));
         mark.style.opacity = o;
         r.style.setProperty('--dock', t.toFixed(3));
         r.classList.toggle('docked', t > .9);
