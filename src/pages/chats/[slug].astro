@@ -42,11 +42,6 @@ if (missing.length) {
 const names = speakers.map((s) => s.name).join(' and ');
 ---
 <Base title={title} section="chats" description={`A chat between ${names}.`}>
-  <script is:inline slot="head">
-    // Review aid while RJ compares layouts: ?bubbles puts the model's replies in bubbles too.
-    if (/[?&]bubbles\b/.test(location.search)) document.documentElement.dataset.chatStyle = 'bubbles';
-  </script>
-
   <div class="chats" data-chats>
     <aside class="chats__list" id="chat-list" data-drawer aria-label="Chats">
       <div class="chats__list-head">
@@ -126,7 +121,7 @@ const names = speakers.map((s) => s.name).join(' and ');
   .msg__body :global(img) { width: auto; max-height: min(75vh, 40rem); }
 
   /* Tails: a curved point at the bottom corner, cut from the bubble's own color. */
-  .msg--human .msg__body::after, :global([data-chat-style='bubbles']) .msg--ai .msg__body::after {
+  .msg--human .msg__body::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -137,11 +132,6 @@ const names = speakers.map((s) => s.name).join(' and ');
     -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 20'%3E%3Cpath d='M0 0H8C8 10 11 17 16 20 10.5 20.6 4.5 19.6 0 17z'/%3E%3C/svg%3E") no-repeat;
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 20'%3E%3Cpath d='M0 0H8C8 10 11 17 16 20 10.5 20.6 4.5 19.6 0 17z'/%3E%3C/svg%3E") no-repeat;
   }
-  :global([data-chat-style='bubbles']) .msg--ai .msg__body { max-width: 94%; padding: .9rem 1.2rem; border-radius: 1.25rem 1.25rem 1.25rem .4rem; background: var(--bubble-ai); color: var(--bubble-ai-text); }
-  :global([data-chat-style='bubbles']) .msg--ai .msg__body::after { right: auto; left: -8px; transform: scaleX(-1); }
-  :global([data-chat-style='bubbles']) .msg--ai .msg__body :global(a) { color: #ffd9a8; }
-  :global([data-chat-style='bubbles']) .msg--ai .msg__body :global(pre),
-  :global([data-chat-style='bubbles']) .msg--ai .msg__body :global(.table-scroll) { background: rgba(4, 6, 13, .35); }
 
   /* Citations (docs/CONVERSATIONS.md) */
   .prose :global(sup.cite) { font: 600 .66rem/1 var(--sans); margin-left: .1em; }
