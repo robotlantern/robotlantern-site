@@ -90,12 +90,15 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     approves the text and the marks are gone.
 14. **About page and the cast.** Built 2026-09-27 at `/about/`: a short intro and the named
     machines, each with an icon. Done when RJ approves the copy.
-15. **Builds: The Sky, Unprojected.** Embedded 2026-09-27 at `/builds/the-sky-unprojected/`,
-    following `unprojection-opus/docs/EMBEDDING.md`. Its build is copied into `public/sky/`
-    (from that repo's commit `1b19308`); to update, rebuild there and copy `assets/`, `data/`
-    and `photo/` again. Open: ESA's non-commercial licence for the Hipparcos and Gaia data on
-    a site that also has a shop (task 13's notes). Done when RJ checks it on his phone.
-
+15. **Builds.** Each build runs full screen from its own page (`src/layouts/BuildLayout.astro`),
+    with no site chrome except a quiet way home in the top-left corner: the small wordmark, or on
+    phones just the lantern. The Builds page shows one card per build from
+    `src/content/builds/*.json`: a screenshot from inside it, a headline, what it is, a Launch
+    button and the chat it came from. First build, 2026-09-27: The Sky, Unprojected, copied into
+    `public/sky/` from `unprojection-opus` (commit `1b19308`; to update, rebuild there and copy
+    `assets/`, `data/` and `photo/` again). Open: ESA's non-commercial licence for the
+    Hipparcos and Gaia data on a site that also has a shop (task 13's notes). Done when RJ checks
+    it on his phone.
 16. **Brand mark.** Started 2026-09-27 ([docs/BRAND.md](docs/BRAND.md)). One mark for the
     logo, the favicon and the motif (nav stars, the card-drawing star), replacing the period
     with an asymmetric, skewed spark. Materials in `design/brand/`: six spark concepts at

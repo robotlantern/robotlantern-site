@@ -86,4 +86,18 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { conversations, essays, authors, pages };
+// Builds (interactives). Each runs full screen from its own page in src/pages/builds/; this is
+// what the Builds page's card shows, and the chat it came from.
+const builds = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/builds', generateId: ({ entry }) => entry.replace(/\.json$/, '') }),
+  schema: z.object({
+    title: z.string(),
+    headline: z.string(),
+    summary: z.string(),
+    image: z.string(),
+    chat: z.string().optional(),
+    posted: z.coerce.date(),
+  }),
+});
+
+export const collections = { conversations, essays, authors, pages, builds };

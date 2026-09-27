@@ -1,0 +1,47 @@
+---
+// A build (interactive) runs full screen, with no site header or footer. The only site chrome is
+// a quiet way home in the top-left corner: the small wordmark, or on phones just its lantern.
+import '../styles/global.css';
+import Wordmark from '../components/Wordmark.astro';
+
+interface Props { title: string; description?: string }
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title} · Robot Lantern</title>
+  {description && <meta name="description" content={description}>}
+  <meta name="theme-color" content="#04060d">
+  <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}>
+</head>
+<body class="build-page">
+  <a class="build-home" href="/" aria-label="Robot Lantern home">
+    <span class="build-home__mark"><Wordmark /></span>
+    <svg class="build-home__lantern" viewBox="-20 -20 40 40" aria-hidden="true">
+      <circle r="18" fill="url(#bh-glow)" /><circle r="7" fill="#ffd28a" /><circle r="3.7" fill="#fff6df" />
+      <defs><radialGradient id="bh-glow"><stop offset="0" stop-color="#ffd28a" stop-opacity=".55" /><stop offset="1" stop-color="#ffd28a" stop-opacity="0" /></radialGradient></defs>
+    </svg>
+  </a>
+  <slot />
+</body>
+</html>
+
+<style is:global>
+  .build-page { margin: 0; min-height: 0; overflow: hidden; background: var(--night); }
+  .build-page::before { display: none; }
+</style>
+<style>
+  .build-home { position: fixed; z-index: 20; top: .7rem; left: .8rem; display: block; line-height: 0; opacity: .72; transition: opacity .2s; }
+  .build-home:hover, .build-home:focus-visible { opacity: 1; }
+  .build-home__mark { display: block; width: 4.6rem; }
+  .build-home__mark :global(.wordmark) { width: 100%; height: auto; overflow: visible; }
+  .build-home__lantern { display: none; width: 2.2rem; height: 2.2rem; }
+  @media (max-width: 700px) {
+    .build-home { top: .55rem; left: .45rem; opacity: .9; }
+    .build-home__mark { display: none; }
+    .build-home__lantern { display: block; }
+  }
+</style>

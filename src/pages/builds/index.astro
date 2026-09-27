@@ -1,25 +1,45 @@
 ---
+// Builds: one card per interactive, with a screenshot from inside it behind a headline, what it
+// is, a button that launches it full screen, and the chat it came from.
+import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 
-const builds = [
-  { href: '/builds/the-sky-unprojected/', title: 'The Sky, Unprojected', line: 'RJ’s photo of the Pleiades and their neighbors, unfolded into where everything really is.' },
-];
+const chats = new Map((await getCollection('conversations')).map((c) => [c.id, c.data.title]));
+const builds = (await getCollection('builds')).sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 ---
 <Base title="Builds" section="builds">
-  <main class="reading builds">
-    <h1>Builds</h1>
-    <ul>
-      {builds.map((b) => <li><a href={b.href}><strong>{b.title}</strong><span>{b.line}</span></a></li>)}
-    </ul>
+  <main class="builds">
+    {builds.map((b) => (
+      <article class="build" style={`--shot: url(${b.data.image})`}>
+        <div class="build__text">
+          <h2>{b.data.headline}</h2>
+          <p class="build__what"><strong>{b.data.title}</strong>. {b.data.summary}</p>
+          <div class="build__actions">
+            <a class="build__launch" href={`/builds/${b.id}/`}>Launch</a>
+            {b.data.chat && chats.has(b.data.chat) && (
+              <a class="build__chat" href={`/chats/${b.data.chat}/`}>From the chat “{chats.get(b.data.chat)}”</a>
+            )}
+          </div>
+        </div>
+      </article>
+    ))}
   </main>
 </Base>
 
 <style>
-  .builds { padding-block: 2.5rem 1rem; }
-  h1 { margin: 0 0 1.5rem; font: 400 2.4rem/1 var(--serif); }
-  ul { margin: 0; padding: 0; list-style: none; }
-  a { display: block; padding: 1.1rem 1.3rem; border-radius: 1rem; background: rgba(8, 15, 33, .6); color: var(--text); text-decoration: none; }
-  a:hover strong { color: var(--lantern); }
-  strong { display: block; margin-bottom: .3rem; font: 400 1.4rem/1.2 var(--serif); }
-  span { color: var(--muted); font: .98rem/1.5 var(--serif); }
+  .builds { width: min(64rem, 100% - 2 * var(--edge)); margin: 2rem auto 0; display: grid; gap: 1.5rem; }
+  .build { position: relative; display: flex; align-items: flex-end; min-height: clamp(22rem, 56vw, 34rem); overflow: hidden; border-radius: 1.2rem; background: var(--shot) center / cover no-repeat, var(--night); box-shadow: 0 0 0 1px var(--line); }
+  /* A dark wash under the text so it reads over the sky. */
+  .build::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(4, 6, 13, .92) 0%, rgba(4, 6, 13, .55) 45%, rgba(4, 6, 13, 0) 75%); }
+  .build__text { position: relative; padding: clamp(1.3rem, 4vw, 2.4rem); max-width: 40rem; }
+  h2 { margin: 0 0 .6rem; font: 400 clamp(2.2rem, 7vw, 3.6rem)/1.02 var(--serif); letter-spacing: -.02em; }
+  .build__what { margin: 0 0 1.4rem; color: var(--muted); font: 1.05rem/1.55 var(--serif); }
+  .build__what strong { color: var(--text); font-weight: 400; }
+  .build__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem 1.4rem; }
+  .build__launch { display: inline-block; padding: .75rem 1.5rem; border-radius: 99px; background: var(--lantern); color: var(--night); font: 700 .78rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; text-decoration: none; }
+  .build__launch:hover { background: #fff0cf; }
+  @media (max-width: 600px) {
+    .build::before { background: linear-gradient(to top, rgba(4, 6, 13, .94) 0%, rgba(4, 6, 13, .8) 60%, rgba(4, 6, 13, .25) 100%); }
+  }
+  .build__chat { color: var(--link); font: .95rem/1.4 var(--serif); text-decoration-color: rgba(243, 201, 138, .4); text-underline-offset: .15em; }
 </style>
