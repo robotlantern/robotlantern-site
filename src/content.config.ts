@@ -75,4 +75,15 @@ const authors = defineCollection({
   }),
 });
 
-export const collections = { conversations, essays, authors };
+// Standalone pages linked from the footer (privacy, terms, credits): plain Markdown with a title,
+// a one-line description and the date they last changed.
+const pages = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/pages' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    updated: z.coerce.date(),
+  }),
+});
+
+export const collections = { conversations, essays, authors, pages };

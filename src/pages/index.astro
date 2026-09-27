@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import { getCollection } from 'astro:content';
 import AuthorName from '../components/AuthorName.astro';
 import SectionMark from '../components/SectionMark.astro';
+import Footer from '../components/Footer.astro';
 import { splitMessages } from '../lib/conversation';
 import { convertMathDelimiters, renderMarkdown } from '../lib/markdown';
 import { getAuthors, authorOf, shortDate } from '../lib/authors';
@@ -309,8 +310,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 20'%3E%3Cpath d='M0 0H8C8 10 11 17 16 20 10.5 20.6 4.5 19.6 0 17z'/%3E%3C/svg%3E") no-repeat;
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 20'%3E%3Cpath d='M0 0H8C8 10 11 17 16 20 10.5 20.6 4.5 19.6 0 17z'/%3E%3C/svg%3E") no-repeat;
   }
-  .site-footer { position: relative; display: flex; justify-content: space-between; max-width: 40rem; margin: 0 auto; color: var(--faint); font: .7rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
-  .site-footer a { color: var(--muted); text-decoration: none; }
+  .home-footer { max-width: 40rem; margin: 0 auto; }
 
   /* With the script, a card waits for its trigger, then draws (about .8s) and fills. Scrolling
      back past the trigger reverses it. --wait staggers several cards crossed in one flick. */
@@ -435,10 +435,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       </div>
     </article>
 
-    <footer class="site-footer">
-      <span>Robot Lantern</span>
-      <a href="/authors/">Authors</a>
-    </footer>
+    <div class="home-footer"><Footer /></div>
   </main>
 
   <div class="treeline" aria-hidden="true"></div>

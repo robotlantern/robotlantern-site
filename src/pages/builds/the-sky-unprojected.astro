@@ -1,0 +1,32 @@
+---
+// "The Sky, Unprojected": the interactive from the unprojection-opus repo. Its build is copied
+// into public/sky/ (that repo's docs/EMBEDDING.md); this page only mounts it.
+import Base from '../../layouts/Base.astro';
+---
+<Base title="The Sky, Unprojected" section="builds" description="RJ's photo of the Pleiades and their neighbors, unfolded into where everything really is.">
+  <main class="build">
+    <header class="build__head">
+      <h1>The Sky, Unprojected</h1>
+      <p>From the chat <a href="/chats/its-always-the-pleiades/">It’s Always the Pleiades</a>.</p>
+    </header>
+    <div id="sky" class="build__sky"></div>
+  </main>
+  <script is:inline type="module">
+    import { mount } from '/sky/assets/unprojection.js';
+    const params = new URLSearchParams(location.search);
+    mount(document.getElementById('sky'), {
+      object: params.get('object') || undefined,
+      view: params.get('view') || undefined,
+      updateUrl: true,
+    });
+  </script>
+</Base>
+
+<style>
+  .build__head { width: min(46rem, 100% - 2 * var(--edge)); margin: 1.6rem auto 1rem; }
+  h1 { margin: 0 0 .4rem; font: 400 clamp(2rem, 6vw, 2.8rem)/1.05 var(--serif); letter-spacing: -.02em; }
+  .build__head p { margin: 0; color: var(--muted); font: .95rem/1.5 var(--serif); }
+  .build__head a { color: var(--link); }
+  /* The module fills its box, so the box gets the screen's height. */
+  .build__sky { height: 100svh; }
+</style>

@@ -30,7 +30,8 @@ Read [README.md](README.md) for direction and [NOW.md](NOW.md) for current state
    captures or unreviewed conversation text. Private working material goes in `.private/`, which
    is gitignored. This repo is public.
    Before launch, a privacy pass covers everything public. The aim is "don't make it any worse":
-   nothing that narrows RJ's location or identity beyond what's already public.
+   nothing that narrows RJ's location or identity beyond what's already public. RJ has cleared
+   Fairmont, WV, Bogotá and the machines' names for publication (2026-09-27).
 
 ## Branches
 

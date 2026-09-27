@@ -1,17 +1,25 @@
 ---
 import Base from '../../layouts/Base.astro';
-import Icon from '../../components/Icon.astro';
+
+const builds = [
+  { href: '/builds/the-sky-unprojected/', title: 'The Sky, Unprojected', line: 'RJ’s photo of the Pleiades and their neighbors, unfolded into where everything really is.' },
+];
 ---
 <Base title="Builds" section="builds">
-  <main class="reading soon">
-    <Icon name="builds" />
+  <main class="reading builds">
     <h1>Builds</h1>
-    <p>Interactive projects will live here. Nothing here yet.</p>
+    <ul>
+      {builds.map((b) => <li><a href={b.href}><strong>{b.title}</strong><span>{b.line}</span></a></li>)}
+    </ul>
   </main>
 </Base>
 
 <style>
-  .soon { padding-block: 4rem 2rem; text-align: center; color: var(--muted); }
-  .soon :global(.icon) { width: 2.4rem; height: 2.4rem; color: var(--lantern); }
-  h1 { margin: .8rem 0 .6rem; color: var(--text); font: 400 2.4rem/1 var(--serif); }
+  .builds { padding-block: 2.5rem 1rem; }
+  h1 { margin: 0 0 1.5rem; font: 400 2.4rem/1 var(--serif); }
+  ul { margin: 0; padding: 0; list-style: none; }
+  a { display: block; padding: 1.1rem 1.3rem; border-radius: 1rem; background: rgba(8, 15, 33, .6); color: var(--text); text-decoration: none; }
+  a:hover strong { color: var(--lantern); }
+  strong { display: block; margin-bottom: .3rem; font: 400 1.4rem/1.2 var(--serif); }
+  span { color: var(--muted); font: .98rem/1.5 var(--serif); }
 </style>

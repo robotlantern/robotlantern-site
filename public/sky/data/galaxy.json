@@ -1,0 +1,342 @@
+{
+ "about": "A MODEL of the Milky Way for the 3D view, not a measurement. Spiral arms from Reid et al. 2019 (Table 2), drawn beyond their data only as that paper describes (segments with fitted: false). Bar and bulge are illustrative. Built by scripts/galaxy/build_galaxy.py; see data/SOURCES.md.",
+ "spiral": "ln(R/R_kink) = -(beta - beta_kink) tan(psi); beta is Galactocentric azimuth in degrees, 0 toward the Sun, increasing with Galactic rotation; psi = psi_lt for beta <= beta_kink, else psi_gt, unless a segment gives its own psi (then the spiral continues from where the previous segment ends).",
+ "R0_kpc": 8.15,
+ "R0_err_kpc": 0.15,
+ "z_sun_pc": 20.8,
+ "z_sun_err_pc": 0.3,
+ "width_slope_pc_per_kpc": 42,
+ "z_width": "sigma_z = 20 + 36 (R/kpc - 7) pc for R > 7 kpc, else 20 pc (Reid et al. 2019, section 3.1)",
+ "sgr_a_star": {
+  "l": 359.9442,
+  "b": -0.0462
+ },
+ "bar": {
+  "half_length_kpc": 5.0,
+  "angle_deg": 30,
+  "note": "Illustrative. Wegg et al. 2015: half-length 5.0 +- 0.2 kpc, 28-33 deg to the Sun-centre line, near end at positive longitude."
+ },
+ "disk": {
+  "scale_length_kpc": 2.6,
+  "note": "Illustrative exponential disc."
+ },
+ "arms": [
+  {
+   "id": "3kpcN",
+   "name": "3-kpc Arm",
+   "label_beta": 25,
+   "table2": {
+    "n": 3,
+    "l_tangency": 337.0,
+    "beta_range": [
+     15,
+     18
+    ],
+    "beta_kink": 15,
+    "R_kink_kpc": 3.52,
+    "psi_lt": -4.2,
+    "psi_gt": -4.2,
+    "width_kpc": 0.18
+   },
+   "segments": [
+    {
+     "beta": [
+      0,
+      15
+     ],
+     "fitted": false,
+     "note": "Bar-related; the paper traces it only over 15-18 deg."
+    },
+    {
+     "beta": [
+      15,
+      18
+     ],
+     "fitted": true
+    },
+    {
+     "beta": [
+      18,
+      40
+     ],
+     "fitted": false,
+     "note": "As above."
+    }
+   ]
+  },
+  {
+   "id": "Norma",
+   "name": "Norma Arm",
+   "label_beta": 30,
+   "table2": {
+    "n": 11,
+    "l_tangency": 327.5,
+    "beta_range": [
+     5,
+     54
+    ],
+    "beta_kink": 18,
+    "R_kink_kpc": 4.46,
+    "psi_lt": -1.0,
+    "psi_gt": 19.5,
+    "width_kpc": 0.14
+   },
+   "segments": [
+    {
+     "beta": [
+      5,
+      54
+     ],
+     "fitted": true
+    },
+    {
+     "beta": [
+      54,
+      64
+     ],
+     "fitted": false,
+     "note": "Continues the fitted pitch toward the end of the bar."
+    }
+   ]
+  },
+  {
+   "id": "ScuCen",
+   "name": "Scutum–Centaurus Arm",
+   "label_beta": 70,
+   "table2": {
+    "n": 36,
+    "l_tangency": 306.1,
+    "beta_range": [
+     0,
+     104
+    ],
+    "beta_kink": 23,
+    "R_kink_kpc": 4.91,
+    "psi_lt": 14.1,
+    "psi_gt": 12.1,
+    "width_kpc": 0.23
+   },
+   "segments": [
+    {
+     "beta": [
+      -250,
+      0
+     ],
+     "fitted": false,
+     "note": "Section 3.2.2: extended beyond the Galactic Centre it becomes the Outer Scutum-Centaurus (OSC) arm."
+    },
+    {
+     "beta": [
+      0,
+      104
+     ],
+     "fitted": true
+    },
+    {
+     "beta": [
+      104,
+      125
+     ],
+     "fitted": false,
+     "note": "Continues the fitted pitch toward the bar."
+    }
+   ]
+  },
+  {
+   "id": "SgrCar",
+   "name": "Sagittarius–Carina Arm",
+   "label_beta": 45,
+   "table2": {
+    "n": 35,
+    "l_tangency": 285.6,
+    "beta_range": [
+     2,
+     97
+    ],
+    "beta_kink": 24,
+    "R_kink_kpc": 6.04,
+    "psi_lt": 17.1,
+    "psi_gt": 1.0,
+    "width_kpc": 0.27
+   },
+   "segments": [
+    {
+     "beta": [
+      -110,
+      -33
+     ],
+     "fitted": false,
+     "note": "Section 3.2.3: beyond the tangency the pitch drops to 10 deg to match the CO trace of the Carina arm.",
+     "psi": 10.0
+    },
+    {
+     "beta": [
+      -33,
+      2
+     ],
+     "fitted": false,
+     "note": "Section 3.2.3: psi about 17 deg out to the 4th-quadrant tangency."
+    },
+    {
+     "beta": [
+      2,
+      97
+     ],
+     "fitted": true
+    },
+    {
+     "beta": [
+      97,
+      225.0
+     ],
+     "fitted": false,
+     "note": "Section 3.2.3: extended inward to the bar near (X, Y) = (-3, -3) kpc, by symmetry with the Norma arm.",
+     "psi": 8.4
+    }
+   ]
+  },
+  {
+   "id": "Local",
+   "name": "Local Arm",
+   "label_beta": 26,
+   "table2": {
+    "n": 28,
+    "l_tangency": null,
+    "beta_range": [
+     -8,
+     34
+    ],
+    "beta_kink": 9,
+    "R_kink_kpc": 8.26,
+    "psi_lt": 11.4,
+    "psi_gt": 11.4,
+    "width_kpc": 0.31
+   },
+   "segments": [
+    {
+     "beta": [
+      -16,
+      -8
+     ],
+     "fitted": false,
+     "note": "A short continuation; the paper calls the Local arm an isolated segment."
+    },
+    {
+     "beta": [
+      -8,
+      34
+     ],
+     "fitted": true
+    },
+    {
+     "beta": [
+      34,
+      42
+     ],
+     "fitted": false,
+     "note": "As above."
+    }
+   ]
+  },
+  {
+   "id": "Perseus",
+   "name": "Perseus Arm",
+   "label_beta": 0,
+   "table2": {
+    "n": 41,
+    "l_tangency": null,
+    "beta_range": [
+     -23,
+     115
+    ],
+    "beta_kink": 40,
+    "R_kink_kpc": 8.87,
+    "psi_lt": 10.3,
+    "psi_gt": 8.7,
+    "width_kpc": 0.35
+   },
+   "segments": [
+    {
+     "beta": [
+      -40,
+      -23
+     ],
+     "fitted": false,
+     "note": "Section 3.2.4: the arm weakens and may die out in the 3rd quadrant."
+    },
+    {
+     "beta": [
+      -23,
+      115
+     ],
+     "fitted": true
+    },
+    {
+     "beta": [
+      115,
+      261.9
+     ],
+     "fitted": false,
+     "note": "Section 3.2.4: extrapolated inward with pitch near 9 deg, passing outside the bar."
+    }
+   ]
+  },
+  {
+   "id": "Outer",
+   "name": "Outer Arm",
+   "label_beta": -20,
+   "table2": {
+    "n": 11,
+    "l_tangency": null,
+    "beta_range": [
+     -16,
+     71
+    ],
+    "beta_kink": 18,
+    "R_kink_kpc": 12.24,
+    "psi_lt": 3.0,
+    "psi_gt": 9.4,
+    "width_kpc": 0.65
+   },
+   "segments": [
+    {
+     "beta": [
+      -40,
+      -16
+     ],
+     "fitted": false,
+     "note": "Section 3.2.1: near-zero pitch into the 3rd quadrant."
+    },
+    {
+     "beta": [
+      -16,
+      71
+     ],
+     "fitted": true
+    },
+    {
+     "beta": [
+      71,
+      365
+     ],
+     "fitted": false,
+     "note": "Section 3.2.1: the Norma arm most likely wraps round the far side of the Galactic Centre and becomes the Outer arm; continuing the Outer arm's pitch meets the Norma arm's start (5 deg + 360)."
+    }
+   ]
+  }
+ ],
+ "references": {
+  "reid2019": {
+   "cite": "Reid et al. 2019, ApJ 885, 131 (spiral arms and R0 from maser parallaxes)",
+   "url": "https://doi.org/10.3847/1538-4357/ab4a11"
+  },
+  "bennett2019": {
+   "cite": "Bennett & Bovy 2019, MNRAS 482, 1417 (the Sun's height above the mid-plane)",
+   "url": "https://doi.org/10.1093/mnras/sty2813"
+  },
+  "wegg2015": {
+   "cite": "Wegg, Gerhard & Portail 2015, MNRAS 450, 4050 (the long bar)",
+   "url": "https://doi.org/10.1093/mnras/stv745"
+  }
+ }
+}

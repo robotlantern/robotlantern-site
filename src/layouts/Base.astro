@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Wordmark from '../components/Wordmark.astro';
 import SectionMark from '../components/SectionMark.astro';
+import Footer from '../components/Footer.astro';
 
 type Section = 'thoughts' | 'chats' | 'builds' | 'shop';
 interface Props {
@@ -41,10 +42,7 @@ const sections: { id: Section; label: string }[] = [
     </nav>
   </header>
   <slot />
-  <footer class="site-footer">
-    <span>Robot Lantern</span>
-    <a href="/authors/">Authors</a>
-  </footer>
+  <Footer />
 </body>
 </html>
 
@@ -60,9 +58,6 @@ const sections: { id: Section; label: string }[] = [
   nav a i { position: relative; display: inline-block; width: 1.9em; height: 1em; }
   nav a :global(.mark) { position: absolute; left: 50%; top: 50%; width: 1.7rem; height: 1.7rem; transform: translate(-50%, -50%); opacity: .88; }
   nav a:hover, nav a[aria-current='page'] { color: var(--lantern); }
-  .site-footer { display: flex; justify-content: space-between; gap: 1rem; margin-top: 4rem; padding: 1.6rem var(--edge) 2.4rem; border-top: 1px solid var(--line); color: var(--faint); font: .7rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
-  .site-footer a { color: var(--muted); text-decoration: none; }
-  .site-footer a:hover { color: var(--lantern); }
   @media (max-width: 600px) {
     .site-header { flex-direction: column; gap: 1.1rem; }
     .site-header__mark { width: 7rem; }

@@ -47,8 +47,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
      real charge" in docs/CHARGES.md. Gelato imports paid test orders by default.
 8. **Privacy pass** (before cutover). Check everything public against "don't make it any worse"
    (AGENTS.md, rule 7): text, links, file names, image metadata and Git history. First run done
-   2026-09-27; findings are in `.private/privacy/`, waiting on RJ's decisions. Rerun before
-   cutover.
+   2026-09-27 (findings in `.private/privacy/`). RJ's decisions: nothing flagged is a concern.
+   Fairmont, Bogotá and the machines' names can all be public. Rerun before cutover.
 9. **Cutover.** Choose the host, switch Pages to deploy through Actions, and merge to `main`. RJ
    changes DNS if needed. Set every essay date marked `datePlaceholder` to the launch date (the
    build warns about each one).
@@ -71,12 +71,28 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     (`src/components/SectionMark.astro`). `tools/sky/stars.py` and `src/data/night-stars.json`
     stay, for the home page's sky map. Done when RJ approves the nav on his phone.
 
+13. **Footer pages: privacy, terms, credits.** Started 2026-09-27. Each is a Markdown file in
+    `src/content/pages/`, served at `/<name>/` and linked from the footer
+    (`src/components/Footer.astro`). Two subagents are drafting them from current research,
+    with notes and open questions in `.private/legal/`. `/privacy/` must keep the Robot Lantern
+    Uploader section: its Google OAuth consent screen likely points there. Done when RJ
+    approves the text.
+14. **About page and the cast.** Built 2026-09-27 at `/about/`: a short intro and the named
+    machines, each with an icon. Done when RJ approves the copy.
+15. **Builds: The Sky, Unprojected.** Embedded 2026-09-27 at `/builds/the-sky-unprojected/`,
+    following `unprojection-opus/docs/EMBEDDING.md`. Its build is copied into `public/sky/`
+    (from that repo's commit `1b19308`); to update, rebuild there and copy `assets/`, `data/`
+    and `photo/` again. Open: ESA's non-commercial licence for the Hipparcos and Gaia data on
+    a site that also has a shop (task 13's notes). Done when RJ checks it on his phone.
+
 ## Open decisions (RJ)
 
 - Hosting at cutover: GitHub Pages or Cloudflare Pages.
 - Home page open questions: see [docs/HOME.md](docs/HOME.md), "Open".
 
 ## Parked
+
+- Essay: why the machines have names (RJ says there's a practical reason).
 
 - Post: what "the model" means in a chat app. Per-turn routing, personalization and the
   in-app context all shape a reply, and only the account export records which model answered.
@@ -166,3 +182,5 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
   shooting star, and the Pleiades chat and the essay draw as cards.
 - 2026-09-27: First privacy pass (task 8): media and history are clean; decisions for RJ are in
   `.private/privacy/`.
+- 2026-09-27: Added the footer pages (About with the cast; privacy, terms and credits being
+  drafted), and embedded The Sky, Unprojected as the first build.

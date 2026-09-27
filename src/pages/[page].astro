@@ -1,0 +1,29 @@
+---
+// The footer's standalone pages (src/content/pages/*.md), one per file, at /<file name>/.
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages');
+  return pages.map((entry) => ({ params: { page: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const updated = entry.data.updated;
+---
+<Base title={entry.data.title} description={entry.data.description}>
+  <main class="reading page">
+    <h1>{entry.data.title}</h1>
+    <p class="updated">Updated <time datetime={updated.toISOString().slice(0, 10)}>{updated.getUTCMonth() + 1}.{updated.getUTCDate()}.{updated.getUTCFullYear()}</time></p>
+    <div class="prose"><Content /></div>
+  </main>
+</Base>
+
+<style>
+  .page { padding-block: 2.5rem 1rem; }
+  h1 { margin: 0 0 .4rem; font: 400 2.4rem/1 var(--serif); }
+  .updated { margin: 0 0 2rem; color: var(--faint); font: .78rem/1 var(--sans); letter-spacing: .06em; }
+  .prose :global(h2) { font-size: 1.4rem; }
+  .prose :global(p), .prose :global(li) { font-size: 1.02rem; }
+</style>

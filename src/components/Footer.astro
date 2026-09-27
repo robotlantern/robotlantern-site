@@ -1,0 +1,23 @@
+---
+// The footer on every page: the site's name, then the standalone pages.
+const links = [
+  ['/about/', 'About'],
+  ['/authors/', 'Authors'],
+  ['/credits/', 'Credits'],
+  ['/terms/', 'Terms'],
+  ['/privacy/', 'Privacy'],
+];
+---
+<footer class="site-footer">
+  <span>© Robot Lantern LLC</span>
+  <nav aria-label="Site">
+    {links.map(([href, label]) => <a href={href} aria-current={Astro.url.pathname === href ? 'page' : undefined}>{label}</a>)}
+  </nav>
+</footer>
+
+<style>
+  .site-footer { position: relative; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 1rem 2rem; margin-top: 4rem; padding: 1.6rem var(--edge) 2.4rem; border-top: 1px solid var(--line); color: var(--faint); font: .7rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+  nav { display: flex; flex-wrap: wrap; gap: .9rem 1.4rem; }
+  a { color: var(--muted); text-decoration: none; }
+  a:hover, a[aria-current='page'] { color: var(--lantern); }
+</style>
