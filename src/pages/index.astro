@@ -252,7 +252,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   .treeline, .ground { z-index: 2; }
   .dock-fade { z-index: 3; }
   .brand, .dock-nav { z-index: 4; }
-  .comet { z-index: 5; }
+  .comet, .comet-trail { z-index: 5; }
   .js .brand { left: 0; top: 0; margin: 0; transform-origin: 0 0; transform: translate(var(--mx, 0), var(--my, 0)) scale(var(--ms, 1)); }
   .dock-fade {
     position: fixed;
@@ -264,7 +264,9 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   }
   .comet { position: fixed; left: 0; top: 0; width: 0; height: 0; visibility: hidden; pointer-events: none; }
   .comet i { position: absolute; left: calc(var(--r) * -1); top: calc(var(--r) * -1); width: calc(var(--r) * 2); height: calc(var(--r) * 2); border-radius: 50%; background: #fff6df; box-shadow: 0 0 calc(var(--r) * 1.5) var(--lantern); }
-  .comet b { position: absolute; right: 0; top: calc(var(--r) * -.6); width: var(--trail); height: calc(var(--r) * 1.2); border-radius: 99px; background: linear-gradient(to left, rgba(255, 214, 140, .85), rgba(255, 214, 140, 0)); transform-origin: 100% 50%; transform: rotate(var(--angle)); }
+  /* The tail is the comet's own recent path, drawn as short segments that thin and fade. */
+  .comet-trail { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .comet-trail path { fill: none; stroke: rgb(255, 214, 140); stroke-linecap: butt; }
 
   /* The nav, as on every other page (src/layouts/Base.astro), appearing once the mark lands. */
   .dock-nav { position: fixed; top: var(--edge); right: var(--edge); display: flex; gap: 1.2rem; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; }
@@ -440,7 +442,8 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   <div class="treeline" aria-hidden="true"></div>
   <div class="ground" aria-hidden="true"></div>
   <div class="dock-fade" aria-hidden="true"></div>
-  <div class="comet" aria-hidden="true"><b></b><i></i></div>
+  <svg class="comet-trail" aria-hidden="true"></svg>
+  <div class="comet" aria-hidden="true"><i></i></div>
   <nav class="dock-nav" aria-label="Main">
     {sections.map(([id, label]) => <a href={`/${id}/`} style={`--reach:${markReach(id).toFixed(2)}em`}><span class="nav-label">{label}<SectionMark name={id} /></span></a>)}
   </nav>
@@ -488,30 +491,52 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
 
       // The shooting star: a curve from where the period breaks away to where it docks, with a
       // trail that grows with speed.
-      let fTarget = 0, fShown = 0, animating = false, last = 0;
-      const drawComet = (f) => {
-        const flying = !reduced && f > 0.001 && f < 0.999;
-        mark.classList.toggle('flying', flying);
-        comet.style.visibility = flying ? 'visible' : 'hidden';
-        if (!flying) return;
+      let fTarget = 0, fShown = 0, animating = false, last = 0, vel = 0;
+      const trail = document.querySelector('.comet-trail');
+      const SEGMENTS = 16;
+      const segs = Array.from({ length: SEGMENTS }, () => trail.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'path')));
+      // The flight path: a curve from where the period breaks away to where it docks.
+      const path = () => {
         const s = periodAt(box(ease(clamp((FLIGHT[0] - DOCK[0]) / (DOCK[1] - DOCK[0])))));
         const e = periodAt(box(1));
         const c = { x: s.x - (s.x - e.x) * .15, y: e.y - innerHeight * .05 };
-        const u = ease(f), v = 1 - u;
-        const x = v * v * s.x + 2 * v * u * c.x + u * u * e.x;
-        const y = v * v * s.y + 2 * v * u * c.y + u * u * e.y;
-        const dx = 2 * v * (c.x - s.x) + 2 * u * (e.x - c.x);
-        const dy = 2 * v * (c.y - s.y) + 2 * u * (e.y - c.y);
-        comet.style.transform = `translate(${x}px, ${y}px)`;
-        comet.style.setProperty('--r', lerp(s.r, e.r, u).toFixed(2) + 'px');
-        comet.style.setProperty('--angle', Math.atan2(dy, dx) + 'rad');
-        comet.style.setProperty('--trail', (Math.sin(Math.PI * f) * Math.min(140, innerWidth * .25)).toFixed(1) + 'px');
+        return (f) => {
+          const u = ease(clamp(f)), v = 1 - u;
+          return { x: v * v * s.x + 2 * v * u * c.x + u * u * e.x, y: v * v * s.y + 2 * v * u * c.y + u * u * e.y, r: lerp(s.r, e.r, u) };
+        };
+      };
+      const drawComet = (f) => {
+        const flying = !reduced && f > 0.001 && f < 0.999;
+        mark.classList.toggle('flying', flying);
+        comet.style.visibility = trail.style.visibility = flying ? 'visible' : 'hidden';
+        if (!flying) return;
+        const at = path();
+        const head = at(f);
+        comet.style.transform = `translate(${head.x}px, ${head.y}px)`;
+        comet.style.setProperty('--r', head.r.toFixed(2) + 'px');
+        // The tail lies along the path it just travelled: behind the head in the direction of
+        // motion, as long as the recent speed makes it (none at rest).
+        const span = Math.min(.3, Math.abs(vel) * 260);
+        const dir = vel >= 0 ? -1 : 1;
+        let prev = head;
+        segs.forEach((seg, i) => {
+          const k = (i + 1) / SEGMENTS;
+          const p = at(f + dir * span * k);
+          seg.setAttribute('d', `M${prev.x.toFixed(1)} ${prev.y.toFixed(1)}L${p.x.toFixed(1)} ${p.y.toFixed(1)}`);
+          seg.style.strokeWidth = (head.r * 1.3 * (1 - k * .85)).toFixed(2) + 'px';
+          seg.style.opacity = span > .002 ? ((1 - k) * .85).toFixed(3) : '0';
+          prev = p;
+        });
       };
       const tick = (now) => {
         const dt = Math.min(64, now - (last || now));
         last = now;
+        const before = fShown;
         fShown += (fTarget - fShown) * (1 - Math.exp(-dt / 110));
         if (Math.abs(fTarget - fShown) < .0008) fShown = fTarget;
+        // Speed in flight-fractions per ms, smoothed so the tail grows and shrinks gently.
+        if (dt > 0) vel += ((fShown - before) / dt - vel) * .35;
+        if (fShown === fTarget) vel = 0;
         drawComet(fShown);
         if (fShown !== fTarget) requestAnimationFrame(tick);
         else { animating = false; last = 0; }
