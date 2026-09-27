@@ -30,6 +30,7 @@ const conversations = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
+    time: z.string().optional(),
     source: z.string(),
     participants: z
       .array(
@@ -38,6 +39,7 @@ const conversations = defineCollection({
           name: z.string(),
           kind: z.enum(['human', 'ai']),
           model: z.string().optional(),
+          author: z.string(),
         }),
       )
       .min(2),
@@ -46,14 +48,31 @@ const conversations = defineCollection({
   }),
 });
 
-// An essay folder holds article.md (the exact published Markdown, no frontmatter, because
-// attribution offsets index into it), attribution.json from tools/attribution, and this file.
+// An essay folder holds article.md (the published Markdown, no frontmatter, because attribution
+// offsets index into it), attribution.json from tools/attribution, and essay.json.
 const essays = defineCollection({
   loader: glob({ pattern: '*/essay.json', base: './src/content/essays', generateId: folderId }),
   schema: z.object({
     title: z.string(),
-    date: z.coerce.date().optional(),
+    date: z.coerce.date(),
+    // True until the real publication date is known (it's the launch date for the first essays).
+    datePlaceholder: z.boolean().default(false),
+    // Attribution participant id -> author id.
+    authors: z.record(z.string(), z.string()),
   }),
 });
 
-export const collections = { conversations, essays };
+// People and models who write here. The display name is what pages show; the full name is only
+// for the bio.
+const authors = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/authors', generateId: ({ entry }) => entry.replace(/\.json$/, '') }),
+  schema: z.object({
+    name: z.string(),
+    fullName: z.string(),
+    kind: z.enum(['human', 'ai']),
+    bio: z.string(),
+    bioDraft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { conversations, essays, authors };

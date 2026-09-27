@@ -1,20 +1,21 @@
 ---
 title: "It’s Always the Pleiades"
 date: 2026-09-16
+time: before dawn
 source: ChatGPT app, text chat with attached photos
 participants:
   - id: rj
-    name: RJ Carroll
+    name: RJ
     kind: human
+    author: rj
   - id: chatgpt
     name: ChatGPT
     kind: ai
     model: ChatGPT-5.6-sol
+    author: chatgpt-5.6-sol
 timezone: America/New_York
 range: From the first message to RJ’s sign-off at dawn.
 ---
-
-*[Editor’s note: The exported transcript didn’t include ChatGPT’s citations. They were recovered afterward by asking ChatGPT for them in the same chat, and each link was checked on 2026-09-25. Exact location details are generalized in brackets.]*
 
 ## RJ
 

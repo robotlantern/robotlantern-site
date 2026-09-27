@@ -15,6 +15,12 @@
   --human: #f0a040;
   --ai: #6aaaf2;
   --panel: rgba(8, 15, 33, .78);
+  --edge: clamp(1rem, 3.5vw, 2rem);
+  /* Chat bubbles: RJ's in soft orange with dark text; the model's (when bubbled) in blue. */
+  --bubble-human: #eda46c;
+  --bubble-human-text: #24140a;
+  --bubble-ai: #2f639f;
+  --bubble-ai-text: #eef4ff;
   --serif: Georgia, 'Times New Roman', serif;
   --sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -48,8 +54,9 @@ a { color: var(--link); text-underline-offset: .22em; text-decoration-thickness:
 a:hover { color: var(--lantern); }
 :focus-visible { outline: 2px solid var(--lantern); outline-offset: 2px; }
 
-.wrap { width: min(74rem, 100% - 2rem); margin-inline: auto; }
-.reading { width: min(44rem, 100% - 2rem); margin-inline: auto; }
+.wrap { width: min(74rem, 100% - 2 * var(--edge)); margin-inline: auto; }
+.reading { width: min(44rem, 100% - 2 * var(--edge)); margin-inline: auto; }
+.icon { display: inline-block; vertical-align: middle; }
 
 .kicker {
   margin: 0 0 .9rem;
@@ -100,7 +107,8 @@ a:hover { color: var(--lantern); }
 }
 .prose pre code { padding: 0; background: none; font: inherit; }
 .table-scroll { max-width: 100%; overflow-x: auto; margin: 1.2rem 0; }
-.prose table { border-collapse: collapse; font: .86rem/1.45 var(--sans); min-width: 100%; }
+.prose table { border-collapse: collapse; font: .86rem/1.45 var(--sans); min-width: min(34rem, 100%); }
+@media (max-width: 600px) { .prose table { min-width: 34rem; } }
 .prose th, .prose td { padding: .5rem .65rem; border: 1px solid var(--line); text-align: left; vertical-align: top; }
 .prose th { color: var(--lantern); font-weight: 600; background: rgba(190, 205, 235, .05); }
 .prose th[align='right'], .prose td[align='right'] { text-align: right; font-variant-numeric: tabular-nums; }

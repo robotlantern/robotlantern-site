@@ -1,5 +1,5 @@
 // Serves a conversation's images from its content folder, so they live next to
-// conversation.md and are published at /conversations/<slug>/<file>.
+// conversation.md and are published at /chats/<slug>/<file>.
 import fs from 'node:fs';
 import path from 'node:path';
 import type { APIRoute } from 'astro';

@@ -1,3 +1,9 @@
 {
-  "title": "Cogito, Ergo—So What?"
+  "title": "Cogito, Ergo—So What?",
+  "date": "2026-09-27",
+  "datePlaceholder": true,
+  "authors": {
+    "rj-carroll": "rj",
+    "gpt-5.6-sol": "chatgpt-5.6-sol"
+  }
 }

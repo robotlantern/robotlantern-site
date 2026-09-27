@@ -37,7 +37,7 @@ and only the templates and schema declarations would need rewriting.
 
 | Piece | In Astro | Outside Astro |
 | --- | --- | --- |
-| Essay page, three views | A template that reads the essay's files | The attribution tool, a script that runs before the build and writes JSON |
+| Essay page, with contribution highlighting | A template that reads the essay's files | The attribution tool, a script that runs before the build and writes JSON |
 | Conversation page | A template plus CSS | The capture and selection of the transcript |
 | Home sunset scroll | One page with its own script | — |
 | Shop | Product pages from the products collection, plus a cart island | Shopify (cart, checkout) and Gelato (fulfillment), through Shopify's Storefront API |

@@ -1,0 +1,45 @@
+---
+// Everyone who writes here, with what they've written. Linked from every page's footer.
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { getAuthors } from '../lib/authors';
+
+const authors = Object.values(await getAuthors()).sort((a, b) => (a.kind === b.kind ? a.name.localeCompare(b.name) : a.kind === 'human' ? -1 : 1));
+const essays = await getCollection('essays');
+const chats = await getCollection('conversations');
+const worksBy = (id: string) => [
+  ...essays.filter((e) => Object.values(e.data.authors).includes(id)).map((e) => ({ href: `/thoughts/${e.id}/`, title: e.data.title, icon: 'thoughts' as const })),
+  ...chats.filter((c) => c.data.participants.some((p) => p.author === id)).map((c) => ({ href: `/chats/${c.id}/`, title: c.data.title, icon: 'chats' as const })),
+];
+---
+<Base title="Authors">
+  <main class="reading authors">
+    <h1>Authors</h1>
+    {authors.map((a) => (
+      <section class={`author author--${a.kind}`} id={a.id}>
+        <h2><Icon name={a.kind === 'human' ? 'person' : 'robot'} />{a.fullName}</h2>
+        <p>{a.bio}</p>
+        <ul>
+          {worksBy(a.id).map((w) => <li><a href={w.href}><Icon name={w.icon} />{w.title}</a></li>)}
+        </ul>
+      </section>
+    ))}
+  </main>
+</Base>
+
+<style>
+  .authors { padding-block: 2.5rem 1rem; }
+  h1 { margin: 0 0 1.5rem; font: 400 2.4rem/1 var(--serif); }
+  .author { margin-bottom: 1.2rem; padding: 1.3rem 1.4rem; border-radius: 1rem; background: rgba(8, 15, 33, .6); scroll-margin-top: 1rem; }
+  .author:target { box-shadow: 0 0 0 1px var(--lantern); }
+  h2 { display: flex; align-items: center; gap: .5rem; margin: 0 0 .5rem; font: 400 1.5rem/1.2 var(--serif); }
+  h2 :global(.icon) { width: 1.4rem; height: 1.4rem; }
+  .author--human h2 :global(.icon) { color: var(--human); }
+  .author--ai h2 :global(.icon) { color: var(--ai); }
+  p { margin: 0 0 .8rem; color: var(--muted); font: 1rem/1.6 var(--serif); }
+  ul { margin: 0; padding: 0; list-style: none; font: .9rem/1.8 var(--sans); }
+  li a { display: inline-flex; align-items: center; gap: .45rem; color: var(--text); text-decoration: none; }
+  li a:hover { color: var(--lantern); }
+  li :global(.icon) { width: 1.05rem; height: 1.05rem; color: var(--faint); }
+</style>

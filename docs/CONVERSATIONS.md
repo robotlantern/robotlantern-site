@@ -13,9 +13,11 @@ Status: approved by RJ 2026-09-25, from the first import (`its-always-the-pleiad
 
 ## Format of `conversation.md`
 
-- Frontmatter: `title`, `date`, `source`, `participants` (`id`, `name`, `kind`, and `model` for
-  an AI), `timezone`, `range`. `model` is the name the app showed for the conversation, as RJ
-  confirms it, or `unknown`. A chat app may route single turns to other models, and only the
+- Frontmatter: `title`, `date`, `time` (a plain phrase such as "before dawn"), `source`,
+  `participants` (`id`, `name` as the transcript's headings use it, `kind`, `author`, and `model`
+  for an AI), `timezone`, `range`. `author` is an entry in `src/content/authors/`, which holds the
+  display name, full name and bio. RJ is "RJ" everywhere except his bio. `model` is the name the
+  app showed for the conversation, as RJ confirms it, or `unknown`. A chat app may route single turns to other models, and only the
   account export records that, so this is the model as the speaker saw it.
 - `timezone` is RJ's local zone at the time. Message times, once a capture keeps them, show
   in that zone: a header at each new calendar day, and a message's time when it's tapped.
@@ -35,7 +37,8 @@ Status: approved by RJ 2026-09-25, from the first import (`its-always-the-pleiad
    becomes a numbered marker where it appeared, plus a source list at the end of the message
    with the URL and title. A source that hasn't been recovered yet is listed as not recovered.
    Until citations are recovered, one editor's note says they're missing, and the capture
-   keeps their positions. ChatGPT's `:chatgpt-content-reference` tokens and the Claude app's
+   keeps their positions. Once they're recovered, the note goes. There's no preamble note: the
+   brackets speak for themselves. ChatGPT's `:chatgpt-content-reference` tokens and the Claude app's
    search results both map to this. How to recover them: [CITATIONS.md](CITATIONS.md).
 2. **Reasoning and tool use: only what the app showed.** Include the summarized reasoning,
    search queries and tool steps the app displayed to the user. Put each in a fenced block

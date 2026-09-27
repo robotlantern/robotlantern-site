@@ -11,10 +11,8 @@ http://127.0.0.1:4173/.
 
 **Take:**
 
-- **Essay page design:** the journal page, which has a regular view, contribution highlighting,
-  "Inside this post" (the editing conversation as JSON) and the Exact Markdown link, plus the
-  contributor footer. Its layout and behavior are close to final. Restyle it from light cream
-  to the night-sky palette (README, "Look"). The attribution tool is being rebuilt (NOW.md task 3).
+- **Essay page design:** the journal page's contribution highlighting and contributor counts.
+  Carried over in task 5. RJ dropped "Inside this post" and the Exact Markdown link on 2026-09-27.
 - **Conversation page design:** the reader's template and CSS. Leave out the parts that split a
   conversation across several Shopify articles; those were workarounds for Shopify's limits.
   Its sample conversation (a voice chat) is replaced by `its-always-the-pleiades`, a text chat

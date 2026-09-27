@@ -5,21 +5,25 @@ the base for Robot Lantern's creative and product work.
 
 ## What gets published
 
-- **Essays.** Each essay is a product in its own right: the finished piece plus the record of how
-  it was written. Readers can switch on contribution highlighting to see who wrote which words,
-  open "Inside this post" to read the full editing conversation and drafts, or read the exact
-  Markdown. The attribution count is part of the appeal, so it has to be right.
-- **Conversations.** A selected section of a real transcript, styled as a conversation. Each one
-  stands alone and has its own reading design. A conversation may link to an essay but doesn't
-  have to.
+The sections are **Thoughts**, **Chats**, **Builds** and **Shop**. In code and docs they're
+essays, conversations, interactives and products.
+
+- **Thoughts (essays).** Each essay shows who wrote it: an attribution block with percentages under
+  the title, and one toggle that highlights who wrote which words. The attribution count is part
+  of the appeal, so it has to be right. The editing chat behind an essay isn't published with it.
+  If a chat that led to an essay is interesting in its own right, it's published separately as a
+  chat and the two are cross-linked.
+- **Chats (conversations).** A selected section of a real transcript that's interesting in its
+  own right (star talk, not copyediting). Each one stands alone and reads like a chat app. A chat
+  may link to an essay but doesn't have to.
+- **Builds (interactives).** Interactive project pages, such as the Celebration Clock.
 - **Products.** Print-on-demand items made from Robot Lantern brand art. Gelato fulfills them and
   Shopify handles checkout.
 - **Home.** A scroll from sunset into night. The top of the page uses the warm oranges of the
   reference sunset photo. As you scroll down, the sky darkens, stars appear, and the robot lantern
   grows brighter along with them.
 
-Later: interactive project pages (such as the Celebration Clock), the webcomic, and custom
-children's books.
+Later: the webcomic and custom children's books.
 
 ## Look
 

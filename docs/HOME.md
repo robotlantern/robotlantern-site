@@ -38,8 +38,9 @@ https://rl.rblt.io/prototypes/sunset-scroll/). Timings below are measured agains
 ## Content types
 
 There are four: conversations, essays, products and interactives. Interactives accompany
-products but are their own category. The sections won't be named with those words. Each gets a
-sky name plus a plain line underneath, so a newcomer can tell them apart. RJ picks the names.
+products but are their own category. RJ named the sections on 2026-09-27: **Thoughts** (essays),
+**Chats** (conversations), **Builds** (interactives) and **Shop** (products). Each has its own
+small icon, shown with its name in the navigation.
 
 ## Map
 
@@ -63,7 +64,6 @@ The content is a network, and the navigation uses a constellation metaphor.
 
 ## Open
 
-- Section names (RJ).
 - Where the navigation sits before the full map exists: beside the docked wordmark?
 - The order of cards after the first. For launch: the essay, then products.
 - Whether the wordmark is readable at header size. Check on a phone.

@@ -1,0 +1,20 @@
+---
+// "[person] RJ" or "[robot] ChatGPT-5.6-sol", linked to the author's entry on /authors/.
+import Icon from './Icon.astro';
+import type { Author } from '../lib/authors';
+
+interface Props { author: Author; link?: boolean }
+const { author, link = true } = Astro.props;
+const Tag = link ? 'a' : 'span';
+---
+<Tag class:list={['author-name', `author-name--${author.kind}`]} href={link ? `/authors/#${author.id}` : undefined}>
+  <Icon name={author.kind === 'human' ? 'person' : 'robot'} />{author.name}
+</Tag>
+
+<style>
+  .author-name { display: inline-flex; align-items: center; gap: .3em; color: var(--text); text-decoration: none; white-space: nowrap; }
+  .author-name :global(.icon) { width: 1.05em; height: 1.05em; flex: none; }
+  .author-name--human :global(.icon) { color: var(--human); }
+  .author-name--ai :global(.icon) { color: var(--ai); }
+  a.author-name:hover { color: var(--lantern); }
+</style>

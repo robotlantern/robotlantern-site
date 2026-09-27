@@ -1,0 +1,185 @@
+---
+// Thought (essay) page: the attribution block under the title, one toggle for contribution
+// highlighting, and author cards in the desktop margin (docs/PAGES.md).
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import AuthorName from '../../components/AuthorName.astro';
+import Icon from '../../components/Icon.astro';
+import { renderTree, toHTML, type Attribution } from '../../lib/markdown';
+import { getAuthors, authorOf, shortDate } from '../../lib/authors';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('essays');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+type Totals = Record<string, { chars: number; authors: Record<string, { chars: number; percent: number }>; copyedits: Record<string, { edits: number; chars: number }> }>;
+
+const { entry } = Astro.props;
+const dir = `src/content/essays/${entry.id}`;
+const md = fs.readFileSync(`${dir}/article.md`, 'utf8');
+const attribution: Attribution & { article_sha256: string; totals: Totals } = JSON.parse(fs.readFileSync(`${dir}/attribution.json`, 'utf8'));
+const sha = crypto.createHash('sha256').update(md).digest('hex');
+if (sha !== attribution.article_sha256) {
+  throw new Error(`${dir}: attribution.json was made for a different article.md. Rerun tools/attribution.`);
+}
+if (entry.data.datePlaceholder) {
+  console.warn(`[robot-lantern] ${dir}/essay.json: the date is a placeholder. Set it at launch (NOW.md, task 9).`);
+}
+
+// Attribution participants map to authors (essay.json), which carry the display names.
+const all = await getAuthors();
+const people = attribution.participants.map((p) => {
+  const id = entry.data.authors[p.id];
+  if (!id) throw new Error(`${dir}/essay.json: no author for attribution participant "${p.id}"`);
+  const author = authorOf(all, id, `${dir}/essay.json`);
+  const t = attribution.totals;
+  return {
+    author,
+    body: t.body?.authors[p.id]?.percent ?? 0,
+    notes: t.footnotes?.authors[p.id]?.percent,
+    copyedits: Object.values(t).reduce((n, s) => n + (s.copyedits[p.id]?.edits ?? 0), 0),
+  };
+});
+const kindOf = Object.fromEntries(attribution.participants.map((p) => [p.id, all[entry.data.authors[p.id]]?.kind ?? 'unknown']));
+const spans = { ...attribution, participants: attribution.participants.map((p) => ({ ...p, kind: kindOf[p.id] })) };
+
+// The ring: the essay body's split, one arc per author, starting at the top.
+const gap = people.filter((p) => p.body > 0).length > 1 ? 1.2 : 0;
+let at = 0;
+const arcs = people
+  .filter((p) => p.body > 0)
+  .map((p) => {
+    const arc = { kind: p.author.kind, len: Math.max(p.body - gap, .5), offset: -(at + gap / 2) };
+    at += p.body;
+    return arc;
+  });
+const ringLabel = 'Essay text: ' + people.map((p) => `${p.author.name} ${p.body}%`).join(', ');
+
+// The article's own H1 becomes the page title, keeping its highlighting.
+const tree = await renderTree(md, { attribution: spans });
+const h1Index = tree.children!.findIndex((n) => n.type === 'element' && n.tagName === 'h1');
+const [h1] = h1Index >= 0 ? tree.children!.splice(h1Index, 1) : [];
+const titleHtml = h1 ? toHTML(h1.children!) : entry.data.title;
+const bodyHtml = toHTML(tree);
+const date = entry.data.date;
+---
+<Base title={entry.data.title} section="thoughts">
+  <main class="thought">
+    <aside class="thought__margin" aria-label="Authors">
+      <div class="thought__cards">
+      {people.map(({ author }) => (
+        <div class={`author-card author-card--${author.kind}`}>
+          <a href={`/authors/#${author.id}`}><Icon name={author.kind === 'human' ? 'person' : 'robot'} />{author.fullName}</a>
+          <p>{author.bio}</p>
+        </div>
+      ))}
+      </div>
+    </aside>
+
+    <div class="thought__column">
+      <header class="thought__head">
+        <h1 set:html={titleHtml} data-highlight />
+        <section class="attribution" aria-label="Who wrote this">
+          <svg class="ring" viewBox="0 0 36 36" role="img" aria-label={ringLabel}>
+            <circle class="ring__track" cx="18" cy="18" r="15.9155" />
+            {arcs.map((a) => (
+              <circle class={`ring__arc ring__arc--${a.kind}`} cx="18" cy="18" r="15.9155" stroke-dasharray={`${a.len} ${100 - a.len}`} stroke-dashoffset={a.offset} />
+            ))}
+          </svg>
+          <ul>
+            {people.map((p) => (
+              <li>
+                <AuthorName author={p.author} />
+                <span class="attribution__nums">
+                  <b>{p.body}%</b> essay
+                  {p.notes !== undefined && <> · <b>{p.notes}%</b> notes</>}
+                  {p.copyedits > 0 && <> · {p.copyedits} copyedit{p.copyedits === 1 ? '' : 's'}</>}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div class="attribution__foot">
+            <time datetime={date.toISOString().slice(0, 10)}>{shortDate(date)}</time>
+            <button class="switch" type="button" role="switch" aria-checked="false" data-contributions>
+              <span class="switch__track" aria-hidden="true"><span class="switch__knob"></span></span>
+              Show contributions
+            </button>
+          </div>
+          <p class="attribution__hint" data-hint hidden>Each word takes its writer’s color. A dotted underline marks a copyedit, which keeps the original writer’s color.</p>
+        </section>
+      </header>
+
+      <article class="thought__body prose" data-highlight set:html={bodyHtml} />
+    </div>
+  </main>
+</Base>
+
+<style>
+  .thought { display: grid; grid-template-columns: 1fr minmax(0, 44rem) 1fr; gap: 0 3rem; padding: 2.5rem var(--edge) 1rem; }
+  .thought__column { grid-column: 2; min-width: 0; }
+  .thought__margin { grid-column: 1; justify-self: end; width: min(100%, 15rem); padding-top: 1rem; }
+  .thought__cards { position: sticky; top: 1.5rem; }
+  .author-card { margin-bottom: 1.2rem; padding: 1rem 1.1rem; border-radius: .9rem; background: rgba(8, 15, 33, .6); font: .8rem/1.55 var(--sans); color: var(--muted); }
+  .author-card a { display: flex; align-items: center; gap: .4rem; color: var(--text); font-weight: 600; text-decoration: none; }
+  .author-card a:hover { color: var(--lantern); }
+  .author-card :global(.icon) { width: 1.1rem; height: 1.1rem; }
+  .author-card--human :global(.icon) { color: var(--human); }
+  .author-card--ai :global(.icon) { color: var(--ai); }
+  .author-card p { margin: .45rem 0 0; }
+  @media (max-width: 1100px) {
+    .thought { grid-template-columns: minmax(0, 44rem); justify-content: center; }
+    .thought__column { grid-column: 1; }
+    .thought__margin { display: none; }
+  }
+
+  .thought__head h1 { margin: 0 0 1.4rem; font: 400 clamp(2.4rem, 7vw, 4rem)/1.02 var(--serif); letter-spacing: -.035em; }
+
+  .attribution { display: grid; grid-template-columns: auto 1fr; gap: .2rem 1rem; align-items: center; margin-bottom: 2.2rem; padding: 1rem 0 1.1rem; border-block: 1px solid var(--line); font: .86rem/1.5 var(--sans); }
+  .ring { width: 3.6rem; height: 3.6rem; transform: rotate(-90deg); }
+  .ring circle { fill: none; stroke-width: 4.2; }
+  .ring__track { stroke: rgba(190, 205, 235, .1); }
+  .ring__arc--human { stroke: var(--human); }
+  .ring__arc--ai { stroke: var(--ai); }
+  .attribution ul { margin: 0; padding: 0; list-style: none; display: grid; gap: .35rem; }
+  .attribution li { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .7rem; }
+  .attribution li :global(.author-name) { font-weight: 600; }
+  .attribution__nums { color: var(--muted); }
+  .attribution__nums b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .attribution__foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem 1rem; margin-top: .7rem; color: var(--faint); letter-spacing: .06em; }
+  .attribution__hint { grid-column: 1 / -1; margin: .5rem 0 0; color: var(--muted); font-size: .8rem; }
+  .attribution__hint[hidden] { display: none; }
+
+  .switch { display: inline-flex; align-items: center; gap: .55rem; padding: .3rem 0; border: 0; background: none; color: var(--text); cursor: pointer; font: 600 .82rem/1 var(--sans); }
+  .switch__track { position: relative; width: 2.3rem; height: 1.3rem; border-radius: 1rem; background: rgba(190, 205, 235, .2); transition: background .2s; }
+  .switch__knob { position: absolute; top: .15rem; left: .15rem; width: 1rem; height: 1rem; border-radius: 50%; background: var(--text); transition: transform .2s; }
+  .switch[aria-checked='true'] .switch__track { background: linear-gradient(90deg, var(--human), var(--ai)); }
+  .switch[aria-checked='true'] .switch__knob { transform: translateX(1rem); }
+  .switch:hover { color: var(--lantern); }
+
+  .thought__body { font-size: 1.16rem; line-height: 1.85; }
+  .thought__body :global(h2) { margin-top: 3rem; padding-top: 1.4rem; border-top: 1px solid var(--line); font-size: 1.3rem; }
+  .thought__body :global(h2 ~ p) { font-size: .96rem; line-height: 1.75; color: var(--muted); }
+  .thought__body :global(sup) { line-height: 0; font: 600 .68rem/0 var(--sans); }
+  .thought__body :global(sup a) { text-decoration: none; }
+
+  /* Contribution highlighting: off until the reader asks for it. */
+  :global(.w) { -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+  :global(.contributions .w-human) { background: rgba(240, 160, 64, .24); color: #ffe7c4; }
+  :global(.contributions .w-ai) { background: rgba(106, 170, 242, .26); color: #dcebff; }
+  :global(.contributions .w-ce) { text-decoration: underline dotted rgba(255, 255, 255, .7); text-underline-offset: .2em; }
+  :global(.contributions .w-unknown) { background: rgba(190, 190, 190, .2); }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-contributions]');
+  const hint = document.querySelector<HTMLElement>('[data-hint]');
+  toggle?.addEventListener('click', () => {
+    const on = toggle.getAttribute('aria-checked') !== 'true';
+    toggle.setAttribute('aria-checked', String(on));
+    document.querySelectorAll('[data-highlight]').forEach((el) => el.classList.toggle('contributions', on));
+    if (hint) hint.hidden = !on;
+  });
+</script>

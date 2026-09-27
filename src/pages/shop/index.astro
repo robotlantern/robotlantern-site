@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+---
+<Base title="Shop" section="shop">
+  <main class="reading soon">
+    <Icon name="shop" />
+    <h1>Shop</h1>
+    <p>Prints and other goods will live here. Nothing here yet.</p>
+  </main>
+</Base>
+
+<style>
+  .soon { padding-block: 4rem 2rem; text-align: center; color: var(--muted); }
+  .soon :global(.icon) { width: 2.4rem; height: 2.4rem; color: var(--lantern); }
+  h1 { margin: .8rem 0 .6rem; color: var(--text); font: 400 2.4rem/1 var(--serif); }
+</style>
