@@ -54,7 +54,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     to `samwise` publishes https://rl.rblt.io/; the task 4 prototype is at
     `/prototypes/sunset-scroll/`. Done when RJ opens all three previews on his phone.
 
-11. **Home page flow, first slice.** Designed with RJ on 2026-09-25; not started.
+11. **Home page flow, first slice.** Built 2026-09-27; choices to review are in docs/HOME.md,
+    "Built choices to review".
     - Start: [docs/HOME.md](docs/HOME.md). The home page (`src/pages/index.astro`) is already the
       sunset scroll, live since 2026-09-27 with its closing nav pointing at the sections. Build
       on it; the frozen prototype stays at its tag. The first card can reuse the chat styles.
@@ -159,3 +160,5 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
   photo.
 - 2026-09-27: The asterism nav was retired for section marks: an asterisk, a circle, a pentagon
   and a diamond after each name, each with one star.
+- 2026-09-27: Home page first slice (task 11): the wordmark docks, its period flies in as a
+  shooting star, and the Pleiades chat and the essay draw as cards.

@@ -1,6 +1,8 @@
 # Home page
 
-Status: design agreed with RJ on 2026-09-25, not built yet. It extends the sunset scroll in
+Status: design agreed with RJ on 2026-09-25. The first slice (task 11) is built in
+`src/pages/index.astro`: docking, the shooting-star period, and two cards (the Pleiades chat,
+then the essay). It extends the sunset scroll in
 `public/prototypes/sunset-scroll/` (tag `sunset-scroll-v1`, previewed at
 https://rl.rblt.io/prototypes/sunset-scroll/). Timings below are measured against that version.
 
@@ -61,6 +63,20 @@ The content is a network, and the navigation uses a constellation metaphor.
 - **Phone:** the map is its own view. Tapping the lantern might open it (undecided).
 - **At launch:** the center column, the docked header and the desktop margin glow. The full map
   view waits until there's enough content to form shapes. Stars are assigned from the start.
+
+## Built choices to review (task 11)
+
+- The period leaves at progress .1 and lands at .36, after the letters (.06 to .3). The letters
+  now finish lighting by .28; the period's lamp lights after it lands.
+- The first card draws once the mark has landed and the card's top is on screen.
+- The Pleiades on the first card are drawn from catalog positions (the seven brightest), not
+  matched to the photo, which stays fixed while cards scroll. The essay's star is a plain
+  four-point star until stars are assigned from the map.
+- Each card shows the opening (RJ's first message and two paragraphs of the reply; the essay's
+  first two paragraphs), then a "Keep reading" link. The title links too.
+- On a page shorter than the sky's run, the sky finishes at the bottom of the page instead, so
+  the page always ends at night.
+- The nav appears as the mark lands, in the same place as on every other page.
 
 ## Open
 

@@ -2,6 +2,44 @@
 // The home page: the sunset scroll (task 4, signed off 2026-09-25), with its closing nav
 // pointing at the sections. Task 11 builds the home page flow on this (docs/HOME.md).
 // The frozen prototype is public/prototypes/sunset-scroll/ (tag sunset-scroll-v1).
+// First slice (task 11): the wordmark docks, its period flies in as a shooting star, and
+// cards draw from their stars as the reader scrolls.
+import fs from 'node:fs';
+import { getCollection } from 'astro:content';
+import AuthorName from '../components/AuthorName.astro';
+import SectionMark from '../components/SectionMark.astro';
+import { splitMessages } from '../lib/conversation';
+import { convertMathDelimiters, renderMarkdown } from '../lib/markdown';
+import { getAuthors, authorOf, shortDate } from '../lib/authors';
+
+const all = await getAuthors();
+const noCites = (html: string) => html.replace(/<sup class="cite">.*?<\/sup>/g, '');
+const firstParagraphs = (md: string, n: number) => md.split(/\n\s*\n/).filter((b) => !b.startsWith('#')).slice(0, n).join('\n\n');
+
+// Card 1: the opening of "It's Always the Pleiades", drawn from the Pleiades.
+const chat = (await getCollection('conversations')).find((c) => c.id === 'its-always-the-pleiades')!;
+const chatDir = `src/content/conversations/${chat.id}`;
+const { messages } = splitMessages(convertMathDelimiters(chat.body ?? ''), chat.data.participants);
+const chatOpening = [];
+for (const [i, m] of messages.slice(0, 2).entries()) {
+  const md = i === 0 ? m.markdown : firstParagraphs(m.markdown, 2);
+  chatOpening.push({ kind: m.speaker.kind, html: noCites(await renderMarkdown(md, { imageBase: `/chats/${chat.id}/` })) });
+}
+const chatAuthors = chat.data.participants.map((p) => authorOf(all, p.author, `${chatDir}/conversation.md`));
+
+// Card 2: the opening of the essay, drawn from its own star.
+const essay = (await getCollection('essays'))[0];
+const essayDir = `src/content/essays/${essay.id}`;
+const essayMd = fs.readFileSync(`${essayDir}/article.md`, 'utf8').replace(/<sup[^>]*>.*?<\/sup>/g, '');
+const essayOpening = await renderMarkdown(firstParagraphs(essayMd, 2));
+// The article's own H1, which carries its italics.
+const essayTitle = (await renderMarkdown(essayMd.match(/^# (.+)$/m)?.[1] ?? essay.data.title)).replace(/^<p>|<\/p>\s*$/g, '');
+const essayAuthors = Object.values(essay.data.authors).map((id) => authorOf(all, id, `${essayDir}/essay.json`));
+
+// The Pleiades' seven brightest, in arcminutes from Alcyone (east to the left, north up), with
+// their magnitudes, for the first card's star.
+const pleiades = [[0, 0, 2.9], [-22.8, 3, 3.6], [-23.3, -2, 5.1], [35.9, 0, 3.7], [22.6, -16, 3.9], [15.8, 9, 4.2], [31.3, -22, 4.3]];
+const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Builds'], ['shop', 'Shop']] as const;
 ---
 <!doctype html>
 <html lang="en">
@@ -21,12 +59,24 @@
     --lantern: #ffd28a;
     --sky-height: 500vh;
     --ground: 24px; /* solid strip under the treeline; iOS Safari samples its toolbar color here */
+    --edge: clamp(1rem, 3.5vw, 2rem);
+    --text: #e9e2d2;
+    --muted: #a3acbd;
+    --faint: #737f96;
+    --line: rgba(190, 205, 235, .16);
+    --human: #f0a040;
+    --ai: #6aaaf2;
+    --link: #f3c98a;
+    --bubble-human: #eda46c;
+    --bubble-human-text: #24140a;
+    --serif: Georgia, 'Times New Roman', serif;
+    --sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
     background: var(--night);
   }
   * { box-sizing: border-box; }
   body {
+    position: relative;
     margin: 0;
-    min-height: var(--sky-height);
     background: var(--night);
     color: #e9e2d2;
     font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -35,10 +85,12 @@
 
   /* The sky: one tall background that scrolls with the page.
      Zenith colors run from the reference photo's dusk blue down into night. */
+  /* The sky runs over a fixed distance, then holds at night. On a page shorter than that, it
+     ends at the bottom instead. */
   .sky {
     position: absolute;
     inset: 0 0 auto;
-    height: var(--sky-height);
+    height: min(100%, var(--sky-height));
     background: linear-gradient(to bottom,
       #3c5b88 0%, #395785 8%, #2c4675 20%, #1d325a 34%,
       #132343 48%, #0c1730 62%, #080f21 76%, #050914 90%, var(--night) 100%);
@@ -133,17 +185,18 @@
   }
 
   /* The wordmark. Its period is the lantern. */
-  .mark {
+  .brand {
     position: fixed;
     left: 50%;
     top: 40%;
     width: min(78vw, 34rem);
     transform: translate(-50%, -50%);
   }
-  .mark svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .brand svg { display: block; width: 100%; height: auto; overflow: visible; }
   .ink { fill: var(--ink); }
-  .lit { opacity: calc((var(--progress) - .15) * 1.5); }
+  .lit { opacity: calc((var(--progress) - .1) * 5.5); }
   .lit-dot { fill: var(--lantern); opacity: calc((var(--progress) - .08) * 1.4); }
+  .flying .period, .flying .halo { visibility: hidden; }
   .core { fill: #fff6df; opacity: calc((var(--progress) - .35) * 1.6); }
   .halo {
     position: absolute;
@@ -173,41 +226,116 @@
     77% { opacity: .95; }
   }
 
-  .hint, .nav {
+  .hint {
     position: fixed;
     left: 0;
     right: 0;
-    text-align: center;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    font-size: .75rem;
-  }
-  .hint {
     bottom: calc(max(5.2vw, 56px) + var(--ground) + 1rem);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: .35rem;
     color: #2a1d18;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-size: .75rem;
     opacity: calc(1 - var(--progress) * 16);
     pointer-events: none;
   }
   .hint svg { width: 1.4rem; height: auto; }
-  .nav {
-    top: calc(40% + min(78vw, 34rem) * .22 + 2.5rem);
-    display: flex;
-    justify-content: center;
-    gap: clamp(1.1rem, 5vw, 2.5rem);
-    opacity: calc((var(--progress) - .86) * 7.2);
-    visibility: hidden;
+
+  /* Docking (docs/HOME.md, "Sequence"). The script flies the wordmark from the middle of the
+     screen to the header's place on every other page. Without the script it stays centered. */
+  /* Stacking: cards pass behind the trees, and under the header's fade, the mark and the nav. */
+  .treeline, .ground { z-index: 2; }
+  .dock-fade { z-index: 3; }
+  .brand, .dock-nav { z-index: 4; }
+  .comet { z-index: 5; }
+  .js .brand { left: 0; top: 0; margin: 0; transform-origin: 0 0; transform: translate(var(--mx, 0), var(--my, 0)) scale(var(--ms, 1)); }
+  .dock-fade {
+    position: fixed;
+    inset: 0 0 auto;
+    height: calc(var(--edge) * 2 + 8.5rem * .436 + 2rem);
+    background: linear-gradient(rgba(4, 6, 13, .94) 70%, rgba(4, 6, 13, 0));
+    opacity: var(--dock, 0);
+    pointer-events: none;
   }
-  .night .nav { visibility: visible; }
-  .nav a { color: #eadcc0; text-decoration: none; padding: .5rem 0; }
-  .nav a:hover, .nav a:focus-visible { color: var(--lantern); }
+  .comet { position: fixed; left: 0; top: 0; width: 0; height: 0; visibility: hidden; pointer-events: none; }
+  .comet i { position: absolute; left: calc(var(--r) * -1); top: calc(var(--r) * -1); width: calc(var(--r) * 2); height: calc(var(--r) * 2); border-radius: 50%; background: #fff6df; box-shadow: 0 0 calc(var(--r) * 1.5) var(--lantern); }
+  .comet b { position: absolute; right: 0; top: calc(var(--r) * -.6); width: var(--trail); height: calc(var(--r) * 1.2); border-radius: 99px; background: linear-gradient(to left, rgba(255, 214, 140, .85), rgba(255, 214, 140, 0)); transform-origin: 100% 50%; transform: rotate(var(--angle)); }
+
+  /* The nav, as on every other page (src/layouts/Base.astro), appearing once the mark lands. */
+  .dock-nav { position: fixed; top: var(--edge); right: var(--edge); display: flex; gap: 1.4rem; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; }
+  .docked .dock-nav { visibility: visible; }
+  .dock-nav a { display: flex; align-items: center; min-height: 2.75rem; color: #f4f1ea; text-decoration: none; font: 700 .72rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; transition: color .2s; }
+  .dock-nav a i { position: relative; display: inline-block; width: 1.9em; height: 1em; }
+  .dock-nav a .mark { position: absolute; left: 50%; top: 50%; width: 1.7rem; height: 1.7rem; transform: translate(-50%, -50%); opacity: .88; }
+  .dock-nav a:hover { color: var(--lantern); }
+
+  /* Cards. Each is outlined from its star; content appears once the outline closes. */
+  .intro { height: 158vh; }
+  .cards { position: relative; padding: 0 var(--edge) calc(max(5.2vw, 56px) + var(--ground) + 4rem); }
+  .card { position: relative; max-width: 40rem; margin: 0 auto 7rem; padding: 2.4rem clamp(1.1rem, 4vw, 2.2rem) 2rem; border-radius: 14px; background: rgba(4, 6, 13, .75); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .card__outline { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .card__outline path { fill: none; stroke: rgba(255, 255, 255, .7); stroke-width: 1.2; }
+  .card__star { position: absolute; top: 0; left: var(--star-x); transform: translate(-50%, -50%); pointer-events: none; }
+  .card__star svg { display: block; overflow: visible; }
+  .card__star circle, .card__star path { fill: #fff; }
+  .card__star .glow { fill: rgba(255, 246, 223, .16); }
+  .card h2 { margin: 0 0 .7rem; font: 400 clamp(1.7rem, 5vw, 2.3rem)/1.1 var(--serif); letter-spacing: -.02em; }
+  .card h2 a { color: var(--text); text-decoration: none; }
+  .card h2 a:hover { color: var(--lantern); }
+  .card__line { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .6rem; margin: 0 0 1.8rem; color: var(--muted); font: .8rem/1.3 var(--sans); }
+  .card__line .amp { color: var(--faint); }
+  .card__line .when { color: var(--faint); letter-spacing: .04em; }
+  .card__more { display: inline-block; margin-top: .4rem; color: var(--lantern); font: 600 .72rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; text-decoration: none; }
+  .card .prose { font: 400 1.05rem/1.75 var(--serif); overflow-wrap: break-word; }
+  .card .prose p { margin: 0 0 1.1rem; }
+  .card .prose a { color: var(--link); text-decoration-color: rgba(243, 201, 138, .4); text-underline-offset: .15em; }
+  .card .prose img { display: block; max-width: 100%; height: auto; margin: 1rem 0; }
+  /* The chat card borrows the chat page's look: RJ in an orange bubble, the reply in serif. */
+  .msg { margin: 0 0 1.5rem; }
+  .msg--human { display: flex; justify-content: flex-end; }
+  .msg--human .msg__body { position: relative; max-width: min(88%, 30rem); padding: .7rem 1.05rem; border-radius: 1.25rem 1.25rem .4rem 1.25rem; background: var(--bubble-human); color: var(--bubble-human-text); font: 400 .98rem/1.5 var(--sans); }
+  .msg--human .msg__body p { margin: 0; }
+  .msg--human .msg__body::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -8px;
+    width: 16px;
+    height: 20px;
+    background: inherit;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 20'%3E%3Cpath d='M0 0H8C8 10 11 17 16 20 10.5 20.6 4.5 19.6 0 17z'/%3E%3C/svg%3E") no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 20'%3E%3Cpath d='M0 0H8C8 10 11 17 16 20 10.5 20.6 4.5 19.6 0 17z'/%3E%3C/svg%3E") no-repeat;
+  }
+  .site-footer { position: relative; display: flex; justify-content: space-between; max-width: 40rem; margin: 0 auto; color: var(--faint); font: .7rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+  .site-footer a { color: var(--muted); text-decoration: none; }
+
+  /* With the script, a card waits for its trigger, then draws (about .8s) and fills. Scrolling
+     back past the trigger reverses it. --wait staggers several cards crossed in one flick. */
+  .js .card { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .js .card::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: rgba(4, 6, 13, .75); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); opacity: 0; transition: opacity .3s calc(var(--wait, 0s)); }
+  .js .card__outline path { stroke-dasharray: 1 1; stroke-dashoffset: 1; transition: stroke-dashoffset .6s ease-in-out calc(var(--wait, 0s) + .2s); }
+  .js .card__star { opacity: 0; transition: opacity .25s calc(var(--wait, 0s) + .7s); }
+  .js .card__body { position: relative; opacity: 0; transition: opacity .2s var(--wait, 0s); }
+  .js .card.drawn::before { opacity: 1; transition-delay: calc(var(--wait, 0s) + .75s); }
+  .js .card.drawn .card__outline path { stroke-dashoffset: 0; transition-delay: calc(var(--wait, 0s) + .2s); }
+  .js .card.drawn .card__star { opacity: 1; transition-delay: var(--wait, 0s); }
+  .js .card.drawn .card__body { opacity: 1; transition: opacity .35s calc(var(--wait, 0s) + .75s); }
+  .instant .card, .instant .card *, .instant .card::before { transition: none !important; }
+
+  @media (max-width: 600px) {
+    .dock-fade { height: calc(var(--edge) + 7rem * .436 + 1.1rem + 2.75rem + 2.5rem); }
+    .dock-nav { top: calc(var(--edge) + 7rem * .436 + 1.1rem); left: var(--edge); justify-content: space-between; gap: .5rem; padding-right: .5rem; }
+    .dock-nav a { font-size: .66rem; }
+    .dock-nav a .mark { width: 1.5rem; height: 1.5rem; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .twinkle { animation: none; opacity: .7; }
     .halo i { animation: none; }
+    .js .card__outline path { transition-duration: 0s; }
   }
 </style>
 </head>
@@ -221,7 +349,7 @@
   <div class="horizon" aria-hidden="true"></div>
   <div class="afterglow" aria-hidden="true"></div>
 
-  <h1 class="mark">
+  <h1 class="brand">
     <span class="halo" aria-hidden="true"><i></i></span>
     <svg viewBox="-8 -8 766 334" role="img" aria-label="Robot Lantern">
       <defs>
@@ -251,9 +379,11 @@
       </defs>
       <use href="#letters" class="ink"/>
       <use href="#letters" class="lit" fill="url(#lanternlight)"/>
-      <circle class="ink" cx="729.4" cy="299.2" r="17.2"/>
-      <circle class="lit-dot" cx="729.4" cy="299.2" r="17.2"/>
-      <circle class="core" cx="729.4" cy="299.2" r="9"/>
+      <g class="period">
+        <circle class="ink" cx="729.4" cy="299.2" r="17.2"/>
+        <circle class="lit-dot" cx="729.4" cy="299.2" r="17.2"/>
+        <circle class="core" cx="729.4" cy="299.2" r="9"/>
+      </g>
     </svg>
   </h1>
 
@@ -262,29 +392,161 @@
     <svg viewBox="0 0 24 20"><path d="M5 3l7 6 7-6M5 11l7 6 7-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </div>
 
-  <nav class="nav" aria-label="Main">
-    <a href="/thoughts/">Thoughts</a>
-    <a href="/chats/">Chats</a>
-    <a href="/builds/">Builds</a>
-    <a href="/shop/">Shop</a>
-  </nav>
+  <div class="intro" aria-hidden="true"></div>
+
+  <main class="cards">
+    <article class="card" data-card style="--star-x: 3.2rem">
+      <svg class="card__outline" aria-hidden="true"><path pathLength="1" /></svg>
+      <span class="card__star" aria-hidden="true">
+        <svg width="46" height="26" viewBox="-24 -14 48 28">
+          <circle class="glow" r="11" />
+          {pleiades.map(([x, y, m]) => <circle cx={-(x as number) * .6} cy={(y as number) * .6} r={Math.max(.9, 3.6 - ((m as number) - 2.9) * 1.1)} />)}
+        </svg>
+      </span>
+      <div class="card__body">
+        <h2><a href={`/chats/${chat.id}/`}>{chat.data.title}</a></h2>
+        <p class="card__line">
+          {chatAuthors.map((a, i) => <>{i > 0 && <span class="amp">&amp;</span>}<AuthorName author={a} /></>)}
+          <span class="when">{shortDate(chat.data.date)}{chat.data.time && ` · ${chat.data.time}`}</span>
+        </p>
+        {chatOpening.map((m) => (
+          <div class={`msg msg--${m.kind}`}><div class={m.kind === 'ai' ? 'msg__body prose' : 'msg__body'} set:html={m.html} /></div>
+        ))}
+        <a class="card__more" href={`/chats/${chat.id}/`}>Keep reading</a>
+      </div>
+    </article>
+
+    <article class="card" data-card style="--star-x: calc(100% - 4.5rem)">
+      <svg class="card__outline" aria-hidden="true"><path pathLength="1" /></svg>
+      <span class="card__star" aria-hidden="true">
+        <svg width="26" height="26" viewBox="-13 -13 26 26">
+          <circle class="glow" r="9" />
+          <path d="M0-7L1.2-1.2 7 0 1.2 1.2 0 7-1.2 1.2-7 0-1.2-1.2Z" />
+        </svg>
+      </span>
+      <div class="card__body">
+        <h2><a href={`/thoughts/${essay.id}/`} set:html={essayTitle} /></h2>
+        <p class="card__line">
+          {essayAuthors.map((a, i) => <>{i > 0 && <span class="amp">&amp;</span>}<AuthorName author={a} /></>)}
+          <span class="when">{shortDate(essay.data.date)}</span>
+        </p>
+        <div class="prose" set:html={essayOpening} />
+        <a class="card__more" href={`/thoughts/${essay.id}/`}>Keep reading</a>
+      </div>
+    </article>
+
+    <footer class="site-footer">
+      <span>Robot Lantern</span>
+      <a href="/authors/">Authors</a>
+    </footer>
+  </main>
 
   <div class="treeline" aria-hidden="true"></div>
   <div class="ground" aria-hidden="true"></div>
+  <div class="dock-fade" aria-hidden="true"></div>
+  <div class="comet" aria-hidden="true"><b></b><i></i></div>
+  <nav class="dock-nav" aria-label="Main">
+    {sections.map(([id, label]) => <a href={`/${id}/`}>{label}<i><SectionMark name={id} /></i></a>)}
+  </nav>
 
   <script is:inline>
     (() => {
       const r = document.documentElement;
-      let queued = false;
+      r.classList.add('js', 'instant');
+      const mark = document.querySelector('.brand');
+      const sky = document.querySelector('.sky');
+      const comet = document.querySelector('.comet');
+      const cards = [...document.querySelectorAll('[data-card]')];
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const clamp = (x) => Math.min(1, Math.max(0, x));
+      const ease = (t) => t < .5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
+      const lerp = (a, b, t) => a + (b - a) * t;
+      // Timings, as fractions of the sky's run (docs/HOME.md): the letters fly from .06 to .3;
+      // the period leaves at .1 and lands last, at .36.
+      const DOCK = [.06, .3], FLIGHT = [.1, .36];
+      const PERIOD = [.9627, .9198], ASPECT = 334 / 766;
+      let queued = false, first = true;
+
+      // The wordmark's box: centered (t = 0) or docked where every other page has it (t = 1).
+      const box = (t) => {
+        const rem = parseFloat(getComputedStyle(r).fontSize);
+        const w0 = Math.min(innerWidth * .78, 34 * rem);
+        const w1 = (innerWidth <= 600 ? 7 : 8.5) * rem;
+        const edge = Math.min(2 * rem, Math.max(rem, innerWidth * .035));
+        const x = lerp(innerWidth / 2 - w0 / 2, edge, t);
+        const y = lerp(innerHeight * .4 - w0 * ASPECT / 2, edge, t);
+        return { x, y, w: lerp(w0, w1, t), s: lerp(1, w1 / w0, t), w0 };
+      };
+      const periodAt = (b) => ({ x: b.x + PERIOD[0] * b.w, y: b.y + PERIOD[1] * b.w * ASPECT, r: 17.2 / 766 * b.w });
+
+      const layout = () => {
+        for (const c of cards) {
+          const w = c.offsetWidth, h = c.offsetHeight, k = 14;
+          const sx = c.querySelector('.card__star').offsetLeft;
+          const svg = c.querySelector('.card__outline');
+          svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+          // From the star along the top edge: right, down, left, up, and right again to close.
+          svg.firstElementChild.setAttribute('d', `M${sx} 0H${w - k}A${k} ${k} 0 0 1 ${w} ${k}V${h - k}A${k} ${k} 0 0 1 ${w - k} ${h}H${k}A${k} ${k} 0 0 1 0 ${h - k}V${k}A${k} ${k} 0 0 1 ${k} 0Z`);
+        }
+      };
+
       const update = () => {
         queued = false;
-        const max = r.scrollHeight - innerHeight;
-        const p = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 1;
+        const docH = r.scrollHeight;
+        const run = Math.max(1, Math.min(sky.offsetHeight * .8, docH - innerHeight));
+        const p = clamp(scrollY / run);
         r.style.setProperty('--progress', p.toFixed(4));
-        r.classList.toggle('night', p > .9);
+
+        // Dock. With reduced motion, the wordmark fades out and back in at its new place.
+        const t = clamp((p - DOCK[0]) / (DOCK[1] - DOCK[0]));
+        let b, o = 1;
+        if (reduced) { b = box(t < .5 ? 0 : 1); o = Math.abs(1 - 2 * t); } else b = box(ease(t));
+        mark.style.setProperty('--mx', b.x + 'px');
+        mark.style.setProperty('--my', b.y + 'px');
+        mark.style.setProperty('--ms', b.s.toFixed(4));
+        mark.style.opacity = o;
+        r.style.setProperty('--dock', t.toFixed(3));
+        r.classList.toggle('docked', t > .9);
+
+        // The period's flight: a shooting star on a curve, with a trail that grows with speed.
+        const f = clamp((p - FLIGHT[0]) / (FLIGHT[1] - FLIGHT[0]));
+        const flying = !reduced && f > 0 && f < 1;
+        mark.classList.toggle('flying', flying);
+        comet.style.visibility = flying ? 'visible' : 'hidden';
+        if (flying) {
+          const s = periodAt(box(ease(clamp((FLIGHT[0] - DOCK[0]) / (DOCK[1] - DOCK[0])))));
+          const e = periodAt(box(1));
+          const c = { x: s.x - (s.x - e.x) * .15, y: e.y - innerHeight * .05 };
+          const u = ease(f), v = 1 - u;
+          const x = v * v * s.x + 2 * v * u * c.x + u * u * e.x;
+          const y = v * v * s.y + 2 * v * u * c.y + u * u * e.y;
+          const dx = 2 * v * (c.x - s.x) + 2 * u * (e.x - c.x);
+          const dy = 2 * v * (c.y - s.y) + 2 * u * (e.y - c.y);
+          comet.style.transform = `translate(${x}px, ${y}px)`;
+          comet.style.setProperty('--r', lerp(s.r, e.r, u).toFixed(2) + 'px');
+          comet.style.setProperty('--angle', Math.atan2(dy, dx) + 'rad');
+          comet.style.setProperty('--trail', (Math.sin(Math.PI * f) * Math.min(140, innerWidth * .25)).toFixed(1) + 'px');
+        }
+
+        // Cards. The first draws once the mark has landed and its top is on screen; each later
+        // one when the card above it reaches the middle of the screen.
+        let wait = 0;
+        cards.forEach((c, i) => {
+          const top = c.getBoundingClientRect().top;
+          const on = i === 0 ? p >= DOCK[1] && top < innerHeight * .85 || top < 0
+                             : cards[i - 1].getBoundingClientRect().bottom <= innerHeight / 2 || top < 0;
+          if (on !== c.classList.contains('drawn')) {
+            c.style.setProperty('--wait', first ? '0s' : (wait++ * .35) + 's');
+            c.classList.toggle('drawn', on);
+          }
+        });
+        if (first) { first = false; requestAnimationFrame(() => requestAnimationFrame(() => r.classList.remove('instant'))); }
       };
-      addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
-      addEventListener('resize', update);
+      const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+      addEventListener('scroll', queue, { passive: true });
+      addEventListener('resize', () => { layout(); update(); });
+      new ResizeObserver(layout).observe(document.querySelector('.cards'));
+      layout();
       update();
     })();
   </script>
