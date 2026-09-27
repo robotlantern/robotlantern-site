@@ -63,19 +63,10 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
       Scrolling up reverses them.
     - Done when RJ approves it on his phone.
 
-12. **Asterism nav icons.** Started 2026-09-27 (docs/HOME.md, "Open"). Stages, each committed:
-    (a) done: `tools/sky/stars.py` found 400 stars in `public/images/night.jpg`, saved in
-    `src/data/night-stars.json` (positions as fractions, relative magnitude). (b) done:
-    `tools/sky/asterisms.py` fits each icon's template to real stars (no star shared, each
-    section in its own region; the chat bubble's tail points at the Pleiades), saved in
-    `src/data/asterisms.json`. (c) done: the nav draws them
-    (`src/components/Asterism.astro`), each word centered on its asterism, lit for the current
-    section. Rerun both scripts to refit; tune shapes in `TEMPLATES` and regions in `REGIONS`.
-    Built and on the preview, but RJ judged the fitted shapes overfitted (only Shop reads).
-    Rethinking before any more code: symbol-first shapes versus real constellations with a
-    fitting myth (docs/HOME.md, "Asterism icons"). RJ is sketching on the crops in
-    `design/asterisms/`. Next: record his pick, then redraw the nav from it. Done when RJ
-    approves the nav on his phone.
+12. **Section marks in the nav.** Started 2026-09-27 (docs/HOME.md, "Section marks"). The
+    fitted asterisms were retired; each label is now followed by a dashed shape with one star
+    (`src/components/SectionMark.astro`). `tools/sky/stars.py` and `src/data/night-stars.json`
+    stay, for the home page's sky map. Done when RJ approves the nav on his phone.
 
 ## Open decisions (RJ)
 
@@ -166,3 +157,5 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
 - 2026-09-27: The sunset scroll is now the live home page (`/`). Chat dashes moved to the right
   edge, fainter. Task 12: the nav's section icons are asterisms fitted to real stars in RJ's
   photo.
+- 2026-09-27: The asterism nav was retired for section marks: an asterisk, a circle, a pentagon
+  and a diamond after each name, each with one star.

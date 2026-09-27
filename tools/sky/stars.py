@@ -1,4 +1,4 @@
-"""Find the stars in RJ's night photo, for the asterism icons and the sky map (docs/HOME.md).
+"""Find the stars in RJ's night photo, for the sky map (docs/HOME.md).
 
 Subtracts the sky background, finds local peaks, and ranks them by brightness. Positions are
 fractions of the photo's width and height, so they survive resizing.

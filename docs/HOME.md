@@ -64,29 +64,17 @@ The content is a network, and the navigation uses a constellation metaphor.
 
 ## Open
 
-- **Asterism icons (RJ's idea, 2026-09-27; NOW.md task 12).** Each section's nav icon is a set
-  of stars with the section's name centered on it. The first build fitted the icon outlines
-  to detected stars, and RJ judged it overfitted: only Shop read clearly. Two approaches are
-  now on the table:
-  1. **Symbol first:** a simple shape that means something on its own, in five to seven
-     points, for example a cube's vertices or a hammer for Builds.
-  2. **Myth first:** real constellations from the photo whose stories fit the section. The
-     four sections then become four real, neighboring parts of one sky, which the home page's
-     map can reuse. Candidates (from memory, to be double-checked before publishing):
-     - Chats → the **Pleiades**. Maia, one of the seven sisters, is Hermes' mother, and the
-       site's first chat is about them.
-     - Builds → **Auriga**, usually identified with Erichthonius, a son of Hephaestus raised by
-       Athena and credited with inventing the four-horse chariot. It's a clean pentagon
-       (Capella, Elnath and three more).
-     - Thoughts → **Perseus**. Athena's polished shield let him face Medusa by reflection,
-       and her head, now on Athena's aegis, is Algol. The shape is loose.
-     - Shop → the **Hyades V with Aldebaran** (Taurus: Venus rules it in astrology, and
-       Europa was a Phoenician, from the great merchant traders), or keep the bag. Libra,
-       the scales, fits best but isn't in the photo.
-  Claude recommended a hybrid: myth first for Chats, Builds and Thoughts, and the bag or the
-  Hyades for Shop. RJ is sketching on crops in `design/asterisms/`, cut from
-  `sky-photo.jpg`, which is labeled in `sky-photo-annotated.jpg`. Coordinates can come from a
-  star catalog and be checked against the photo, with no fitting.
+- **Section marks (decided 2026-09-27; NOW.md task 12).** Each nav label is followed by a
+  mark, centered on the character cell after the word and larger than it: THOUGHTS + an
+  asterisk, CHATS + a circle, BUILDS + a pentagon, SHOP + a diamond. The shapes are dashed, with
+  the same number of dashes each, and slightly dimmer than the white label. Each shape has one
+  bright, twinkling star on a vertex, and the asterisk is itself the star. Unnamed on the page,
+  the vertex stars stand for Maia (Chats; Hermes' mother), Capella (Builds; Auriga, Erichthonius,
+  son of Hephaestus) and Aldebaran (Shop; Taurus); the myths are from memory, so check them
+  before they're ever published. This replaced star-fitted asterisms, which RJ judged
+  overfitted: no asterism is legible at icon size, and a dashed cloud and a dashed speech
+  bubble looked too alike. The square became a pentagon so it can't be mistaken for the
+  diamond turned 45 degrees.
 
 - Where the navigation sits before the full map exists: beside the docked wordmark?
 - The order of cards after the first. For launch: the essay, then products.
