@@ -93,7 +93,8 @@ The content is a network, and the navigation uses a constellation metaphor.
   (`design/asterisms/section-marks-scratch-rj.svg`). The stars count up: THOUGHTS has one large
   asterisk with a dashed trail rising from under the word; CHATS a binary pair on a dashed ring;
   BUILDS three stars in three sizes on a left-pointing pentagon; SHOP four on a tilted diamond
-  around the word. Lines are faint (10% white), stars bright and twinkling. Every asterisk is
+  around the word. Since 2026-09-27 the stars are the brand's ovaloid, each turned its own way
+  (docs/BRAND.md). Lines are faint (10% white), stars bright and twinkling. Every asterisk is
   three strokes at 0°, 60° and 120°, with the stroke 1/7.7 of its width.
   `src/components/SectionMark.astro` holds the geometry in em from the end of each word, so it
   scales with the label. The conversion snapped stars onto their vertices and regularized the

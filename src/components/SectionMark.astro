@@ -1,21 +1,21 @@
 ---
 // A section's mark in the nav, drawn by RJ in Affinity (design/asterisms/section-marks-scratch-rj.svg,
 // docs/HOME.md "Section marks"). Stars count up: Thoughts one, Chats a binary pair on a ring,
-// Builds three on a pentagon, Shop four on a tilted diamond. Thoughts' star trails a dashed line
+// Builds three on a pentagon, Shop four on a tilted diamond. The stars are the brand's ovaloid
+// (docs/BRAND.md), each turned its own way. Thoughts' star trails a dashed line
 // from the start of the word.
 //
 // Geometry is in em of the label's font size, measured from the end of the word (x) and the middle
 // of the capitals (y), so the mark scales with the label. The component goes inside the label's
 // span, which must be position: relative with line-height 1.
 import { marks, type Section } from '../lib/section-marks';
+import { OVALOID, ovaloidAt, turnFor } from '../lib/brand';
 
 interface Props { name: Section }
 
 const { name } = Astro.props;
 
 const m = marks[name];
-// RJ's asterisks: three strokes at 0°, 60° and 120°, the stroke 1/7.7 of the star's width.
-const arms = [0, 60, 120].map((a) => [Math.cos((a * Math.PI) / 180), Math.sin((a * Math.PI) / 180)]);
 const f = (n: number) => Math.round(n * 1000) / 1000;
 ---
 {name === 'thoughts' && (
@@ -25,8 +25,7 @@ const f = (n: number) => Math.round(n * 1000) / 1000;
   {m.ring && <circle class="mark__line mark__line--ring" cx={m.ring[0]} cy={m.ring[1]} r={m.ring[2]} />}
   {m.poly && <path class="mark__line" d={'M' + m.poly.map((p) => p.join(' ')).join('L') + 'Z'} />}
   {m.stars.map(([x, y, r], i) => (
-    <path class="mark__star" style={`stroke-width:${f((2 * r) / 7.7)};animation-delay:${-i * 0.9 - name.length * 0.4}s`}
-      d={arms.map(([c, s]) => `M${f(x - r * c)} ${f(y - r * s)}L${f(x + r * c)} ${f(y + r * s)}`).join('')} />
+    <path class="mark__star" d={OVALOID} transform={ovaloidAt(x, y, r * 1.25, turnFor(`${name}-${i}`))} style={`animation-delay:${-i * 0.9 - name.length * 0.4}s`} />
   ))}
 </svg>
 
@@ -36,7 +35,7 @@ const f = (n: number) => Math.round(n * 1000) / 1000;
   .mark__line { fill: none; stroke: currentColor; stroke-width: .071; stroke-dasharray: .71 .43; stroke-linecap: square; opacity: var(--mark-line, .3); }
   /* Chats' ring keeps RJ's own rhythm: long dash, long gap, short dash, short gap. */
   .mark__line--ring { stroke-width: .08; stroke-dasharray: .24 .48 .16 .08; }
-  .mark__star { fill: none; stroke: currentColor; stroke-linecap: round; animation: mark-twinkle 3.2s ease-in-out infinite alternate; }
+  .mark__star { fill: currentColor; animation: mark-twinkle 3.2s ease-in-out infinite alternate; }
   /* The trail runs from under the start of the word up to the star. */
   .mark-trail { position: absolute; left: .13em; width: calc(100% - var(--mark-tracking, 0em) - .13em + 1.33em); top: .83em; height: .77em; overflow: visible; pointer-events: none; }
   .mark-trail path { fill: none; stroke: currentColor; stroke-width: .071em; stroke-dasharray: .52em .38em; vector-effect: non-scaling-stroke; opacity: var(--mark-line, .3); }

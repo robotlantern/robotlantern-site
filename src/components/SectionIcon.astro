@@ -3,11 +3,11 @@
 // (src/lib/section-marks.ts), without the word, fitted to a square. Used wherever a section needs
 // a small symbol (the list panel's heading, the authors page, placeholders).
 import { marks, type Section } from '../lib/section-marks';
+import { OVALOID, ovaloidAt, turnFor } from '../lib/brand';
 
 interface Props { name: Section; class?: string }
 const { name, class: className } = Astro.props;
 const m = marks[name];
-const arms = [0, 60, 120].map((a) => [Math.cos((a * Math.PI) / 180), Math.sin((a * Math.PI) / 180)]);
 // Fit everything but Thoughts' trail into a square with a little margin.
 const xs: number[] = [], ys: number[] = [];
 for (const [x, y, r] of m.stars) { xs.push(x - r, x + r); ys.push(y - r, y + r); }
@@ -23,9 +23,8 @@ const line = size * .055;
 <svg class:list={['section-icon', className]} viewBox={`${f(cx - size / 2)} ${f(cy - size / 2)} ${f(size)} ${f(size)}`} aria-hidden="true">
   {m.ring && <circle cx={m.ring[0]} cy={m.ring[1]} r={m.ring[2]} fill="none" stroke="currentColor" stroke-width={f(line)} stroke-dasharray={`${f(line * 2.4)} ${f(line * 1.6)}`} opacity=".5" />}
   {m.poly && <path d={'M' + m.poly.map((p) => p.join(' ')).join('L') + 'Z'} fill="none" stroke="currentColor" stroke-width={f(line)} stroke-dasharray={`${f(line * 3)} ${f(line * 1.8)}`} opacity=".5" />}
-  {m.stars.map(([x, y, r]) => (
-    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width={f(Math.max((2 * r) / 7.7, size * .07))}
-      d={arms.map(([c, s]) => `M${f(x - r * c)} ${f(y - r * s)}L${f(x + r * c)} ${f(y + r * s)}`).join('')} />
+  {m.stars.map(([x, y, r], i) => (
+    <path d={OVALOID} fill="currentColor" transform={ovaloidAt(x, y, Math.max(r * 1.25, size * .16), turnFor(`${name}-${i}`))} />
   ))}
 </svg>
 
