@@ -49,7 +49,6 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Robot Lantern</title>
-<meta name="theme-color" content="#05070d">
 <meta name="description" content="Robot Lantern: thoughts, chats, builds and a shop, from sunset into night.">
 <link rel="canonical" href="https://robotlantern.com/">
 <style is:global>
@@ -61,6 +60,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     --lantern: #ffd28a;
     --sky-height: 500vh;
     --ground: 24px; /* solid strip under the treeline; iOS Safari samples its toolbar color here */
+    --trees: max(5.2vw, 56px); /* the treeline's height; taller on phones, where the nav sits on it */
     --edge: clamp(1rem, 3.5vw, 2rem);
     --text: #e9e2d2;
     --muted: #a3acbd;
@@ -166,7 +166,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   .treeline {
     position: fixed;
     inset: auto 0 calc(var(--ground) - 4px);
-    height: max(5.2vw, 56px);
+    height: var(--trees);
     background: url(/images/treeline.png) center bottom / auto 100% repeat-x;
     pointer-events: none;
   }
@@ -232,7 +232,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     position: fixed;
     left: 0;
     right: 0;
-    bottom: calc(max(5.2vw, 56px) + var(--ground) + 1rem);
+    bottom: calc(var(--trees) + var(--ground) + 1rem);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -252,7 +252,8 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
      wordmark stays centered. */
   /* Stacking: cards pass behind the trees, and under the mark and the nav. */
   .treeline, .ground { z-index: 2; }
-  .brand, .dock-nav { z-index: 4; }
+  .brand { z-index: 4; }
+  .dock-nav { z-index: 6; }
   .comet, .comet-trail { z-index: 5; }
   .js .brand { left: 0; top: 0; margin: 0; transform-origin: 0 0; transform: translate(var(--mx, 0), var(--my, 0)) scale(var(--ms, 1)); }
   .comet { position: fixed; left: 0; top: 0; width: 0; height: 0; visibility: hidden; pointer-events: none; }
@@ -261,16 +262,19 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   .comet-trail { position: fixed; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
   .comet-trail path { fill: none; stroke: rgb(255, 214, 140); stroke-linecap: butt; }
 
-  /* The nav, as on every other page (src/layouts/Base.astro), appearing once the mark lands. */
-  .dock-nav { position: fixed; top: var(--edge); right: var(--edge); display: flex; gap: 1.2rem; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; }
+  /* The nav sits on the tree silhouette, anchored at the bottom, and appears once the mark lands.
+     The top of the screen stays clear for the sky and the wordmark. Its stars rise into the sky. */
+  .dock-nav { position: fixed; left: 0; right: 0; bottom: calc(var(--ground) + .2rem); display: flex; justify-content: center; gap: 1.2rem; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; text-shadow: 0 0 .6rem #05070d, 0 0 .2rem #05070d; }
   .docked .dock-nav { visibility: visible; }
+  /* A haze rising from the ground behind the nav, so text scrolling down fades before it. */
+  .dock-nav::before { content: ''; position: absolute; z-index: -1; left: 0; right: 0; bottom: calc(-1 * var(--ground) - .2rem); height: calc(100% + var(--ground) + 3.5rem); background: linear-gradient(to top, #05070d 45%, rgba(5, 7, 13, 0)); pointer-events: none; }
   .dock-nav a { display: flex; align-items: center; min-height: 2.75rem; padding-right: calc(var(--reach, 1em) - .14em + .3em); color: #f4f1ea; text-decoration: none; font: 700 .72rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; transition: color .2s; }
   .dock-nav .nav-label { position: relative; line-height: 1; --mark-tracking: .14em; }
   .dock-nav a:hover { color: var(--lantern); }
 
   /* Cards. Each is outlined from its star; content appears once the outline closes. */
   .intro { height: 158vh; }
-  .cards { position: relative; padding: 0 var(--edge) calc(max(5.2vw, 56px) + var(--ground) + 4rem); }
+  .cards { position: relative; padding: 0 var(--edge) calc(var(--trees) + var(--ground) + 4rem); }
   .card { position: relative; max-width: 40rem; margin: 0 auto 7rem; padding: 2.4rem clamp(1.1rem, 4vw, 2.2rem) 2rem; border-radius: 14px; background: rgba(4, 6, 13, .75); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .card__outline { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
   .card__outline path { fill: none; stroke: rgba(255, 255, 255, .7); stroke-width: 1.2; }
@@ -321,7 +325,10 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   .instant .card, .instant .card *, .instant .card::before { transition: none !important; }
 
   @media (max-width: 600px) {
-    .dock-nav { top: calc(var(--edge) + 7rem * .436 + 1.1rem); left: var(--edge); justify-content: space-between; gap: .5rem; }
+    :root { --trees: 104px; }
+    /* Above Safari's address pill, which floats over the bottom of the screen. */
+    .dock-nav::before { bottom: calc(-1 * var(--ground) - 1.9rem); height: calc(100% + var(--ground) + 1.9rem + 3.5rem); }
+    .dock-nav { bottom: calc(var(--ground) + 1.9rem); padding: 0 var(--edge); justify-content: space-between; gap: .5rem; }
     .dock-nav a { font-size: .66rem; }
   }
 
@@ -486,7 +493,6 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       // How far the page has scrolled past the landing. The docked header lets go there and
       // scrolls away with the page, like the header on every other page.
       let lift = 0;
-      const nav = document.querySelector('.dock-nav');
       const trail = document.querySelector('.comet-trail');
       const SEGMENTS = 16;
       const segs = Array.from({ length: SEGMENTS }, () => trail.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'path')));
@@ -552,7 +558,6 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
         mark.style.setProperty('--mx', b.x + 'px');
         lift = Math.max(0, scrollY - FLIGHT[1] * run);
         mark.style.setProperty('--my', (b.y - lift) + 'px');
-        nav.style.transform = lift ? `translateY(${-lift}px)` : '';
         mark.style.setProperty('--ms', b.s.toFixed(4));
         mark.style.opacity = o;
         r.style.setProperty('--dock', t.toFixed(3));

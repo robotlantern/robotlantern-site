@@ -7,6 +7,7 @@
 // Each piece goes in the default slot as an element with data-entry, data-url and data-name,
 // containing one [data-title] (its big title). Chats can sort by posted or chat date and search.
 import Icon from './Icon.astro';
+import SectionIcon from './SectionIcon.astro';
 import { shortDate } from '../lib/authors';
 import type { FeedItem } from '../lib/feeds';
 
@@ -16,7 +17,7 @@ const { section, label, feed, current, next, tools = false } = Astro.props;
 <div class="reader" data-reader>
   <aside class="reader__list" id="reader-list" aria-label={label}>
     <div class="reader__list-head">
-      <a href={`/${section}/`}><Icon name={section} />{label}</a>
+      <a href={`/${section}/`}><SectionIcon name={section} />{label}</a>
       <button class="reader__close" type="button" aria-label="Close" data-drawer-close><Icon name="close" /></button>
     </div>
     {tools && (
@@ -64,7 +65,7 @@ const { section, label, feed, current, next, tools = false } = Astro.props;
   .reader__list-head { display: flex; align-items: center; justify-content: space-between; padding: .4rem .85rem .8rem; }
   .reader__list-head a { display: flex; align-items: center; gap: .5rem; color: var(--muted); font: 700 .7rem/1 var(--sans); letter-spacing: .14em; text-decoration: none; text-transform: uppercase; }
   .reader__list-head a:hover { color: var(--lantern); }
-  .reader__list-head :global(.icon) { width: 1.2rem; height: 1.2rem; }
+  .reader__list-head :global(.section-icon) { width: 1.3rem; height: 1.3rem; color: var(--text); }
   .reader__close, .reader__backdrop, .reader__menu { display: none; }
 
   .reader__tools { display: grid; gap: .5rem; padding: 0 .35rem .8rem; }
@@ -87,7 +88,7 @@ const { section, label, feed, current, next, tools = false } = Astro.props;
 
   /* The small title stays at the top once the first big one scrolls away. */
   .reader__bar { position: sticky; top: 0; z-index: 8; display: flex; align-items: center; gap: .6rem; height: 3.2rem; margin: 0 calc(-1 * var(--edge)) 0 calc(-1 * var(--pad-left)); padding: 0 var(--edge) 0 var(--pad-left); transition: background .2s; }
-  .reader__bar-title { margin: 0 auto; max-width: 46rem; flex: 1; overflow: hidden; font: 400 1.1rem/1 var(--serif); text-overflow: ellipsis; white-space: nowrap; opacity: 0; transform: translateY(.4rem); transition: opacity .2s, transform .2s; }
+  .reader__bar-title { margin: 0 auto; max-width: 46rem; flex: 1; overflow: hidden; padding: .2em 0; font: 400 1.1rem/1.3 var(--serif); text-overflow: ellipsis; white-space: nowrap; opacity: 0; transform: translateY(.4rem); transition: opacity .2s, transform .2s; }
   .reader.is-stuck .reader__bar { background: rgba(4, 6, 13, .86); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--line); }
   .reader.is-stuck .reader__bar-title { opacity: 1; transform: none; }
 

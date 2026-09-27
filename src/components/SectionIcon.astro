@@ -1,0 +1,34 @@
+---
+// A section's mark on its own, as an icon: the same stars and outline as the nav mark
+// (src/lib/section-marks.ts), without the word, fitted to a square. Used wherever a section needs
+// a small symbol (the list panel's heading, the authors page, placeholders).
+import { marks, type Section } from '../lib/section-marks';
+
+interface Props { name: Section; class?: string }
+const { name, class: className } = Astro.props;
+const m = marks[name];
+const arms = [0, 60, 120].map((a) => [Math.cos((a * Math.PI) / 180), Math.sin((a * Math.PI) / 180)]);
+// Fit everything but Thoughts' trail into a square with a little margin.
+const xs: number[] = [], ys: number[] = [];
+for (const [x, y, r] of m.stars) { xs.push(x - r, x + r); ys.push(y - r, y + r); }
+if (m.ring) { xs.push(m.ring[0] - m.ring[2], m.ring[0] + m.ring[2]); ys.push(m.ring[1] - m.ring[2], m.ring[1] + m.ring[2]); }
+for (const [x, y] of m.poly ?? []) { xs.push(x); ys.push(y); }
+const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+const size = Math.max(x1 - x0, y1 - y0) * 1.12;
+const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+const f = (n: number) => Math.round(n * 1000) / 1000;
+// Lines are thicker than in the nav, so they survive at icon size.
+const line = size * .055;
+---
+<svg class:list={['section-icon', className]} viewBox={`${f(cx - size / 2)} ${f(cy - size / 2)} ${f(size)} ${f(size)}`} aria-hidden="true">
+  {m.ring && <circle cx={m.ring[0]} cy={m.ring[1]} r={m.ring[2]} fill="none" stroke="currentColor" stroke-width={f(line)} stroke-dasharray={`${f(line * 2.4)} ${f(line * 1.6)}`} opacity=".5" />}
+  {m.poly && <path d={'M' + m.poly.map((p) => p.join(' ')).join('L') + 'Z'} fill="none" stroke="currentColor" stroke-width={f(line)} stroke-dasharray={`${f(line * 3)} ${f(line * 1.8)}`} opacity=".5" />}
+  {m.stars.map(([x, y, r]) => (
+    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width={f(Math.max((2 * r) / 7.7, size * .07))}
+      d={arms.map(([c, s]) => `M${f(x - r * c)} ${f(y - r * s)}L${f(x + r * c)} ${f(y + r * s)}`).join('')} />
+  ))}
+</svg>
+
+<style>
+  .section-icon { display: inline-block; width: 1.2em; height: 1.2em; overflow: visible; vertical-align: middle; }
+</style>
