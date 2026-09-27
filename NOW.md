@@ -63,6 +63,13 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
       Scrolling up reverses them.
     - Done when RJ approves it on his phone.
 
+12. **Asterism nav icons.** Started 2026-09-27 (docs/HOME.md, "Open"). Stages, each committed:
+    (a) done: `tools/sky/stars.py` found 400 stars in `public/images/night.jpg`, saved in
+    `src/data/night-stars.json` (positions as fractions, relative magnitude). (b) next: fit each
+    section's icon shape to real stars, with `tools/sky/asterisms.py` writing
+    `src/data/asterisms.json` (chats around the Pleiades). (c) then: draw them in the nav, with
+    the word centered on its asterism. Done when RJ approves the nav on his phone.
+
 ## Open decisions (RJ)
 
 - Hosting at cutover: GitHub Pages or Cloudflare Pages.
