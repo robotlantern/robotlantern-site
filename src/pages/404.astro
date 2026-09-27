@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Not found">
+  <main class="reading missing">
+    <h1>Not in this sky</h1>
+    <p>There’s no page here. Try <a href="/">home</a>, or one of the sections above.</p>
+  </main>
+</Base>
+
+<style>
+  .missing { padding-block: 4rem 2rem; }
+  h1 { margin: 0 0 1rem; font: 400 2.4rem/1.05 var(--serif); }
+  p { color: var(--muted); font: 1.05rem/1.6 var(--serif); }
+  a { color: var(--link); }
+</style>

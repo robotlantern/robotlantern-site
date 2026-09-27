@@ -51,7 +51,12 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    Fairmont, Bogotá and the machines' names can all be public. Rerun before cutover.
 9. **Cutover.** Choose the host, switch Pages to deploy through Actions, and merge to `main`. RJ
    changes DNS if needed. Set every essay date marked `datePlaceholder` to the launch date (the
-   build warns about each one).
+   build warns about each one). Launch checklist:
+   - Done 2026-09-27: 404 page, `robots.txt`, `/sitemap.xml`.
+   - Brand assets (RJ's separate task): favicon, Apple touch icon, and a social-card image with
+     Open Graph tags. Until then every page requests a missing `/favicon.ico`.
+   - Remove the old landing page's files from the root (`index.html`, `assets/`, `privacy/`)
+     once `/privacy/` exists in the new site. Decide whether `public/prototypes/` ships.
 10. **Samwise previews.** Set up 2026-09-25 ([docs/PREVIEW.md](docs/PREVIEW.md)). Pushing `rebuild`
     to `samwise` publishes https://rl.rblt.io/; the task 4 prototype is at
     `/prototypes/sunset-scroll/`. Done when RJ opens all three previews on his phone.
