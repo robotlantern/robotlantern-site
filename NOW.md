@@ -55,8 +55,9 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    - Done 2026-09-27: 404 page, `robots.txt`, `/sitemap.xml`.
    - Brand assets (RJ's separate task): favicon, Apple touch icon, and a social-card image with
      Open Graph tags. Until then every page requests a missing `/favicon.ico`.
-   - Remove the old landing page's files from the root (`index.html`, `assets/`, `privacy/`)
-     once `/privacy/` exists in the new site. Decide whether `public/prototypes/` ships.
+   - Done 2026-09-27: removed the old landing page's files from the root (`index.html`,
+     `script.js`, `styles.css`, `assets/`, `privacy/`); they're in Git history. `CNAME` stays until
+     the host is chosen. Decide whether `public/prototypes/` ships.
 10. **Samwise previews.** Set up 2026-09-25 ([docs/PREVIEW.md](docs/PREVIEW.md)). Pushing `rebuild`
     to `samwise` publishes https://rl.rblt.io/; the task 4 prototype is at
     `/prototypes/sunset-scroll/`. Done when RJ opens all three previews on his phone.
