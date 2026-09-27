@@ -95,6 +95,13 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     and `photo/` again. Open: ESA's non-commercial licence for the Hipparcos and Gaia data on
     a site that also has a shop (task 13's notes). Done when RJ checks it on his phone.
 
+16. **Brand mark.** Started 2026-09-27 ([docs/BRAND.md](docs/BRAND.md)). One mark for the
+    logo, the favicon and the motif (nav stars, the card-drawing star), replacing the period
+    with an asymmetric, skewed spark. Materials in `design/brand/`: six spark concepts at
+    favicon sizes, wordmark lockups (one line; stacked left, centered, right), and every Google
+    Fonts asterisk (512 distinct shapes). RJ is working on the shape. Done when RJ picks a mark;
+    then the favicon, touch icon and social card follow (task 9's checklist).
+
 ## Open decisions (RJ)
 
 One list, so they can be answered in one sitting. Details and sources for the legal ones are in
@@ -227,3 +234,5 @@ One list, so they can be answered in one sitting. Details and sources for the le
   `.private/privacy/`.
 - 2026-09-27: Added the footer pages (About with the cast; privacy, terms and credits being
   drafted), and embedded The Sky, Unprojected as the first build.
+- 2026-09-27: RJ's section marks in the nav; the comet glides. Brand exploration started (task 16):
+  spark concepts, wordmark lockups, and a sheet of every Google Fonts asterisk.
