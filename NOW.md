@@ -106,7 +106,10 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     logo, the favicon and the motif (nav stars, the card-drawing star), replacing the period
     with an asymmetric, skewed spark. Materials in `design/brand/`: six spark concepts at
     favicon sizes, wordmark lockups (one line; stacked left, centered, right), and every Google
-    Fonts asterisk (512 distinct shapes). RJ is working on the shape. Done when RJ picks a mark;
+    Fonts asterisk (512 distinct shapes). RJ chose a direction on 2026-09-27: the eclipse (the
+    period is the moon, a frozen frame of its corona is the mark); prototype at
+    `/prototypes/eclipse/`. Next: RJ freezes a frame he likes; then the home page's comet becomes
+    the sun and the mark collapses into the menu button (docs/HOME.md, "Open"). Done when RJ picks a mark;
     then the favicon, touch icon and social card follow (task 9's checklist).
 
 ## Open decisions (RJ)

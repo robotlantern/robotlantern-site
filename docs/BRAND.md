@@ -32,6 +32,23 @@ Ways to make it ownable:
   shape standing still.
 - **Avoid:** the four-point sparkle (reads as AI), and orange radiating bursts (reads as Claude).
 
+## The eclipse (RJ's direction, 2026-09-27)
+
+Keep the period, and make it the moon. On the home page the comet is the sun, and the arc it
+travels is the ecliptic, not a tail. As it slides behind the disc there's a diamond ring (one
+bead of sunlight on the rim), then totality: the disc goes dark and the corona pulses around
+it, always outside the rim. The mark is a frozen frame of the corona: a period a few frames into
+becoming an asterisk. The light sits around a solid disc instead of bursting from a point, which
+keeps it apart from sparkles and the Claude spark.
+
+Prototype: `public/prototypes/eclipse/` (https://rl.rblt.io/prototypes/eclipse/). A timeline,
+a reshuffle for new coronas (each has a seed), a "corona reach" slider for how far the frozen
+mark's corona extends, and downloads of the frozen frame as glow, flat (two tones and the disc)
+and one-color SVG. It shows the flat mark at 64, 32 and 16 px and as the wordmark's period.
+The path can't follow the true ecliptic in RJ's photo: the sun must end on the period, whose
+screen position doesn't track the photo's crop. The real ecliptic could still be drawn in the
+sky by plate-solving the night photo.
+
 ## Tests for any candidate
 
 - Reads at 16 px as a favicon, in one colour, on light and dark.
