@@ -1,6 +1,6 @@
 ---
 // Chat page: reads like a chat app (docs/PAGES.md). A list of chats beside it (a drawer on
-// phones), a small sticky title, and a column of dashes on the left for position.
+// phones), a small sticky title, and faint dashes on the right for position.
 import fs from 'node:fs';
 import { getCollection } from 'astro:content';
 import 'katex/dist/katex.min.css';
@@ -92,7 +92,7 @@ const names = speakers.map((s) => s.name).join(' and ');
   .chats__list-head :global(.icon) { width: 1.2rem; height: 1.2rem; }
   .chats__close, .chats__backdrop, .chat__menu { display: none; }
 
-  .chat { --pad-left: calc(var(--edge) + 1.2rem); min-width: 0; padding: 0 var(--edge) 0 var(--pad-left); }
+  .chat { --pad-left: var(--edge); min-width: 0; padding: 0 var(--edge) 0 var(--pad-left); }
   .chat__column { max-width: 46rem; margin-inline: auto; }
 
   /* The small title stays at the top once the big one scrolls away. */
@@ -146,12 +146,12 @@ const names = speakers.map((s) => s.name).join(' and ');
   .prose :global(details.collapsed summary) { cursor: pointer; color: var(--faint); font: 700 .68rem/2 var(--sans); letter-spacing: .1em; text-transform: uppercase; }
   .prose :global(details.collapsed summary:hover) { color: var(--text); }
 
-  /* Position: dashes along the left edge of the chat, colored by speaker. */
-  .dashes { position: fixed; z-index: 7; left: var(--list); top: calc(50% + 1.6rem); display: flex; flex-direction: column; align-items: flex-start; gap: 3px; width: 2rem; padding: .5rem 0; transform: translateY(-50%); cursor: pointer; touch-action: none; opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s; }
+  /* Position: faint dashes along the right edge, colored by speaker. */
+  .dashes { position: fixed; z-index: 7; right: 0; top: calc(50% + 1.6rem); display: flex; flex-direction: column; align-items: flex-end; gap: 3px; width: 2rem; padding: .5rem 0; transform: translateY(-50%); cursor: pointer; touch-action: none; opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s; }
   /* The dashes appear once the title is under the bar, so they never cross the header. */
   .chats.is-stuck .dashes { opacity: 1; visibility: visible; }
   .dashes:focus-visible { outline-offset: 0; }
-  .dashes :global(i) { display: block; width: 6px; height: 3px; border-radius: 0 2px 2px 0; }
+  .dashes :global(i) { display: block; width: 6px; height: 3px; border-radius: 2px 0 0 2px; }
   .dashes :global(i.human) { background: var(--bubble-human); }
   .dashes :global(i.ai) { background: var(--ai); }
 
@@ -164,8 +164,7 @@ const names = speakers.map((s) => s.name).join(' and ');
     .chats__close :global(.icon) { width: 1.1rem; height: 1.1rem; }
     .chat__menu { display: grid; place-items: center; flex: none; width: 2.5rem; height: 2.5rem; margin-left: -.5rem; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--text); cursor: pointer; }
     .chat__menu :global(.icon) { width: 1.5rem; height: 1.5rem; }
-    .chat { --pad-left: calc(var(--edge) + .6rem); }
-    .dashes { left: 0; }
+    .chat { --pad-left: var(--edge); padding-right: calc(var(--edge) + .5rem); }
     .msg--human .msg__body { max-width: 88%; }
   }
 </style>
@@ -247,7 +246,7 @@ const names = speakers.map((s) => s.name).join(' and ');
       const s = dashes[j].el.style;
       s.width = `${6 + 16 * g}px`;
       s.height = `${3 + 3 * g}px`;
-      s.opacity = String(0.4 + 0.5 * g);
+      s.opacity = String(0.2 + 0.3 * g);
     }
     col.setAttribute('aria-valuenow', String(Math.round((scrollY / maxScroll()) * 100)));
   };
