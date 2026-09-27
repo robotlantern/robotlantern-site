@@ -5,9 +5,9 @@ import Base from '../layouts/Base.astro';
 
 type Member = { name: string; what: string; line: string; icon: string };
 const cast: Member[] = [
-  { name: 'Sarcean', what: 'MacBook Pro', line: 'The workstation. Everything here is written, built and argued over on it first.', icon: 'laptop' },
-  { name: 'Samwise', what: 'Raspberry Pi 5', line: 'The home server. It carries the previews, the media and the house’s services on a 2 TB drive, and doesn’t complain.', icon: 'pi' },
-  { name: 'Scout', what: '2013 MacBook Air', line: 'Revived with a new drive and sent ahead to run agents. Lives on Wi-Fi.', icon: 'wedge' },
+  { name: 'Sarcean', what: 'MacBook Pro', line: 'The workstation. Everything starts here.', icon: 'laptop' },
+  { name: 'Samwise', what: 'Raspberry Pi 5', line: 'The home server. Carries the previews, the media and the house’s services, and doesn’t complain.', icon: 'pi' },
+  { name: 'Scout', what: '2013 MacBook Air', line: 'Revived with a new drive and sent ahead to run agents on its own.', icon: 'wedge' },
   { name: 'InkBot Alpha, Beta and Delta', what: 'Printers', line: 'Ink on paper, three ways.', icon: 'αβδ' },
   { name: 'MeltBot', what: '3D printer', line: 'Melts plastic into shapes, one layer at a time.', icon: 'melt' },
   { name: 'CutBot', what: 'Cricut', line: 'Cuts shapes out of flat things.', icon: 'cut' },
@@ -17,12 +17,13 @@ const cast: Member[] = [
   <main class="reading about">
     <h1>About</h1>
     <div class="prose">
-      <p>Robot Lantern is RJ’s workshop, in public. <a href="/thoughts/">Thoughts</a> are essays. <a href="/chats/">Chats</a> are conversations with AI models that are worth reading on their own. <a href="/builds/">Builds</a> are interactive projects, and the <a href="/shop/">shop</a> sells prints made from Robot Lantern’s art.</p>
-      <p>Much of it is written with AI models, and every piece says so: essays show who wrote which words, and chats show who said what. The people and models who write here are on the <a href="/authors/">authors</a> page.</p>
+      <p>Robot Lantern is where RJ works in public: one person and a handful of machines, making writing, software and art with AI, and showing the work.</p>
+      <p><a href="/thoughts/">Thoughts</a> are essays. <a href="/chats/">Chats</a> are conversations with AI models, published when they’re worth reading on their own. <a href="/builds/">Builds</a> are things you can use in the browser. The <a href="/shop/">shop</a> sells prints.</p>
+      <p>Everything here is made with AI, and every piece says how. Essays mark who wrote which words, chats show who said what, and builds link to the chat they came from. The people and models behind it are on the <a href="/authors/">authors</a> page.</p>
     </div>
 
     <h2>The cast</h2>
-    <p class="lede">The machines that make Robot Lantern have names.</p>
+    <p class="lede">The machines have names. There’s a practical reason, which is a future essay.</p>
     <ul class="cast">
       {cast.map((m) => (
         <li>

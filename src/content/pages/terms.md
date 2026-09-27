@@ -4,7 +4,7 @@ description: The ground rules for reading, sharing and buying from Robot Lantern
 updated: 2026-09-27
 ---
 
-Robot Lantern is a small publishing site with a shop, run by Robot Lantern LLC [TBD: state where the LLC is organized]. Using the site means you accept these terms.
+Robot Lantern is a small publishing site with a shop, run by Robot Lantern LLC, a West Virginia company. Using the site means you accept these terms.
 
 ## Who runs this
 
@@ -18,7 +18,7 @@ That license doesn't cover:
 
 - the art and product designs in the shop,
 - the Robot Lantern name and lantern wordmark,
-- photos, unless a page says they're included [DECIDE],
+- photos, unless a page says they're included [DECIDE: recommended all rights reserved],
 - anything credited to someone else on [Credits & licenses](/credits/), such as the astronomy data in The Sky, Unprojected, which comes with its own terms.
 
 Text written by an AI model may not be protected by copyright at all. The license covers what Robot Lantern holds rights in: the human-written words and the selection, arrangement and editing of the rest. It doesn't claim more.
@@ -30,7 +30,7 @@ Much of this site is made with AI models, and every piece says how.
 - **Thoughts (essays)** are written by RJ with AI models. Under each title, the site shows who wrote the piece and in what share, measured character by character, and a switch highlights which words came from whom.
 - **Chats** are real conversations with AI chat apps. Each is a selected stretch of a real transcript, published as it happened. The only changes are redactions for privacy, shown in [brackets]; editor's notes, which are marked; and reference links added by the editor, which are marked too. Typos, hedges and mistakes stay in. The model named is the one the app showed at the time.
 - **Builds** and the site's own code are written with help from AI coding tools.
-- **Shop** art: [TBD: say whether and how AI tools were used for each design.]
+- **Shop** art is made with AI image tools.
 
 ## Accuracy, and not advice
 
@@ -60,4 +60,4 @@ We may update these terms as the site grows. The date at the top shows when they
 
 ## Governing law
 
-These terms are governed by the laws of [TBD: state], USA, without regard to its conflict-of-law rules.
+These terms are governed by the laws of West Virginia, USA, without regard to its conflict-of-law rules.

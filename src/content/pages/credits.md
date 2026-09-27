@@ -8,13 +8,13 @@ Robot Lantern is built from RJ's writing and photos, conversations with AI model
 
 ## The writing
 
-[DECIDE: license] Unless a page says otherwise, the essays and chats are © Robot Lantern LLC [DECIDE: Robot Lantern LLC or RJ] and licensed under [Creative Commons Attribution-NonCommercial 4.0 International](https://creativecommons.org/licenses/by-nc/4.0/) (CC BY-NC 4.0). To credit a piece, give its title, "Robot Lantern", a link to the page and a link to the license, and say if you changed it.
+[DECIDE: license] Unless a page says otherwise, the essays and chats are © Robot Lantern LLC and licensed under [Creative Commons Attribution-NonCommercial 4.0 International](https://creativecommons.org/licenses/by-nc/4.0/) (CC BY-NC 4.0). To credit a piece, give its title, "Robot Lantern", a link to the page and a link to the license, and say if you changed it.
 
 Parts of the essays and chats were written by AI models: ChatGPT (OpenAI) so far. Each essay shows who wrote which words, and each chat shows who said what. Text written by a model may not be protected by copyright; the license covers the human-written text and the selection, arrangement and editing of the whole. See [Terms](/terms/) for what the license doesn't cover.
 
 ## Photos and images
 
-- **RJ's photos.** The starry sky on the home page, the treeline [TBD: confirm it was cut from RJ's sunset photo], the home page's sunset colors (from another of his photos), the photos in "It's Always the Pleiades", and the sky photo at the center of The Sky, Unprojected were taken by RJ. © Robot Lantern LLC [DECIDE: all rights reserved, or included in the CC BY-NC license].
+- **RJ's photos.** The starry sky on the home page, the treeline (cut from his sunset photo), the home page's sunset colors (from another of his photos), the photos in "It's Always the Pleiades", and the sky photo at the center of The Sky, Unprojected were taken by RJ. © Robot Lantern LLC [DECIDE: all rights reserved, or included in the CC BY-NC license].
 - **The annotated sky photo** in "It's Always the Pleiades" is RJ's photo with labels added by ChatGPT, published as ChatGPT returned it.
 - **The generated image** in "It's Always the Pleiades", a night sky seen from a planet in the Pleiades, was made by ChatGPT (OpenAI) during the conversation and is shown as it appeared there.
 - **The compass screenshot** in the same chat is from RJ's phone.
@@ -35,7 +35,7 @@ The interactive at [/builds/the-sky-unprojected/](/builds/the-sky-unprojected/) 
 
 Gaia Collaboration, Prusti et al. 2016, "The Gaia mission", A&A 595, A1. Gaia Collaboration, Vallenari et al. 2023, "Gaia Data Release 3: Summary of the content and survey properties", A&A 674, A1.
 
-The ESA data is used here non-commercially: the interactive is free, carries no ads and isn't sold, and none of this data goes into anything in the shop. Anyone reusing it commercially needs ESA's permission. [DECIDE: update once ESA replies; see the notes.]
+The ESA data is used here non-commercially: the interactive is free, carries no ads and isn't sold, and none of this data goes into anything in the shop. Anyone reusing it commercially needs ESA's permission.
 
 **Open cluster distances.** Hunt & Reffert 2023, "Improving the open cluster census. II. An all-sky cluster catalogue with Gaia DR3", A&A 673, A114, via VizieR (J/A+A/673/A114). These values derive from Gaia DR3.
 
@@ -76,7 +76,7 @@ The ESA data is used here non-commercially: the interactive is free, carries no 
 - [unified](https://unifiedjs.com), remark-parse, remark-gfm, remark-math, remark-rehype, rehype-raw, rehype-katex, rehype-stringify and hast-util-to-html, from the unified collective, MIT License.
 - [yaml](https://eemeli.org/yaml/) by Eemeli Aro, ISC License.
 
-**Services:** the shop runs on Shopify, and Gelato prints and ships orders. [TBD: hosting, chosen at launch.]
+**Services:** the shop runs on Shopify, and Gelato prints and ships orders. The site is hosted by Cloudflare.
 
 ## AI models
 

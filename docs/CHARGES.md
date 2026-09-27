@@ -138,6 +138,24 @@ Gelato product as a real Gelato order** unless one of these is in place first:
 
 In both cases, use Shopify Payments test mode or the test gateway, never a real card.
 
+## Cloudflare (hosting from cutover)
+
+Not re-checked for billing detail; confirm on Cloudflare's pricing pages before turning anything on.
+
+| Action | Cost |
+| --- | --- |
+| Pages, or Workers static assets, for the site | Free: 500 builds a month, 20,000 files and 25 MiB per file per deploy, no bandwidth limit for static files (checked 2026-09-27) |
+| Moving the domain's nameservers to Cloudflare, DNS | Free |
+| Workers requests that run code (for example the counted short links, NOW.md task 17) | Free up to 100,000 a day; the paid plan is a monthly fee |
+| R2 storage (large files, later) | Free up to 10 GB and 1M writes / 10M reads a month; downloads free. Needs a card on file, so going over bills automatically: add a spending check before turning it on |
+| Web Analytics, Bot Fight Mode | Free, but they break the privacy page's claims (NOW.md, task 9) |
+
+## Other services
+
+| Action | Cost |
+| --- | --- |
+| Northwest Registered Agent address as the shop's public address | Check the plan: mail handling or forwarding may be a paid add-on |
+
 ## Sources
 
 Shopify, checked 2026-09-23:

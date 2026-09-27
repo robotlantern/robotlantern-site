@@ -4,8 +4,7 @@ description: What robotlantern.com collects (next to nothing), what the host and
 updated: 2026-09-27
 ---
 
-Robot Lantern LLC runs robotlantern.com from West Virginia, USA. [TBD: state where the LLC is
-organized.] This page says what happens to information about you when you use the site, email
+Robot Lantern LLC, a West Virginia company, runs robotlantern.com. This page says what happens to information about you when you use the site, email
 us or buy something. If anything here is unclear, write to
 [admin@robotlantern.com](mailto:admin@robotlantern.com).
 
@@ -24,20 +23,18 @@ work the same way. Nothing is saved in your browser.
 
 ## The web host
 
-The site is hosted on [TBD at launch: GitHub Pages, run by GitHub, or Cloudflare Pages, run by
-Cloudflare]. Like any web host, it records technical details of each visit, such as your IP
+The site is hosted by Cloudflare. Like any web host, it records technical details of each visit, such as your IP
 address, your browser and device type, the page you asked for and when. It uses these records
 to deliver the site and keep it secure, and it keeps them as its own privacy statement
 describes. We don't receive those records. At most, the host shows us totals, such as how many
 requests a page got.
 
-- GitHub: [GitHub General Privacy Statement](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)
-- Cloudflare: [Cloudflare Privacy Policy](https://www.cloudflare.com/privacypolicy/)
+See the [Cloudflare Privacy Policy](https://www.cloudflare.com/privacypolicy/).
 
 ## Email
 
 If you email [admin@robotlantern.com](mailto:admin@robotlantern.com), we get your address and
-whatever you write. We use it to reply, and we don't add you to any list. Messages stay in the mailbox, which is hosted by [TBD: confirm Google Workspace], until
+whatever you write. We use it to reply, and we don't add you to any list. Messages stay in the mailbox, which is hosted by Google Workspace, until
 we delete them or you ask us to.
 
 ## The shop
@@ -52,12 +49,13 @@ When you go to checkout, you leave robotlantern.com for pages run by Shopify.
   some of this data for its own purposes, such as fraud prevention and Shop Pay.
 - **We** see the order in Shopify: your name, email, shipping address and what you bought. We
   use it to fulfil the order, answer questions about it, handle returns and keep the business
-  records the law requires. [TBD: how long order records are kept, e.g. seven years for tax.]
+  records the law requires. We keep order records for seven years, for tax and
+  accounting.
 - **Gelato** gets your name, shipping address and the items so it can make and ship them. It may
   pass these to the print facility and delivery carrier that handle your order. See
   [Gelato's privacy policy](https://www.gelato.com/legal/privacy).
 
-We don't send marketing email. [TBD: confirm the marketing opt-in is off in Shopify's checkout.]
+We don't send marketing email.
 Refunds, shipping and the terms of sale are covered by the store policies shown at checkout.
 [TBD: link the Shopify policy pages once they exist.]
 
@@ -90,37 +88,14 @@ If this policy changes, the date at the top changes with it.
 
 ## Robot Lantern Uploader
 
-Robot Lantern Uploader (the "App") is a private tool operated by Robot Lantern LLC. It has one
-job: uploading videos to YouTube channels owned by the person who runs it. **The App uses
-YouTube API Services.** It isn't offered to the public, and it has no accounts, sign-ups or
-customers. By using the App, you agree to be bound by the
-[YouTube Terms of Service](https://www.youtube.com/t/terms). Google's handling of your data is
-covered by the [Google Privacy Policy](http://www.google.com/policies/privacy).
+Robot Lantern Uploader (the "App") is a private tool that Robot Lantern LLC uses to upload videos
+to its own YouTube channels. It isn't offered to anyone else. **The App uses YouTube API
+Services**, so using it means agreeing to the [YouTube Terms of Service](https://www.youtube.com/t/terms),
+and Google's handling of data is covered by the
+[Google Privacy Policy](http://www.google.com/policies/privacy).
 
-**What the App accesses.** When its operator signs in with Google, the App asks for one
-permission, the YouTube upload scope (`https://www.googleapis.com/auth/youtube.upload`). That
-lets the App upload videos and set their title, description and visibility on the channel the
-operator chose. It can't read your watch history, comments, subscriptions or private videos.
-
-**What the App stores.** The App stores an OAuth refresh token so the operator doesn't have to
-sign in for every upload. The token is kept in a restricted file on the operator's own
-computer. The App collects, copies and retains no other Google user data. It sets no cookies,
-uses no tracking technology, and shows no ads or third-party content.
-
-**Sharing.** Robot Lantern LLC doesn't sell, rent or share Google user data with anyone, and
-doesn't use it for advertising or to train any machine-learning model. The only data the App
-sends anywhere is the video and its details, to YouTube, at the operator's direction. The App's
-use and transfer of information received from Google APIs will adhere to the
-[Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy),
-including the Limited Use requirements.
-
-**Revoking access and deleting data.** You can revoke the App's access at any time in Google's
-security settings at
-[https://security.google.com/settings/security/permissions](https://security.google.com/settings/security/permissions).
-To have the App's stored data deleted, revoke access there or email
-[admin@robotlantern.com](mailto:admin@robotlantern.com). The token file is deleted within 7
-days. Deleting the App's data doesn't remove anything from YouTube. To delete videos you
-uploaded, use YouTube Studio or another YouTube app that can delete them.
-
-**Contact.** Questions or complaints about the App's privacy practices go to
-[admin@robotlantern.com](mailto:admin@robotlantern.com).
+The App asks Google for one permission, uploading videos
+(`https://www.googleapis.com/auth/youtube.upload`), and keeps the sign-in token on its operator's
+own computers. It doesn't sell or share Google user data, or use it for advertising. Access can be
+revoked at any time in [Google's security settings](https://security.google.com/settings/security/permissions).
+Questions: [admin@robotlantern.com](mailto:admin@robotlantern.com).

@@ -16,7 +16,8 @@ essays, conversations, interactives and products.
 - **Chats (conversations).** A selected section of a real transcript that's interesting in its
   own right (star talk, not copyediting). Each one stands alone and reads like a chat app. A chat
   may link to an essay but doesn't have to.
-- **Builds (interactives).** Interactive project pages, such as the Celebration Clock.
+- **Builds (interactives).** Things you can use in the browser, each running full screen, such
+  as The Sky, Unprojected.
 - **Products.** Print-on-demand items made from Robot Lantern brand art. Gelato fulfills them and
   Shopify handles checkout.
 - **Home.** A scroll from sunset into night. The top of the page uses the warm oranges of the
@@ -56,9 +57,9 @@ tasks in [NOW.md](NOW.md). Each task says where to start and when it's done.
 
 ## Hosting
 
-GitHub Pages currently serves robotlantern.com. Decide at cutover whether to stay there or move
-to Cloudflare Pages: commerce is in the first launch, and GitHub Pages' terms don't cover sites
-built mainly for commercial transactions. The build output is static either way, so switching
-hosts means changing the deploy step, not the site.
+GitHub Pages serves the old robotlantern.com until cutover. The new site moves to Cloudflare
+(decided 2026-09-27): commerce is in the first launch, and GitHub Pages' terms don't cover sites
+built mainly for commercial transactions. Cutover moves the domain's nameservers to Cloudflare
+(NOW.md, task 9). The build output is static, so the host only changes the deploy step.
 
 See [AGENTS.md](AGENTS.md) for how work happens here.

@@ -18,7 +18,8 @@ Read [README.md](README.md) for direction and [NOW.md](NOW.md) for current state
    - **Don't route around a block.** If RJ has declined a permission or a command, or a
      credential is missing, stop and ask. Don't use browser automation, computer use or
      screenshots as a workaround. Those tools are fine when they're the right tool for the job.
-   - **robotlantern.com DNS isn't on Porkbun.** RJ changes it by hand at the registrar's DNS host.
+   - **robotlantern.com DNS isn't on Porkbun.** RJ changes it by hand at the registrar's DNS host
+     until cutover moves the nameservers to Cloudflare (NOW.md, task 9).
      Prepare the exact records and hand them over.
    - **Pushing `main` deploys the live site.** Ask first. Pushing to the `samwise` remote is
      free: that's the preview ([docs/PREVIEW.md](docs/PREVIEW.md)).
@@ -36,7 +37,7 @@ Read [README.md](README.md) for direction and [NOW.md](NOW.md) for current state
 ## Branches
 
 - `main` is what's live at robotlantern.com. Until cutover, it's the old static landing page,
-  served by GitHub Pages from the branch root.
+  served by GitHub Pages from the branch root. After cutover, Cloudflare builds and serves it.
 - `rebuild` holds the new site until the first launch. Nothing from the old landing page carries
   over. It lives on Sarcean and Samwise, not GitHub, and pushing it to `samwise` updates the
   preview.
