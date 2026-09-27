@@ -266,11 +266,10 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   .comet b { position: absolute; right: 0; top: calc(var(--r) * -.6); width: var(--trail); height: calc(var(--r) * 1.2); border-radius: 99px; background: linear-gradient(to left, rgba(255, 214, 140, .85), rgba(255, 214, 140, 0)); transform-origin: 100% 50%; transform: rotate(var(--angle)); }
 
   /* The nav, as on every other page (src/layouts/Base.astro), appearing once the mark lands. */
-  .dock-nav { position: fixed; top: var(--edge); right: var(--edge); display: flex; gap: 1.4rem; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; }
+  .dock-nav { position: fixed; top: var(--edge); right: var(--edge); display: flex; gap: 1.2rem; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; }
   .docked .dock-nav { visibility: visible; }
-  .dock-nav a { display: flex; align-items: center; min-height: 2.75rem; color: #f4f1ea; text-decoration: none; font: 700 .72rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; transition: color .2s; }
-  .dock-nav a i { position: relative; display: inline-block; width: 1.9em; height: 1em; }
-  .dock-nav a .mark { position: absolute; left: 50%; top: 50%; width: 1.7rem; height: 1.7rem; transform: translate(-50%, -50%); opacity: .88; }
+  .dock-nav a { display: flex; align-items: center; min-height: 2.75rem; padding-right: 1.5em; color: #f4f1ea; text-decoration: none; font: 700 .72rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; transition: color .2s; }
+  .dock-nav .nav-label { position: relative; line-height: 1; --mark-tracking: .14em; }
   .dock-nav a:hover { color: var(--lantern); }
 
   /* Cards. Each is outlined from its star; content appears once the outline closes. */
@@ -327,9 +326,8 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
 
   @media (max-width: 600px) {
     .dock-fade { height: calc(var(--edge) + 7rem * .436 + 1.1rem + 2.75rem + 2.5rem); }
-    .dock-nav { top: calc(var(--edge) + 7rem * .436 + 1.1rem); left: var(--edge); justify-content: space-between; gap: .5rem; padding-right: .5rem; }
+    .dock-nav { top: calc(var(--edge) + 7rem * .436 + 1.1rem); left: var(--edge); justify-content: space-between; gap: .5rem; }
     .dock-nav a { font-size: .66rem; }
-    .dock-nav a .mark { width: 1.5rem; height: 1.5rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -443,7 +441,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   <div class="dock-fade" aria-hidden="true"></div>
   <div class="comet" aria-hidden="true"><b></b><i></i></div>
   <nav class="dock-nav" aria-label="Main">
-    {sections.map(([id, label]) => <a href={`/${id}/`}>{label}<i><SectionMark name={id} /></i></a>)}
+    {sections.map(([id, label]) => <a href={`/${id}/`}><span class="nav-label">{label}<SectionMark name={id} /></span></a>)}
   </nav>
 
   <script is:inline>

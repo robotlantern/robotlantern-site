@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1700 420" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:affinity="https://www.affinity.studio/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;">
+    <rect id="background" x="0" y="-1" width="1700" height="420" style="fill:rgb(14,9,24);"/>
+    <g id="thoughts">
+        <g id="thoughts-mark">
+            <g id="thoughts-star">
+                <path d="M408.1,194L340.1,194" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:8.8px;"/>
+                <path d="M391.1,164.555L357.1,223.445" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:8.8px;"/>
+                <path d="M357.1,164.555L391.1,223.445" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:8.8px;"/>
+            </g>
+        </g>
+        <g id="thoughts-mark1" affinity:id="thoughts-mark">
+            <g id="thoughts-star1" affinity:id="thoughts-star">
+                <path d="M684.895,278.67L650.895,278.67" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:4.4px;"/>
+                <path d="M676.395,263.948L659.395,293.393" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:4.4px;"/>
+                <path d="M659.395,263.948L676.395,293.393" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:4.4px;"/>
+            </g>
+        </g>
+        <g id="thoughts-mark2" affinity:id="thoughts-mark">
+            <g id="thoughts-star2" affinity:id="thoughts-star">
+                <path d="M1499.36,192.173L1486.36,192.173" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:1.68px;"/>
+                <path d="M1496.11,186.544L1489.61,197.802" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:1.68px;"/>
+                <path d="M1489.61,186.544L1496.11,197.802" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:1.68px;"/>
+            </g>
+        </g>
+        <g id="thoughts-mark3" affinity:id="thoughts-mark">
+            <g id="thoughts-star3" affinity:id="thoughts-star">
+                <path d="M1061.858,145.238L1033.858,145.238" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:3.62px;"/>
+                <path d="M1054.858,133.114L1040.858,157.362" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:3.62px;"/>
+                <path d="M1040.858,133.114L1054.858,157.362" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:3.62px;"/>
+            </g>
+        </g>
+        <g id="thoughts-mark4" affinity:id="thoughts-mark">
+            <g id="thoughts-star4" affinity:id="thoughts-star">
+                <path d="M1412.782,151.27L1381.782,151.27" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:4.01px;"/>
+                <path d="M1405.032,137.847L1389.532,164.694" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:4.01px;"/>
+                <path d="M1389.532,137.847L1405.032,164.694" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:4.01px;"/>
+            </g>
+        </g>
+        <g id="thoughts-mark5" affinity:id="thoughts-mark">
+            <g id="thoughts-star5" affinity:id="thoughts-star">
+                <path d="M1137.37,255.44L1106.37,255.44" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:4.01px;"/>
+                <path d="M1129.62,242.017L1114.12,268.864" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:4.01px;"/>
+                <path d="M1114.12,242.017L1129.62,268.864" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:4.01px;"/>
+            </g>
+        </g>
+        <g id="thoughts-mark6" affinity:id="thoughts-mark">
+            <g id="thoughts-star6" affinity:id="thoughts-star">
+                <path d="M1486.168,296.762L1465.56,296.762" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:2.67px;"/>
+                <path d="M1481.016,287.839L1470.712,305.686" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:2.67px;"/>
+                <path d="M1470.712,287.839L1481.016,305.686" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:2.67px;"/>
+            </g>
+        </g>
+        <g id="thoughts-mark7" affinity:id="thoughts-mark">
+            <g id="thoughts-star7" affinity:id="thoughts-star">
+                <path d="M1137.035,171.941L1116.427,171.941" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:2.67px;"/>
+                <path d="M1131.883,163.018L1121.579,180.865" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:2.67px;"/>
+                <path d="M1121.579,163.018L1131.883,180.865" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:2.67px;"/>
+            </g>
+        </g>
+        <g id="thoughts-mark8" affinity:id="thoughts-mark">
+            <g id="thoughts-star8" affinity:id="thoughts-star">
+                <path d="M759.895,168.34L715.895,168.34" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:5.69px;"/>
+                <path d="M748.895,149.288L726.895,187.393" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:5.69px;"/>
+                <path d="M726.895,149.288L748.895,187.393" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:5.69px;"/>
+            </g>
+        </g>
+        <g id="thoughts-mark9" affinity:id="thoughts-mark">
+            <g id="thoughts-star9" affinity:id="thoughts-star">
+                <path d="M1395.941,253.377L1371.941,253.377" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:3.11px;"/>
+                <path d="M1389.941,242.985L1377.941,263.769" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:3.11px;"/>
+                <path d="M1377.941,242.985L1389.941,263.769" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:3.11px;"/>
+            </g>
+        </g>
+        <text id="thoughts-label" x="73.304px" y="225.2px" style="font-family:'Helvetica';font-size:42.2px;fill:white;stroke:white;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:2;">T<tspan x="101.571px 134.537px 169.851px 202.816px 238.131px 271.096px 299.363px " y="225.2px 225.2px 225.2px 225.2px 225.2px 225.2px 225.2px ">HOUGHTS</tspan></text>
+        <path d="M78.666,257.65L78.35,254.666L86.052,253.85L86.368,256.834L78.666,257.65ZM102.26,255.15L101.944,252.166L111.219,251.184L111.536,254.167L102.26,255.15ZM111.698,254.15L111.382,251.166L123.802,249.85L124.119,252.834L111.698,254.15ZM140.01,251.15L139.694,248.166L148.969,247.184L149.285,250.167L140.01,251.15ZM149.448,250.15L149.132,247.166L161.552,245.85L161.869,248.834L149.448,250.15ZM177.76,247.15L177.444,244.166L186.719,243.184L187.035,246.167L177.76,247.15ZM187.197,246.15L186.881,243.166L199.302,241.85L199.618,244.834L187.197,246.15ZM215.51,243.15L215.194,240.166L224.469,239.184L224.785,242.167L215.51,243.15ZM224.947,242.15L224.631,239.166L237.052,237.85L237.368,240.834L224.947,242.15ZM253.26,239.15L252.944,236.166L262.219,235.184L262.535,238.167L253.26,239.15ZM262.698,238.15L262.382,235.166L274.802,233.85L275.119,236.834L262.698,238.15ZM291.01,235.15L290.694,232.166L299.969,231.184L300.285,234.167L291.01,235.15ZM300.448,234.15L300.132,231.166L312.553,229.85L312.869,232.834L300.448,234.15ZM328.76,231.15L328.444,228.166L337.719,227.184L338.035,230.167L328.76,231.15ZM338.198,230.15L337.881,227.166L350.302,225.85L350.618,228.834L338.198,230.15ZM366.51,227.15L366.194,224.166L375.469,223.184L375.785,226.167L366.51,227.15ZM375.948,226.15L375.632,223.166L383.334,222.35L383.65,225.334L375.948,226.15Z" style="fill:white;fill-opacity:0.1;"/>
+    </g>
+    <g id="chats">
+        <text id="chats-label" x="552.335px" y="233.31px" style="font-family:'Helvetica';font-size:49.135px;fill:white;stroke:white;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:2;">C<tspan x="590.718px 629.101px 661.15px 694.062px " y="233.31px 233.31px 233.31px 233.31px ">HATS</tspan></text>
+        <path id="chats-outline" d="M733.709,259.343C718.821,275.87 696.287,283.4 674.453,279.144C640.305,272.487 617.683,238.909 624.34,204.76C630.997,170.611 664.575,147.989 698.724,154.646C732.872,161.303 755.495,194.882 748.837,229.03C746.64,240.305 741.419,250.773 733.737,259.313" style="fill:none;fill-rule:nonzero;stroke:white;stroke-opacity:0.1;stroke-width:3.92px;stroke-linecap:square;stroke-miterlimit:1;stroke-dasharray:11.769,23.538,7.846,3.923,0,0;"/>
+        <path d="M1011.508,229.446L1009.112,231.251L998.011,216.512L997.95,212.986L1002.627,206.31L1005.084,208.031L1000.407,214.707L1011.508,229.446ZM1013.462,196.071L1011.005,194.35L1026.269,172.562L1028.726,174.283L1013.462,196.071ZM1037.105,162.323L1034.648,160.602L1045.235,145.489L1048.57,144.342L1056.364,146.727L1055.486,149.595L1047.692,147.21L1037.105,162.323ZM1069.45,153.868L1070.328,150.999L1095.766,158.783L1094.889,161.652L1069.45,153.868ZM1108.853,165.925L1109.73,163.056L1127.375,168.455L1129.497,171.272L1129.637,179.422L1126.637,179.473L1126.497,171.324L1108.853,165.925ZM1126.889,194.074L1129.888,194.023L1130.346,220.621L1127.347,220.673L1126.889,194.074ZM1127.598,235.274L1130.598,235.222L1130.915,253.672L1128.892,256.56L1121.185,259.212L1120.209,256.375L1127.916,253.723L1127.598,235.274ZM1106.4,261.126L1107.376,263.963L1082.221,272.618L1081.245,269.781L1106.4,261.126ZM1067.436,274.532L1068.412,277.369L1050.964,283.372L1047.592,282.34L1042.688,275.83L1045.084,274.025L1049.988,280.535L1067.436,274.532ZM1036.299,262.36L1033.902,264.165L1017.897,242.915L1020.294,241.111L1036.299,262.36Z" style="fill:white;fill-opacity:0.1;"/>
+        <path d="M1405.13,258.027L1403.755,260.693L1384.269,250.646L1382.66,247.661L1383.648,238.405L1386.631,238.724L1385.644,247.979L1405.13,258.027ZM1388.671,219.6L1385.688,219.282L1389.001,188.226L1391.984,188.545L1388.671,219.6ZM1394.024,169.421L1391.041,169.103L1393.367,147.303L1397.725,144.955L1405.998,149.22L1404.623,151.887L1396.35,147.621L1394.024,169.421ZM1421.717,160.7L1423.092,158.034L1450.851,172.347L1449.476,175.014L1421.717,160.7ZM1466.569,183.827L1467.944,181.161L1487.43,191.208L1489.038,194.193L1488.051,203.449L1485.068,203.13L1486.055,193.875L1466.569,183.827ZM1483.028,222.254L1486.011,222.572L1482.698,253.628L1479.715,253.31L1483.028,222.254ZM1477.674,272.433L1480.657,272.751L1478.332,294.551L1473.974,296.9L1465.701,292.634L1467.076,289.967L1475.349,294.233L1477.674,272.433ZM1449.982,281.154L1448.607,283.82L1420.848,269.507L1422.223,266.841L1449.982,281.154Z" style="fill:white;fill-opacity:0.1;"/>
+    </g>
+    <g id="builds">
+        <text id="builds-label" x="941.622px" y="222.2px" style="font-family:'Helvetica';font-size:42.2px;fill:white;stroke:white;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:2;">B<tspan x="972.259px 1005.224px 1019.438px 1045.398px 1078.363px " y="222.2px 222.2px 222.2px 222.2px 222.2px ">UILDS</tspan></text>
+    </g>
+    <g id="shop">
+        <text id="shop-label" x="1350.447px" y="225.2px" style="font-family:'Helvetica';font-size:42.2px;fill:white;stroke:white;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:2;">S<tspan x="1381.084px 1414.049px 1449.363px " y="225.2px 225.2px 225.2px ">HOP</tspan></text>
+    </g>
+</svg>

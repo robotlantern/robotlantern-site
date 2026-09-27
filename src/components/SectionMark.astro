@@ -1,55 +1,54 @@
 ---
-// A section's mark in the nav (docs/HOME.md, "Section marks"): a dashed shape with one bright
-// star on it, sized to sit behind the character cell after the section's name. Thoughts is
-// the star alone, as an asterisk. Each outline starts at its star and has the same number of
-// dashes (pathLength), so all four share one rhythm.
+// A section's mark in the nav, drawn by RJ in Affinity (design/asterisms/section-marks-scratch-rj.svg,
+// docs/HOME.md "Section marks"). Stars count up: Thoughts one, Chats a binary pair on a ring,
+// Builds three on a pentagon, Shop four on a tilted diamond. Thoughts' star trails a dashed line
+// from the start of the word.
+//
+// Geometry is in em of the label's font size, measured from the end of the word (x) and the middle
+// of the capitals (y), so the mark scales with the label. The component goes inside the label's
+// span, which must be position: relative with line-height 1.
 interface Props { name: 'thoughts' | 'chats' | 'builds' | 'shop' }
 const { name } = Astro.props;
 
-// Shapes in a 24-unit box centered on 12,12. `star` is the vertex that carries the star.
-const polygon = (pts: number[][]) => 'M' + pts.map((p) => p.join(' ')).join('L') + 'Z';
-const pentagon = [0, 1, 2, 3, 4].map((i) => {
-  const a = (-90 + i * 72) * (Math.PI / 180);
-  return [Math.round((12 + 10 * Math.cos(a)) * 100) / 100, Math.round((12.8 + 10 * Math.sin(a)) * 100) / 100];
-});
-const q = 12 + 9 * Math.SQRT1_2; // the circle's upper-right point, where its star sits
-const p = 12 - 9 * Math.SQRT1_2;
-const shapes = {
-  // Maia, in the Pleiades: Hermes' mother.
-  chats: { d: `M${q} ${p}A9 9 0 1 1 ${q - 0.001} ${p - 0.001}`, star: [q, p] },
-  // Capella, Auriga's brightest: Erichthonius, son of Hephaestus.
-  builds: { d: polygon(pentagon), star: pentagon[0] },
-  // Aldebaran, the bull's eye: Taurus, Venus's sign, and Europa of the Phoenician traders.
-  shop: { d: polygon([[20, 12], [12, 22.5], [4, 12], [12, 1.5]]), star: [20, 12] },
+type Star = [number, number, number]; // x, y, half-width
+const marks: Record<Props['name'], { stars: Star[]; ring?: [number, number, number]; poly?: [number, number][] }> = {
+  thoughts: { stars: [[1.104, -0.379, 0.806]] },
+  chats: { ring: [-0.819, 0.026, 1.291], stars: [[0.118, -0.861, 0.448], [-1.193, 1.261, 0.346]] },
+  builds: {
+    poly: [[-2.542, 0.152], [-1.374, -1.455], [0.515, -0.841], [0.515, 1.146], [-1.374, 1.759]],
+    stars: [[-1.374, -1.455, 0.332], [0.515, -0.841, 0.244], [0.515, 1.146, 0.367]],
+  },
+  shop: {
+    poly: [[-1.943, -1.481], [0.244, -0.403], [-0.024, 2.014], [-2.216, 0.924]],
+    stars: [[-1.943, -1.481, 0.367], [0.244, -0.403, 0.154], [-0.024, 2.014, 0.244], [-2.216, 0.924, 0.284]],
+  },
 };
-const shape = name === 'thoughts' ? null : shapes[name];
-const r2 = (n: number) => Math.round(n * 100) / 100;
+const m = marks[name];
+// RJ's asterisks: three strokes at 0°, 60° and 120°, the stroke 1/7.7 of the star's width.
+const arms = [0, 60, 120].map((a) => [Math.cos((a * Math.PI) / 180), Math.sin((a * Math.PI) / 180)]);
+const f = (n: number) => Math.round(n * 1000) / 1000;
 ---
-<svg class={`mark mark--${name}`} viewBox="0 0 24 24" aria-hidden="true">
-  {shape ? (
-    <>
-      <path class="mark__line" d={shape.d} pathLength="24" />
-      <g class="mark__star" transform={`translate(${r2(shape.star[0])} ${r2(shape.star[1])})`}>
-        <circle class="mark__glow" r="3.6" />
-        <path d="M0-3.4L.7-.7 3.4 0 .7.7 0 3.4-.7.7-3.4 0-.7-.7Z" />
-      </g>
-    </>
-  ) : (
-    <g class="mark__star mark__asterisk" transform="translate(12 12)">
-      <circle class="mark__glow" r="7" />
-      {[90, 30, -30].map((a) => <line x1="0" y1="-8.5" x2="0" y2="8.5" transform={`rotate(${a})`} />)}
-    </g>
-  )}
+{name === 'thoughts' && (
+  <svg class="mark-trail" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true"><path d="M0 1L1 0" /></svg>
+)}
+<svg class={`mark mark--${name}`} viewBox="0 0 1 1" aria-hidden="true">
+  {m.ring && <circle class="mark__line mark__line--ring" cx={m.ring[0]} cy={m.ring[1]} r={m.ring[2]} />}
+  {m.poly && <path class="mark__line" d={'M' + m.poly.map((p) => p.join(' ')).join('L') + 'Z'} />}
+  {m.stars.map(([x, y, r], i) => (
+    <path class="mark__star" style={`stroke-width:${f((2 * r) / 7.7)};animation-delay:${-i * 0.9 - name.length * 0.4}s`}
+      d={arms.map(([c, s]) => `M${f(x - r * c)} ${f(y - r * s)}L${f(x + r * c)} ${f(y + r * s)}`).join('')} />
+  ))}
 </svg>
 
 <style>
-  .mark { display: block; overflow: visible; color: inherit; }
-  .mark__line { fill: none; stroke: currentColor; stroke-width: 1.3; stroke-dasharray: 1 1; stroke-linecap: butt; opacity: .85; }
-  .mark__star { fill: currentColor; animation: mark-twinkle 3.2s ease-in-out infinite alternate; }
-  .mark__glow { fill: currentColor; opacity: .18; }
-  .mark__asterisk line { stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
-  .mark--chats .mark__star { animation-delay: -.8s; }
-  .mark--builds .mark__star { animation-delay: -1.9s; }
-  .mark--shop .mark__star { animation-delay: -2.7s; }
-  @keyframes mark-twinkle { from { opacity: .55; } to { opacity: 1; } }
+  /* Anchored at the end of the word (less the trailing letter-spacing) and the middle of its box. */
+  .mark { position: absolute; left: calc(100% - var(--mark-tracking, 0em)); top: 50%; width: 1em; height: 1em; overflow: visible; pointer-events: none; }
+  .mark__line { fill: none; stroke: currentColor; stroke-width: .071; stroke-dasharray: .71 .43; stroke-linecap: square; opacity: var(--mark-line, .1); }
+  /* Chats' ring keeps RJ's own rhythm: long dash, long gap, short dash, short gap. */
+  .mark__line--ring { stroke-width: .08; stroke-dasharray: .24 .48 .16 .08; }
+  .mark__star { fill: none; stroke: currentColor; stroke-linecap: round; animation: mark-twinkle 3.2s ease-in-out infinite alternate; }
+  /* The trail runs from under the start of the word up to the star. */
+  .mark-trail { position: absolute; left: .13em; width: calc(100% - var(--mark-tracking, 0em) - .13em + 1.33em); top: .83em; height: .77em; overflow: visible; pointer-events: none; }
+  .mark-trail path { fill: none; stroke: currentColor; stroke-width: .071em; stroke-dasharray: .52em .38em; vector-effect: non-scaling-stroke; opacity: var(--mark-line, .1); }
+  @keyframes mark-twinkle { from { opacity: .6; } to { opacity: 1; } }
 </style>

@@ -80,17 +80,16 @@ The content is a network, and the navigation uses a constellation metaphor.
 
 ## Open
 
-- **Section marks (decided 2026-09-27; NOW.md task 12).** Each nav label is followed by a
-  mark, centered on the character cell after the word and larger than it: THOUGHTS + an
-  asterisk, CHATS + a circle, BUILDS + a pentagon, SHOP + a diamond. The shapes are dashed, with
-  the same number of dashes each, and slightly dimmer than the white label. Each shape has one
-  bright, twinkling star on a vertex, and the asterisk is itself the star. Unnamed on the page,
-  the vertex stars stand for Maia (Chats; Hermes' mother), Capella (Builds; Auriga, Erichthonius,
-  son of Hephaestus) and Aldebaran (Shop; Taurus); the myths are from memory, so check them
-  before they're ever published. This replaced star-fitted asterisms, which RJ judged
-  overfitted: no asterism is legible at icon size, and a dashed cloud and a dashed speech
-  bubble looked too alike. The square became a pentagon so it can't be mistaken for the
-  diamond turned 45 degrees.
+- **Section marks (decided 2026-09-27; NOW.md task 12).** RJ drew them in Affinity
+  (`design/asterisms/section-marks-scratch-rj.svg`). The stars count up: THOUGHTS has one large
+  asterisk with a dashed trail rising from under the word; CHATS a binary pair on a dashed ring;
+  BUILDS three stars in three sizes on a left-pointing pentagon; SHOP four on a tilted diamond
+  around the word. Lines are faint (10% white), stars bright and twinkling. Every asterisk is
+  three strokes at 0°, 60° and 120°, with the stroke 1/7.7 of its width.
+  `src/components/SectionMark.astro` holds the geometry in em from the end of each word, so it
+  scales with the label. The conversion snapped stars onto their vertices and regularized the
+  pentagon (it was within 2px). This replaced the one-star shapes, which replaced star-fitted
+  asterisms that RJ judged overfitted.
 
 - Where the navigation sits before the full map exists: beside the docked wordmark?
 - The order of cards after the first. For launch: the essay, then products.
