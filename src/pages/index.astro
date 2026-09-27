@@ -250,7 +250,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
      screen to the header's place on every other page. Without the script it stays centered. */
   /* Stacking: cards pass behind the trees, and under the header's fade, the mark and the nav. */
   .treeline, .ground { z-index: 2; }
-  .dock-fade { z-index: 3; }
+  .dock-fade, .dock-cap { z-index: 3; }
   .brand, .dock-nav { z-index: 4; }
   .comet, .comet-trail { z-index: 5; }
   .js .brand { left: 0; top: 0; margin: 0; transform-origin: 0 0; transform: translate(var(--mx, 0), var(--my, 0)) scale(var(--ms, 1)); }
@@ -262,6 +262,10 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     opacity: var(--dock, 0);
     pointer-events: none;
   }
+  /* A solid strip at the top edge once the mark has docked: iOS Safari tints its status bar
+     from a solid fixed layer touching the edge (it ignores gradients), as at the bottom. */
+  .dock-cap { position: fixed; inset: 0 0 auto; height: var(--ground); background-color: #04060d; visibility: hidden; pointer-events: none; }
+  .docked .dock-cap { visibility: visible; }
   .comet { position: fixed; left: 0; top: 0; width: 0; height: 0; visibility: hidden; pointer-events: none; }
   .comet i { position: absolute; left: calc(var(--r) * -1); top: calc(var(--r) * -1); width: calc(var(--r) * 2); height: calc(var(--r) * 2); border-radius: 50%; background: #fff6df; box-shadow: 0 0 calc(var(--r) * 1.5) var(--lantern); }
   /* The tail is the comet's own recent path, drawn as short segments that thin and fade. */
@@ -328,7 +332,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   .instant .card, .instant .card *, .instant .card::before { transition: none !important; }
 
   @media (max-width: 600px) {
-    .dock-fade { height: calc(var(--edge) + 7rem * .436 + 1.1rem + 2.75rem + 2.5rem); }
+    .dock-fade { height: calc(var(--edge) + 7rem * .436 + 1.1rem + 2.75rem + 3.5rem); background: linear-gradient(rgba(4, 6, 13, .97) 78%, rgba(4, 6, 13, 0)); }
     .dock-nav { top: calc(var(--edge) + 7rem * .436 + 1.1rem); left: var(--edge); justify-content: space-between; gap: .5rem; }
     .dock-nav a { font-size: .66rem; }
   }
@@ -442,6 +446,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   <div class="treeline" aria-hidden="true"></div>
   <div class="ground" aria-hidden="true"></div>
   <div class="dock-fade" aria-hidden="true"></div>
+  <div class="dock-cap" aria-hidden="true"></div>
   <svg class="comet-trail" aria-hidden="true"></svg>
   <div class="comet" aria-hidden="true"><i></i></div>
   <nav class="dock-nav" aria-label="Main">
