@@ -25,8 +25,8 @@ Status: RJ's direction from reviewing the first preview, 2026-09-27.
 ## Chats (conversations)
 
 - It should feel like a chat app. RJ's messages are orange speech bubbles with a tail, in a sans
-  serif. The model's replies are serif. Whether those replies are full-column text or blue
-  bubbles is still open (RJ is comparing both on the preview).
+  serif. The model's replies are full-column serif text (RJ's pick, 2026-09-27). A blue-bubble
+  version was tried; it's in Git history at commit `d91c93f`.
 - Under the title, one line: the speakers with their icons, the date as M.D.YYYY, and the
   `time` phrase. Nothing else before the first message. When scrolling, a small copy of the
   title stays at the top.

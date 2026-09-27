@@ -25,10 +25,7 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    - Chat page: RJ's messages in orange bubbles, a sticky small title, a list/detail sidebar (a
      drawer on phones), and dashes on the left for position. Editor's links come from
      `links.json`.
-   - Open (RJ): full-column replies or blue bubbles? Compare `/chats/its-always-the-pleiades/`
-     with the same URL plus `?bubbles`. Remove the switch after he picks.
-   - Open (RJ): both bios in `src/content/authors/` are drafts (`bioDraft`). Replace them with his
-     words.
+   - RJ picked full-column replies and set his bio (2026-09-27).
    - Done when RJ approves both pages on his phone.
 6. **Launch conversation: "It's Always the Pleiades".** RJ picked and selected it on 2026-09-24.
    - Captured privately in `.private/conversations/pleiades/`, where `NOTES.md` lists the open
