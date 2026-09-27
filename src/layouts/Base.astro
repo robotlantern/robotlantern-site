@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+import Wordmark from '../components/Wordmark.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  section?: 'essays' | 'conversations' | 'shop';
+}
+const { title, description, section } = Astro.props;
+const pageTitle = title === 'Robot Lantern' ? title : `${title} · Robot Lantern`;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{pageTitle}</title>
+  {description && <meta name="description" content={description}>}
+  <meta name="theme-color" content="#04060d">
+  <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)}>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap site-header__inner">
+      <a class="site-header__mark" href="/"><Wordmark /></a>
+      <nav aria-label="Main">
+        <a href="/essays/cogito-ergo-so-what/" aria-current={section === 'essays' ? 'page' : undefined}>Essays</a>
+        <a href="/conversations/its-always-the-pleiades/" aria-current={section === 'conversations' ? 'page' : undefined}>Conversations</a>
+      </nav>
+    </div>
+  </header>
+  <slot />
+  <footer class="site-footer">
+    <div class="wrap">Robot Lantern</div>
+  </footer>
+</body>
+</html>
+
+<style>
+  .site-header { position: relative; z-index: 10; }
+  .site-header__inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; min-height: 4.5rem; }
+  .site-header__mark { display: block; width: 8.5rem; line-height: 0; }
+  .site-header__mark :global(.wordmark) { width: 100%; height: auto; overflow: visible; }
+  nav { display: flex; gap: 1.4rem; }
+  nav a { color: var(--muted); font: 700 .7rem/1 var(--sans); letter-spacing: .14em; text-decoration: none; text-transform: uppercase; padding: .5rem 0; }
+  nav a:hover, nav a[aria-current='page'] { color: var(--lantern); }
+  .site-footer { margin-top: 4rem; padding: 2rem 0 3rem; border-top: 1px solid var(--line); color: var(--faint); font: .72rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+  @media (max-width: 520px) {
+    .site-header__mark { width: 7rem; }
+    nav { gap: 1rem; }
+  }
+</style>

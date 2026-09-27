@@ -1,0 +1,247 @@
+---
+// Conversation page: ported from the Shopify prototype's reader, without its multi-article
+// loading, and restyled for the night.
+import fs from 'node:fs';
+import { getCollection } from 'astro:content';
+import 'katex/dist/katex.min.css';
+import Base from '../../layouts/Base.astro';
+import { splitMessages } from '../../lib/conversation';
+import { convertMathDelimiters, renderMarkdown, type LinkState } from '../../lib/markdown';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('conversations');
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { title, date, source, participants, range } = entry.data;
+const dir = `src/content/conversations/${entry.id}`;
+const linksFile = `${dir}/links.json`;
+const links: LinkState = {
+  links: fs.existsSync(linksFile) ? JSON.parse(fs.readFileSync(linksFile, 'utf8')) : [],
+  done: new Set(),
+};
+const options = { imageBase: `/conversations/${entry.id}/`, links };
+
+const { preamble, messages } = splitMessages(convertMathDelimiters(entry.body ?? ''), participants);
+const preambleHtml = preamble ? await renderMarkdown(preamble, options) : '';
+const rendered = [];
+for (const [i, m] of messages.entries()) {
+  rendered.push({ n: i + 1, speaker: m.speaker, html: await renderMarkdown(m.markdown, options) });
+}
+const missing = links.links.filter((l) => !links.done.has(l.text));
+if (missing.length) {
+  throw new Error(`${linksFile}: no unlinked mention found for ${missing.map((l) => `"${l.text}"`).join(', ')}`);
+}
+
+// The map lists each question from the human side, by its opening words.
+const firstWords = (md: string) => {
+  const text = md
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/[*_`#>\[\]]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text.length > 70 ? text.slice(0, 70).replace(/\s+\S*$/, '') + '…' : text || '(image)';
+};
+const map = messages
+  .map((m, i) => ({ n: i + 1, m }))
+  .filter(({ m }) => m.speaker.kind === 'human')
+  .map(({ n, m }) => ({ n, label: firstWords(m.markdown) }));
+
+const when = date.toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' });
+const who = participants.map((p) => (p.model ? `${p.name} (${p.model})` : p.name)).join(' and ');
+---
+<Base title={title} section="conversations" description={`A conversation between ${who}.`}>
+  <main class="reader" data-reader>
+    <button class="reader__map-toggle control" type="button" aria-expanded="false" aria-controls="reader-map" data-map-toggle>Map <span aria-hidden="true">+</span></button>
+    <button class="reader__backdrop" type="button" aria-label="Close the conversation map" tabindex="-1" data-map-backdrop></button>
+
+    <div class="reader__layout wrap">
+      <aside class="reader__aside" id="reader-map" data-map>
+        <div class="reader__aside-head">
+          <div>
+            <p class="kicker">Conversation map</p>
+            <p class="reader__active" aria-live="polite" data-active-label>{map[0]?.label}</p>
+          </div>
+          <button class="reader__aside-close" type="button" aria-label="Close the map" data-map-close>&times;</button>
+        </div>
+        <nav class="reader__topics" aria-label="Questions in this conversation">
+          {map.map((t) => <a href={`#m-${t.n}`} data-topic-link><span>{t.label}</span><b>{t.n}</b></a>)}
+        </nav>
+        <div class="reader__minimap" data-minimap>
+          <button type="button" data-minimap-marker aria-label="Position in the conversation" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></button>
+        </div>
+      </aside>
+
+      <div class="reader__stream">
+        <header class="reader__head">
+          <p class="kicker">Conversation</p>
+          <h1>{title}</h1>
+          <p class="meta"><time datetime={date.toISOString().slice(0, 10)}>{when}</time> · {source}</p>
+          <p class="reader__who">{who}. {range}</p>
+        </header>
+
+        {preambleHtml && <div class="prose reader__preamble" set:html={preambleHtml} />}
+
+        <div data-messages>
+          {rendered.map((m) => (
+            <article class={`message message--${m.speaker.kind}`} id={`m-${m.n}`} data-topic={m.speaker.kind === 'human' ? String(m.n) : undefined}>
+              <header>
+                <strong>{m.speaker.name}</strong>
+                <a href={`#m-${m.n}`} aria-label={`Link to message ${m.n}`}>{m.n}</a>
+              </header>
+              <div class="prose" set:html={m.html} />
+            </article>
+          ))}
+        </div>
+        <p class="reader__end meta">End of the published range.</p>
+      </div>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .reader { padding-block: 1.5rem 2rem; }
+  .reader__layout { display: grid; grid-template-columns: minmax(13rem, 16rem) minmax(0, 1fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .reader__stream { max-width: 46rem; min-width: 0; }
+
+  .reader__aside { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); padding: 1rem 1.5rem 1rem 0; overflow: auto; border-right: 1px solid var(--line); }
+  .reader__aside-head { display: flex; justify-content: space-between; gap: 1rem; }
+  .reader__aside-close, .reader__map-toggle, .reader__backdrop { display: none; }
+  .reader__active { margin: 0; font: 400 1.2rem/1.25 var(--serif); }
+  .reader__topics { display: grid; margin-top: 1.4rem; border-top: 1px solid var(--line); }
+  .reader__topics a { display: grid; grid-template-columns: 1fr auto; gap: .8rem; padding: .7rem 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .76rem; line-height: 1.4; text-decoration: none; }
+  .reader__topics a b { color: var(--faint); font-weight: 400; font-variant-numeric: tabular-nums; }
+  .reader__topics a:hover { color: var(--text); }
+  .reader__topics a[aria-current='location'] { color: var(--lantern); }
+  .reader__minimap { position: relative; height: 9rem; margin: 1.5rem .3rem 0 0; border: 1px solid var(--line); background: linear-gradient(180deg, rgba(106,170,242,.06), rgba(240,160,64,.12)); cursor: pointer; touch-action: none; }
+  .reader__minimap button { position: absolute; inset: 0 0 auto; width: 100%; min-height: 1rem; padding: 0; border: 1px solid var(--ember); background: rgba(255,210,138,.16); cursor: grab; }
+
+  .reader__head { margin-bottom: 2.2rem; padding-bottom: 1.6rem; border-bottom: 1px solid var(--line); }
+  .reader__head h1 { margin: .4rem 0 1rem; font: 400 clamp(2.4rem, 6vw, 3.8rem)/1 var(--serif); letter-spacing: -.035em; }
+  .reader__who { margin: .6rem 0 0; color: var(--muted); font: 400 1rem/1.6 var(--serif); }
+  .reader__preamble { margin-bottom: 1.5rem; }
+
+  .message { max-width: 94%; margin: 1rem 0; padding: 1.1rem 1.3rem; border: 1px solid rgba(106,170,242,.2); border-radius: 1.1rem 1.1rem 1.1rem .2rem; background: var(--panel); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); scroll-margin-top: 1.5rem; }
+  .message--human { margin-left: auto; max-width: 88%; border-color: rgba(240,160,64,.28); border-radius: 1.1rem 1.1rem .2rem 1.1rem; background: rgba(38, 26, 20, .8); }
+  .message > header { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: .5rem; color: var(--faint); font: 700 .68rem/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; }
+  .message--human > header strong { color: var(--human); }
+  .message--ai > header strong { color: var(--ai); }
+  .message > header a { color: inherit; text-decoration: none; font-weight: 400; }
+  .message .prose { font-size: 1.04rem; line-height: 1.7; }
+  .message .prose :global(img) { width: auto; max-height: min(75vh, 40rem); }
+  .message .prose > :first-child { margin-top: 0; }
+  .message .prose > :last-child { margin-bottom: 0; }
+
+  .reader__end { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+
+  /* Citations (docs/CONVERSATIONS.md) */
+  .prose :global(sup.cite) { font: 600 .66rem/1 var(--sans); margin-left: .1em; }
+  .prose :global(sup.cite a) { display: inline-block; min-width: 1.35em; padding: .18em .3em; border-radius: .7em; background: rgba(106,170,242,.14); color: var(--ai); text-align: center; text-decoration: none; }
+  .prose :global(sup.cite a:hover) { background: var(--ai); color: var(--night); }
+  .prose :global(ol.sources) { margin: 1.2rem 0 0; padding: .8rem 0 0 1.4rem; border-top: 1px solid var(--line); color: var(--faint); font: .76rem/1.5 var(--sans); }
+  .prose :global(ol.sources li) { margin: .25rem 0; }
+  .prose :global(ol.sources a) { color: var(--muted); }
+
+  /* Reasoning and tool steps, collapsed */
+  .prose :global(details.collapsed) { margin: 0 0 1rem; border-left: 2px solid var(--line); padding: .1rem 0 .1rem .9rem; color: var(--muted); font-size: .94rem; }
+  .prose :global(details.collapsed summary) { cursor: pointer; color: var(--faint); font: 700 .68rem/2 var(--sans); letter-spacing: .1em; text-transform: uppercase; }
+  .prose :global(details.collapsed summary:hover) { color: var(--text); }
+  .prose :global(details.collapsed[open] summary) { margin-bottom: .4rem; }
+
+  @media (max-width: 900px) {
+    .reader { padding-top: .5rem; }
+    .reader__layout { display: block; }
+    .reader__stream { margin-inline: auto; }
+    .reader__map-toggle { display: inline-flex; position: sticky; top: .5rem; z-index: 7; margin: 0 0 0 max(1rem, calc((100% - 74rem) / 2)); background: var(--night-2); }
+    .reader__aside { position: fixed; inset: 0 auto 0 0; z-index: 20; width: min(20rem, calc(100vw - 3rem)); max-height: none; padding: 1.5rem; border-right: 1px solid var(--line); background: var(--night-2); box-shadow: 1rem 0 3rem rgba(0,0,0,.5); transform: translateX(-105%); transition: transform .2s ease; visibility: hidden; }
+    .reader__aside[data-open='true'] { transform: none; visibility: visible; }
+    .reader__backdrop { position: fixed; inset: 0; z-index: 19; border: 0; background: rgba(0,0,0,.5); cursor: pointer; }
+    .reader[data-map-open='true'] .reader__backdrop { display: block; }
+    .reader__aside-close { display: block; width: 2.5rem; height: 2.5rem; border: 1px solid var(--line); background: transparent; color: var(--text); font-size: 1.5rem; cursor: pointer; }
+    .message { max-width: 100%; scroll-margin-top: 4rem; }
+    .message--human { max-width: 92%; }
+  }
+  @media (max-width: 520px) {
+    .message { padding: .95rem 1rem; }
+    .message .prose { font-size: 1rem; }
+  }
+</style>
+
+<script>
+  // Map drawer (phone), the active question, and the minimap. Ported from the Shopify
+  // prototype's reader without its page loading.
+  const reader = document.querySelector<HTMLElement>('[data-reader]');
+  if (reader) {
+    const aside = reader.querySelector<HTMLElement>('[data-map]')!;
+    const toggle = reader.querySelector<HTMLButtonElement>('[data-map-toggle]')!;
+    const links = [...reader.querySelectorAll<HTMLAnchorElement>('[data-topic-link]')];
+    const label = reader.querySelector<HTMLElement>('[data-active-label]')!;
+    const region = reader.querySelector<HTMLElement>('[data-messages]')!;
+    const minimap = reader.querySelector<HTMLElement>('[data-minimap]')!;
+    const marker = reader.querySelector<HTMLElement>('[data-minimap-marker]')!;
+    const topics = [...reader.querySelectorAll<HTMLElement>('[data-topic]')];
+    const phone = () => matchMedia('(max-width: 900px)').matches;
+
+    const setOpen = (open: boolean, focus = true) => {
+      aside.dataset.open = String(open);
+      reader.dataset.mapOpen = String(open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.querySelector('span')!.textContent = open ? '−' : '+';
+      if (focus) (open ? links[0] : toggle)?.focus();
+    };
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    reader.querySelector('[data-map-close]')!.addEventListener('click', () => setOpen(false));
+    reader.querySelector('[data-map-backdrop]')!.addEventListener('click', () => setOpen(false));
+    aside.addEventListener('keydown', (e) => { if (e.key === 'Escape' && phone()) setOpen(false); });
+    for (const link of links) link.addEventListener('click', () => { if (phone()) setOpen(false, false); });
+
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const rect = region.getBoundingClientRect();
+      const total = Math.max(1, rect.height);
+      const progress = Math.max(0, Math.min(1, -rect.top / Math.max(1, total - innerHeight)));
+      const visible = Math.max(.1, Math.min(1, innerHeight / total));
+      marker.style.height = `${visible * 100}%`;
+      marker.style.top = `${progress * (1 - visible) * 100}%`;
+      marker.setAttribute('aria-valuenow', String(Math.round(progress * 100)));
+      let active = topics[0];
+      for (const t of topics) if (t.getBoundingClientRect().top < innerHeight * .35) active = t;
+      const n = active?.dataset.topic;
+      for (const link of links) {
+        const current = link.hash === `#m-${n}`;
+        if (current) {
+          link.setAttribute('aria-current', 'location');
+          if (label.textContent !== link.firstChild!.textContent) label.textContent = link.firstChild!.textContent;
+        } else link.removeAttribute('aria-current');
+      }
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    addEventListener('scroll', schedule, { passive: true });
+    addEventListener('resize', schedule);
+    update();
+
+    const seek = (y: number) => {
+      const box = minimap.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (y - box.top) / box.height));
+      const rect = region.getBoundingClientRect();
+      scrollTo({ top: scrollY + rect.top + ratio * Math.max(0, rect.height - innerHeight) });
+    };
+    let dragging = false;
+    minimap.addEventListener('pointerdown', (e) => { dragging = true; minimap.setPointerCapture(e.pointerId); seek(e.clientY); });
+    minimap.addEventListener('pointermove', (e) => { if (dragging) seek(e.clientY); });
+    minimap.addEventListener('pointerup', () => { dragging = false; });
+    marker.addEventListener('keydown', (e) => {
+      const keys = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End'];
+      if (!keys.includes(e.key)) return;
+      e.preventDefault();
+      const now = Number(marker.getAttribute('aria-valuenow')) || 0;
+      const step = e.key.startsWith('Page') ? 20 : 5;
+      const next = e.key === 'Home' ? 0 : e.key === 'End' ? 100 : Math.max(0, Math.min(100, now + (e.key.endsWith('Down') ? step : -step)));
+      const box = minimap.getBoundingClientRect();
+      seek(box.top + (box.height * next) / 100);
+    });
+  }
+</script>

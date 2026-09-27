@@ -1,0 +1,2036 @@
+{
+ "schema": "robot-lantern/attribution@1",
+ "method": "revision-chain word blame",
+ "source": "chat",
+ "policy": {
+  "copyedits": "form only",
+  "message_match_min_words": 6
+ },
+ "article_sha256": "a16b6ab30f42a5f0d59446240c697c1ae8b6113b9260c2146d4af1460e44ecce",
+ "offset_unit": "Unicode code points in the article Markdown",
+ "participants": [
+  {
+   "id": "rj-carroll",
+   "name": "RJ Carroll",
+   "kind": "human"
+  },
+  {
+   "id": "gpt-5.6-sol",
+   "name": "GPT-5.6-sol",
+   "kind": "ai"
+  }
+ ],
+ "versions": [
+  {
+   "n": 0,
+   "author": "rj-carroll",
+   "role": "draft",
+   "label": "RJ's original draft"
+  },
+  {
+   "n": 1,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 0"
+  },
+  {
+   "n": 2,
+   "author": "gpt-5.6-sol",
+   "role": "draft",
+   "label": "GPT's first edit"
+  },
+  {
+   "n": 3,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 2"
+  },
+  {
+   "n": 4,
+   "author": "rj-carroll",
+   "role": "draft",
+   "label": "RJ's canvas edits (confirmed by RJ)"
+  },
+  {
+   "n": 5,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 4"
+  },
+  {
+   "n": 6,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 5"
+  },
+  {
+   "n": 7,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 6"
+  },
+  {
+   "n": 8,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 7"
+  },
+  {
+   "n": 9,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 8"
+  },
+  {
+   "n": 10,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 9"
+  },
+  {
+   "n": 11,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 10"
+  },
+  {
+   "n": 12,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 11"
+  },
+  {
+   "n": 13,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 12"
+  },
+  {
+   "n": 14,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 13"
+  },
+  {
+   "n": 15,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 14"
+  },
+  {
+   "n": 16,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 15"
+  },
+  {
+   "n": 17,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 16"
+  },
+  {
+   "n": 18,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 17"
+  },
+  {
+   "n": 19,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 18"
+  },
+  {
+   "n": 20,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 19"
+  },
+  {
+   "n": 21,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 20"
+  },
+  {
+   "n": 22,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 21"
+  },
+  {
+   "n": 23,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 22"
+  },
+  {
+   "n": 24,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 23"
+  },
+  {
+   "n": 25,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 24"
+  },
+  {
+   "n": 26,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 25"
+  },
+  {
+   "n": 27,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 26"
+  },
+  {
+   "n": 28,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 27"
+  },
+  {
+   "n": 29,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 28"
+  },
+  {
+   "n": 30,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 29"
+  },
+  {
+   "n": 31,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 30"
+  },
+  {
+   "n": 32,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 31"
+  },
+  {
+   "n": 33,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 32"
+  },
+  {
+   "n": 34,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 33"
+  },
+  {
+   "n": 35,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 34"
+  },
+  {
+   "n": 36,
+   "author": "gpt-5.6-sol",
+   "role": "draft",
+   "label": "GPT's second draft"
+  },
+  {
+   "n": 37,
+   "author": "rj-carroll",
+   "role": "draft",
+   "label": "RJ's revision"
+  },
+  {
+   "n": 38,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 37"
+  },
+  {
+   "n": 39,
+   "author": "rj-carroll",
+   "role": "draft",
+   "label": "RJ's second revision"
+  },
+  {
+   "n": 40,
+   "author": "gpt-5.6-sol",
+   "role": "message",
+   "label": "chat item 39"
+  },
+  {
+   "n": 41,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 40"
+  },
+  {
+   "n": 42,
+   "author": "rj-carroll",
+   "role": "draft",
+   "label": "RJ's final draft"
+  },
+  {
+   "n": 43,
+   "author": "rj-carroll",
+   "role": "message",
+   "label": "chat item 41"
+  },
+  {
+   "n": 44,
+   "author": "gpt-5.6-sol",
+   "role": "draft",
+   "label": "GPT's copyedit pass"
+  }
+ ],
+ "totals": {
+  "body": {
+   "chars": 4116,
+   "authors": {
+    "gpt-5.6-sol": {
+     "chars": 359,
+     "percent": 9
+    },
+    "rj-carroll": {
+     "chars": 3757,
+     "percent": 91
+    }
+   },
+   "copyedits": {
+    "gpt-5.6-sol": {
+     "edits": 22,
+     "chars": 55
+    },
+    "rj-carroll": {
+     "edits": 5,
+     "chars": 11
+    }
+   }
+  },
+  "footnotes": {
+   "chars": 4075,
+   "authors": {
+    "gpt-5.6-sol": {
+     "chars": 3545,
+     "percent": 87
+    },
+    "rj-carroll": {
+     "chars": 530,
+     "percent": 13
+    }
+   },
+   "copyedits": {
+    "gpt-5.6-sol": {
+     "edits": 10,
+     "chars": 11
+    }
+   }
+  }
+ },
+ "spans": [
+  {
+   "start": 2,
+   "end": 14,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 39
+  },
+  {
+   "start": 14,
+   "end": 15,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 39,
+   "copyedit": {
+    "by": "rj-carroll",
+    "version": 42
+   }
+  },
+  {
+   "start": 16,
+   "end": 19,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 39
+  },
+  {
+   "start": 19,
+   "end": 23,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 39,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 44
+   }
+  },
+  {
+   "start": 24,
+   "end": 25,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 39
+  },
+  {
+   "start": 27,
+   "end": 36,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 36,
+   "end": 52,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 52,
+   "end": 57,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 58,
+   "end": 79,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 133,
+   "end": 140,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 140,
+   "end": 206,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 206,
+   "end": 208,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "rj-carroll",
+    "version": 39
+   }
+  },
+  {
+   "start": 208,
+   "end": 243,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 244,
+   "end": 254,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 297,
+   "end": 333,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 365,
+   "end": 366,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 36
+   }
+  },
+  {
+   "start": 366,
+   "end": 376,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 376,
+   "end": 388,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 388,
+   "end": 389,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 36,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 44
+   }
+  },
+  {
+   "start": 389,
+   "end": 410,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 410,
+   "end": 419,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 419,
+   "end": 420,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 420,
+   "end": 426,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 426,
+   "end": 430,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 430,
+   "end": 437,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 437,
+   "end": 445,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 445,
+   "end": 449,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 449,
+   "end": 457,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 457,
+   "end": 462,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "rj-carroll",
+    "version": 37
+   }
+  },
+  {
+   "start": 496,
+   "end": 604,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 604,
+   "end": 605,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 36
+   }
+  },
+  {
+   "start": 605,
+   "end": 606,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 36
+   }
+  },
+  {
+   "start": 606,
+   "end": 608,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 608,
+   "end": 623,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 623,
+   "end": 624,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 44
+   }
+  },
+  {
+   "start": 624,
+   "end": 636,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 636,
+   "end": 650,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 39
+  },
+  {
+   "start": 650,
+   "end": 696,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 696,
+   "end": 700,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 44
+  },
+  {
+   "start": 700,
+   "end": 722,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 722,
+   "end": 812,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 812,
+   "end": 841,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 841,
+   "end": 865,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 865,
+   "end": 887,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 887,
+   "end": 921,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 921,
+   "end": 939,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 939,
+   "end": 945,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 945,
+   "end": 946,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "rj-carroll",
+    "version": 42
+   }
+  },
+  {
+   "start": 946,
+   "end": 954,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 988,
+   "end": 1068,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 25
+  },
+  {
+   "start": 1068,
+   "end": 1069,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 1069,
+   "end": 1112,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 25
+  },
+  {
+   "start": 1114,
+   "end": 1123,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1123,
+   "end": 1129,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 1129,
+   "end": 1134,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1135,
+   "end": 1147,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1209,
+   "end": 1272,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1272,
+   "end": 1286,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 1286,
+   "end": 1299,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1299,
+   "end": 1333,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 1333,
+   "end": 1421,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1422,
+   "end": 1431,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1473,
+   "end": 1474,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 1474,
+   "end": 1477,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1477,
+   "end": 1505,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 1505,
+   "end": 1608,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1610,
+   "end": 1627,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1627,
+   "end": 1638,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 1638,
+   "end": 1649,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1650,
+   "end": 1676,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1739,
+   "end": 1930,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 1932,
+   "end": 2053,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2053,
+   "end": 2057,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 2057,
+   "end": 2065,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2065,
+   "end": 2073,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 2073,
+   "end": 2130,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2130,
+   "end": 2137,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 2137,
+   "end": 2138,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2138,
+   "end": 2144,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 39
+  },
+  {
+   "start": 2144,
+   "end": 2214,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2216,
+   "end": 2296,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2296,
+   "end": 2297,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 2297,
+   "end": 2382,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2414,
+   "end": 2419,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2419,
+   "end": 2430,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 2462,
+   "end": 2614,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2616,
+   "end": 2748,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2748,
+   "end": 2749,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 2749,
+   "end": 2771,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2771,
+   "end": 2785,
+   "section": "body",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 2785,
+   "end": 2798,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2798,
+   "end": 2799,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 2799,
+   "end": 2812,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2812,
+   "end": 2813,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 2813,
+   "end": 2833,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2833,
+   "end": 2834,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 2834,
+   "end": 2847,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2847,
+   "end": 2848,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 2848,
+   "end": 2870,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2870,
+   "end": 2871,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 2871,
+   "end": 2892,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2892,
+   "end": 2899,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 2899,
+   "end": 2925,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2927,
+   "end": 2988,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 2988,
+   "end": 2995,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 2995,
+   "end": 3046,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 3046,
+   "end": 3047,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 3047,
+   "end": 3062,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 3062,
+   "end": 3064,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 3065,
+   "end": 3070,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 3108,
+   "end": 3119,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 3119,
+   "end": 3120,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 3120,
+   "end": 3156,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 3156,
+   "end": 3165,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 3165,
+   "end": 3190,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 3190,
+   "end": 3191,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 2
+   }
+  },
+  {
+   "start": 3191,
+   "end": 3195,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 3195,
+   "end": 3204,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 3204,
+   "end": 3210,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 3210,
+   "end": 3244,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 3244,
+   "end": 3246,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37,
+   "copyedit": {
+    "by": "rj-carroll",
+    "version": 42
+   }
+  },
+  {
+   "start": 3246,
+   "end": 3364,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 3366,
+   "end": 3371,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 3373,
+   "end": 3382,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 3382,
+   "end": 3398,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 3398,
+   "end": 3416,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 3416,
+   "end": 3552,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 3554,
+   "end": 3797,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 3799,
+   "end": 3830,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 3830,
+   "end": 3861,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 3861,
+   "end": 4009,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 4011,
+   "end": 4297,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 4299,
+   "end": 4396,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 4397,
+   "end": 4402,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 4447,
+   "end": 4510,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 4512,
+   "end": 4666,
+   "section": "body",
+   "author": "rj-carroll",
+   "from": 0
+  },
+  {
+   "start": 4671,
+   "end": 4680,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 4701,
+   "end": 4704,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 4706,
+   "end": 4717,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 4717,
+   "end": 4718,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 44
+   }
+  },
+  {
+   "start": 4718,
+   "end": 4719,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 4720,
+   "end": 4751,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 4752,
+   "end": 4769,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 4769,
+   "end": 4770,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 36
+   }
+  },
+  {
+   "start": 4770,
+   "end": 4791,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 4791,
+   "end": 4793,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 42
+  },
+  {
+   "start": 4793,
+   "end": 4845,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 4846,
+   "end": 4873,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 4874,
+   "end": 4899,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 4899,
+   "end": 4908,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 4908,
+   "end": 4974,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 40
+  },
+  {
+   "start": 4974,
+   "end": 5160,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 5160,
+   "end": 5169,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 42
+  },
+  {
+   "start": 5170,
+   "end": 5205,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 5259,
+   "end": 5261,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 42
+  },
+  {
+   "start": 5263,
+   "end": 5290,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 42
+  },
+  {
+   "start": 5291,
+   "end": 5308,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 42
+  },
+  {
+   "start": 5374,
+   "end": 5375,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 42
+  },
+  {
+   "start": 5375,
+   "end": 5376,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 44
+   }
+  },
+  {
+   "start": 5408,
+   "end": 5411,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 5413,
+   "end": 5465,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 5465,
+   "end": 5491,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 5491,
+   "end": 5589,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 5589,
+   "end": 5601,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 5601,
+   "end": 5869,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 5870,
+   "end": 5905,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 5966,
+   "end": 5979,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 5979,
+   "end": 6065,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 6065,
+   "end": 6096,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 6096,
+   "end": 6101,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 6101,
+   "end": 6118,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 6118,
+   "end": 6151,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 6152,
+   "end": 6175,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 6176,
+   "end": 6190,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 6190,
+   "end": 6221,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 6221,
+   "end": 6228,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 6228,
+   "end": 6257,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 6257,
+   "end": 6258,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 44
+   }
+  },
+  {
+   "start": 6290,
+   "end": 6292,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 6292,
+   "end": 6293,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 6295,
+   "end": 6643,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 6645,
+   "end": 6648,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 6650,
+   "end": 6761,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 6761,
+   "end": 6775,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 6775,
+   "end": 6776,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 44
+   }
+  },
+  {
+   "start": 6776,
+   "end": 6793,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 6793,
+   "end": 6798,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 6798,
+   "end": 6814,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 6814,
+   "end": 6906,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 6906,
+   "end": 6921,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 6921,
+   "end": 7058,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 7059,
+   "end": 7094,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 7162,
+   "end": 7163,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 44
+   }
+  },
+  {
+   "start": 7195,
+   "end": 7197,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 7197,
+   "end": 7198,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 7200,
+   "end": 7218,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 7218,
+   "end": 7427,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 7427,
+   "end": 7442,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 7442,
+   "end": 7962,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 7963,
+   "end": 7983,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 8072,
+   "end": 8073,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 44
+   }
+  },
+  {
+   "start": 8105,
+   "end": 8107,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 8107,
+   "end": 8108,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 8110,
+   "end": 8111,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 8112,
+   "end": 8124,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 8125,
+   "end": 8129,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 8129,
+   "end": 8211,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 8211,
+   "end": 8276,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 2
+  },
+  {
+   "start": 8276,
+   "end": 8382,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 8383,
+   "end": 8389,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 8390,
+   "end": 8480,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 8481,
+   "end": 8486,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 8487,
+   "end": 8937,
+   "section": "footnotes",
+   "author": "gpt-5.6-sol",
+   "from": 36
+  },
+  {
+   "start": 8938,
+   "end": 8954,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 9034,
+   "end": 9075,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 9076,
+   "end": 9088,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 9089,
+   "end": 9240,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 9240,
+   "end": 9241,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 44
+   }
+  },
+  {
+   "start": 9241,
+   "end": 9243,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 44
+   }
+  },
+  {
+   "start": 9243,
+   "end": 9348,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37
+  },
+  {
+   "start": 9348,
+   "end": 9349,
+   "section": "footnotes",
+   "author": "rj-carroll",
+   "from": 37,
+   "copyedit": {
+    "by": "gpt-5.6-sol",
+    "version": 44
+   }
+  }
+ ]
+}

@@ -1,0 +1,116 @@
+/* The night sky, across the whole site (README, "Look"). Deep blues and near-black,
+   starlight for text, and the lantern's warm orange as the accent. */
+:root {
+  --night: #04060d;
+  --night-2: #080f21;
+  --deep: #0c1730;
+  --dusk: #1d325a;
+  --text: #e9e2d2;
+  --muted: #a3acbd;
+  --faint: #737f96;
+  --line: rgba(190, 205, 235, .16);
+  --lantern: #ffd28a;
+  --ember: #f0a040;
+  --link: #f3c98a;
+  --human: #f0a040;
+  --ai: #6aaaf2;
+  --panel: rgba(8, 15, 33, .78);
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color-scheme: dark;
+  background: var(--night);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, var(--deep), var(--night-2) 40rem, var(--night) 90rem) no-repeat, var(--night);
+  color: var(--text);
+  font: 17px/1.6 var(--sans);
+  -webkit-text-size-adjust: 100%;
+}
+
+/* RJ's star photo, very faint and fixed, so every page sits in the same night. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url(/images/night.jpg) center 40% / cover no-repeat;
+  opacity: .22;
+  pointer-events: none;
+}
+
+a { color: var(--link); text-underline-offset: .22em; text-decoration-thickness: 1px; }
+a:hover { color: var(--lantern); }
+:focus-visible { outline: 2px solid var(--lantern); outline-offset: 2px; }
+
+.wrap { width: min(74rem, 100% - 2rem); margin-inline: auto; }
+.reading { width: min(44rem, 100% - 2rem); margin-inline: auto; }
+
+.kicker {
+  margin: 0 0 .9rem;
+  color: var(--ember);
+  font: 700 .72rem/1.4 var(--sans);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.meta { color: var(--muted); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; }
+
+.control {
+  min-height: 2.5rem;
+  padding: .5rem .8rem;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: 700 .7rem/1 var(--sans);
+  letter-spacing: .08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
+.control:hover { border-color: var(--lantern); color: var(--lantern); }
+.control[aria-pressed='true'] { background: var(--text); border-color: var(--text); color: var(--night); }
+.control:disabled { opacity: .45; cursor: default; }
+
+/* Shared prose: essays and conversation messages. */
+.prose { font: 400 1.12rem/1.8 var(--serif); overflow-wrap: break-word; }
+.prose h1, .prose h2, .prose h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -.02em; line-height: 1.15; }
+.prose h2 { font-size: 1.6rem; margin: 2.4rem 0 1rem; }
+.prose h3 { font-size: 1.3rem; margin: 2rem 0 .8rem; }
+.prose img { display: block; max-width: 100%; height: auto; margin: 1.2rem 0; border: 1px solid var(--line); }
+.prose blockquote { margin: 1.2rem 0; padding: .1rem 0 .1rem 1.1rem; border-left: 2px solid var(--ember); color: var(--muted); }
+.prose hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; }
+.prose del { color: var(--faint); }
+.prose code { font: .86em var(--mono); padding: .08em .3em; background: rgba(190, 205, 235, .09); border-radius: 3px; }
+.prose pre {
+  max-width: 100%;
+  overflow: auto;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  background: rgba(2, 4, 10, .6);
+  font: .82rem/1.6 var(--mono);
+}
+.prose pre code { padding: 0; background: none; font: inherit; }
+.table-scroll { max-width: 100%; overflow-x: auto; margin: 1.2rem 0; }
+.prose table { border-collapse: collapse; font: .86rem/1.45 var(--sans); min-width: 100%; }
+.prose th, .prose td { padding: .5rem .65rem; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+.prose th { color: var(--lantern); font-weight: 600; background: rgba(190, 205, 235, .05); }
+.prose th[align='right'], .prose td[align='right'] { text-align: right; font-variant-numeric: tabular-nums; }
+.prose .katex { font-size: 1.05em; }
+.prose .katex-display { overflow-x: auto; overflow-y: hidden; padding: .3rem 0; }
+.prose .editor-note { color: var(--muted); font: .82rem/1.6 var(--sans); padding: .6rem .9rem; border-left: 2px solid var(--ember); background: rgba(240, 160, 64, .06); }
+.prose .editor-note em { font-style: normal; }
+.prose a.editor-link { color: inherit; text-decoration-style: dotted; text-decoration-color: var(--faint); }
+.prose a.editor-link:hover { color: var(--lantern); text-decoration-color: currentColor; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation: none !important; }
+}

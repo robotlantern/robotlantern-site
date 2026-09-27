@@ -1,7 +1,7 @@
 # Home page
 
 Status: design agreed with RJ on 2026-09-25, not built yet. It extends the sunset scroll in
-`prototypes/sunset-scroll/` (tag `sunset-scroll-v1`, previewed at
+`public/prototypes/sunset-scroll/` (tag `sunset-scroll-v1`, previewed at
 https://rl.rblt.io/prototypes/sunset-scroll/). Timings below are measured against that version.
 
 ## Sequence
@@ -68,5 +68,4 @@ The content is a network, and the navigation uses a constellation metaphor.
 - The order of cards after the first. For launch: the essay, then products.
 - Whether the wordmark is readable at header size. Check on a phone.
 - Whether tapping the lantern opens the map.
-- The first card needs the conversation style, which task 5 restyles for the night. Until then,
-  use a provisional night version of the old prototype's style.
+- The first card uses the conversation page's style (task 5, done).
