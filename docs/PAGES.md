@@ -34,4 +34,4 @@ Status: RJ's direction from reviewing the first preview, 2026-09-27.
   phone, the list opens as a drawer from a menu button.
 - Position: a column of dashes along the left edge, colored by speaker and sized by message
   length. Dashes near the reader's position grow taller and wider, and tapping or dragging on
-  the column jumps there. No summaries or section headings.
+  the column jumps there. They're dim, and appear only once the title has scrolled under the bar. No summaries or section headings.

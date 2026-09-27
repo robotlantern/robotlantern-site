@@ -256,5 +256,26 @@
     "sense": "Ginsberg's poem, which the line quotes",
     "title": "Howl (poem)",
     "description": "1955 poem by Allen Ginsberg, part of the Beat Generation movement"
+  },
+  {
+    "text": "Perseus",
+    "url": "https://en.wikipedia.org/wiki/Perseus_(constellation)",
+    "sense": "the constellation",
+    "title": "Perseus (constellation)",
+    "description": "Constellation in the northern celestial hemisphere"
+  },
+  {
+    "text": "Aldebaran",
+    "url": "https://en.wikipedia.org/wiki/Aldebaran",
+    "sense": "the star in Taurus",
+    "title": "Aldebaran",
+    "description": "Brightest star in Taurus"
+  },
+  {
+    "text": "Orion",
+    "url": "https://en.wikipedia.org/wiki/Orion_(constellation)",
+    "sense": "the constellation",
+    "title": "Orion (constellation)",
+    "description": "Constellation straddling the celestial equator"
   }
 ]

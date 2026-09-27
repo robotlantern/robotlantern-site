@@ -38,7 +38,7 @@ notes redirects, and writes each article's canonical title and description back 
 ## First run (2026-09-27)
 
 The Pleiades chat. RJ's picks from its private `NOTES.md` are the answer key and the published
-list: 37 links. Dropped: September ε-Perseids (no article) and Proxima Centauri (already cited
+list: 37 links, plus Aldebaran, Perseus and Orion from Haiku's extras (RJ, 2026-09-27). Dropped: September ε-Perseids (no article) and Proxima Centauri (already cited
 to its article in the same sentence). Two sentences carry two links (Algol and Mirfak, Bellatrix
 and Rigel) because RJ picked all four.
 

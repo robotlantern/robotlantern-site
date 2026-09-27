@@ -64,6 +64,12 @@ The content is a network, and the navigation uses a constellation metaphor.
 
 ## Open
 
+- **Asterism icons (RJ's idea, 2026-09-27).** Draw each section's icon as an asterism: points
+  on real stars picked from RJ's night photo, roughly tracing the thought cloud, speech
+  bubbles, blocks and bag, with the section's name centered inside instead of under an icon.
+  It ties the navigation to "the sky is the map" (each section a region of the sky, each item a
+  star). The icon shapes may need to get more abstract to fit real stars.
+
 - Where the navigation sits before the full map exists: beside the docked wordmark?
 - The order of cards after the first. For launch: the essay, then products.
 - Whether the wordmark is readable at header size. Check on a phone.

@@ -147,7 +147,9 @@ const names = speakers.map((s) => s.name).join(' and ');
   .prose :global(details.collapsed summary:hover) { color: var(--text); }
 
   /* Position: dashes along the left edge of the chat, colored by speaker. */
-  .dashes { position: fixed; z-index: 7; left: var(--list); top: 50%; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; width: 2rem; padding: .5rem 0; transform: translateY(-50%); cursor: pointer; touch-action: none; }
+  .dashes { position: fixed; z-index: 7; left: var(--list); top: calc(50% + 1.6rem); display: flex; flex-direction: column; align-items: flex-start; gap: 3px; width: 2rem; padding: .5rem 0; transform: translateY(-50%); cursor: pointer; touch-action: none; opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s; }
+  /* The dashes appear once the title is under the bar, so they never cross the header. */
+  .chats.is-stuck .dashes { opacity: 1; visibility: visible; }
   .dashes:focus-visible { outline-offset: 0; }
   .dashes :global(i) { display: block; width: 6px; height: 3px; border-radius: 0 2px 2px 0; }
   .dashes :global(i.human) { background: var(--bubble-human); }
@@ -245,7 +247,7 @@ const names = speakers.map((s) => s.name).join(' and ');
       const s = dashes[j].el.style;
       s.width = `${6 + 16 * g}px`;
       s.height = `${3 + 3 * g}px`;
-      s.opacity = String(0.8 + 0.2 * g);
+      s.opacity = String(0.4 + 0.5 * g);
     }
     col.setAttribute('aria-valuenow', String(Math.round((scrollY / maxScroll()) * 100)));
   };

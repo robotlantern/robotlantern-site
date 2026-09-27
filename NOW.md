@@ -34,7 +34,7 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
      [docs/CITATIONS.md](docs/CITATIONS.md), both approved 2026-09-25.
    - Done 2026-09-25: citations (28, with checked links), the image-only reply with its
      reasoning and "Worked for 47s", model confirmed as ChatGPT-5.6-sol.
-   - Links: done 2026-09-27. 37 editor's links in `links.json`, checked by `tools/links/check.py`.
+   - Links: done 2026-09-27. 40 editor's links in `links.json`, checked by `tools/links/check.py`.
      The Haiku comparison is in [docs/LINKS.md](docs/LINKS.md), "First run".
    - Open (RJ): check whether other replies showed reasoning or search steps worth including.
    - Not for launch: per-message times. The capture has none. The next capture should keep them.
