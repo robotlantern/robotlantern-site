@@ -22,7 +22,8 @@ example:
   attribution data. The schema requires a title, contributors and an attribution file.
 - `conversations/<slug>/` holds a transcript excerpt as `conversation.md`, plus its images. The
   schema requires a title, a date and participants (see [CONVERSATIONS.md](CONVERSATIONS.md)).
-- `products/<slug>.md` holds a product's story, images and Shopify product ID.
+- `products/<slug>.md` holds a product's story, images, price, Gelato product UID and Stripe
+  Payment Link.
 
 At build time, Astro loads the files, checks them against the schema, and stops with a clear
 error if something is missing or malformed. Templates then get the data already typed and
@@ -40,7 +41,7 @@ and only the templates and schema declarations would need rewriting.
 | Essay page, with contribution highlighting | A template that reads the essay's files | The attribution tool, a script that runs before the build and writes JSON |
 | Conversation page | A template plus CSS | The capture and selection of the transcript |
 | Home sunset scroll | One page with its own script | — |
-| Shop | Product pages from the products collection, plus a cart island | Shopify (cart, checkout) and Gelato (fulfillment), through Shopify's Storefront API |
+| Shop | Product pages from the products collection, each linking to Stripe checkout | Stripe (checkout), a Cloudflare Worker (paid order to Gelato) and Gelato (fulfillment) |
 | Interactive projects | An island on that project's page | — |
 
 The attribution logic, which matters most, doesn't depend on the framework at all. It's a

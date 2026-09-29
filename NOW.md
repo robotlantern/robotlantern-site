@@ -1,6 +1,6 @@
 # Now
 
-_Last updated 2026-09-27, end of day._
+_Last updated 2026-09-28._
 
 ## Start here
 
@@ -8,15 +8,17 @@ The new site is built on the `rebuild` branch and previewed at https://rl.rblt.i
 `samwise`; [docs/PREVIEW.md](docs/PREVIEW.md)). Design rules are in [docs/PAGES.md](docs/PAGES.md),
 the home page in [docs/HOME.md](docs/HOME.md) and the brand in [docs/BRAND.md](docs/BRAND.md).
 What's left before launch is mostly RJ's: the checklist under "Open decisions and actions", then
-cutover (task 9). Nothing is waiting on an agent except cutover itself.
+cutover (task 9). The shop moved from Shopify to Stripe and Gelato on 2026-09-28 (task 7), and
+its build waits on RJ's accounts and keys.
 
 ## Tasks
 
 Each task fits in one sitting or can stop cleanly partway. Pick any task that isn't blocked.
 
-1. **Pause Shopify (RJ), by 2026-09-30.** The next bill is 2026-10-01. RJ is leaving it unpaused
-   on purpose until close to the deadline, as the push to ship. Settings > Plan; see
-   [docs/CHARGES.md](docs/CHARGES.md).
+1. **Close Shopify (RJ), by 2026-09-30.** The next bill is 2026-10-01. The shop no longer uses
+   Shopify (task 7), so close the store rather than pause it. First check that nothing in the
+   Shopify-connected Gelato store is worth keeping, then close it, then disconnect the store in
+   Gelato and delete any saved Shopify tokens. See [docs/CHARGES.md](docs/CHARGES.md).
 2. **Framework sign-off.** Done 2026-09-23: Astro.
 3. **Attribution tool.** Done 2026-09-24 (`tools/attribution/`, [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md)).
 4. **Sunset scroll prototype.** Done 2026-09-25. It became the home page; the frozen prototype is
@@ -31,15 +33,27 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    ([docs/LINKS.md](docs/LINKS.md)). Deferred, not for launch: whether other replies showed
    reasoning or search steps worth including; per-message times (the next capture should keep
    them).
-7. **First products** (after task 1).
-   - Start: the prototype's catalog candidates and placement previews.
-   - Do: RJ picks 2 to 4 designs. Create the Gelato products and linked Shopify drafts, and build a
-     shop page that hands off to Shopify checkout. Shop art is made with AI (RJ, 2026-09-27).
-   - Shopify setup that goes with it (RJ): the store's public contact details and the marketing
-     opt-in (see "Open decisions and actions"), and the store's policy pages, which the privacy and
-     terms pages will link.
-   - Done when a test checkout completes without a real charge. Follow "Test checkout without a
-     real charge" in docs/CHARGES.md. Gelato imports paid test orders by default.
+7. **First products, on Stripe and Gelato** (RJ, 2026-09-28: no Shopify; nothing with a
+   monthly fee). Blocked on RJ's accounts and keys (see "Open decisions and actions").
+   - Start: the prototype's catalog candidates and placement previews. RJ picks 2 to 4 designs.
+     Shop art is made with AI (RJ, 2026-09-27).
+   - How it works: each product is a JSON file in the repo with its Gelato product UID, print file
+     and price. The shop page links to a Stripe Payment Link per product, which collects the
+     shipping address and charges a flat shipping rate. When a payment completes, Stripe calls a
+     Cloudflare Worker, which verifies Stripe's signature and creates the Gelato order. The
+     Stripe Checkout Session ID is the Gelato `orderReferenceId`, and the Worker searches for it
+     before creating, so Stripe's retries can't place an order twice. Gelato's webhooks carry no
+     signature, so the Worker treats them as a hint and re-reads the order from Gelato's API.
+   - Safety: the Worker creates Gelato **drafts** until RJ says otherwise, and RJ confirms each
+     one in the Gelato dashboard. Each order also emails RJ. See "Testing without a real charge"
+     in docs/CHARGES.md.
+   - Site pages that Shopify would have supplied: refund, returns and shipping policies, and
+     contact details. Stripe checks the site for these before it activates payments. Rewrite the
+     Shopify parts of the privacy, terms and credits pages for Stripe.
+   - Later, not for launch: automatic order placement, shipping emails with tracking (needs an
+     email service), Stripe Checkout Sessions built by the Worker for carts of several items.
+   - Done when a Stripe test-mode payment leaves the right Gelato draft, with the right product,
+     file and address, and RJ has deleted it.
 8. **Privacy pass.** First run done 2026-09-27 (findings in `.private/privacy/`); nothing flagged
    is a concern (Fairmont, Bogotá and the machines' names can be public). Rerun before cutover.
 9. **Cutover.** The host is Cloudflare (RJ, 2026-09-27). Steps:
@@ -69,7 +83,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     applied (the LLC holds everything; West Virginia; Cloudflare; Google Workspace; 7-year order
     records; AI shop art; no ESA email; a minimal Uploader section). RJ treats them as approved
     once the last two marks are settled: the content licence and whether photos are licensed
-    (see "Open decisions and actions"). The Shopify policy links wait on task 7. Research notes:
+    (see "Open decisions and actions"). The switch to Stripe (task 7) means rewriting the Shopify
+    parts and linking the site's own shop policies. Research notes:
     `.private/legal/`.
 14. **About page and the cast.** At `/about/`, with the intro drafted in RJ's review session.
     Done when RJ approves the copy (two questions under "Open decisions and actions").
@@ -108,12 +123,22 @@ Everything left that only RJ can do, in one list.
   a line worth adding about the missing InkBot Gamma?
 - [ ] **Sunset prototype**: ship `public/prototypes/sunset-scroll/` or remove it at cutover.
 - [ ] **Analytics** before the first social or YouTube link (task 17).
+- [ ] **Sales tax** at checkout (task 7): Stripe Tax at 0.5% per sale, or a fixed West Virginia
+  rate set by hand for free. Ask whoever does the LLC's taxes which states you owe at this volume.
+- [ ] **Where the shop ships**: the US only at launch (recommended), or also abroad.
 
 **Do**
-- [ ] Pause Shopify by 2026-09-30 (task 1).
-- [ ] Shopify admin > Settings > Checkout > Marketing options: untick "Show a sign-up option at
-  checkout" (and "Preselect", and SMS if shown). Free.
-- [ ] Shopify's public contact details, which must be published on the store: the Northwest
+- [ ] Close Shopify by 2026-09-30 (task 1).
+- [ ] **Stripe** (task 7). Sign up as Robot Lantern LLC. Test mode works at once, with no business
+  details. Then create a restricted test-mode key with write access to Products, Prices, Payment
+  Links, Shipping Rates and Webhook Endpoints, and read access to Checkout Sessions. Save it in a
+  file outside the repo, not in the chat. Before launch, activate live payments: EIN, bank account
+  and the representative's identity, which only RJ can enter. Turn on 2FA.
+- [ ] **Gelato** (task 7): create an API key in the API Portal and save it the same way. Check
+  that the card or wallet on file is the one to charge.
+- [ ] **Cloudflare** (tasks 7 and 9): create the free account. An agent logs in to it from Sarcean
+  with `wrangler login`, which RJ approves in the browser.
+- [ ] The shop's public contact details, which Stripe expects to find on the site: the Northwest
   Registered Agent address in Beckley (check their plan allows it as a public business address;
   mail handling may be a paid add-on) and a phone number (check the Google number still works).
 - [ ] Check in a browser: Gelato's [privacy policy](https://www.gelato.com/legal/privacy) and
@@ -234,3 +259,8 @@ Everything left that only RJ can do, in one list.
   Workspace mail, AI shop art, no ESA email for now, a minimal Uploader privacy section, the
   Pleiades text approved, and tasks 5, 10, 11, 12 and 15 approved on his phone. Applied to the
   pages and docs.
+- 2026-09-28: RJ dropped Shopify. The shop becomes Stripe Payment Links, a Cloudflare Worker and
+  Gelato's order API, with no monthly fee, and Shopify closes before its 2026-10-01 bill. Gelato's
+  API takes orders by product UID with no connected store, has no test mode, and sends unsigned
+  webhooks, so the Worker creates drafts at first and re-reads webhooks from the API.
+  docs/CHARGES.md now covers Stripe.

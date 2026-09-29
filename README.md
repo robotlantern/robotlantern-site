@@ -18,8 +18,8 @@ essays, conversations, interactives and products.
   may link to an essay but doesn't have to.
 - **Builds (interactives).** Things you can use in the browser, each running full screen, such
   as The Sky, Unprojected.
-- **Products.** Print-on-demand items made from Robot Lantern brand art. Gelato fulfills them and
-  Shopify handles checkout.
+- **Products.** Print-on-demand items made from Robot Lantern brand art. Stripe takes payment and
+  Gelato prints and ships.
 - **Home.** A scroll from sunset into night. The top of the page uses the warm oranges of the
   reference sunset photo. As you scroll down, the sky darkens, stars appear, and the robot lantern
   grows brighter along with them.
@@ -40,10 +40,10 @@ sunset and scrolls into night. Every other page lives in the night.
   defines. The site framework reads them. See [docs/FRAMEWORK.md](docs/FRAMEWORK.md).
 - **Static first.** Pages build to plain HTML. A page that needs interactivity loads its own
   script, and other pages don't load it.
-- **Commerce is a subsystem.** Shopify handles products, cart, checkout and orders, and Gelato
-  fulfills them. The site shows products in its own design and hands off to Shopify's checkout.
-  Shopify doesn't shape the site.
-- **Backends only where reality requires them.** The first launch needs none.
+- **Commerce is a subsystem.** Products are files in this repo. The site shows them in its own
+  design and hands off to Stripe's hosted checkout. A small Cloudflare Worker passes each paid
+  order to Gelato, which prints and ships it. There's no monthly platform fee.
+- **Backends only where reality requires them.** The first launch needs one: the order Worker.
 
 The previous attempt made Shopify the platform. Conversations and provenance had to squeeze into
 Shopify's blog and metafield model, and most of the engineering went into working around that.
