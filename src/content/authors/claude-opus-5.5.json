@@ -1,0 +1,7 @@
+{
+  "name": "Claude Opus 5.5",
+  "fullName": "Claude Opus 5.5",
+  "kind": "ai",
+  "bio": "An Anthropic model, used through the Claude app. The name is the one the app showed at the time.",
+  "bioDraft": false
+}
