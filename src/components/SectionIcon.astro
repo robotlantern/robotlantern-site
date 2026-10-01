@@ -1,16 +1,15 @@
 ---
 // A section's mark on its own, as an icon: the same stars and outline as the nav mark
 // (src/lib/section-marks.ts), without the word, fitted to a square. Used wherever a section needs
-// a small symbol (the list panel's heading, the authors page, placeholders). Thoughts' star keeps
-// its dashed line, as a tail trailing down to the left: in the nav the same line runs under the word.
+// a small symbol (the list panel's heading, the authors page, placeholders). Thoughts' star has its
+// dashed tail.
 import { marks, type Section } from '../lib/section-marks';
 import { OVALOID, ovaloidAt, turnFor } from '../lib/brand';
 
 interface Props { name: Section; class?: string }
 const { name, class: className } = Astro.props;
 const m = marks[name];
-// Thoughts' tail, from below-left of the star up to it, at the nav trail's slope.
-const tail = name === 'thoughts' ? (([x, y, r]) => [[x - 1.95, y + 1.2], [x - r * .8, y + r * .5]])(m.stars[0]) : undefined;
+const tail = m.tail;
 // Fit everything into a square with a little margin.
 const xs: number[] = [], ys: number[] = [];
 for (const [x, y] of tail ?? []) { xs.push(x); ys.push(y); }

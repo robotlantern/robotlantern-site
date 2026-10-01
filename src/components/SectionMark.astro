@@ -2,8 +2,8 @@
 // A section's mark in the nav, drawn by RJ in Affinity (design/section-marks/section-marks-rj.svg,
 // docs/HOME.md "Section marks"). Stars count up: Thoughts one, Chats a binary pair on a ring,
 // Builds three on a pentagon, Shop four on a tilted diamond. The stars are the brand's ovaloid
-// (docs/BRAND.md), each turned its own way. Thoughts' star trails a dashed line
-// from the start of the word.
+// (docs/BRAND.md), each turned its own way. Thoughts' star trails a short dashed tail, as in the
+// menu's icon (SectionIcon.astro).
 //
 // Geometry is in em of the label's font size, measured from the end of the word (x) and the middle
 // of the capitals (y), so the mark scales with the label. The component goes inside the label's
@@ -18,12 +18,10 @@ const { name } = Astro.props;
 const m = marks[name];
 const f = (n: number) => Math.round(n * 1000) / 1000;
 ---
-{name === 'thoughts' && (
-  <svg class="mark-trail" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true"><path d="M0 1L1 0" /></svg>
-)}
 <svg class={`mark mark--${name}`} viewBox="0 0 1 1" aria-hidden="true">
   {m.ring && <circle class="mark__line mark__line--ring" cx={m.ring[0]} cy={m.ring[1]} r={m.ring[2]} />}
   {m.poly && <path class="mark__line" d={'M' + m.poly.map((p) => p.join(' ')).join('L') + 'Z'} />}
+  {m.tail && <path class="mark__tail" d={'M' + m.tail.map((p) => p.join(' ')).join('L')} />}
   {m.stars.map(([x, y, r], i) => (
     <path class="mark__star" d={OVALOID} transform={ovaloidAt(x, y, r * 1.25, turnFor(`${name}-${i}`))} style={`animation-delay:${-i * 0.9 - name.length * 0.4}s`} />
   ))}
@@ -36,8 +34,6 @@ const f = (n: number) => Math.round(n * 1000) / 1000;
   /* Chats' ring keeps RJ's own rhythm: long dash, long gap, short dash, short gap. */
   .mark__line--ring { stroke-width: .08; stroke-dasharray: .24 .48 .16 .08; }
   .mark__star { fill: currentColor; animation: mark-twinkle 3.2s ease-in-out infinite alternate; }
-  /* The trail runs from under the start of the word up to the star. */
-  .mark-trail { position: absolute; left: .13em; width: calc(100% - var(--mark-tracking, 0em) - .13em + 1.33em); top: .83em; height: .77em; overflow: visible; pointer-events: none; }
-  .mark-trail path { fill: none; stroke: currentColor; stroke-width: .071em; stroke-dasharray: .52em .38em; vector-effect: non-scaling-stroke; opacity: var(--mark-line, .3); }
+  .mark__tail { fill: none; stroke: currentColor; stroke-width: .1; stroke-dasharray: .26 .17; opacity: .6; }
   @keyframes mark-twinkle { from { opacity: .6; } to { opacity: 1; } }
 </style>

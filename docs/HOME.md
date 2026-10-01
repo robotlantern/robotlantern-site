@@ -90,7 +90,7 @@ The content is a network, and the navigation uses a constellation metaphor.
 ## Section marks
 
 RJ drew them in Affinity (`design/section-marks/section-marks-rj.svg`). The stars count up:
-THOUGHTS has one large star with a dashed trail rising from under the word; CHATS a binary pair on
+THOUGHTS has one large star with a short dashed tail, the same in the nav and the menu (RJ, 2026-10-01; it first ran as a dashed underline from the start of the word); CHATS a binary pair on
 a dashed ring; BUILDS three stars in three sizes on a left-pointing pentagon; SHOP four on a
 tilted diamond around the word. The stars are the brand's ovaloid, each turned its own way. Lines
 are faint (30% white), stars bright and twinkling. `src/lib/section-marks.ts` holds the geometry

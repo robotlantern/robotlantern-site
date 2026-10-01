@@ -118,7 +118,7 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     gitignored): the logo is RJ's tile, the right way up; the collapse is four timed frames,
     each one a whole cream tile; the one-line wordmark heads the menu; the logo has room in the
     reading bar and keeps its tile everywhere; the section nav sits at the bottom of every page
-    on a dark bar; Thoughts' icon keeps its dashed line as a tail; the status bar takes the
+    on a dark bar; Thoughts' mark is a star with a short dashed tail in the nav and the menu alike; the status bar takes the
     page's color (tested in the iOS 26 simulator). Left: RJ's phone check.
 19. **Product pipeline** (RJ, 2026-09-30). A system for product ideas, from intake through
     refinement and development to listing. Proposal in RJ's 2026-10-01 session; waits on his

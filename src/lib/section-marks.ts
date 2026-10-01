@@ -2,8 +2,9 @@
 // item can leave room for how far its mark reaches past the end of its word.
 export type Section = 'thoughts' | 'chats' | 'builds' | 'shop';
 type Star = [number, number, number]; // x, y, half-width
-export const marks: Record<Section, { stars: Star[]; ring?: [number, number, number]; poly?: [number, number][] }> = {
-  thoughts: { stars: [[1.104, -0.379, 0.806]] },
+// Thoughts' star trails a short dashed tail down to the left, the same in the nav and the menu (RJ, 2026-10-01).
+export const marks: Record<Section, { stars: Star[]; ring?: [number, number, number]; poly?: [number, number][]; tail?: [number, number][] }> = {
+  thoughts: { stars: [[1.504, -0.379, 0.806]], tail: [[-0.446, 0.821], [0.859, 0.024]] },
   chats: { ring: [-0.819, 0.026, 1.291], stars: [[0.118, -0.861, 0.448], [-1.193, 1.261, 0.346]] },
   builds: {
     poly: [[-2.542, 0.152], [-1.374, -1.455], [0.515, -0.841], [0.515, 1.146], [-1.374, 1.759]],
