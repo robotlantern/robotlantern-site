@@ -88,7 +88,7 @@ The content is a network, and the navigation uses a constellation metaphor.
 
 ## Section marks
 
-RJ drew them in Affinity (`design/asterisms/section-marks-scratch-rj.svg`). The stars count up:
+RJ drew them in Affinity (`design/section-marks/section-marks-rj.svg`). The stars count up:
 THOUGHTS has one large star with a dashed trail rising from under the word; CHATS a binary pair on
 a dashed ring; BUILDS three stars in three sizes on a left-pointing pentagon; SHOP four on a
 tilted diamond around the word. The stars are the brand's ovaloid, each turned its own way. Lines
