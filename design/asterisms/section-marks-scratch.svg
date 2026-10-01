@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="420" viewBox="0 0 1700 420">
+<rect id="background" width="1700" height="420" fill="#fff"/>
+<!-- The nav at 4x phone size. Each label ends where its mark's cell begins; the mark is centered on that cell. Marks are drawn in a 24-unit box. -->
+<g id="thoughts">
+<text id="thoughts-label" x="330" y="225.2" text-anchor="end" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="700" font-size="42.2" letter-spacing="5.9">THOUGHTS</text>
+<g id="thoughts-mark" transform="translate(322.1 162.0) scale(4.000)">
+<g id="thoughts-star" transform="translate(12 12)" stroke="#000" stroke-width="2.2" stroke-linecap="round"><line x1="0" y1="-8.5" x2="0" y2="8.5" transform="rotate(90)"/><line x1="0" y1="-8.5" x2="0" y2="8.5" transform="rotate(30)"/><line x1="0" y1="-8.5" x2="0" y2="8.5" transform="rotate(-30)"/></g>
+</g></g>
+<g id="chats">
+<text id="chats-label" x="720" y="225.2" text-anchor="end" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="700" font-size="42.2" letter-spacing="5.9">CHATS</text>
+<g id="chats-mark" transform="translate(712.1 162.0) scale(4.000)">
+<path id="chats-outline" d="M18.36 5.64A9 9 0 1 1 18.363 5.635"  fill="none" stroke="#000" stroke-width="1.3" stroke-dasharray="2.356 2.356"/>
+<path id="chats-star" d="M0-3.4L.7-.7 3.4 0 .7.7 0 3.4-.7.7-3.4 0-.7-.7Z" transform="translate(18.36 5.64)" fill="#000"/>
+</g></g>
+<g id="builds">
+<text id="builds-label" x="1130" y="225.2" text-anchor="end" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="700" font-size="42.2" letter-spacing="5.9">BUILDS</text>
+<g id="builds-mark" transform="translate(1122.1 162.0) scale(4.000)">
+<path id="builds-outline" d="M12.00 2.80L21.51 9.71L17.88 20.89L6.12 20.89L2.49 9.71Z"  fill="none" stroke="#000" stroke-width="1.3" stroke-dasharray="2.449 2.449"/>
+<path id="builds-star" d="M0-3.4L.7-.7 3.4 0 .7.7 0 3.4-.7.7-3.4 0-.7-.7Z" transform="translate(12.00 2.80)" fill="#000"/>
+</g></g>
+<g id="shop">
+<text id="shop-label" x="1480" y="225.2" text-anchor="end" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-weight="700" font-size="42.2" letter-spacing="5.9">SHOP</text>
+<g id="shop-mark" transform="translate(1472.1 162.0) scale(4.000)">
+<path id="shop-outline" d="M20.00 12.00L12.00 22.50L4.00 12.00L12.00 1.50Z"  fill="none" stroke="#000" stroke-width="1.3" stroke-dasharray="2.200 2.200"/>
+<path id="shop-star" d="M0-3.4L.7-.7 3.4 0 .7.7 0 3.4-.7.7-3.4 0-.7-.7Z" transform="translate(20.00 12.00)" fill="#000"/>
+</g></g>
+</svg>

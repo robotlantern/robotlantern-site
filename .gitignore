@@ -17,3 +17,6 @@ __pycache__/
 
 .cache/
 design/brand/asterisks-*
+
+# RJ's drop folder (screenshots, contact details): never commit
+inbox/
