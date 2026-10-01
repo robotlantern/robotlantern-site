@@ -125,6 +125,12 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     go-ahead. First product to run through it: the stargazing blanket. Gelato's API catalog has
     no blankets (checked 2026-10-01), so it starts with choosing a printer.
 
+20. **Second chat: "AI safety and capability separation"** (Claude, 2026-09-29; RJ, 2026-10-01).
+    Captured from RJ's claude.ai export into `.private/conversations/capability-separation/`
+    (see its NOTES.md). Next, once RJ answers the questions below: a `make_public.py` like the
+    Pleiades one, editor's links, then RJ's read-through. It may also seed an essay. Unreviewed
+    text stays out of Git until RJ approves it.
+
 ## Open decisions and actions (RJ)
 
 Everything left that only RJ can do, in one list.
@@ -142,6 +148,8 @@ Everything left that only RJ can do, in one list.
   rate set by hand for free. Ask whoever does the LLC's taxes which states you owe at this volume.
 - [ ] **Where the shop ships**: the US only at launch (recommended), or also abroad.
 - [ ] **Product pipeline** (task 19): go ahead with the proposal, or change it.
+- [ ] **Second chat** (task 20): its title; the model name the app showed; all 18 messages or a
+  section; keep or redact "Philosophy 308 … 23 years ago".
 
 **Do**
 - [ ] **Stripe sandbox key**: in the Dashboard, open a sandbox, create the same agent-preset
@@ -282,3 +290,6 @@ Everything left that only RJ can do, in one list.
   (a live restricted key; the account is activated), Gelato, Cloudflare (account token, zone
   access read-only) and Slant 3D; QPMN's API docs come on request. Licence applied to Terms and
   Credits. The asterism crops are retired; `inbox/` is gitignored.
+- 2026-10-01: Captured the second chat from RJ's claude.ai export (task 20). The export keeps
+  per-message times and the app's reasoning summaries, not the reasoning itself. Its first
+  message carries injected context, including RJ's memory snapshot, which is never published.
