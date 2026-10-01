@@ -21,50 +21,55 @@ from him.
 step 6. Times are rough: agent time is wall-clock, RJ time is his hands-on time. Check a step
 off when it's done.
 
-1. [ ] **RJ** · Phone check at https://rl.rblt.io/: the collapse and menu on the home page and a
-   chat, the bottom nav, the status bar color, the favicon in a Safari tab. *10 min*
-2. [ ] **RJ** · About page: is "one person" right, given a team is the goal? A line about the
-   missing InkBot Gamma? Then approve the copy. *10 min*
-3. [ ] **RJ** · Decide: ship to the US only at launch (recommended), or abroad too. *1 min*
-4. [ ] **RJ** · Decide sales tax: Stripe Tax at 0.5% a sale, or a fixed West Virginia rate set
-   by hand (free). Ask whoever does the LLC's taxes which states you owe at this volume. *a call*
-5. [ ] **RJ** · Turn on Stripe 2FA if it isn't on, and set its support email to
-   help@robotlantern.com (Settings, Public details). *5 min*
-6. [ ] **RJ** · Pick which of your photos could be prints (`products/night-sky-prints/`). *10 min*
-7. [ ] **RJ** · Self-shipped items: which ones (if any) at launch and how many of each; the
-   return address for labels (a PO box, or the Beckley registered agent if their plan forwards
-   mail); a handling time you can keep (say, ships within 5 business days). *15 min*
-8. [ ] **Agent** · After 2: About's prose into Markdown RJ can edit, with his answers
-   (task 14). *15 min*
+1. [x] **RJ** · Phone check: fine for now (2026-10-01). Style changes come as a document (step 5).
+2. [x] **RJ** · Ship to the US only (2026-10-01).
+3. [x] **RJ** · Stripe sign-in and public details: passkey through Google; support email
+   help@robotlantern.com, the Google Voice number, and the privacy page URL (2026-10-01).
+4. [x] **RJ** · Self-shipped items: shipped from home (the return address on labels is fine, but
+   it never goes on the site), up to about six products at launch (2026-10-01).
+5. [ ] **RJ** · The document of site style changes, dropped in `inbox/`. *your pace*
+6. [ ] **RJ** · Sales tax registration (docs/SALES-TAX.md): check whether the LLC already has a
+   West Virginia Business Registration Certificate (MyTaxes). If it doesn't: get the EIN, then
+   the certificate. *10 min to check; an hour or two if both are needed*
+7. [ ] **RJ** · For each self-shipped product: a name, a few photos, the price, how many, and
+   its packed weight or what you'll charge to ship it. Drop them in `inbox/`. *10 min each*
+8. [ ] **Agent** · About's prose into Markdown RJ can edit (task 14). *15 min*
 9. [ ] **Agent** · Shop build in test mode (task 7): product files, Payment Links, the order
-   Worker (Gelato drafts, or an email to RJ for self-shipped items). *1 to 2 hours*
-10. [ ] **Agent** · After 6: Mockups for the photo prints, tee, mug and tote; check photo
-    resolution. *30 to 60 min*
-11. [ ] **Agent** · Cloudflare Pages project, deployed to its `pages.dev` address for RJ to check;
-    record every current DNS record for robotlantern.com, above all Google Workspace mail. *30 min*
-12. [ ] **RJ** · After 10: Pick the two to four launch products and approve their mockups. *20 min*
-13. [ ] **Agent** · After 3, 4 and 7: Shop policy pages (shipping, returns, refunds, with handmade
-    items final sale except for shipping damage) and the Stripe sections of privacy and terms.
-    *30 min*
-14. [ ] **Agent** · After 9, 12 and 13: Listings from the mockups (and RJ's photos of his own
-    items): copy, prices, Payment Links in test mode. Quote each launch product's sample. *45 min*
-15. [ ] **RJ** · After 12 and 14: Order one sample of each launch product. **Costs money**: the
-    quotes come from step 14. A quality check, not a gate: if one disappoints, its listing
-    pauses. *15 min*
-16. [ ] **RJ** · After 14: Run a test-mode purchase of a printed product (and a self-shipped one,
-    if any), check the Gelato draft or the email it leaves, and delete the draft. *10 min*
-17. [ ] **RJ** · After 11: Check the `pages.dev` copy. Add robotlantern.com to Cloudflare
+   Worker (Gelato drafts; self-shipped orders show in Stripe), Stripe Tax set up in the sandbox.
+   *1 to 2 hours*
+10. [ ] **Agent** · Mockups for the tee, mug and tote. *30 min*
+11. [ ] **Agent** · Cloudflare Pages project, deployed to its `pages.dev` address (kept out of
+    search engines) for RJ to check; record every current DNS record for robotlantern.com, above
+    all Google Workspace mail. *30 min*
+12. [ ] **Agent** · Shop policy pages (shipping, returns, refunds, with handmade items final sale
+    except for shipping damage) and the Stripe sections of privacy and terms. *30 min*
+13. [ ] **RJ** · After 8: Rewrite the About page in its Markdown file. *your pace*
+14. [ ] **Agent** · After 7: A product folder and listing draft for each self-shipped item. *30 min*
+15. [ ] **RJ** · After 10 and 14: Pick the launch products and approve their mockups and
+    listings. *20 min*
+16. [ ] **Agent** · After 9, 12 and 15: Listings live in test mode: copy, prices, Payment Links.
+    Quote a sample of each printed product. *45 min*
+17. [ ] **RJ** · After 16: Order one sample of each printed launch product. **Costs money**: the
+    quotes come from step 16. A quality check, not a gate. *15 min*
+18. [ ] **RJ** · After 16: Run a test-mode purchase of a printed product and a self-shipped one;
+    check the Gelato draft and the Stripe notice; delete the draft. *10 min*
+19. [ ] **RJ** · After 6: Once the EIN arrives, change Stripe's business details to Robot Lantern
+    LLC. *15 min*
+20. [ ] **Agent** · After 6 and 19: Turn on West Virginia in Stripe Tax (live), with the
+    registration's start date. *10 min*
+21. [ ] **Agent** · After 5: The style changes. *depends on the list*
+22. [ ] **RJ** · After 11: Check the `pages.dev` copy. Add robotlantern.com to Cloudflare
     (dashboard, free plan), or give the API token Zone and DNS edit for the change window. *15 min*
-18. [ ] **Agent** · After 17: Enter the DNS records in Cloudflare and compare them with the old
+23. [ ] **Agent** · After 22: Enter the DNS records in Cloudflare and compare them with the old
     ones. *15 min*
-19. [ ] **RJ** · After 18: Switch the nameservers at DomainRegistry.com to Cloudflare's. Changes
+24. [ ] **RJ** · After 23: Switch the nameservers at DomainRegistry.com to Cloudflare's. Changes
     can take up to a day to spread. *10 min*
-20. [ ] **Agent** · After 1, 8, 16 and 19: Launch, once RJ says go: set the launch dates, rerun the
-    privacy pass, remove the frozen prototype and the `CNAME` file, switch the Payment Links to
-    live, merge `rebuild` into `main` and push (pushing `main` deploys). Check the site, a test
-    email and one live checkout page. Real orders still arrive as Gelato drafts RJ confirms.
-    *45 min*
-21. [ ] **RJ** · After 15: When the samples arrive, keep each listing, or pause it and send the
+25. [ ] **Agent** · After 13, 18, 20, 21 and 24: Launch, once RJ says go: set the launch dates,
+    rerun the privacy pass, remove the frozen prototype and the `CNAME` file, switch the Payment
+    Links to live, merge `rebuild` into `main` and push (pushing `main` deploys). Check the site,
+    a test email and one live checkout page. Printed orders still arrive as Gelato drafts RJ
+    confirms. *45 min*
+26. [ ] **RJ** · After 17: When the samples arrive, keep each listing, or pause it and send the
     product back to design. *20 min*
 
 ### Not needed for launch
@@ -116,8 +121,13 @@ The detail behind the road to launch, and the record of what's done.
      Stripe Checkout Session ID is the Gelato `orderReferenceId`, and the Worker searches for it
      before creating, so Stripe's retries can't place an order twice. Gelato's webhooks carry no
      signature, so the Worker treats them as a hint and re-reads the order from Gelato's API. For
-     `self` it emails RJ the order and address.
+     `self` it leaves the order to RJ (see "Order notices").
    - Products list from their mockups (RJ, 2026-10-01); samples follow as a quality check.
+   - Order notices: at launch, RJ turns on Stripe's own emails for successful payments, which is
+     how self-shipped orders reach him; the address is in the Stripe dashboard. The Worker's own
+     email waits for cutover, when Cloudflare Email Routing can send it for free.
+   - Sales tax: Stripe Tax, West Virginia only, live once the state registration exists
+     ([docs/SALES-TAX.md](docs/SALES-TAX.md)).
    - Safety: the Worker creates Gelato **drafts** until RJ says otherwise, and RJ confirms each
      one in the Gelato dashboard. Each order also emails RJ. See "Testing without a real charge"
      in docs/CHARGES.md.
@@ -130,7 +140,7 @@ The detail behind the road to launch, and the record of what's done.
    - Later, not for launch: automatic order placement, shipping emails with tracking (needs an
      email service), Stripe Checkout Sessions built by the Worker for carts of several items.
    - Done when a Stripe test-mode payment leaves the right Gelato draft, with the right product,
-     file and address, a self-shipped test order emails RJ, and RJ has deleted the draft.
+     file and address, a self-shipped test order shows in Stripe, and RJ has deleted the draft.
 8. **Privacy pass.** First run done 2026-09-27 (findings in `.private/privacy/`); nothing flagged
    is a concern (Fairmont, Bogotá and the machines' names can be public). Rerun before cutover.
 9. **Cutover.** The host is Cloudflare (RJ, 2026-09-27). Steps:
@@ -167,9 +177,9 @@ The detail behind the road to launch, and the record of what's done.
     user and bar presenting output as human-written; the site's attribution already does the
     opposite. Research notes: `.private/legal/`.
 14. **About page and the cast.** At `/about/`, with the intro drafted in RJ's review session.
-    Done when RJ approves the copy (road to launch, step 3). Next:
-    move its prose into a Markdown file RJ can edit (`src/content/about.md`), leaving the cast's
-    layout in `about.astro` (RJ, 2026-09-30, asked how to edit it himself).
+    RJ rewrites it himself before launch, once its prose is in a Markdown file
+    (`src/content/about.md`), leaving the cast's layout in `about.astro`. InkBot Delta is the
+    third printer, named at 2 a.m. without the Greek alphabet; there's no Gamma (RJ, 2026-10-01).
 15. **Builds.** Done 2026-09-27; RJ checked it on his phone. Each build runs full screen
     (`src/layouts/BuildLayout.astro`) with the monogram as the way home; the Builds page has one
     card per build (`src/content/builds/*.json`). The Sky, Unprojected is copied into
@@ -340,3 +350,8 @@ The detail behind the road to launch, and the record of what's done.
 - 2026-10-01: The site and the shop launch together (RJ). Products list from mockups, with samples
   as a quality check instead of a gate, and RJ can sell limited runs of things he makes and ships
   himself. The road to launch is one list again.
+- 2026-10-01: RJ's answers: phone check fine (style changes to come), US only, Stripe sign-in by
+  passkey with its public details set, about six self-shipped products from home, no photo prints.
+  Sales tax worked out (docs/SALES-TAX.md): Stripe Tax for West Virginia only, which needs the
+  state's Business Registration Certificate, which likely needs the EIN first. The road to launch
+  is now 26 steps, 4 done.

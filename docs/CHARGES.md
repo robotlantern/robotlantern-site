@@ -32,7 +32,7 @@ Stripe has no setup or monthly fee. Every fee below is per transaction and comes
 | A real card payment (Checkout, Payment Links, Apple Pay, Link) | 2.9% + 30¢ for US cards. International cards add 1.5%, and currency conversion adds 1%. |
 | Refunding a payment | No refund fee, but the original payment's fees aren't returned |
 | A dispute (chargeback) | $15 per dispute, plus the disputed amount |
-| Stripe Tax, automatic sales tax at checkout | 0.5% per transaction on Tax Basic. Tax Complete starts at $90/month on an annual contract. |
+| Stripe Tax, automatic sales tax at checkout (adopted 2026-10-01; docs/SALES-TAX.md) | 0.5% of each sale into a state where Robot Lantern is registered to collect, so only West Virginia orders. Tax Complete starts at $90/month on an annual contract: not needed. |
 | Radar Standard, Plus or Pro (fraud screening) | A fee per screened transaction (from 5¢). Radar Lite has no fee. Check which plan a new account starts on before going live. |
 | Any other paid product (Billing, Invoicing, Climate, Atlas, Identity) | Not needed. Don't turn one on. |
 
@@ -107,7 +107,6 @@ Not re-checked for billing detail; confirm on Cloudflare's pricing pages before 
 | QPMN: placing an order | Product plus shipping, per order; no fee for API access (QPMN's API page, 2026-10-01). |
 | Lulu (books, later) | Per order. API access is by request. |
 | Shipping labels for things RJ ships himself (USPS through a label service such as Pirate Ship, or USPS Click-N-Ship) | Per label. The accounts are free. Not yet chosen or checked: check before the first label. |
-| A PO box for the return address | A yearly or half-yearly fee, by box size. Not yet checked. |
 
 ## Sources
 

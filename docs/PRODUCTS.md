@@ -35,8 +35,8 @@ the same stages, minus the printer. Its file says `fulfillment: self` and how ma
   than RJ can make.
 - **Handling time.** The listing promises one RJ can keep while working in fits and starts,
   such as "ships within 5 business days".
-- **Return address.** Labels need one, and it isn't his home: a PO box, or the registered agent
-  if its plan forwards mail.
+- **Return address.** RJ ships from home, and his address on labels is fine (RJ, 2026-10-01).
+  It never goes on the site.
 - **Labels cost money** per package (docs/CHARGES.md).
 - **No children's products** without the testing US law requires for them; aim things at adults.
 - **Returns.** Handmade items are final sale except for damage in shipping.

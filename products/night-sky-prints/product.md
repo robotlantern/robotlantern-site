@@ -1,7 +1,7 @@
 ---
 name: Night sky photo prints
-stage: idea
-next: RJ picks which of his photos are candidates; the agent checks their resolution against print sizes
+stage: parked
+next: Nothing until RJ has photos he wants printed (2026-10-01: none yet)
 waiting_on: rj
 updated: 2026-10-01
 ---
