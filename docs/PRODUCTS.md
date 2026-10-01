@@ -19,12 +19,27 @@ them.
 | `sketch` | What it is concretely: product type, size, what's printed where, who it's for, open questions. | **RJ:** "worth checking." |
 | `feasibility` | Which printer and product, the printer's own price quote (free), shipping, the price and margin, file specs, and the rights to every piece of art and data. | **RJ:** go or no-go, on the numbers. |
 | `design` | Print-ready files to the printer's spec, and mockups. | **RJ** approves the mockups. |
-| `sample` | One sample, ordered and photographed. **Costs money**: RJ approves each order (docs/CHARGES.md). | **RJ** approves the sample, or it goes back to `design`. |
-| `listing` | The shop entry: product file, photos, copy, the Stripe price and Payment Link (NOW.md, task 7). | **RJ:** it goes live. |
-| `live` | On sale. | Retired, or a new version starts at `design`. |
+| `sample` | Only for a new product type or a new printer (the blanket, say): one sample, ordered and photographed before it lists. **Costs money**: RJ approves each order (docs/CHARGES.md). | **RJ** approves the sample, or it goes back to `design`. |
+| `listing` | The shop entry: product file, mockups or photos, copy, the Stripe price and Payment Link (NOW.md, task 7). A known printer and product (a Gelato poster or tee) lists from its mockups, and its sample is ordered the same day as a quality check. | **RJ:** it goes live. |
+| `live` | On sale. If a quality-check sample disappoints, the listing pauses and the product goes back to `design`. | Retired, or a new version starts at `design`. |
 
 Ideas that wait go to `parked`, with a line saying why; dropped ones go to `dropped` and stay as
 a record.
+
+## Things RJ makes
+
+A product RJ makes and ships himself (a 3D print, a hand-pulled print, a cut piece) goes through
+the same stages, minus the printer. Its file says `fulfillment: self` and how many there are.
+
+- **Limited runs.** The Payment Link stops after that many sales, so the shop never owes more
+  than RJ can make.
+- **Handling time.** The listing promises one RJ can keep while working in fits and starts,
+  such as "ships within 5 business days".
+- **Return address.** Labels need one, and it isn't his home: a PO box, or the registered agent
+  if its plan forwards mail.
+- **Labels cost money** per package (docs/CHARGES.md).
+- **No children's products** without the testing US law requires for them; aim things at adults.
+- **Returns.** Handmade items are final sale except for damage in shipping.
 
 ## Intake
 
@@ -38,6 +53,7 @@ session.
 ---
 name: Stargazing blanket
 stage: sketch
+fulfillment: gelato   # or self, with a quantity; or a printer's name
 next: RJ says whether it's worth checking
 waiting_on: rj        # rj or agent
 updated: 2026-10-01

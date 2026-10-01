@@ -7,64 +7,65 @@ _Last updated 2026-10-01._
 The new site is built on the `rebuild` branch and previewed at https://rl.rblt.io/ (push to
 `samwise`; [docs/PREVIEW.md](docs/PREVIEW.md)). Design rules are in [docs/PAGES.md](docs/PAGES.md),
 the home page in [docs/HOME.md](docs/HOME.md) and the brand in [docs/BRAND.md](docs/BRAND.md).
-**What's left is the list below, in order.** `python3 tools/next.py` prints RJ's next steps
+**What's left is the list below, in order: the site and the shop launch together.** `python3 tools/next.py` prints RJ's next steps
 from it. Task notes further down hold the detail.
 
 ## Road to launch
 
-Two tracks. The site can launch first, with the shop page saying it opens soon; the shop opens
-when its samples are approved. Samples take one to two weeks to arrive, so tying the site to
-them would hold everything else back for no reason. Step 1 decides this. If RJ says no, step 10
-waits for step 23.
+One list: the site and the shop launch together (RJ, 2026-10-01). Print-on-demand products list
+from their mockups; each one's sample is ordered as soon as its mockup is approved, and is a
+quality check rather than a gate. Things RJ makes himself can sell in limited numbers and ship
+from him.
 
-**RJ** steps are his; **Agent** steps an agent does in a session. "After 6:" means it waits for step 6. Times are rough: agent time is
-wall-clock, RJ time is his hands-on time. Check a step off when it's done.
+**RJ** steps are his; **Agent** steps an agent does in a session. "After 6:" means it waits for
+step 6. Times are rough: agent time is wall-clock, RJ time is his hands-on time. Check a step
+off when it's done.
 
-### Track 1: launch the site
-
-1. [ ] **RJ** · Decide: launch the site before the shop opens (recommended), or together. *1 min*
-2. [ ] **RJ** · Phone check at https://rl.rblt.io/: the collapse and menu on the home page and a
+1. [ ] **RJ** · Phone check at https://rl.rblt.io/: the collapse and menu on the home page and a
    chat, the bottom nav, the status bar color, the favicon in a Safari tab. *10 min*
-3. [ ] **RJ** · About page: is "one person" right, given a team is the goal? A line about the
+2. [ ] **RJ** · About page: is "one person" right, given a team is the goal? A line about the
    missing InkBot Gamma? Then approve the copy. *10 min*
-4. [ ] **Agent** · After 3: About's prose into Markdown RJ can edit, with his answers (task 14). *15 min*
-5. [ ] **Agent** · Shop page reads "opening soon"; the privacy and terms pages lose their
-   Shopify sections until the shop opens. *20 min*
-6. [ ] **Agent** · Cloudflare Pages project, deployed to its `pages.dev` address for RJ to check;
-   record every current DNS record for robotlantern.com, above all Google Workspace mail. *30 min*
-7. [ ] **RJ** · After 6: Check the `pages.dev` copy. Add robotlantern.com to Cloudflare (dashboard, free
-   plan), or give the API token Zone and DNS edit for the change window. *15 min*
-8. [ ] **Agent** · After 7: Enter the DNS records in Cloudflare and compare them with the old ones. *15 min*
-9. [ ] **RJ** · After 8: Switch the nameservers at DomainRegistry.com to Cloudflare's. Changes can take
-   up to a day to spread. *10 min*
-10. [ ] **Agent** · After 2, 4, 5 and 9: Launch: set the launch dates, rerun the privacy pass, remove the frozen
-    prototype and the `CNAME` file, merge `rebuild` into `main` and push (RJ says go: pushing
-    `main` deploys). Check the site and send a test email. *30 min*
-
-### Track 2: open the shop
-
-Steps 11 to 16 can start now, alongside Track 1.
-
-11. [ ] **RJ** · Decide: ship to the US only at launch (recommended), or abroad too. *1 min*
-12. [ ] **RJ** · Decide sales tax: Stripe Tax at 0.5% a sale, or a fixed West Virginia rate set
-    by hand (free). Ask whoever does the LLC's taxes which states you owe at this volume. *a call*
-13. [ ] **RJ** · Turn on Stripe 2FA if it isn't on, and set its support email to
-    help@robotlantern.com (Settings, Public details). *5 min*
-14. [ ] **RJ** · Pick which of your photos could be prints (`products/night-sky-prints/`). *10 min*
-15. [ ] **Agent** · Shop build in test mode (task 7): product files, Payment Links, the order
-    Worker, Gelato drafts. *1 to 2 hours*
-16. [ ] **Agent** · After 14: Mockups for the photo prints, tee, mug and tote; check photo resolution.
-    *30 to 60 min*
-17. [ ] **RJ** · After 16: Pick the two to four launch products and approve their mockups. *20 min*
-18. [ ] **Agent** · After 11 and 12: Shop policy pages (shipping, returns, refunds) and the Stripe sections of
-    privacy and terms, from RJ's answers to 11 and 12. *30 min*
-19. [ ] **RJ** · After 17: Order one sample of each launch product. **Costs money**: the agent quotes each
-    one first. Then wait one to two weeks. *15 min*
-20. [ ] **RJ** · After 15: Run a test-mode purchase, check the Gelato draft it leaves, delete it. *10 min*
-21. [ ] **RJ** · After 19: Approve the samples when they arrive, or send them back to design. *20 min*
-22. [ ] **Agent** · After 15, 18 and 21: Listings: photos of the samples, copy, live Payment Links. *45 min*
-23. [ ] **RJ** · After 20 and 22: Open the shop: switch to live payments. The first real orders still arrive as
-    Gelato drafts that RJ confirms. *5 min*
+3. [ ] **RJ** · Decide: ship to the US only at launch (recommended), or abroad too. *1 min*
+4. [ ] **RJ** · Decide sales tax: Stripe Tax at 0.5% a sale, or a fixed West Virginia rate set
+   by hand (free). Ask whoever does the LLC's taxes which states you owe at this volume. *a call*
+5. [ ] **RJ** · Turn on Stripe 2FA if it isn't on, and set its support email to
+   help@robotlantern.com (Settings, Public details). *5 min*
+6. [ ] **RJ** · Pick which of your photos could be prints (`products/night-sky-prints/`). *10 min*
+7. [ ] **RJ** · Self-shipped items: which ones (if any) at launch and how many of each; the
+   return address for labels (a PO box, or the Beckley registered agent if their plan forwards
+   mail); a handling time you can keep (say, ships within 5 business days). *15 min*
+8. [ ] **Agent** · After 2: About's prose into Markdown RJ can edit, with his answers
+   (task 14). *15 min*
+9. [ ] **Agent** · Shop build in test mode (task 7): product files, Payment Links, the order
+   Worker (Gelato drafts, or an email to RJ for self-shipped items). *1 to 2 hours*
+10. [ ] **Agent** · After 6: Mockups for the photo prints, tee, mug and tote; check photo
+    resolution. *30 to 60 min*
+11. [ ] **Agent** · Cloudflare Pages project, deployed to its `pages.dev` address for RJ to check;
+    record every current DNS record for robotlantern.com, above all Google Workspace mail. *30 min*
+12. [ ] **RJ** · After 10: Pick the two to four launch products and approve their mockups. *20 min*
+13. [ ] **Agent** · After 3, 4 and 7: Shop policy pages (shipping, returns, refunds, with handmade
+    items final sale except for shipping damage) and the Stripe sections of privacy and terms.
+    *30 min*
+14. [ ] **Agent** · After 9, 12 and 13: Listings from the mockups (and RJ's photos of his own
+    items): copy, prices, Payment Links in test mode. Quote each launch product's sample. *45 min*
+15. [ ] **RJ** · After 12 and 14: Order one sample of each launch product. **Costs money**: the
+    quotes come from step 14. A quality check, not a gate: if one disappoints, its listing
+    pauses. *15 min*
+16. [ ] **RJ** · After 14: Run a test-mode purchase of a printed product (and a self-shipped one,
+    if any), check the Gelato draft or the email it leaves, and delete the draft. *10 min*
+17. [ ] **RJ** · After 11: Check the `pages.dev` copy. Add robotlantern.com to Cloudflare
+    (dashboard, free plan), or give the API token Zone and DNS edit for the change window. *15 min*
+18. [ ] **Agent** · After 17: Enter the DNS records in Cloudflare and compare them with the old
+    ones. *15 min*
+19. [ ] **RJ** · After 18: Switch the nameservers at DomainRegistry.com to Cloudflare's. Changes
+    can take up to a day to spread. *10 min*
+20. [ ] **Agent** · After 1, 8, 16 and 19: Launch, once RJ says go: set the launch dates, rerun the
+    privacy pass, remove the frozen prototype and the `CNAME` file, switch the Payment Links to
+    live, merge `rebuild` into `main` and push (pushing `main` deploys). Check the site, a test
+    email and one live checkout page. Real orders still arrive as Gelato drafts RJ confirms.
+    *45 min*
+21. [ ] **RJ** · After 15: When the samples arrive, keep each listing, or pause it and send the
+    product back to design. *20 min*
 
 ### Not needed for launch
 
@@ -104,17 +105,19 @@ The detail behind the road to launch, and the record of what's done.
 7. **First products, on Stripe and Gelato** (RJ, 2026-09-28: no Shopify; nothing with a
    monthly fee). Accounts open and keys checked 2026-10-01 (read-only calls): Stripe (live,
    activated), Gelato, Cloudflare, Slant 3D. The sandbox key (`STRIPE_SECRET_KEY_TEST`) is in
-   and works (2026-10-01), so the build is unblocked. The products come from the pipeline
-   (task 19): whichever two to four reach `listing` first.
-   - Start: the prototype's catalog candidates and placement previews. RJ picks 2 to 4 designs.
-     Shop art is made with AI (RJ, 2026-09-27).
-   - How it works: each product is a JSON file in the repo with its Gelato product UID, print file
-     and price. The shop page links to a Stripe Payment Link per product, which collects the
-     shipping address and charges a flat shipping rate. When a payment completes, Stripe calls a
-     Cloudflare Worker, which verifies Stripe's signature and creates the Gelato order. The
+   and works. The products come from the pipeline (task 19): whichever two to four reach
+   `listing` first. Shop art is made with AI (RJ, 2026-09-27).
+   - How it works: each product is a JSON file in the repo with its price and its fulfillment:
+     `gelato` (product UID and print file) or `self` (RJ makes and ships it). The shop page
+     links to a Stripe Payment Link per product, which collects the shipping address and charges
+     a flat shipping rate. A self-shipped item's link stops after its stock is sold (Payment
+     Links' completed-sessions limit). When a payment completes, Stripe calls a Cloudflare
+     Worker, which verifies Stripe's signature. For `gelato` it creates the Gelato order; the
      Stripe Checkout Session ID is the Gelato `orderReferenceId`, and the Worker searches for it
      before creating, so Stripe's retries can't place an order twice. Gelato's webhooks carry no
-     signature, so the Worker treats them as a hint and re-reads the order from Gelato's API.
+     signature, so the Worker treats them as a hint and re-reads the order from Gelato's API. For
+     `self` it emails RJ the order and address.
+   - Products list from their mockups (RJ, 2026-10-01); samples follow as a quality check.
    - Safety: the Worker creates Gelato **drafts** until RJ says otherwise, and RJ confirms each
      one in the Gelato dashboard. Each order also emails RJ. See "Testing without a real charge"
      in docs/CHARGES.md.
@@ -127,7 +130,7 @@ The detail behind the road to launch, and the record of what's done.
    - Later, not for launch: automatic order placement, shipping emails with tracking (needs an
      email service), Stripe Checkout Sessions built by the Worker for carts of several items.
    - Done when a Stripe test-mode payment leaves the right Gelato draft, with the right product,
-     file and address, and RJ has deleted it.
+     file and address, a self-shipped test order emails RJ, and RJ has deleted the draft.
 8. **Privacy pass.** First run done 2026-09-27 (findings in `.private/privacy/`); nothing flagged
    is a concern (Fairmont, Bogotá and the machines' names can be public). Rerun before cutover.
 9. **Cutover.** The host is Cloudflare (RJ, 2026-09-27). Steps:
@@ -334,3 +337,6 @@ The detail behind the road to launch, and the record of what's done.
   script. The Stripe sandbox key works, so the shop build (task 7) is unblocked.
 - 2026-10-01: NOW.md reorganized around one ordered road to launch, in two tracks (site, then
   shop), with `tools/next.py` printing RJ's next steps.
+- 2026-10-01: The site and the shop launch together (RJ). Products list from mockups, with samples
+  as a quality check instead of a gate, and RJ can sell limited runs of things he makes and ships
+  himself. The road to launch is one list again.

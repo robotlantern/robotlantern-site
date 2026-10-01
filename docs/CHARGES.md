@@ -106,6 +106,8 @@ Not re-checked for billing detail; confirm on Cloudflare's pricing pages before 
 | Slant 3D: placing an order through the API or dashboard | Charged per order (part, filament and shipping). Reading files, filaments and quotes is free. Not yet checked in detail: read Slant's API docs on orders before writing anything there. |
 | QPMN: placing an order | Product plus shipping, per order; no fee for API access (QPMN's API page, 2026-10-01). |
 | Lulu (books, later) | Per order. API access is by request. |
+| Shipping labels for things RJ ships himself (USPS through a label service such as Pirate Ship, or USPS Click-N-Ship) | Per label. The accounts are free. Not yet chosen or checked: check before the first label. |
+| A PO box for the return address | A yearly or half-yearly fee, by box size. Not yet checked. |
 
 ## Sources
 
