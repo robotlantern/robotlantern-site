@@ -1,24 +1,23 @@
 # Now
 
-_Last updated 2026-09-28._
+_Last updated 2026-10-01._
 
 ## Start here
 
 The new site is built on the `rebuild` branch and previewed at https://rl.rblt.io/ (push to
 `samwise`; [docs/PREVIEW.md](docs/PREVIEW.md)). Design rules are in [docs/PAGES.md](docs/PAGES.md),
 the home page in [docs/HOME.md](docs/HOME.md) and the brand in [docs/BRAND.md](docs/BRAND.md).
-What's left before launch is mostly RJ's: the checklist under "Open decisions and actions", then
-cutover (task 9). The shop moved from Shopify to Stripe and Gelato on 2026-09-28 (task 7), and
-its build waits on RJ's accounts and keys.
+RJ's 2026-09-30 review is applied: the logo, the collapse, the bottom nav and the
+status-bar color. The accounts are open and their keys work, so the shop build (task 7) is
+unblocked except for a Stripe sandbox key. What's left before launch is task 7, the About copy,
+the shop policy pages, and cutover (task 9).
 
 ## Tasks
 
 Each task fits in one sitting or can stop cleanly partway. Pick any task that isn't blocked.
 
-1. **Close Shopify (RJ), by 2026-09-30.** The next bill is 2026-10-01. The shop no longer uses
-   Shopify (task 7), so close the store rather than pause it. First check that nothing in the
-   Shopify-connected Gelato store is worth keeping, then close it, then disconnect the store in
-   Gelato and delete any saved Shopify tokens. See [docs/CHARGES.md](docs/CHARGES.md).
+1. **Close Shopify (RJ).** Done 2026-09-30, before the 2026-10-01 bill; RJ removed its links to
+   Gelato and QPMN. `shopify.env` in the secrets folder is now dead and can be deleted.
 2. **Framework sign-off.** Done 2026-09-23: Astro.
 3. **Attribution tool.** Done 2026-09-24 (`tools/attribution/`, [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md)).
 4. **Sunset scroll prototype.** Done 2026-09-25. It became the home page; the frozen prototype is
@@ -34,7 +33,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    reasoning or search steps worth including; per-message times (the next capture should keep
    them).
 7. **First products, on Stripe and Gelato** (RJ, 2026-09-28: no Shopify; nothing with a
-   monthly fee). Blocked on RJ's accounts and keys (see "Open decisions and actions").
+   monthly fee). Accounts open and keys checked 2026-10-01 (read-only calls): Stripe (live,
+   activated), Gelato, Cloudflare, Slant 3D. Needs a Stripe **sandbox** key before any test.
    - Start: the prototype's catalog candidates and placement previews. RJ picks 2 to 4 designs.
      Shop art is made with AI (RJ, 2026-09-27).
    - How it works: each product is a JSON file in the repo with its Gelato product UID, print file
@@ -48,7 +48,10 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
      one in the Gelato dashboard. Each order also emails RJ. See "Testing without a real charge"
      in docs/CHARGES.md.
    - Site pages that Shopify would have supplied: refund, returns and shipping policies, and
-     contact details. Stripe checks the site for these before it activates payments. Rewrite the
+     contact details. Stripe's website checklist wants these before launch (the account is
+     already activated). The public contact is an email address (help@robotlantern.com); no
+     street address or phone number goes on the site. Stripe's public support address is
+     already the registered agent's in Beckley; add help@ as its support email. Rewrite the
      Shopify parts of the privacy, terms and credits pages for Stripe.
    - Later, not for launch: automatic order placement, shipping emails with tracking (needs an
      email service), Stripe Checkout Sessions built by the Worker for carts of several items.
@@ -63,6 +66,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
      bare domain can't be served by Cloudflare otherwise. First copy every existing record into
      Cloudflare, above all Google Workspace mail (MX, SPF, DKIM, DMARC), or mail breaks. Remove
      the `CNAME` file (a GitHub Pages leftover).
+   - The API token can't add a zone or write DNS (zone access is read-only), so either RJ adds
+     the zone in the dashboard or adds Zone and DNS edit to the token for the change window.
    - Keep Cloudflare's Bot Fight Mode, challenges, rate limiting and Web Analytics off; the
      privacy page says the site sets no cookies and loads nothing from other sites.
    - Set every essay date marked `datePlaceholder` and every chat's `postedPlaceholder` to the
@@ -70,8 +75,8 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
      `rebuild` into `main`.
    - Done already: 404 page, `robots.txt`, `/sitemap.xml`, favicon set and social image, the old
      landing page's files removed from the root.
-   - Decide: whether `public/prototypes/sunset-scroll/` ships (recommendation: remove it; the
-     tag keeps it).
+   - Remove `public/prototypes/sunset-scroll/`, the frozen copy of the prototype (the tag
+     `sunset-scroll-v1` keeps it).
 10. **Samwise previews.** Done 2026-09-27; RJ has used them on his phone ([docs/PREVIEW.md](docs/PREVIEW.md)).
 11. **Home page, first slice.** Done 2026-09-27; RJ approved it on his phone. The sunset scroll;
     the wordmark docks and its period (the ovaloid) flies in spinning, with a tail along its path;
@@ -79,15 +84,18 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     collapses into the monogram menu. Next slices are in docs/HOME.md ("Map", "Open").
 12. **Section marks in the nav.** Done 2026-09-27: RJ's marks (one to four stars on dashed
     shapes), with the brand's ovaloids as the stars (`src/components/SectionMark.astro`).
-13. **Footer pages: privacy, terms, credits.** Drafted from research 2026-09-27, with RJ's answers
-    applied (the LLC holds everything; West Virginia; Cloudflare; Google Workspace; 7-year order
-    records; AI shop art; no ESA email; a minimal Uploader section). RJ treats them as approved
-    once the last two marks are settled: the content licence and whether photos are licensed
-    (see "Open decisions and actions"). The switch to Stripe (task 7) means rewriting the Shopify
-    parts and linking the site's own shop policies. Research notes:
-    `.private/legal/`.
+13. **Footer pages: privacy, terms, credits.** Approved, with the licence applied 2026-10-01
+    (CC BY-NC 4.0 for essays and chats; RJ's photos all rights reserved). Left: rewrite the
+    Shopify parts for Stripe and link the site's own shop policies (with task 7). Gelato's terms
+    checked 2026-10-01: it processes order data for Robot Lantern, its printers are
+    sub-processors, and **carriers are separate controllers**, so the privacy page should say the
+    carrier handles your address under its own policy. OpenAI's terms assign output to the
+    user and bar presenting output as human-written; the site's attribution already does the
+    opposite. Research notes: `.private/legal/`.
 14. **About page and the cast.** At `/about/`, with the intro drafted in RJ's review session.
-    Done when RJ approves the copy (two questions under "Open decisions and actions").
+    Done when RJ approves the copy (two questions under "Open decisions and actions"). Next:
+    move its prose into a Markdown file RJ can edit (`src/content/about.md`), leaving the cast's
+    layout in `about.astro` (RJ, 2026-09-30, asked how to edit it himself).
 15. **Builds.** Done 2026-09-27; RJ checked it on his phone. Each build runs full screen
     (`src/layouts/BuildLayout.astro`) with the monogram as the way home; the Builds page has one
     card per build (`src/content/builds/*.json`). The Sky, Unprojected is copied into
@@ -96,62 +104,61 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     no shop links or promotions on build pages, and no ESA-derived renders on products. Ask ESA
     before any potentially monetized video made from it.
 16. **Brand.** Done 2026-09-27 ([docs/BRAND.md](docs/BRAND.md)): RJ's ovaloid period, the
-    left-aligned two-line wordmark and a one-line version, and the monogram, which is the favicon
-    and the site menu button. Open: the favicon tile coloring, and RJ's phone check of the
-    collapse and the menu.
-17. **Analytics** (before any link from social or YouTube). Recommendation from RJ's review
+    left-aligned two-line wordmark and a one-line version. On 2026-10-01 RJ's tile (E) became the
+    logo: favicon, menu button and the way home from builds, with a new four-frame collapse.
+    Open: RJ's phone check.
+17. **Analytics** (RJ, 2026-09-30: before the first social link). As recommended in RJ's review
     session: at cutover, use Cloudflare's own traffic totals (no script, nothing to change on the
     privacy page); before the first YouTube link, add counted short links
     (`robotlantern.com/y/<slug>`, a small redirect that counts, one sentence on the privacy page);
     hold Cloudflare's analytics script until RJ wants to know what people read, and update the
     privacy page the same day.
 
+18. **RJ's review fixes, 2026-09-30.** Done 2026-10-01 (screenshots in `inbox/`, which is
+    gitignored): the logo is RJ's tile, the right way up; the collapse is four timed frames,
+    each one a whole cream tile; the one-line wordmark heads the menu; the logo has room in the
+    reading bar and keeps its tile everywhere; the section nav sits at the bottom of every page
+    on a dark bar; Thoughts' icon keeps its dashed line as a tail; the status bar takes the
+    page's color (tested in the iOS 26 simulator). Left: RJ's phone check.
+19. **Product pipeline** (RJ, 2026-09-30). A system for product ideas, from intake through
+    refinement and development to listing. Proposal in RJ's 2026-10-01 session; waits on his
+    go-ahead. First product to run through it: the stargazing blanket. Gelato's API catalog has
+    no blankets (checked 2026-10-01), so it starts with choosing a printer.
+
 ## Open decisions and actions (RJ)
 
 Everything left that only RJ can do, in one list.
 
 **Decide**
-- [ ] **Content licence** for essays and chats. Options: all rights reserved (full control; readers
-  can't tell what's OK to share), CC BY (anyone can reuse, even sell), **CC BY-NC 4.0**
-  (recommended: share and adapt with credit, only Robot Lantern makes money from it), CC BY-NC-SA
-  (the same, and adaptations stay open).
-- [ ] **Photos**: under the licence, or all rights reserved (recommended; they're the most
-  clearly copyrightable work, and may become products).
-- [ ] **Favicon coloring**: A (cream on night, in use now), B, C or D in
-  `design/brand/favicon-options/`. Then set `FAVICON` in `tools/brand/make_icons.py` and run it.
+- [x] **Content licence**: CC BY-NC 4.0 (2026-09-30), applied 2026-10-01.
+- [x] **Photos**: all rights reserved (2026-09-30), applied 2026-10-01.
+- [x] **Favicon and logo**: RJ's E tile (2026-09-30), applied 2026-10-01.
+- [x] **Analytics**: before the first social link (2026-09-30; task 17).
+- [x] **Sunset prototype**: removed at cutover (the frozen copy only; the home page is the
+  approved version).
 - [ ] **About page**: approve the copy. Is "one person" right, given a team is the goal? Is there
   a line worth adding about the missing InkBot Gamma?
-- [ ] **Sunset prototype**: ship `public/prototypes/sunset-scroll/` or remove it at cutover.
-- [ ] **Analytics** before the first social or YouTube link (task 17).
 - [ ] **Sales tax** at checkout (task 7): Stripe Tax at 0.5% per sale, or a fixed West Virginia
   rate set by hand for free. Ask whoever does the LLC's taxes which states you owe at this volume.
 - [ ] **Where the shop ships**: the US only at launch (recommended), or also abroad.
+- [ ] **Product pipeline** (task 19): go ahead with the proposal, or change it.
 
 **Do**
-- [ ] Close Shopify by 2026-09-30 (task 1).
-- [ ] **Stripe** (task 7). Sign up as Robot Lantern LLC. Test mode works at once, with no business
-  details. Then create a restricted test-mode key with write access to Products, Prices, Payment
-  Links, Shipping Rates and Webhook Endpoints, and read access to Checkout Sessions. Save it in a
-  file outside the repo, not in the chat. Before launch, activate live payments: EIN, bank account
-  and the representative's identity, which only RJ can enter. Turn on 2FA.
-- [ ] **Gelato** (task 7): create an API key in the API Portal and save it the same way. Check
-  that the card or wallet on file is the one to charge.
-- [ ] **Cloudflare** (tasks 7 and 9): create the free account. An agent logs in to it from Sarcean
-  with `wrangler login`, which RJ approves in the browser.
-- [ ] The shop's public contact details, which Stripe expects to find on the site: the Northwest
-  Registered Agent address in Beckley (check their plan allows it as a public business address;
-  mail handling may be a paid add-on) and a phone number (check the Google number still works).
-- [ ] Check in a browser: Gelato's [privacy policy](https://www.gelato.com/legal/privacy) and
-  [data processing terms](https://www.gelato.com/legal/data-processing-terms) call Gelato a
-  processor that may pass order data to print facilities and carriers; OpenAI's
-  [terms](https://openai.com/policies/terms-of-use/) assign you its rights in output and bar
-  presenting output as human-written.
-- [ ] Optional: a one-sentence signed assignment of RJ's Robot Lantern work to the LLC, so
-  "© Robot Lantern LLC" is clean.
-- [ ] On the phone: the wordmark collapsing into the monogram and the menu, on the home page and
-  a chat; the favicon in a Safari tab.
-- [ ] Tidy `design/`: `design/asterisms/` (the retired asterism crops and RJ's scratch) and
-  `design/brand/mark-blob.*` can go when RJ's done with them.
+- [ ] **Stripe sandbox key**: in the Dashboard, open a sandbox, create the same agent-preset
+  restricted key there, and add it to `stripe.env` as `STRIPE_SECRET_KEY_TEST`. Turn on 2FA if
+  it isn't on. Set the support email to help@robotlantern.com (Settings, Public details).
+- [ ] **Cloudflare token**: it can reach Billing and the Registrar. Remove those two from it, or
+  leave them and rely on CHARGES.md (agents won't call them).
+- [ ] **QPMN**: in the QPMN dashboard, Developer Center, Integration with API, ask for the API
+  documentation (their page says the team sends it). Save it in `.private/` and an agent can
+  test the key.
+- [ ] **Lulu**: send the API access request when books get closer. Nothing needed for launch.
+- [ ] **Assignment to the LLC**: sign `.private/legal/assignment-to-llc.md` (use your full legal
+  name), scan it, and keep it with the LLC's papers.
+- [ ] Delete `shopify.env` from the secrets folder.
+- [ ] On the phone, at https://rl.rblt.io/: the collapse and the menu on the home page and a
+  chat; the bottom nav on every section; the status bar color; the favicon in a Safari tab.
+- [ ] Optional: `design/brand/mark-blob.*` can go when you're done with it.
 
 ## Parked
 
@@ -264,3 +271,14 @@ Everything left that only RJ can do, in one list.
   API takes orders by product UID with no connected store, has no test mode, and sends unsigned
   webhooks, so the Worker creates drafts at first and re-reads webhooks from the API.
   docs/CHARGES.md now covers Stripe.
+- 2026-09-30: RJ canceled Shopify before the 2026-10-01 bill. Nothing had been created in the
+  store. Licensing decisions taken as recommended: CC BY-NC 4.0 for essays and chats, photos all
+  rights reserved (not yet applied to the site or the footer pages). Accounts (Stripe, Gelato,
+  Cloudflare) come next; the design feedback waits.
+- 2026-10-01: RJ's review applied (task 18): his E tile is the logo, the collapse is four timed
+  frames, the nav is at the bottom of every page, and the status bar takes the page's color.
+  iOS 26 Safari tints the status bar from the topmost opaque fixed layer at the top edge (it
+  ignores transparent ones), else from the page's background color. Keys checked for Stripe
+  (a live restricted key; the account is activated), Gelato, Cloudflare (account token, zone
+  access read-only) and Slant 3D; QPMN's API docs come on request. Licence applied to Terms and
+  Credits. The asterism crops are retired; `inbox/` is gitignored.
