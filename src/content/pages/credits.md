@@ -1,20 +1,20 @@
 ---
 title: Credits & licenses
 description: Everything this site is built from, who made it, and the license notices that come with it.
-updated: 2026-09-27
+updated: 2026-10-01
 ---
 
 Robot Lantern is built from RJ's writing and photos, conversations with AI models, open-source software and open science data. This page credits all of it and carries the notices those licenses ask for.
 
 ## The writing
 
-[DECIDE: license] Unless a page says otherwise, the essays and chats are © Robot Lantern LLC and licensed under [Creative Commons Attribution-NonCommercial 4.0 International](https://creativecommons.org/licenses/by-nc/4.0/) (CC BY-NC 4.0). To credit a piece, give its title, "Robot Lantern", a link to the page and a link to the license, and say if you changed it.
+Unless a page says otherwise, the essays and chats are © Robot Lantern LLC and licensed under [Creative Commons Attribution-NonCommercial 4.0 International](https://creativecommons.org/licenses/by-nc/4.0/) (CC BY-NC 4.0). To credit a piece, give its title, "Robot Lantern", a link to the page and a link to the license, and say if you changed it.
 
 Parts of the essays and chats were written by AI models: ChatGPT (OpenAI) so far. Each essay shows who wrote which words, and each chat shows who said what. Text written by a model may not be protected by copyright; the license covers the human-written text and the selection, arrangement and editing of the whole. See [Terms](/terms/) for what the license doesn't cover.
 
 ## Photos and images
 
-- **RJ's photos.** The starry sky on the home page, the treeline (cut from his sunset photo), the home page's sunset colors (from another of his photos), the photos in "It's Always the Pleiades", and the sky photo at the center of The Sky, Unprojected were taken by RJ. © Robot Lantern LLC [DECIDE: all rights reserved, or included in the CC BY-NC license].
+- **RJ's photos.** The starry sky on the home page, the treeline (cut from his sunset photo), the home page's sunset colors (from another of his photos), the photos in "It's Always the Pleiades", and the sky photo at the center of The Sky, Unprojected were taken by RJ. © Robot Lantern LLC, all rights reserved: they aren't covered by the CC BY-NC license.
 - **The annotated sky photo** in "It's Always the Pleiades" is RJ's photo with labels added by ChatGPT, published as ChatGPT returned it.
 - **The generated image** in "It's Always the Pleiades", a night sky seen from a planet in the Pleiades, was made by ChatGPT (OpenAI) during the conversation and is shown as it appeared there.
 - **The compass screenshot** in the same chat is from RJ's phone.

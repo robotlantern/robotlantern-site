@@ -1,7 +1,7 @@
 ---
 title: Terms
 description: The ground rules for reading, sharing and buying from Robot Lantern, in plain language.
-updated: 2026-09-27
+updated: 2026-10-01
 ---
 
 Robot Lantern is a small publishing site with a shop, run by Robot Lantern LLC, a West Virginia company. Using the site means you accept these terms.
@@ -12,13 +12,13 @@ Robot Lantern LLC, owned by RJ. Write to [admin@robotlantern.com](mailto:admin@r
 
 ## Sharing what's here
 
-[DECIDE: license] Unless a page says otherwise, the essays and chats are shared under [Creative Commons Attribution-NonCommercial 4.0](https://creativecommons.org/licenses/by-nc/4.0/) (CC BY-NC 4.0). You're welcome to copy, quote, share and adapt them for non-commercial purposes, as long as you credit Robot Lantern, link to the original and to the license, and say if you changed anything. For commercial use, ask.
+Unless a page says otherwise, the essays and chats are shared under [Creative Commons Attribution-NonCommercial 4.0](https://creativecommons.org/licenses/by-nc/4.0/) (CC BY-NC 4.0). You're welcome to copy, quote, share and adapt them for non-commercial purposes, as long as you credit Robot Lantern, link to the original and to the license, and say if you changed anything. For commercial use, ask.
 
 That license doesn't cover:
 
 - the art and product designs in the shop,
 - the Robot Lantern name and lantern wordmark,
-- photos, unless a page says they're included [DECIDE: recommended all rights reserved],
+- photos, unless a page says they're included,
 - anything credited to someone else on [Credits & licenses](/credits/), such as the astronomy data in The Sky, Unprojected, which comes with its own terms.
 
 Text written by an AI model may not be protected by copyright at all. The license covers what Robot Lantern holds rights in: the human-written words and the selection, arrangement and editing of the rest. It doesn't claim more.

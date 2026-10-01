@@ -1,6 +1,7 @@
 # What costs money
 
-This doc lists every action on Stripe, Gelato, Cloudflare and Shopify that can cost money. Before
+This doc lists every action on Stripe, Gelato, Cloudflare and the other print services that can
+cost money. Before
 doing anything not listed here, find out what it costs and add it.
 
 Stripe was checked on 2026-09-28, Gelato on 2026-09-23 and 2026-09-28, Cloudflare on 2026-09-27
@@ -11,10 +12,16 @@ and Shopify on 2026-09-23 (see [Sources](#sources)).
 - **The shop is Stripe + Gelato, with no Shopify (RJ, 2026-09-28).** Stripe takes payment, a
   Cloudflare Worker passes each paid order to Gelato's API, and Gelato prints and ships. Nothing
   has a monthly fee. See NOW.md, task 7.
-- **Shopify:** Basic, $39 per 30 days plus 6% tax ($41.34). The next bill is **2026-10-01**. RJ is
-  closing the store before then (task 1).
-- **Gelato:** free plan, no Gelato+. Its Shopify app goes when the store closes.
-- **Stripe:** no account yet.
+- **Shopify:** canceled by RJ on 2026-09-30, before the 2026-10-01 bill. RJ removed its links to
+  Gelato and QPMN.
+- **Gelato:** free plan, no Gelato+. API keys work (checked 2026-10-01 with read-only calls).
+- **Stripe:** account open and **activated for live payments** (charges and payouts enabled,
+  2026-10-01). The key on file is a **live** restricted key (Stripe's preset for AI agents). Build
+  and test with a sandbox key instead (see "Testing without a real charge").
+- **Cloudflare:** free account; its API token works (2026-10-01). The token can also reach
+  billing and domain registration, so agents treat those as off limits (see below).
+- **Slant 3D, QPMN:** accounts, no orders. Slant's key works; QPMN's API docs come from QPMN on
+  request.
 
 ## Stripe: actions that cost money
 
@@ -59,7 +66,9 @@ Stripe has no setup or monthly fee. Every fee below is per transaction and comes
 
 ## Testing without a real charge
 
-1. Use Stripe **test mode** and its test cards for every checkout test.
+1. Use a Stripe **sandbox** (test mode) and its test cards for every checkout test. The live key
+   in the secrets folder is for launch: never point a test at it, because a live Payment Link
+   takes real cards.
 2. Until RJ says otherwise, the Worker creates Gelato orders as **drafts**, whichever Stripe mode
    the payment came from. A test payment then leaves a draft to check and delete, and a real
    payment leaves a draft for RJ to confirm in the Gelato dashboard. Gelato's manual approval
@@ -77,6 +86,7 @@ Not re-checked for billing detail; confirm on Cloudflare's pricing pages before 
 | Workers requests that run code (the shop's order Worker, the counted short links in NOW.md task 17) | Free up to 100,000 a day; the paid plan is a monthly fee |
 | R2 storage (large files, later) | Free up to 10 GB and 1M writes / 10M reads a month; downloads free. Needs a card on file, so going over bills automatically: add a spending check before turning it on |
 | Web Analytics, Bot Fight Mode | Free, but they break the privacy page's claims (NOW.md, task 9) |
+| Anything under Billing, a paid plan or add-on, or Registrar (buying or transferring a domain) | Costs money. The API token can do these: agents never call them. |
 
 ## Shopify (until the store closes)
 
@@ -93,6 +103,9 @@ Not re-checked for billing detail; confirm on Cloudflare's pricing pages before 
 | --- | --- |
 | Northwest Registered Agent address as the shop's public address | Check the plan: mail handling or forwarding may be a paid add-on |
 | An email service for shipping notices (for example Resend or Postmark) | Not chosen. Check its free tier before signing up. |
+| Slant 3D: placing an order through the API or dashboard | Charged per order (part, filament and shipping). Reading files, filaments and quotes is free. Not yet checked in detail: read Slant's API docs on orders before writing anything there. |
+| QPMN: placing an order | Product plus shipping, per order; no fee for API access (QPMN's API page, 2026-10-01). |
+| Lulu (books, later) | Per order. API access is by request. |
 
 ## Sources
 
