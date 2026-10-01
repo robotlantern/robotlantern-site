@@ -34,7 +34,9 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
    them).
 7. **First products, on Stripe and Gelato** (RJ, 2026-09-28: no Shopify; nothing with a
    monthly fee). Accounts open and keys checked 2026-10-01 (read-only calls): Stripe (live,
-   activated), Gelato, Cloudflare, Slant 3D. Needs a Stripe **sandbox** key before any test.
+   activated), Gelato, Cloudflare, Slant 3D. The sandbox key (`STRIPE_SECRET_KEY_TEST`) is in
+   and works (2026-10-01), so the build is unblocked. The products come from the pipeline
+   (task 19): whichever two to four reach `listing` first.
    - Start: the prototype's catalog candidates and placement previews. RJ picks 2 to 4 designs.
      Shop art is made with AI (RJ, 2026-09-27).
    - How it works: each product is a JSON file in the repo with its Gelato product UID, print file
@@ -120,10 +122,11 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     reading bar and keeps its tile everywhere; the section nav sits at the bottom of every page
     on a dark bar; Thoughts' mark is a star with a short dashed tail in the nav and the menu alike; the status bar takes the
     page's color (tested in the iOS 26 simulator). Left: RJ's phone check.
-19. **Product pipeline** (RJ, 2026-09-30). A system for product ideas, from intake through
-    refinement and development to listing. Proposal in RJ's 2026-10-01 session; waits on his
-    go-ahead. First product to run through it: the stargazing blanket. Gelato's API catalog has
-    no blankets (checked 2026-10-01), so it starts with choosing a printer.
+19. **Product pipeline.** Done 2026-10-01 ([docs/PRODUCTS.md](docs/PRODUCTS.md)): one folder
+    per product in `products/`, staged idea → sketch → feasibility → design → sample → listing →
+    live, with RJ deciding at each gate. `python3 tools/products/board.py` shows where everything
+    is and who it's waiting on. Seeded with the stargazing blankets, night sky photo prints and
+    the wordmark tee, mug and tote.
 
 20. **Second chat: "The Hard Problem of Alignment"** (RJ with Claude Opus 5.5, 2026-09-29).
     Captured from RJ's claude.ai export into `.private/conversations/capability-separation/`
@@ -152,14 +155,17 @@ Everything left that only RJ can do, in one list.
 - [ ] **Sales tax** at checkout (task 7): Stripe Tax at 0.5% per sale, or a fixed West Virginia
   rate set by hand for free. Ask whoever does the LLC's taxes which states you owe at this volume.
 - [ ] **Where the shop ships**: the US only at launch (recommended), or also abroad.
-- [ ] **Product pipeline** (task 19): go ahead with the proposal, or change it.
+- [x] **Product pipeline** (task 19): adopted 2026-10-01.
+- [ ] **Products waiting on you**: run `python3 tools/products/board.py`, or read the blanket's
+  three open questions in `products/stargazing-blankets/product.md` and pick candidate photos
+  for `products/night-sky-prints/`.
 - [ ] **Second chat** (task 20): read the public copy and approve it, strike any editor's links,
   and say whether it can go on the phone preview before approval.
 
 **Do**
-- [ ] **Stripe sandbox key**: in the Dashboard, open a sandbox, create the same agent-preset
-  restricted key there, and add it to `stripe.env` as `STRIPE_SECRET_KEY_TEST`. Turn on 2FA if
-  it isn't on. Set the support email to help@robotlantern.com (Settings, Public details).
+- [x] **Stripe sandbox key**: in place 2026-10-01.
+- [ ] **Stripe**: turn on 2FA if it isn't on, and set the support email to help@robotlantern.com
+  (Settings, Public details).
 - [ ] **Cloudflare token**: it can reach Billing and the Registrar. Remove those two from it, or
   leave them and rely on CHARGES.md (agents won't call them).
 - [ ] **QPMN**: in the QPMN dashboard, Developer Center, Integration with API, ask for the API
@@ -184,8 +190,6 @@ Everything left that only RJ can do, in one list.
 - Large files as the site grows: video on YouTube; big downloads or self-hosted video on
   Cloudflare R2 behind a subdomain (free tier 10 GB; it needs a card on file, so add it to
   docs/CHARGES.md before turning it on).
-- Monogram merch and the one-line wordmark in print: the monogram also works as an avatar or
-  print mark.
 
 ## Log
 
@@ -298,3 +302,5 @@ Everything left that only RJ can do, in one list.
 - 2026-10-01: Captured the second chat from RJ's claude.ai export (task 20). The export keeps
   per-message times and the app's reasoning summaries, not the reasoning itself. Its first
   message carries injected context, including RJ's memory snapshot, which is never published.
+- 2026-10-01: Product pipeline adopted (task 19): `products/` and docs/PRODUCTS.md, with a board
+  script. The Stripe sandbox key works, so the shop build (task 7) is unblocked.
