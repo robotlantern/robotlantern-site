@@ -4,7 +4,8 @@
 
 Needs rsvg-convert and ImageMagick (brew install librsvg imagemagick). Writes into public/:
 favicon.svg, favicon.ico (16, 32, 48), apple-touch-icon.png (180, square: iOS rounds it) and
-og.png (1200x630, the wordmark on the night sky, for link previews).
+og.png (1200x630, the wordmark on the night sky, for link previews). The icons are RJ's tile
+(docs/BRAND.md).
 """
 import json
 import subprocess
@@ -13,26 +14,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 PUB = ROOT / 'public'
-FAVICON = 'a-cream-on-night'  # RJ's pick among design/brand/favicon-options/
-COLORS = {
-    'a-cream-on-night': ('#0c1730', '#e9e2d2', '#ffd28a'),
-    'b-lantern-on-night': ('#04060d', '#ffd28a', '#ffd28a'),
-    'c-night-on-lantern': ('#ffd28a', '#0a0e18', '#0a0e18'),
-    'd-night-on-cream': ('#f4f1ea', '#0a0e18', '#f0a040'),
-}
 brand = json.loads((ROOT / 'src/data/brand.json').read_text())
 
 
 def tile(rounded):
-    bg, fg, dot = COLORS[FAVICON]
-    m = brand['monogram']
-    h = 72
-    sc = h / m['height']
-    x, y = (100 - m['width'] * sc) / 2, (100 - h) / 2
-    rx = ' rx="18"' if rounded else ''
-    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100"{rx} fill="{bg}"/>'
-            f'<g transform="translate({x:.2f} {y:.2f}) scale({sc:.4f})"><path d="{m["hook"]}" fill="{fg}"/>'
-            f'<path d="{m["base"]}" fill="{fg}"/><path d="{m["dot"]}" fill="{dot}"/></g></svg>\n')
+    """RJ's tile (design/brand/favicon-options/e-night-on-cream.svg). The touch icon is square:
+    iOS rounds it."""
+    t = brand['tile']
+    bg = f'<path d="{t["bg"]}" fill="#f4f1ea"/>' if rounded else '<rect width="100" height="100" fill="#f4f1ea"/>'
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">{bg}<path d="{t["r"]}" fill="#0a0e18"/>'
+            f'<path d="{t["l"]}" fill="#0a0e18"/><path d="{t["dot"]}" fill="#f0a040"/></svg>\n')
 
 
 def png(svg_text, size, out, tmp):

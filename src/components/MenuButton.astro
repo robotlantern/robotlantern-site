@@ -1,21 +1,17 @@
 ---
-// The menu button: an invisible target over the wordmark's corner that comes alive once the
-// wordmark has collapsed into the monogram (SiteMenu.astro). It sits inside the wordmark's
-// container, centered on where the monogram forms.
+// The menu button is the logo, in the top-left corner, centered in the bar that reading pages pin
+// to the top. It appears once the wordmark has collapsed into it (SiteMenu.astro runs the collapse
+// and the menu).
+import Logo from './Logo.astro';
 ---
-<button class="menu-button" type="button" aria-label="Menu" aria-controls="site-menu" aria-expanded="false" data-menu-open tabindex="-1"></button>
+<button class="menu-button" type="button" aria-label="Menu" aria-controls="site-menu" aria-expanded="false" data-menu-open data-logo tabindex="-1"><Logo /></button>
 
 <style>
   .menu-button {
-    position: absolute; z-index: -1;
-    left: calc(var(--mono-x) * 100%); top: calc(var(--mono-y) * 100%);
-    width: calc(2.9rem / var(--ms, 1) / var(--grow, 1)); height: calc(2.9rem / var(--ms, 1) / var(--grow, 1));
-    transform: translate(-50%, -50%);
-    padding: 0; border: 0; border-radius: calc(.9rem / var(--ms, 1) / var(--grow, 1));
-    background: rgba(8, 13, 28, .88); box-shadow: 0 0 0 1px rgba(190, 205, 235, .12);
-    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-    opacity: var(--k, 0); cursor: pointer; visibility: hidden;
+    position: fixed; z-index: 31; left: var(--edge); top: calc((var(--bar-h) - var(--logo)) / 2);
+    width: var(--logo); height: var(--logo); padding: 0; border: 0; border-radius: 18%;
+    background: none; box-shadow: 0 2px 10px rgba(0, 0, 0, .45); cursor: pointer; visibility: hidden; line-height: 0;
   }
-  :global(.is-collapsed) > .menu-button { visibility: visible; }
-  .menu-button:focus-visible { outline: 2px solid var(--lantern); outline-offset: 2px; }
+  .menu-button :global(.logo) { width: 100%; height: 100%; }
+  .menu-button:focus-visible { outline: 2px solid var(--lantern); outline-offset: 3px; }
 </style>

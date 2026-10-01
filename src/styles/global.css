@@ -16,6 +16,9 @@
   --ai: #6aaaf2;
   --panel: rgba(8, 15, 33, .78);
   --edge: clamp(1rem, 3.5vw, 2rem);
+  /* The bar reading pages pin to the top, and the logo (the menu button) centered in it. */
+  --bar-h: 3.6rem;
+  --logo: 2.4rem;
   /* Chat bubbles: RJ's in soft orange with dark text; the model's (when bubbled) in blue. */
   --bubble-human: #eda46c;
   --bubble-human-text: #24140a;
@@ -25,7 +28,8 @@
   --sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   color-scheme: dark;
-  background: var(--night);
+  /* The top of the page's color: iOS Safari tints its status bar with it. */
+  background: var(--deep);
 }
 
 * { box-sizing: border-box; }

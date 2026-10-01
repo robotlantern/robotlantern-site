@@ -7,6 +7,11 @@ The SVG files are the source; rerun this after editing them in Affinity:
 Each wordmark is 15 paths: 14 letters and the period (the ovaloid). The "t" of "Lantern" is
 two paths (its hook and its base); with the ovaloid beside it, it's the monogram. Paths are
 identified by position, so a re-export that keeps the shapes keeps working.
+
+The logo is RJ's tile (favicon-options/e-night-on-cream.svg, 100 units square): the "t" halves
+as an r over an L, with the ovaloid beside them. It's the favicon and the menu button. The
+wordmark's lower half of the "t" turns 90 degrees clockwise to become the r; its upper half
+drops to become the L.
 """
 import json
 import re
@@ -56,6 +61,17 @@ def wordmark(name):
     }
 
 
+def tile(name):
+    s = (SRC / name).read_text()
+    if 'viewBox="0 0 100 100"' not in s:
+        sys.exit(f'{name}: expected a 100x100 viewBox')
+    bg, *glyphs = re.findall(r'<path d="([^"]+)"', s)
+    boxes = [box(d) for d in glyphs]
+    dot = max(range(3), key=lambda i: boxes[i][2])
+    r, l = sorted((i for i in range(3) if i != dot), key=lambda i: boxes[i][1])
+    return {'bg': bg, 'r': glyphs[r], 'l': glyphs[l], 'dot': glyphs[dot], 'rBox': boxes[r], 'lBox': boxes[l], 'dotBox': boxes[dot]}
+
+
 def main():
     ow, oh, [ovaloid] = svg('skewed-ovaloid.svg')
     mw, mh, mono = svg('monogram-logo-bw.svg')
@@ -67,6 +83,7 @@ def main():
         'ovaloid': {'width': ow, 'height': oh, 'd': ovaloid, 'box': box(ovaloid)},
         'monogram': {'width': mw, 'height': mh, 'hook': mono[rest[0]], 'base': mono[rest[1]], 'dot': mono[dot],
                      'hookBox': mboxes[rest[0]], 'baseBox': mboxes[rest[1]], 'dotBox': mboxes[dot]},
+        'tile': tile('favicon-options/e-night-on-cream.svg'),
         'twoLine': wordmark('wordmark-two-lines.svg'),
         'landscape': wordmark('wordmark-landscape.svg'),
     }

@@ -18,12 +18,22 @@ Status: RJ's direction from reviewing the first preview, 2026-09-27.
   of a piece, the next one (newest posted first) is appended, and the address, page title and
   list follow whichever piece is in view.
 - The site menu is the same everywhere: Home (the ovaloid under a roof), the four sections, the
-  footer pages, and on Thoughts and Chats that section's list with search. It opens from the
-  monogram: as the reader scrolls, the wordmark stays in the corner and collapses into it (its
-  letters fade; the t's halves and the period slide together, the upper half turning over). At
-  the top of a page the full wordmark links home (`src/components/SiteMenu.astro`).
-- Builds run full screen with no site chrome, except a quiet way home in the top-left corner:
-  the monogram in its tile (`src/layouts/BuildLayout.astro`).
+  footer pages, and on Thoughts and Chats that section's list with search. Its head carries the
+  one-line wordmark. It opens from the logo: as the reader scrolls, the wordmark stays in the
+  corner and collapses into it (docs/BRAND.md, "The collapse"). At the top of a page the full
+  wordmark links home (`src/components/SiteMenu.astro`).
+- The section nav is anchored at the bottom of every page, a translucent dark bar floating over
+  the content (`src/components/BottomNav.astro`; RJ, 2026-09-30). On the home page it sits on
+  the tree silhouette instead and appears once the wordmark lands.
+- The logo sits in the top-left corner, centered in the bar that reading pages pin to the top
+  (`--bar-h`, `--logo` in `src/styles/global.css`), with room around it.
+- Builds run full screen with no site chrome, except a quiet way home in the same corner: the
+  logo (`src/layouts/BuildLayout.astro`).
+- iOS Safari (26) tints its status bar from the page: from the topmost opaque fixed layer touching
+  the top edge, or else the page's background color, and it ignores a layer that's transparent.
+  So every page's root background is the color at its top (`--deep`), and the home page moves it,
+  and a 24px strip blended with "lighten", with the sky as you scroll. Tested in the iOS 26
+  simulator, 2026-10-01.
 
 ## Thoughts (essays)
 

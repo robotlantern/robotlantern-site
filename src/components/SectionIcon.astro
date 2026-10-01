@@ -1,15 +1,19 @@
 ---
 // A section's mark on its own, as an icon: the same stars and outline as the nav mark
 // (src/lib/section-marks.ts), without the word, fitted to a square. Used wherever a section needs
-// a small symbol (the list panel's heading, the authors page, placeholders).
+// a small symbol (the list panel's heading, the authors page, placeholders). Thoughts' star keeps
+// its dashed line, as a tail trailing down to the left: in the nav the same line runs under the word.
 import { marks, type Section } from '../lib/section-marks';
 import { OVALOID, ovaloidAt, turnFor } from '../lib/brand';
 
 interface Props { name: Section; class?: string }
 const { name, class: className } = Astro.props;
 const m = marks[name];
-// Fit everything but Thoughts' trail into a square with a little margin.
+// Thoughts' tail, from below-left of the star up to it, at the nav trail's slope.
+const tail = name === 'thoughts' ? (([x, y, r]) => [[x - 1.95, y + 1.2], [x - r * .8, y + r * .5]])(m.stars[0]) : undefined;
+// Fit everything into a square with a little margin.
 const xs: number[] = [], ys: number[] = [];
+for (const [x, y] of tail ?? []) { xs.push(x); ys.push(y); }
 for (const [x, y, r] of m.stars) { xs.push(x - r, x + r); ys.push(y - r, y + r); }
 if (m.ring) { xs.push(m.ring[0] - m.ring[2], m.ring[0] + m.ring[2]); ys.push(m.ring[1] - m.ring[2], m.ring[1] + m.ring[2]); }
 for (const [x, y] of m.poly ?? []) { xs.push(x); ys.push(y); }
@@ -23,6 +27,7 @@ const line = size * .055;
 <svg class:list={['section-icon', className]} viewBox={`${f(cx - size / 2)} ${f(cy - size / 2)} ${f(size)} ${f(size)}`} aria-hidden="true">
   {m.ring && <circle cx={m.ring[0]} cy={m.ring[1]} r={m.ring[2]} fill="none" stroke="currentColor" stroke-width={f(line)} stroke-dasharray={`${f(line * 2.4)} ${f(line * 1.6)}`} opacity=".5" />}
   {m.poly && <path d={'M' + m.poly.map((p) => p.join(' ')).join('L') + 'Z'} fill="none" stroke="currentColor" stroke-width={f(line)} stroke-dasharray={`${f(line * 3)} ${f(line * 1.8)}`} opacity=".5" />}
+  {tail && <path d={`M${tail[0].map(f).join(' ')}L${tail[1].map(f).join(' ')}`} fill="none" stroke="currentColor" stroke-width={f(line)} stroke-dasharray={`${f(line * 2.6)} ${f(line * 1.7)}`} opacity=".6" />}
   {m.stars.map(([x, y, r], i) => (
     <path d={OVALOID} fill="currentColor" transform={ovaloidAt(x, y, Math.max(r * 1.25, size * .16), turnFor(`${name}-${i}`))} />
   ))}

@@ -1,0 +1,13 @@
+---
+// The logo: RJ's tile (design/brand/favicon-options/e-night-on-cream.svg via src/data/brand.json).
+// The wordmark's "t" halves as an r over an L, with the ovaloid beside them: rounded on top and
+// square below, like half a robot's head. It's the favicon, the menu button and the way home
+// from a build.
+import { brand } from '../lib/brand';
+
+const t = brand.tile;
+---
+<svg class="logo" viewBox="0 0 100 100" role="img" aria-label="Robot Lantern">
+  <path d={t.bg} fill="#f4f1ea"/>
+  <g><path d={t.r} fill="#0a0e18"/><path d={t.l} fill="#0a0e18"/><path d={t.dot} fill="#f0a040"/></g>
+</svg>

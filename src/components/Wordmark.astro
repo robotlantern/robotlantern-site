@@ -1,12 +1,13 @@
 ---
 // The wordmark, lit (RJ's design/brand/wordmark-*.svg via src/data/brand.json): the letters take
 // the lantern's light and the period, the ovaloid, is the lantern. Two lines (left-aligned) or one.
-// The "t" of "Lantern" and the period are grouped apart, because with the ovaloid beside it that
-// "t" is the monogram (the menu button collapses into it).
+// The "t" of "Lantern" and the period are drawn apart, because they fly into the logo when the
+// wordmark collapses (SiteMenu.astro).
 import { brand, collapseFor } from '../lib/brand';
 
-interface Props { layout?: 'two-line' | 'landscape'; class?: string }
-const { layout = 'two-line', class: className } = Astro.props;
+// `collapses` marks the one that collapses into the logo (the header's), with the data it needs.
+interface Props { layout?: 'two-line' | 'landscape'; class?: string; collapses?: boolean }
+const { layout = 'two-line', class: className, collapses = false } = Astro.props;
 const w = layout === 'landscape' ? brand.landscape : brand.twoLine;
 const tParts = new Set([w.t.hook, w.t.base]);
 const rest = w.letters.filter((d) => !tParts.has(d));
@@ -15,7 +16,7 @@ const cx = (px0 + px1) / 2, cy = (py0 + py1) / 2;
 const id = `wm-${layout}`;
 const pad = 4;
 ---
-<svg class:list={['wordmark', className]} viewBox={`${-pad} ${-pad} ${w.width + pad * 2} ${w.height + pad * 2}`} role="img" aria-label="Robot Lantern" data-collapse={collapseFor(w)}>
+<svg class:list={['wordmark', className]} viewBox={`${-pad} ${-pad} ${w.width + pad * 2} ${w.height + pad * 2}`} role="img" aria-label="Robot Lantern" data-collapse={collapses ? collapseFor(w) : undefined}>
   <defs>
     <radialGradient id={`${id}-light`} gradientUnits="userSpaceOnUse" cx={cx} cy={cy} r={w.width * .95}>
       <stop offset="0" stop-color="#ffd79a"/>

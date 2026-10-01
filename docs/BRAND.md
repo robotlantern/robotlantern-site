@@ -11,19 +11,31 @@ Decided by RJ on 2026-09-27. The sources are his SVGs in `design/brand/`; the si
 - **The ovaloid** (`skewed-ovaloid.svg`): the wordmark's "o", rotated. It is the period, and the
   brand's one recurring shape: the lantern that flies across the home page and spins as it
   goes, the stars that cards are drawn from, the stars in the section marks and on the future
-  sky map, and the monogram's dot. It can't stand alone as a logo; it's always with the letters
+  sky map, and the logo's dot. It can't stand alone as a logo; it's always with the letters
   or in a group.
-- **The monogram** (`monogram-logo-bw.svg`): the two halves of the wordmark's "t" (reading as a
-  lowercase r over an l) with the ovaloid beside it. A stylized lantern, or the side of a
-  robot's head. It's the favicon, and the site's menu button: the wordmark collapses into it,
-  because its three parts are the wordmark's own "t" and period.
+- **The logo** (`favicon-options/e-night-on-cream.svg`, RJ, 2026-09-30): the two halves of the
+  wordmark's "t" as a lowercase r over an L, in night on a cream tile, with the orange ovaloid
+  beside them. It's deliberately asymmetrical: half a robot's head, rounded on top (friendly)
+  and square below. The t's lower half turns 90 degrees clockwise to become the r; its upper half
+  drops to become the L. It's the favicon, the touch icon, the menu button and the way home from
+  a build (`src/components/Logo.astro`). The older `monogram-logo-bw.svg` is the same glyphs
+  without the tile.
+
+## The collapse
+
+Once the reader scrolls a little (on the home page, once the wordmark has landed), the wordmark
+collapses into the logo in four quick frames, timed rather than tied to the scroll, so it never
+rests half done. In the first frame all of "Robot Lantern" turns into one cream block where the
+letters were; each frame it shrinks toward the logo's place while the t's halves and the period
+ride on it into position, the lower half turning. Every frame is a whole tile. Scrolling back up
+reverses it (`src/components/SiteMenu.astro`; RJ, 2026-09-30).
 
 ## Icons and the social image
 
 `tools/brand/make_icons.py` makes `public/favicon.svg`, `favicon.ico`, `apple-touch-icon.png`
-and `og.png` (the wordmark on the night photo, for link previews) from the monogram, in one of
-the four tile colorings in `design/brand/favicon-options/`. The choice is `FAVICON` at the top
-of the script. `src/components/HeadMeta.astro` puts them on every page.
+and `og.png` (the wordmark on the night photo, for link previews) from the logo. RJ chose E, his
+resized version of D, on 2026-09-30; A to D in `design/brand/favicon-options/` are the options
+he weighed. `src/components/HeadMeta.astro` puts them on every page.
 
 ## Rules
 

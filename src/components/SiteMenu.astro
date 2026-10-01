@@ -1,10 +1,10 @@
 ---
 // The site menu, the same on every page: Home, the four sections and the footer pages, plus
 // whatever the page adds in the default slot (Thoughts and Chats add their list and search).
-// It opens from the monogram. The script also runs the collapse: once the reader scrolls, the
-// wordmark's letters fade and its "t" and period slide together into the monogram, which
-// becomes the menu button (docs/BRAND.md, docs/HOME.md).
+// It opens from the logo. The script also runs the collapse: once the reader scrolls, the
+// wordmark collapses into the logo, which is the menu button (docs/BRAND.md, docs/HOME.md).
 import SectionIcon from './SectionIcon.astro';
+import Wordmark from './Wordmark.astro';
 import HomeIcon from './HomeIcon.astro';
 import Icon from './Icon.astro';
 
@@ -17,6 +17,7 @@ const current = (href: string) => (href === '/' ? here === '/' : here.startsWith
   <button class="site-menu__backdrop" type="button" tabindex="-1" aria-label="Close the menu" data-menu-close></button>
   <div class="site-menu__panel" role="dialog" aria-modal="true" aria-label="Menu">
     <div class="site-menu__head">
+      <a class="site-menu__wordmark" href="/"><Wordmark layout="landscape" /></a>
       <button class="site-menu__close" type="button" aria-label="Close" data-menu-close><Icon name="close" /></button>
     </div>
     <nav class="site-menu__main" aria-label="Site">
@@ -37,7 +38,9 @@ const current = (href: string) => (href === '/' ? here === '/' : here.startsWith
   .site-menu.is-open .site-menu__backdrop { opacity: 1; }
   .site-menu__panel { position: absolute; inset: 0 auto 0 0; display: flex; flex-direction: column; gap: 1.2rem; width: min(21rem, calc(100vw - 3rem)); overflow: auto; padding: .8rem 1rem 1.6rem; background: var(--night-2, #080f21); box-shadow: 1rem 0 3rem rgba(0, 0, 0, .5); transform: translateX(-105%); transition: transform .22s ease; }
   .site-menu.is-open .site-menu__panel { transform: none; }
-  .site-menu__head { display: flex; justify-content: flex-end; }
+  .site-menu__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-left: .8rem; }
+  .site-menu__wordmark { display: block; line-height: 0; }
+  .site-menu__wordmark :global(.wordmark) { width: 9.5rem; height: auto; overflow: visible; }
   .site-menu__close { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; padding: 0; border: 0; border-radius: 50%; background: rgba(190, 205, 235, .08); color: var(--text); cursor: pointer; }
   .site-menu__close :global(.icon) { width: 1.1rem; height: 1.1rem; }
   .site-menu__main { display: grid; gap: .1rem; }
@@ -50,6 +53,9 @@ const current = (href: string) => (href === '/' ? here === '/' : here.startsWith
   .site-menu__more { display: flex; flex-wrap: wrap; gap: .7rem 1.2rem; margin-top: auto; padding: 1rem .8rem 0; border-top: 1px solid var(--line); }
   .site-menu__more a { color: var(--muted); font: .72rem/1 var(--sans, system-ui); letter-spacing: .12em; text-transform: uppercase; text-decoration: none; }
   .site-menu__more a:hover, .site-menu__more a[aria-current='page'] { color: var(--lantern); }
+  /* The collapse's frames are drawn over everything; the wordmark hides while they run. */
+  :global(.collapse-fly) { position: fixed; z-index: 32; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; visibility: hidden; }
+  :global([data-dock].is-collapsed) { visibility: hidden; }
   @media (prefers-reduced-motion: reduce) { .site-menu__panel, .site-menu__backdrop { transition: none; } }
 </style>
 
@@ -73,34 +79,82 @@ const current = (href: string) => (href === '/' ? here === '/' : here.startsWith
   });
   addEventListener('keydown', (e) => { if (e.key === 'Escape' && menu.classList.contains('is-open')) setOpen(false); });
 
-  // The collapse. Each [data-dock] holds a wordmark with data-collapse (how far its "t" halves and
-  // its period move to form the monogram). data-collapse-start (px of scroll) says when to begin;
-  // the home page sets it to the moment its wordmark has landed.
-  const LENGTH = 110;
-  const docks = [...document.querySelectorAll<HTMLElement>('[data-dock]')].map((dock) => {
-    const svg = dock.querySelector<SVGElement>('[data-collapse]')!;
-    const [hx, hy, bx, by, dx, dy, fx, fy] = svg.dataset.collapse!.split(' ').map(Number);
-    const q = (s: string) => [...dock.querySelectorAll<SVGElement>(s)];
-    return { dock, svg, flip: [fx, fy], parts: [[q('.wordmark__hook'), hx, hy, true], [q('.wordmark__base'), bx, by, false], [q('.wordmark__period'), dx, dy, false]] as const, fade: q('.wordmark__letters, .wordmark__glow'), button: dock.querySelector<HTMLButtonElement>('[data-menu-open]') };
-  });
+  // The collapse (docs/BRAND.md). Once the reader scrolls past a [data-dock]'s data-collapse-start
+  // (px; the home page sets it to the moment its wordmark has landed), the wordmark collapses into
+  // the logo in a few quick frames, and opens out again on the way back up. It's timed, not tied
+  // to the scroll, so it never rests half done. In the first frame the whole wordmark turns into
+  // the tile's cream, a rounded block where the letters were; each frame it shrinks toward the
+  // logo, and the t's halves and the period ride on it to their places, the lower half turning as
+  // it goes. So every frame is a whole tile, never letters half gone.
+  const FRAMES = 4, FRAME_MS = 45, PAST = 24;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const logo = document.querySelector<HTMLElement>('[data-logo]');
+  const NS = 'http://www.w3.org/2000/svg';
+  type Part = [string, number[], number[], number, string];
+  const docks = logo ? [...document.querySelectorAll<HTMLElement>('[data-dock]')].map((dock) => {
+    const svg = dock.querySelector<SVGSVGElement>('[data-collapse]')!;
+    const { vb, parts } = JSON.parse(svg.dataset.collapse!) as { vb: number[]; parts: Part[] };
+    const fly = document.createElementNS(NS, 'svg');
+    fly.setAttribute('class', 'collapse-fly');
+    fly.setAttribute('aria-hidden', 'true');
+    const block = fly.appendChild(document.createElementNS(NS, 'rect'));
+    block.setAttribute('fill', '#f4f1ea');
+    const paths = parts.map(([d, , , , color]) => {
+      const el = fly.appendChild(document.createElementNS(NS, 'path'));
+      el.setAttribute('d', d);
+      el.setAttribute('fill', color);
+      return el;
+    });
+    document.body.append(fly);
+    return { dock, svg, vb, parts, fly, block, paths, frame: 0, target: 0, timer: 0 };
+  }) : [];
+  type Dock = (typeof docks)[number];
+  const center = (b: number[]) => [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2];
+  const draw = (d: Dock) => {
+    const u = d.frame / FRAMES, mid = d.frame > 0 && d.frame < FRAMES;
+    d.dock.classList.toggle('is-collapsed', d.frame > 0);
+    logo!.style.visibility = d.frame === FRAMES ? 'visible' : '';
+    logo!.tabIndex = d.frame === FRAMES ? 0 : -1;
+    d.fly.style.visibility = mid ? 'visible' : 'hidden';
+    if (!mid) return;
+    // The wordmark's box as laid out (its dock may be scaled, as on the home page), and the logo's.
+    const box = d.dock.getBoundingClientRect();
+    const L = { x: logo!.offsetLeft, y: logo!.offsetTop, s: logo!.offsetWidth / 100 };
+    const s0 = box.width / d.vb[2];
+    const mix = (a: number, b: number) => a + (b - a) * u;
+    const w = mix(box.width, 100 * L.s), h = mix(box.height, 100 * L.s);
+    d.block.setAttribute('x', mix(box.left, L.x).toFixed(1));
+    d.block.setAttribute('y', mix(box.top, L.y).toFixed(1));
+    d.block.setAttribute('width', w.toFixed(1));
+    d.block.setAttribute('height', h.toFixed(1));
+    d.block.setAttribute('rx', (Math.min(w, h) * .18).toFixed(1));
+    d.parts.forEach(([, from, to, turn], i) => {
+      const [fx, fy] = center(from), [tx, ty] = center(to);
+      const a = [box.left + (fx - d.vb[0]) * s0, box.top + (fy - d.vb[1]) * s0];
+      const b = [L.x + tx * L.s, L.y + ty * L.s];
+      const s1 = L.s * Math.sqrt(((to[2] - to[0]) * (to[3] - to[1])) / ((from[2] - from[0]) * (from[3] - from[1])));
+      d.paths[i].setAttribute('transform', `translate(${mix(a[0], b[0]).toFixed(1)} ${mix(a[1], b[1]).toFixed(1)}) rotate(${turn * u}) scale(${mix(s0, s1).toFixed(4)}) translate(${-fx} ${-fy})`);
+    });
+  };
+  const step = (d: Dock) => {
+    d.timer = 0;
+    if (d.frame === d.target) return;
+    d.frame += d.target > d.frame ? 1 : -1;
+    draw(d);
+    if (d.frame !== d.target) d.timer = window.setTimeout(() => step(d), FRAME_MS);
+  };
   let queued = false;
   const collapse = () => {
     queued = false;
     for (const d of docks) {
-      const start = Number(d.dock.dataset.collapseStart ?? 0);
-      const k = Math.min(1, Math.max(0, (scrollY - start) / LENGTH));
-      const e = k * k * (3 - 2 * k);
-      d.dock.style.setProperty('--k', e.toFixed(3));
-      for (const [els, x, y, turns] of d.parts) {
-        let t = e ? `translate(${(x * e).toFixed(2)} ${(y * e).toFixed(2)})` : '';
-        // The hook turns over (top to bottom) about its center on the way.
-        if (turns && e) t += ` translate(${d.flip[0]} ${d.flip[1]}) scale(1 ${(1 - 2 * e).toFixed(3)}) translate(${-d.flip[0]} ${-d.flip[1]})`;
-        for (const el of els) el.setAttribute('transform', t);
-      }
-      for (const el of d.fade) el.style.opacity = String(Math.max(0, 1 - k * 2.6));
-      const done = e > .98;
-      d.dock.classList.toggle('is-collapsed', done);
-      if (d.button) d.button.tabIndex = done ? 0 : -1;
+      const start = Number(d.dock.dataset.collapseStart ?? 0) + PAST;
+      // A little give, so stopping right at the line doesn't flicker.
+      const want = scrollY > (d.target ? start - 12 : start) ? FRAMES : 0;
+      if (want !== d.target) {
+        d.target = want;
+        if (reduced) { d.frame = want; draw(d); }
+        else if (!d.timer) step(d);
+      } else if (d.frame) draw(d);
     }
   };
   const queue = () => { if (!queued) { queued = true; requestAnimationFrame(collapse); } };

@@ -35,9 +35,10 @@ that version. The sky map ("Map") is the next big piece.
 - A quick flick past several cards draws them one after another. After a reload, cards already
   above the screen are simply there.
 - The section nav is anchored at the bottom, on the tree silhouette, with a haze rising behind it;
-  the top stays clear for the sky and the wordmark (RJ, 2026-09-27).
-- Once the period has landed, the wordmark collapses into the monogram in the corner (the menu
-  button), as on every other page, and unfolds again on the way back up. (A pinned header with a dark fade was
+  the top stays clear for the sky and the wordmark (RJ, 2026-09-27). Every other page now has
+  the same nav at the bottom, on a dark bar (2026-09-30).
+- Once the period has landed, the wordmark collapses into the logo in the corner (the menu
+  button), as on every other page, and opens out again on the way back up. (A pinned header with a dark fade was
   tried and dropped on 2026-09-27: iOS Safari showed content behind the status bar, and the dark
   bar broke the sunset.)
 - Reduced motion: a simple fade replaces the flight and the line drawing.
@@ -74,8 +75,8 @@ The content is a network, and the navigation uses a constellation metaphor.
 ## Approved choices (task 11, 2026-09-27)
 
 - The letters fly from progress .06 to .3 and finish lighting by .28; the period leaves at .1 and
-  lands at .36; its lamp lights after it lands. Then the wordmark collapses into the monogram,
-  the menu button, over the next 110px of scroll.
+  lands at .36; its lamp lights after it lands. Then, 24px of scroll later, the wordmark collapses
+  into the logo, the menu button (four frames, timed; docs/BRAND.md).
 - The first card draws once the mark has landed and the card's top is on screen.
 - The Pleiades on the first card are seven ovaloids at catalog positions, not matched to the photo
   (which stays fixed while cards scroll). The essay's star is one ovaloid until stars are

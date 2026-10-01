@@ -7,8 +7,7 @@
 import fs from 'node:fs';
 import { getCollection } from 'astro:content';
 import AuthorName from '../components/AuthorName.astro';
-import SectionMark from '../components/SectionMark.astro';
-import { markReach } from '../lib/section-marks';
+import BottomNav from '../components/BottomNav.astro';
 import Footer from '../components/Footer.astro';
 import HeadMeta from '../components/HeadMeta.astro';
 import SiteMenu from '../components/SiteMenu.astro';
@@ -16,7 +15,7 @@ import MenuButton from '../components/MenuButton.astro';
 import { splitMessages } from '../lib/conversation';
 import { convertMathDelimiters, renderMarkdown } from '../lib/markdown';
 import { getAuthors, authorOf, shortDate } from '../lib/authors';
-import { brand, OVALOID, ovaloidAt, turnFor, collapseFor, monogramCenter } from '../lib/brand';
+import { brand, OVALOID, ovaloidAt, turnFor, collapseFor } from '../lib/brand';
 
 const all = await getAuthors();
 const noCites = (html: string) => html.replace(/<sup class="cite">.*?<\/sup>/g, '');
@@ -53,10 +52,8 @@ const box = { w: wm.width + PAD * 2, h: wm.height + PAD * 2 };
 const [wx0, wy0, wx1, wy1] = wm.periodBox;
 const period = { x: (wx0 + wx1) / 2, y: (wy0 + wy1) / 2, size: Math.max(wx1 - wx0, wy1 - wy0) };
 const periodFrac = [(period.x + PAD) / box.w, (period.y + PAD) / box.h, period.size / 2 / box.w, box.h / box.w].map((n) => +n.toFixed(5));
-const [monoX, monoY] = monogramCenter(wm);
 const tParts = new Set([wm.t.hook, wm.t.base]);
 const restLetters = wm.letters.filter((d) => !tParts.has(d));
-const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Builds'], ['shop', 'Shop']] as const;
 ---
 <!doctype html>
 <html lang="en">
@@ -78,6 +75,8 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     --ground: 24px; /* solid strip under the treeline; iOS Safari samples its toolbar color here */
     --trees: max(5.2vw, 56px); /* the treeline's height; taller on phones, where the nav sits on it */
     --edge: clamp(1rem, 3.5vw, 2rem);
+    --bar-h: 3.6rem;
+    --logo: 2.4rem;
     --text: #e9e2d2;
     --muted: #a3acbd;
     --faint: #737f96;
@@ -89,7 +88,9 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     --bubble-human-text: #24140a;
     --serif: Georgia, 'Times New Roman', serif;
     --sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
-    background: var(--night);
+    /* The sky's color at the top of the screen (the script follows the scroll): iOS Safari tints
+       its status bar with it. */
+    background: #3c5b88;
   }
   * { box-sizing: border-box; }
   body {
@@ -113,6 +114,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       #3c5b88 0%, #395785 8%, #2c4675 20%, #1d325a 34%,
       #132343 48%, #0c1730 62%, #080f21 76%, #050914 90%, var(--night) 100%);
   }
+  .top-tint { position: fixed; z-index: 3; mix-blend-mode: lighten; left: 0; right: 0; top: 0; height: 24px; background-color: var(--top, #3c5b88); pointer-events: none; }
   /* Stars: RJ's night photo, contrast-enhanced, on a fixed layer that fades in over the
      sunset. Across the whole scroll it drifts up only 6vh, so the sky reads as still. */
   .stars {
@@ -211,8 +213,6 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     transform: translate(-50%, -50%);
   }
   .brand svg { display: block; width: 100%; height: auto; overflow: visible; }
-  /* Collapsed, the monogram is the menu button underneath (MenuButton.astro): taps pass through. */
-  .brand.is-collapsed svg { pointer-events: none; }
   .brand { isolation: isolate; }
   .ink { fill: var(--ink); }
   .lit { opacity: calc((var(--progress) - .1) * 5.5); }
@@ -224,7 +224,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     width: 170%;
     aspect-ratio: 1;
     transform: translate(-50%, -50%) scale(calc(.55 + var(--progress) * .6));
-    opacity: calc((var(--progress) - .1) * 1.2 * (1 - var(--k, 0)));
+    opacity: calc((var(--progress) - .1) * 1.2);
     mix-blend-mode: screen;
     pointer-events: none;
   }
@@ -281,13 +281,10 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
 
   /* The nav sits on the tree silhouette, anchored at the bottom, and appears once the mark lands.
      The top of the screen stays clear for the sky and the wordmark. Its stars rise into the sky. */
-  .dock-nav { position: fixed; left: 0; right: 0; bottom: calc(var(--ground) + .2rem); display: flex; justify-content: center; gap: 1.2rem; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; text-shadow: 0 0 .6rem #05070d, 0 0 .2rem #05070d; }
+  .bottom-nav.dock-nav { bottom: calc(var(--ground) + .2rem); padding: 0 var(--edge); background: none; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; opacity: calc((var(--progress) - .3) * 10); visibility: hidden; text-shadow: 0 0 .6rem #05070d, 0 0 .2rem #05070d; }
   .docked .dock-nav { visibility: visible; }
   /* A haze rising from the ground behind the nav, so text scrolling down fades before it. */
   .dock-nav::before { content: ''; position: absolute; z-index: -1; left: 0; right: 0; bottom: calc(-1 * var(--ground) - .2rem); height: calc(100% + var(--ground) + 3.5rem); background: linear-gradient(to top, #05070d 45%, rgba(5, 7, 13, 0)); pointer-events: none; }
-  .dock-nav a { display: flex; align-items: center; min-height: 2.75rem; padding-right: calc(var(--reach, 1em) - .14em + .3em); color: #f4f1ea; text-decoration: none; font: 700 .72rem/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; transition: color .2s; }
-  .dock-nav .nav-label { position: relative; line-height: 1; --mark-tracking: .14em; }
-  .dock-nav a:hover { color: var(--lantern); }
 
   /* Cards. Each is outlined from its star; content appears once the outline closes. */
   .intro { height: 158vh; }
@@ -345,8 +342,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
     :root { --trees: 104px; }
     /* Above Safari's address pill, which floats over the bottom of the screen. */
     .dock-nav::before { bottom: calc(-1 * var(--ground) - 1.9rem); height: calc(100% + var(--ground) + 1.9rem + 3.5rem); }
-    .dock-nav { bottom: calc(var(--ground) + 1.9rem); padding: 0 var(--edge); justify-content: space-between; gap: .5rem; }
-    .dock-nav a { font-size: .66rem; }
+    .bottom-nav.dock-nav { bottom: calc(var(--ground) + 1.9rem); }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -358,6 +354,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
 </head>
 <body>
   <div class="sky" aria-hidden="true"></div>
+  <div class="top-tint" aria-hidden="true"></div>
   <div class="stars" aria-hidden="true">
     <div class="twinkle a"></div>
     <div class="twinkle b"></div>
@@ -366,9 +363,9 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   <div class="horizon" aria-hidden="true"></div>
   <div class="afterglow" aria-hidden="true"></div>
 
-  <h1 class="brand" data-period={periodFrac.join(" ")} data-dock style={`--mono-x:${monoX.toFixed(4)};--mono-y:${monoY.toFixed(4)}`}>
+  <h1 class="brand" data-period={periodFrac.join(" ")} data-dock>
     <span class="halo" aria-hidden="true" style={`left:${(periodFrac[0] * 100).toFixed(2)}%;top:${(periodFrac[1] * 100).toFixed(2)}%`}><i></i></span>
-    <svg viewBox={`${-PAD} ${-PAD} ${box.w} ${box.h}`} role="img" aria-label="Robot Lantern" data-collapse={collapseFor(wm)}>
+    <svg viewBox={`${-PAD} ${-PAD} ${box.w} ${box.h}`} role="img" aria-label="Robot Lantern" data-collapse={collapseFor(wm, PAD)}>
       <defs>
         <radialGradient id="lanternlight" gradientUnits="userSpaceOnUse" cx={period.x} cy={period.y} r={wm.width * .95}>
           <stop offset="0" stop-color="#ffd79a"/>
@@ -389,8 +386,8 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
         <path class="core" d={wm.period} transform={`translate(${period.x} ${period.y}) scale(.5) translate(${-period.x} ${-period.y})`}/>
       </g>
     </svg>
-    <MenuButton />
   </h1>
+  <MenuButton />
 
   <div class="hint" aria-hidden="true">
     <span>Scroll down</span>
@@ -448,9 +445,7 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
   <svg class="comet-trail" aria-hidden="true"></svg>
   <div class="comet" aria-hidden="true"><svg viewBox={`${brand.ovaloid.box[0]} ${brand.ovaloid.box[1]} ${brand.ovaloid.box[2] - brand.ovaloid.box[0]} ${brand.ovaloid.box[3] - brand.ovaloid.box[1]}`}><path d={OVALOID}/></svg></div>
   <SiteMenu />
-  <nav class="dock-nav" aria-label="Main">
-    {sections.map(([id, label]) => <a href={`/${id}/`} style={`--reach:${markReach(id).toFixed(2)}em`}><span class="nav-label">{label}<SectionMark name={id} /></span></a>)}
-  </nav>
+  <BottomNav class="dock-nav" />
 
   <script is:inline>
     (() => {
@@ -484,6 +479,17 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       };
       const periodAt = (b) => ({ x: b.x + PERIOD[0] * b.w, y: b.y + PERIOD[1] * b.w * ASPECT, r: PR * b.w });
 
+      // The sky's gradient (.sky), for the color at the top of the screen.
+      const SKY = [[0, 0x3c5b88], [.08, 0x395785], [.2, 0x2c4675], [.34, 0x1d325a], [.48, 0x132343], [.62, 0x0c1730], [.76, 0x080f21], [.9, 0x050914], [1, 0x04060d]];
+      const skyAt = (f) => {
+        f = clamp(f);
+        const i = Math.max(0, SKY.findIndex(([at]) => at >= f) - 1);
+        const [a, ca] = SKY[i], [b, cb] = SKY[Math.min(i + 1, SKY.length - 1)];
+        const t = b > a ? (f - a) / (b - a) : 0;
+        const ch = (sh) => Math.round(lerp((ca >> sh) & 255, (cb >> sh) & 255, t));
+        return `rgb(${ch(16)}, ${ch(8)}, ${ch(0)})`;
+      };
+
       const layout = () => {
         for (const c of cards) {
           const w = c.offsetWidth, h = c.offsetHeight, k = 14;
@@ -498,11 +504,6 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
       // The shooting star: a curve from where the period breaks away to where it docks, with a
       // trail that grows with speed.
       let fTarget = 0, fShown = 0, animating = false, last = 0, vel = 0;
-      // Once the lantern has landed, the wordmark collapses into the monogram, the menu button
-      // (SiteMenu.astro runs the letters; this moves the whole mark): it grows a little around the
-      // monogram and rises to the top corner, as on every other page.
-      const COLLAPSE = 110;
-      const [MX, MY] = [parseFloat(mark.style.getPropertyValue('--mono-x')), parseFloat(mark.style.getPropertyValue('--mono-y'))];
       const trail = document.querySelector('.comet-trail');
       const SEGMENTS = 16;
       const segs = Array.from({ length: SEGMENTS }, () => trail.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'path')));
@@ -561,6 +562,8 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
         const run = Math.max(1, Math.min(sky.offsetHeight * .8, docH - innerHeight));
         const p = clamp(scrollY / run);
         r.style.setProperty('--progress', p.toFixed(4));
+        r.style.backgroundColor = skyAt(scrollY / sky.offsetHeight);
+        r.style.setProperty('--top', r.style.backgroundColor);
 
         // Dock. With reduced motion, the wordmark fades out and back in at its new place.
         const t = clamp((p - DOCK[0]) / (DOCK[1] - DOCK[0]));
@@ -568,13 +571,10 @@ const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Buil
         if (reduced) { b = box(t < .5 ? 0 : 1); o = Math.abs(1 - 2 * t); } else b = box(ease(t));
         const start = FLIGHT[1] * run;
         if (mark.dataset.collapseStart !== String(start)) { mark.dataset.collapseStart = String(start); dispatchEvent(new Event('rl:collapse')); }
-        const k = clamp((scrollY - start) / COLLAPSE), ke = k * k * (3 - 2 * k), g = 1 + .4 * ke;
-        const h = b.w * ASPECT;
-        const cx = b.x + MX * b.w, cy = b.y + MY * h;
-        const ty = lerp(cy, parseFloat(getComputedStyle(r).fontSize) * 1.6, ke);
-        mark.style.setProperty('--mx', (cx - MX * b.w * g) + 'px');
-        mark.style.setProperty('--my', (ty - MY * h * g) + 'px');
-        mark.style.setProperty('--ms', (b.s * g).toFixed(4));
+        // Once the lantern has landed, the wordmark collapses into the logo (SiteMenu.astro).
+        mark.style.setProperty('--mx', b.x + 'px');
+        mark.style.setProperty('--my', b.y + 'px');
+        mark.style.setProperty('--ms', b.s.toFixed(4));
         mark.style.opacity = o;
         r.style.setProperty('--dock', t.toFixed(3));
         r.classList.toggle('docked', t > .9);
