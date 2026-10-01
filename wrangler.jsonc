@@ -1,0 +1,11 @@
+// The site on Cloudflare: static files only, no code runs on a page view (docs/HOSTING.md).
+// Deploy with tools/site-deploy.sh. At cutover, robotlantern.com is added as a custom domain.
+{
+  "name": "site",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

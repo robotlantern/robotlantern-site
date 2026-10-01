@@ -1,0 +1,4 @@
+# Response headers on Cloudflare (docs/HOSTING.md). The workers.dev copy stays out of search
+# engines; robotlantern.com itself is unaffected.
+https://site.robotlantern.workers.dev/*
+  X-Robots-Tag: noindex
