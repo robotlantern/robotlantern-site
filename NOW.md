@@ -7,14 +7,83 @@ _Last updated 2026-10-01._
 The new site is built on the `rebuild` branch and previewed at https://rl.rblt.io/ (push to
 `samwise`; [docs/PREVIEW.md](docs/PREVIEW.md)). Design rules are in [docs/PAGES.md](docs/PAGES.md),
 the home page in [docs/HOME.md](docs/HOME.md) and the brand in [docs/BRAND.md](docs/BRAND.md).
-RJ's 2026-09-30 review is applied: the logo, the collapse, the bottom nav and the
-status-bar color. The accounts are open and their keys work, so the shop build (task 7) is
-unblocked except for a Stripe sandbox key. What's left before launch is task 7, the About copy,
-the shop policy pages, and cutover (task 9).
+**What's left is the list below, in order.** `python3 tools/next.py` prints RJ's next steps
+from it. Task notes further down hold the detail.
 
-## Tasks
+## Road to launch
 
-Each task fits in one sitting or can stop cleanly partway. Pick any task that isn't blocked.
+Two tracks. The site can launch first, with the shop page saying it opens soon; the shop opens
+when its samples are approved. Samples take one to two weeks to arrive, so tying the site to
+them would hold everything else back for no reason. Step 1 decides this. If RJ says no, step 10
+waits for step 23.
+
+**RJ** steps are his; **Agent** steps an agent does in a session. "After 6:" means it waits for step 6. Times are rough: agent time is
+wall-clock, RJ time is his hands-on time. Check a step off when it's done.
+
+### Track 1: launch the site
+
+1. [ ] **RJ** · Decide: launch the site before the shop opens (recommended), or together. *1 min*
+2. [ ] **RJ** · Phone check at https://rl.rblt.io/: the collapse and menu on the home page and a
+   chat, the bottom nav, the status bar color, the favicon in a Safari tab. *10 min*
+3. [ ] **RJ** · About page: is "one person" right, given a team is the goal? A line about the
+   missing InkBot Gamma? Then approve the copy. *10 min*
+4. [ ] **Agent** · After 3: About's prose into Markdown RJ can edit, with his answers (task 14). *15 min*
+5. [ ] **Agent** · Shop page reads "opening soon"; the privacy and terms pages lose their
+   Shopify sections until the shop opens. *20 min*
+6. [ ] **Agent** · Cloudflare Pages project, deployed to its `pages.dev` address for RJ to check;
+   record every current DNS record for robotlantern.com, above all Google Workspace mail. *30 min*
+7. [ ] **RJ** · After 6: Check the `pages.dev` copy. Add robotlantern.com to Cloudflare (dashboard, free
+   plan), or give the API token Zone and DNS edit for the change window. *15 min*
+8. [ ] **Agent** · After 7: Enter the DNS records in Cloudflare and compare them with the old ones. *15 min*
+9. [ ] **RJ** · After 8: Switch the nameservers at DomainRegistry.com to Cloudflare's. Changes can take
+   up to a day to spread. *10 min*
+10. [ ] **Agent** · After 2, 4, 5 and 9: Launch: set the launch dates, rerun the privacy pass, remove the frozen
+    prototype and the `CNAME` file, merge `rebuild` into `main` and push (RJ says go: pushing
+    `main` deploys). Check the site and send a test email. *30 min*
+
+### Track 2: open the shop
+
+Steps 11 to 16 can start now, alongside Track 1.
+
+11. [ ] **RJ** · Decide: ship to the US only at launch (recommended), or abroad too. *1 min*
+12. [ ] **RJ** · Decide sales tax: Stripe Tax at 0.5% a sale, or a fixed West Virginia rate set
+    by hand (free). Ask whoever does the LLC's taxes which states you owe at this volume. *a call*
+13. [ ] **RJ** · Turn on Stripe 2FA if it isn't on, and set its support email to
+    help@robotlantern.com (Settings, Public details). *5 min*
+14. [ ] **RJ** · Pick which of your photos could be prints (`products/night-sky-prints/`). *10 min*
+15. [ ] **Agent** · Shop build in test mode (task 7): product files, Payment Links, the order
+    Worker, Gelato drafts. *1 to 2 hours*
+16. [ ] **Agent** · After 14: Mockups for the photo prints, tee, mug and tote; check photo resolution.
+    *30 to 60 min*
+17. [ ] **RJ** · After 16: Pick the two to four launch products and approve their mockups. *20 min*
+18. [ ] **Agent** · After 11 and 12: Shop policy pages (shipping, returns, refunds) and the Stripe sections of
+    privacy and terms, from RJ's answers to 11 and 12. *30 min*
+19. [ ] **RJ** · After 17: Order one sample of each launch product. **Costs money**: the agent quotes each
+    one first. Then wait one to two weeks. *15 min*
+20. [ ] **RJ** · After 15: Run a test-mode purchase, check the Gelato draft it leaves, delete it. *10 min*
+21. [ ] **RJ** · After 19: Approve the samples when they arrive, or send them back to design. *20 min*
+22. [ ] **Agent** · After 15, 18 and 21: Listings: photos of the samples, copy, live Payment Links. *45 min*
+23. [ ] **RJ** · After 20 and 22: Open the shop: switch to live payments. The first real orders still arrive as
+    Gelato drafts that RJ confirms. *5 min*
+
+### Not needed for launch
+
+Any time, in any order:
+
+- **RJ** · Sign the assignment to the LLC (`.private/legal/assignment-to-llc.md`; full legal
+  name), scan it, keep it with the LLC's papers.
+- **RJ** · Trim the Cloudflare token's Billing and Registrar access, or leave it (agents won't
+  call them; docs/CHARGES.md).
+- **RJ** · Delete `shopify.env` from the secrets folder.
+- **RJ** · Ask QPMN for its API docs (Developer Center, Integration with API); ask Lulu for API
+  access when books come up.
+- **RJ** · The blanket's three open questions (`products/stargazing-blankets/product.md`).
+- **Agent** · Counted short links before the first social or YouTube link (task 17).
+- **Optional** · `design/brand/mark-blob.*` can go when RJ's done with it.
+
+## Task notes
+
+The detail behind the road to launch, and the record of what's done.
 
 1. **Close Shopify (RJ).** Done 2026-09-30, before the 2026-10-01 bill; RJ removed its links to
    Gelato and QPMN. `shopify.env` in the secrets folder is now dead and can be deleted.
@@ -95,7 +164,7 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     user and bar presenting output as human-written; the site's attribution already does the
     opposite. Research notes: `.private/legal/`.
 14. **About page and the cast.** At `/about/`, with the intro drafted in RJ's review session.
-    Done when RJ approves the copy (two questions under "Open decisions and actions"). Next:
+    Done when RJ approves the copy (road to launch, step 3). Next:
     move its prose into a Markdown file RJ can edit (`src/content/about.md`), leaving the cast's
     layout in `about.astro` (RJ, 2026-09-30, asked how to edit it himself).
 15. **Builds.** Done 2026-09-27; RJ checked it on his phone. Each build runs full screen
@@ -134,50 +203,9 @@ Each task fits in one sitting or can stop cleanly partway. Pick any task that is
     course detail. The public copy is generated by that folder's `make_public.py` into
     `src/content/conversations/the-hard-problem-of-alignment/`, with the three citations where
     the export marks them, the fetch and reasoning summaries collapsed, and 40 editor's links
-    (`links.json`, checked). **Not committed** until RJ approves the text (AGENTS.md rule 7);
-    he reads it at `/chats/the-hard-problem-of-alignment/` on the local dev server. Later: show
+    (`links.json`, checked). RJ approved the text 2026-10-01; it's published. Later: show
     per-message times, which this capture keeps and the page doesn't display yet. It may also
     seed an essay.
-
-## Open decisions and actions (RJ)
-
-Everything left that only RJ can do, in one list.
-
-**Decide**
-- [x] **Content licence**: CC BY-NC 4.0 (2026-09-30), applied 2026-10-01.
-- [x] **Photos**: all rights reserved (2026-09-30), applied 2026-10-01.
-- [x] **Favicon and logo**: RJ's E tile (2026-09-30), applied 2026-10-01.
-- [x] **Analytics**: before the first social link (2026-09-30; task 17).
-- [x] **Sunset prototype**: removed at cutover (the frozen copy only; the home page is the
-  approved version).
-- [ ] **About page**: approve the copy. Is "one person" right, given a team is the goal? Is there
-  a line worth adding about the missing InkBot Gamma?
-- [ ] **Sales tax** at checkout (task 7): Stripe Tax at 0.5% per sale, or a fixed West Virginia
-  rate set by hand for free. Ask whoever does the LLC's taxes which states you owe at this volume.
-- [ ] **Where the shop ships**: the US only at launch (recommended), or also abroad.
-- [x] **Product pipeline** (task 19): adopted 2026-10-01.
-- [ ] **Products waiting on you**: run `python3 tools/products/board.py`, or read the blanket's
-  three open questions in `products/stargazing-blankets/product.md` and pick candidate photos
-  for `products/night-sky-prints/`.
-- [ ] **Second chat** (task 20): read the public copy and approve it, strike any editor's links,
-  and say whether it can go on the phone preview before approval.
-
-**Do**
-- [x] **Stripe sandbox key**: in place 2026-10-01.
-- [ ] **Stripe**: turn on 2FA if it isn't on, and set the support email to help@robotlantern.com
-  (Settings, Public details).
-- [ ] **Cloudflare token**: it can reach Billing and the Registrar. Remove those two from it, or
-  leave them and rely on CHARGES.md (agents won't call them).
-- [ ] **QPMN**: in the QPMN dashboard, Developer Center, Integration with API, ask for the API
-  documentation (their page says the team sends it). Save it in `.private/` and an agent can
-  test the key.
-- [ ] **Lulu**: send the API access request when books get closer. Nothing needed for launch.
-- [ ] **Assignment to the LLC**: sign `.private/legal/assignment-to-llc.md` (use your full legal
-  name), scan it, and keep it with the LLC's papers.
-- [ ] Delete `shopify.env` from the secrets folder.
-- [ ] On the phone, at https://rl.rblt.io/: the collapse and the menu on the home page and a
-  chat; the bottom nav on every section; the status bar color; the favicon in a Safari tab.
-- [ ] Optional: `design/brand/mark-blob.*` can go when you're done with it.
 
 ## Parked
 
@@ -304,3 +332,5 @@ Everything left that only RJ can do, in one list.
   message carries injected context, including RJ's memory snapshot, which is never published.
 - 2026-10-01: Product pipeline adopted (task 19): `products/` and docs/PRODUCTS.md, with a board
   script. The Stripe sandbox key works, so the shop build (task 7) is unblocked.
+- 2026-10-01: NOW.md reorganized around one ordered road to launch, in two tracks (site, then
+  shop), with `tools/next.py` printing RJ's next steps.

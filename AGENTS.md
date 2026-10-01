@@ -6,6 +6,8 @@ Read [README.md](README.md) for direction and [NOW.md](NOW.md) for current state
 
 1. **One bounded task per session.** The task comes from NOW.md or from RJ directly, and it has a
    done-condition. When it's done or blocked, stop and report. Don't go looking for adjacent work.
+   NOW.md's "Road to launch" is the order of work: check a step off (`[x]`) when it's done, and
+   keep `python3 tools/next.py` able to read it (numbered steps, `**RJ**` or `**Agent**`, "After N:").
 2. **The repo is the handoff.** Before a session ends, update NOW.md with what changed, what's
    next and what's blocked. Commit small and often. Anything that must outlive the session
    belongs in the repo, not in the chat thread.
