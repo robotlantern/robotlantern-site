@@ -1,0 +1,39 @@
+{
+  "name": "Test tee (sandbox only)",
+  "description": "A fixture for testing a product with a size choice in Stripe's sandbox. Never listed.",
+  "price": 28,
+  "shipping": 5,
+  "fulfillment": "gelato",
+  "gelato": {
+    "files": {
+      "default": "/og.png"
+    }
+  },
+  "options": {
+    "label": "Size",
+    "choices": [
+      {
+        "label": "S",
+        "productUid": "apparel_product_gca_t-shirt_gsc_crewneck_gcu_unisex_gqa_classic_gsi_s_gco_white_gpr_4-0_gildan_64000"
+      },
+      {
+        "label": "M",
+        "productUid": "apparel_product_gca_t-shirt_gsc_crewneck_gcu_unisex_gqa_classic_gsi_m_gco_white_gpr_4-0_gildan_64000"
+      }
+    ]
+  },
+  "listed": false,
+  "stripe": {
+    "test": {
+      "product": "prod_VMOTNOsjZyyZVp",
+      "price": "price_1ULfgh9i6BSa9eZ6pHPIEk8Q",
+      "shippingRate": "shr_1ULfgi9i6BSa9eZ6S9KNg1QK",
+      "choices": [
+        "S",
+        "M"
+      ],
+      "paymentLink": "plink_1ULfgi9i6BSa9eZ6dJWAtLXV",
+      "url": "https://buy.stripe.com/test_8x2bIVdcKbwKeYR9ufeEo02"
+    }
+  }
+}

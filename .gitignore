@@ -20,3 +20,6 @@ design/brand/asterisks-*
 
 # RJ's drop folder (screenshots, contact details): never commit
 inbox/
+
+# wrangler state
+.wrangler/

@@ -1,0 +1,25 @@
+{
+  "name": "Test mug (sandbox only)",
+  "description": "A fixture for testing the shop in Stripe's sandbox. Never listed.",
+  "price": 18,
+  "shipping": 6,
+  "taxCode": "txcd_99999999",
+  "fulfillment": "gelato",
+  "gelato": {
+    "productUid": "mug_product_msz_11-oz_mmat_ceramic-white_cl_4-0",
+    "files": {
+      "default": "/og.png"
+    }
+  },
+  "listed": false,
+  "stripe": {
+    "test": {
+      "product": "prod_VMOTQAY6MBITFJ",
+      "price": "price_1ULfgg9i6BSa9eZ6FeHy60Ah",
+      "shippingRate": "shr_1ULfgg9i6BSa9eZ6t6gc75Za",
+      "choices": [],
+      "paymentLink": "plink_1ULfgh9i6BSa9eZ6ANryCbrU",
+      "url": "https://buy.stripe.com/test_cNi14h8Wu0S618121NeEo01"
+    }
+  }
+}

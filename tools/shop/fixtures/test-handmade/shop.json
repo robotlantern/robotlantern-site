@@ -1,0 +1,19 @@
+{
+  "name": "Test handmade piece (sandbox only)",
+  "description": "A fixture for testing a self-shipped, limited product in Stripe's sandbox. Never listed.",
+  "price": 25,
+  "shipping": 7,
+  "fulfillment": "self",
+  "stock": 3,
+  "listed": false,
+  "stripe": {
+    "test": {
+      "product": "prod_VMOTIhIvWD4WMc",
+      "price": "price_1ULfge9i6BSa9eZ6pNZhZ9CQ",
+      "shippingRate": "shr_1ULfgf9i6BSa9eZ6LEHiVujD",
+      "choices": [],
+      "paymentLink": "plink_1ULfgf9i6BSa9eZ6nEV4v3ip",
+      "url": "https://buy.stripe.com/test_bJeeV7b4C9oCbMF6i3eEo00"
+    }
+  }
+}

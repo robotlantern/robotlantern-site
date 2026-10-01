@@ -107,4 +107,23 @@ const builds = defineCollection({
   }),
 });
 
-export const collections = { conversations, essays, authors, pages, builds };
+// Shop listings: products/<slug>/shop.json, beside the product's pipeline file (docs/SHOP.md).
+// tools/shop/sync.py writes the Stripe IDs and Payment Link URLs under "stripe".
+const stripeIds = z.object({ url: z.string().url() }).passthrough();
+const shop = defineCollection({
+  loader: glob({ pattern: '*/shop.json', base: './products', generateId: folderId }),
+  schema: z.object({
+    name: z.string(),
+    description: z.string().optional(),
+    price: z.number().positive(),
+    shipping: z.number().min(0),
+    taxCode: z.string().optional(),
+    fulfillment: z.enum(['gelato', 'self']),
+    stock: z.number().int().positive().optional(),
+    images: z.array(z.string()).default([]),
+    listed: z.boolean().default(false),
+    stripe: z.object({ test: stripeIds.optional(), live: stripeIds.optional() }).default({}),
+  }).passthrough(),
+});
+
+export const collections = { conversations, essays, authors, pages, builds, shop };

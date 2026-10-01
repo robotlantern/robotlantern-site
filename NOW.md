@@ -34,13 +34,14 @@ off when it's done.
 7. [ ] **RJ** · For each self-shipped product: a name, a few photos, the price, how many, and
    its packed weight or what you'll charge to ship it. Drop them in `inbox/`. *10 min each*
 8. [ ] **Agent** · About's prose into Markdown RJ can edit (task 14). *15 min*
-9. [ ] **Agent** · Shop build in test mode (task 7): product files, Payment Links, the order
+9. [x] **Agent** · Shop build in test mode (task 7): product files, Payment Links, the order
    Worker (Gelato drafts; self-shipped orders show in Stripe), Stripe Tax set up in the sandbox.
-   *1 to 2 hours*
+   Done 2026-10-01 ([docs/SHOP.md](docs/SHOP.md)).
 10. [ ] **Agent** · Mockups for the tee, mug and tote. *30 min*
-11. [ ] **Agent** · Cloudflare Pages project, deployed to its `pages.dev` address (kept out of
-    search engines) for RJ to check; record every current DNS record for robotlantern.com, above
-    all Google Workspace mail. *30 min*
+11. [x] **Agent** · Cloudflare project, deployed to a Cloudflare address (kept out of search
+    engines) for RJ to check; record every current DNS record for robotlantern.com, above all
+    Google Workspace mail. Done 2026-10-01: https://site.robotlantern.workers.dev
+    ([docs/HOSTING.md](docs/HOSTING.md)).
 12. [ ] **Agent** · Shop policy pages (shipping, returns, refunds, with handmade items final sale
     except for shipping damage) and the Stripe sections of privacy and terms. *30 min*
 13. [ ] **RJ** · After 8: Rewrite the About page in its Markdown file. *your pace*
@@ -51,22 +52,26 @@ off when it's done.
     Quote a sample of each printed product. *45 min*
 17. [ ] **RJ** · After 16: Order one sample of each printed launch product. **Costs money**: the
     quotes come from step 16. A quality check, not a gate. *15 min*
-18. [ ] **RJ** · After 16: Run a test-mode purchase of a printed product and a self-shipped one;
-    check the Gelato draft and the Stripe notice; delete the draft. *10 min*
+18. [ ] **RJ** · After 16: Run a test-mode purchase of a printed product and a self-shipped one
+    through their Payment Links (test card 4242 4242 4242 4242); check the Gelato draft and the
+    Stripe notice; delete the drafts, including the two the shop build's tests left. Create the
+    Worker's restricted live Stripe key (docs/SHOP.md, "Launch"). *20 min*
 19. [ ] **RJ** · After 6: Once the EIN arrives, change Stripe's business details to Robot Lantern
     LLC. *15 min*
 20. [ ] **Agent** · After 6 and 19: Turn on West Virginia in Stripe Tax (live), with the
     registration's start date. *10 min*
 21. [ ] **Agent** · After 5: The style changes. *depends on the list*
-22. [ ] **RJ** · After 11: Check the `pages.dev` copy. Add robotlantern.com to Cloudflare
-    (dashboard, free plan), or give the API token Zone and DNS edit for the change window. *15 min*
+22. [ ] **RJ** · After 11: Check the Cloudflare copy (https://site.robotlantern.workers.dev).
+    Say whether to add SPF and DMARC for mail (there are none; docs/HOSTING.md). Add
+    robotlantern.com to Cloudflare (dashboard, free plan), or give the API token Zone and DNS
+    edit for the change window. *15 min*
 23. [ ] **Agent** · After 22: Enter the DNS records in Cloudflare and compare them with the old
-    ones. *15 min*
+    ones (docs/HOSTING.md, "Cutover"). *15 min*
 24. [ ] **RJ** · After 23: Switch the nameservers at DomainRegistry.com to Cloudflare's. Changes
     can take up to a day to spread. *10 min*
 25. [ ] **Agent** · After 13, 18, 20, 21 and 24: Launch, once RJ says go: set the launch dates,
-    rerun the privacy pass, remove the frozen prototype and the `CNAME` file, switch the Payment
-    Links to live, merge `rebuild` into `main` and push (pushing `main` deploys). Check the site,
+    rerun the privacy pass, remove the frozen prototype and the `CNAME` file, switch the shop to
+    live (docs/SHOP.md, "Launch"), merge `rebuild` into `main`, push, and deploy to Cloudflare. Check the site,
     a test email and one live checkout page. Printed orders still arrive as Gelato drafts RJ
     confirms. *45 min*
 26. [ ] **RJ** · After 17: When the samples arrive, keep each listing, or pause it and send the
@@ -112,6 +117,10 @@ The detail behind the road to launch, and the record of what's done.
    activated), Gelato, Cloudflare, Slant 3D. The sandbox key (`STRIPE_SECRET_KEY_TEST`) is in
    and works. The products come from the pipeline (task 19): whichever two to four reach
    `listing` first. Shop art is made with AI (RJ, 2026-09-27).
+   - **Built in the sandbox 2026-10-01** ([docs/SHOP.md](docs/SHOP.md)):
+     `products/<slug>/shop.json`, `tools/shop/sync.py`, the `shop` Worker, Stripe Tax with a West
+     Virginia registration, and three sandbox fixtures. Left: real products' files (step 16), the
+     live switch at launch, Gelato's status webhooks (with shipping emails, later).
    - How it works: each product is a JSON file in the repo with its price and its fulfillment:
      `gelato` (product UID and print file) or `self` (RJ makes and ships it). The shop page
      links to a Stripe Payment Link per product, which collects the shipping address and charges
@@ -144,12 +153,14 @@ The detail behind the road to launch, and the record of what's done.
 8. **Privacy pass.** First run done 2026-09-27 (findings in `.private/privacy/`); nothing flagged
    is a concern (Fairmont, Bogotá and the machines' names can be public). Rerun before cutover.
 9. **Cutover.** The host is Cloudflare (RJ, 2026-09-27). Steps:
-   - Create the Cloudflare project (Pages, or Workers static assets) building `main` with
-     `npm run build`. The free tier covers the site (no bandwidth limit for static files).
+   - Done 2026-10-01: the site is a static-assets Worker, `site`, at
+     https://site.robotlantern.workers.dev (noindex), deployed with `tools/site-deploy.sh`.
+     The current DNS records and the cutover steps are in [docs/HOSTING.md](docs/HOSTING.md).
    - Move robotlantern.com's nameservers from DomainRegistry.com to Cloudflare (RJ, by hand): the
      bare domain can't be served by Cloudflare otherwise. First copy every existing record into
      Cloudflare, above all Google Workspace mail (MX, SPF, DKIM, DMARC), or mail breaks. Remove
-     the `CNAME` file (a GitHub Pages leftover).
+     the `CNAME` file (a GitHub Pages leftover). The DNS host refuses zone transfers, so check its
+     own record list too.
    - The API token can't add a zone or write DNS (zone access is read-only), so either RJ adds
      the zone in the dashboard or adds Zone and DNS edit to the token for the change window.
    - Keep Cloudflare's Bot Fight Mode, challenges, rate limiting and Web Analytics off; the
@@ -355,3 +366,9 @@ The detail behind the road to launch, and the record of what's done.
   Sales tax worked out (docs/SALES-TAX.md): Stripe Tax for West Virginia only, which needs the
   state's Business Registration Certificate, which likely needs the EIN first. The road to launch
   is now 26 steps, 4 done.
+- 2026-10-01: Steps 9 and 11. Cloudflare: Wrangler now turns a new Pages project into a Worker,
+  so the site is a static-assets Worker on a new free `robotlantern.workers.dev` subdomain, not
+  `pages.dev` (its auto-setup also rewrote the Astro config; reverted). DNS records recorded:
+  Google Workspace MX and DKIM, no SPF or DMARC. Shop: product files, a sync script, Payment
+  Links and the order Worker, tested in the sandbox without a browser. Gelato has no sandbox:
+  both keys reach one account, so two test drafts are in RJ's dashboard.

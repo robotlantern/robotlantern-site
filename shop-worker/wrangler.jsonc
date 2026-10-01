@@ -1,0 +1,8 @@
+// The shop's order Worker (docs/SHOP.md): Stripe calls it when a payment completes, and it
+// passes printed items to Gelato as draft orders. Deploy with tools/shop/worker-deploy.sh.
+{
+  "name": "shop",
+  "main": "index.js",
+  "compatibility_date": "2026-10-01",
+  "observability": { "enabled": true }
+}

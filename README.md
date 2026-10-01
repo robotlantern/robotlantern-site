@@ -19,7 +19,8 @@ essays, conversations, interactives and products.
 - **Builds (interactives).** Things you can use in the browser, each running full screen, such
   as The Sky, Unprojected.
 - **Products.** Print-on-demand items made from Robot Lantern brand art. Stripe takes payment and
-  Gelato prints and ships. Ideas move through the pipeline in [docs/PRODUCTS.md](docs/PRODUCTS.md).
+  Gelato prints and ships ([docs/SHOP.md](docs/SHOP.md)), and RJ ships what he makes himself.
+  Ideas move through the pipeline in [docs/PRODUCTS.md](docs/PRODUCTS.md).
 - **Home.** A scroll from sunset into night. The top of the page uses the warm oranges of the
   reference sunset photo. As you scroll down, the sky darkens, stars appear, and the robot lantern
   grows brighter along with them.

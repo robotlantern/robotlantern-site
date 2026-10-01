@@ -19,7 +19,9 @@ and Shopify on 2026-09-23 (see [Sources](#sources)).
   2026-10-01). The key on file is a **live** restricted key (Stripe's preset for AI agents). Build
   and test with a sandbox key instead (see "Testing without a real charge").
 - **Cloudflare:** free account; its API token works (2026-10-01). The token can also reach
-  billing and domain registration, so agents treat those as off limits (see below).
+  billing and domain registration, so agents treat those as off limits (see below). Since
+  2026-10-01 it runs the site's copy (`site`) and the order Worker (`shop`) on the free
+  `robotlantern.workers.dev` subdomain (docs/HOSTING.md, docs/SHOP.md).
 - **Slant 3D, QPMN:** accounts, no orders. Slant's key works; QPMN's API docs come from QPMN on
   request.
 
@@ -38,7 +40,8 @@ Stripe has no setup or monthly fee. Every fee below is per transaction and comes
 
 ## Stripe: free
 
-- The account itself, and everything in **test mode** (sandboxes). Test cards never move money.
+- The account itself, and everything in **test mode** (sandboxes), including Stripe Tax there.
+  Test cards never move money.
 - Payment Links and hosted Checkout pages, products, prices and fixed shipping rates.
 - Email receipts, webhooks and API keys.
 - Fixed tax rates that you set yourself (as opposed to Stripe Tax).
@@ -81,7 +84,7 @@ Not re-checked for billing detail; confirm on Cloudflare's pricing pages before 
 
 | Action | Cost |
 | --- | --- |
-| Pages, or Workers static assets, for the site | Free: 500 builds a month, 20,000 files and 25 MiB per file per deploy, no bandwidth limit for static files (checked 2026-09-27) |
+| The workers.dev subdomain, and Workers static assets for the site (how Cloudflare now builds new Pages projects) | Free: 500 builds a month, 20,000 files and 25 MiB per file per deploy, no bandwidth limit for static files (checked 2026-09-27) |
 | Moving the domain's nameservers to Cloudflare, DNS | Free |
 | Workers requests that run code (the shop's order Worker, the counted short links in NOW.md task 17) | Free up to 100,000 a day; the paid plan is a monthly fee |
 | R2 storage (large files, later) | Free up to 10 GB and 1M writes / 10M reads a month; downloads free. Needs a card on file, so going over bills automatically: add a spending check before turning it on |
