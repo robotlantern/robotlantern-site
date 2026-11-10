@@ -9,7 +9,7 @@ import HomeIcon from './HomeIcon.astro';
 import Icon from './Icon.astro';
 
 const sections = [['thoughts', 'Thoughts'], ['chats', 'Chats'], ['builds', 'Builds'], ['shop', 'Shop']] as const;
-const more = [['/about/', 'About'], ['/authors/', 'Authors'], ['/credits/', 'Credits'], ['/terms/', 'Terms'], ['/privacy/', 'Privacy']];
+const more = [['/about/', 'About'], ['/authors/', 'Authors'], ['/credits/', 'Credits'], ['/terms/', 'Terms'], ['/privacy/', 'Privacy'], ['/shipping/', 'Shipping'], ['/returns/', 'Returns'], ['/contact/', 'Contact']];
 const here = Astro.url.pathname;
 const current = (href: string) => (href === '/' ? here === '/' : here.startsWith(href)) ? 'page' : undefined;
 ---

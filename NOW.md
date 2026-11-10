@@ -112,7 +112,7 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
     a slot for the product's preview, order button and thank-you page. Checked at phone size. *1.5 h*
 11. [ ] **Agent** · After 10: The subject picker: tap to select, running in the browser on a self-hosted
     model, with a lasso fallback. *2 h*
-12. [ ] **Agent** · After 1: Shop policies: shipping, returns and refunds, with personalised items final
+12. [x] **Agent** · After 1: Shop policies: shipping, returns and refunds, with personalised items final
     sale except for defects and shipping damage. Privacy and terms rewritten for Stripe, uploaded photos
     and Slant (detail in docs/LOG.md, task 13). *45 min*
 13. [ ] **RJ** · After 10 and 14: On your phone at https://rl.rblt.io/shop/, order an ornament and pay
@@ -212,3 +212,7 @@ Entries before 2026-11-10 are in [docs/LOG.md](docs/LOG.md).
   projector; Workers KV's free plan and the 10 ms CPU limit set how uploads work.
 - 2026-11-10: RJ took the twelve decisions as recommended (step 1), and the docs no longer mark them
   as proposed. The ornament recipe (step 14) started in its own session.
+- 2026-11-10: Shop policies (step 12): new Shipping, Returns and Contact pages in the footer; privacy and
+  terms rewritten for Stripe and photo orders, with nothing left that says Shopify. Not legal advice: RJ's
+  reading list and the points for a lawyer are in `.private/legal/policies-2026-11-10.md`, and
+  docs/ORDERS.md lists the privacy promises the order code must keep.

@@ -1,7 +1,7 @@
 ---
 title: Credits & licenses
 description: Everything this site is built from, who made it, and the license notices that come with it.
-updated: 2026-10-01
+updated: 2026-11-10
 ---
 
 Robot Lantern is built from RJ's writing and photos, conversations with AI models, open-source software and open science data. This page credits all of it and carries the notices those licenses ask for.
@@ -76,7 +76,7 @@ The ESA data is used here non-commercially: the interactive is free, carries no 
 - [unified](https://unifiedjs.com), remark-parse, remark-gfm, remark-math, remark-rehype, rehype-raw, rehype-katex, rehype-stringify and hast-util-to-html, from the unified collective, MIT License.
 - [yaml](https://eemeli.org/yaml/) by Eemeli Aro, ISC License.
 
-**Services:** the shop runs on Shopify, and Gelato prints and ships orders. The site is hosted by Cloudflare.
+**Services:** Stripe takes payment for the shop, and Cloudflare hosts the site and its order service.
 
 ## AI models
 

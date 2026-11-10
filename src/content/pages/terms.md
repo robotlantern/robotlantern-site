@@ -1,14 +1,14 @@
 ---
 title: Terms
 description: The ground rules for reading, sharing and buying from Robot Lantern, in plain language.
-updated: 2026-10-01
+updated: 2026-11-10
 ---
 
 Robot Lantern is a small publishing site with a shop, run by Robot Lantern LLC, a West Virginia company. Using the site means you accept these terms.
 
 ## Who runs this
 
-Robot Lantern LLC, owned by RJ. Write to [admin@robotlantern.com](mailto:admin@robotlantern.com) with questions, corrections, anything on the site that doesn't work for you, or a concern about copyright. If you think something here uses your work without permission, tell us what it is and where, and we'll look promptly and take it down if you're right.
+Robot Lantern LLC, owned by RJ. Write to [admin@robotlantern.com](mailto:admin@robotlantern.com) with questions, corrections, anything on the site that doesn't work for you, or a concern about copyright. If you think something here uses your work without permission, tell us what it is and where, and we'll look promptly and take it down if you're right. For anything about an order, write to [help@robotlantern.com](mailto:help@robotlantern.com) instead.
 
 ## Sharing what's here
 
@@ -30,7 +30,7 @@ Much of this site is made with AI models, and every piece says how.
 - **Thoughts (essays)** are written by RJ with AI models. Under each title, the site shows who wrote the piece and in what share, measured character by character, and a switch highlights which words came from whom.
 - **Chats** are real conversations with AI chat apps. Each is a selected stretch of a real transcript, published as it happened. The only changes are redactions for privacy, shown in [brackets]; editor's notes, which are marked; and reference links added by the editor, which are marked too. Typos, hedges and mistakes stay in. The model named is the one the app showed at the time.
 - **Builds** and the site's own code are written with help from AI coding tools.
-- **Shop** art is made with AI image tools.
+- **Shop** pieces are made by RJ from your photo, and AI agents help him run orders. Example pictures made with AI are marked as such.
 
 ## Accuracy, and not advice
 
@@ -44,15 +44,28 @@ Chats keep the sources the models cited, and editor's links (mostly to Wikipedia
 
 ## Names and trademarks
 
-Robot Lantern and the lantern wordmark are Robot Lantern LLC's. ChatGPT and OpenAI are trademarks of OpenAI. Claude and Anthropic are trademarks of Anthropic. Shopify, Gelato and other product names belong to their owners. We use these names only to say which tools we used. Robot Lantern isn't affiliated with, sponsored by or endorsed by any of them.
+Robot Lantern and the lantern wordmark are Robot Lantern LLC's. ChatGPT and OpenAI are trademarks of OpenAI. Claude and Anthropic are trademarks of Anthropic. Stripe, Gelato, Slant 3D and other product names belong to their owners. We use these names only to say which tools we used. Robot Lantern isn't affiliated with, sponsored by or endorsed by any of them.
 
 ## The shop
 
-Shop items are printed on demand and shipped by our print partner, Gelato. Checkout and orders are handled by Shopify. Purchases are governed by the store's policies on shipping, returns and refunds, and terms of sale, which are shown at checkout [TBD: links to the Shopify policy pages]. If those policies and this page disagree about an order, the store policies win.
+RJ makes the shop's pieces himself, from your photos, and ships them. Later, some items may be printed by our print partners, Gelato or Slant 3D. You pay through Stripe's hosted checkout, on a page run by Stripe, and we never see your card number.
+
+Prices are in US dollars. Each product page shows its shipping charge, and sales tax is added at checkout where it applies. Ordering means you accept these terms and our [shipping](/shipping/) and [returns and refunds](/returns/) policies. Where a product page says something more specific, such as its handling time, the product page applies.
+
+## Orders made from your photo
+
+- **You need the right to use the photo.** By ordering, you confirm that you took it, or that whoever took it is happy for you to use it this way. Studio and school portraits usually need the photographer's written release.
+- **Some things we won't make:** copyrighted characters or artwork, logos or other trademarks, unless you hold the rights to use them, and anything unlawful.
+- **RJ may turn down any order**, for those reasons or any other, and he'll refund it in full.
+- **Your photo stays yours.** You keep every right you have in it. You let us use it only to make, check and ship your order, as the [privacy page](/privacy/) describes, and never in marketing without your written OK.
+- **If someone objects** that your order used their work or their likeness without permission, that's your responsibility, not Robot Lantern's.
+- **The preview is a guide.** It shows what we'll make as closely as we can, but a real piece won't match your screen exactly. Light, filament and paper all change how it looks.
+- **These are keepsakes and decorations, not toys.** Follow any notes on the product page about light and heat.
+- **Pieces made from your photo are final sale**, except when they arrive damaged or made wrong. See [returns and refunds](/returns/).
 
 ## No warranty, and limits
 
-The site is free to read and provided as it is, without warranties of any kind, to the extent the law allows. Robot Lantern LLC isn't liable for indirect or consequential losses from using the site or relying on what it says. For an order, our total liability is limited to what you paid for it. None of this limits rights you have under law that can't be waived.
+The site is free to read and provided as it is, without warranties of any kind, to the extent the law allows. Robot Lantern LLC isn't liable for indirect or consequential losses from using the site or relying on what it says. For anything you buy, [returns and refunds](/returns/) says what we do when something's wrong. That comes on top of your rights under consumer law, which nothing here limits.
 
 ## Changes
 

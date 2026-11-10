@@ -177,7 +177,12 @@ Slant quotes.
   Slant, which gets the STL for a product it makes.
 - The customer confirms they have the right to use the photo. RJ may refuse an order (someone else's
   artwork, a trademark, anything unlawful) and refund it.
-- The privacy page and the terms say all this (NOW.md, step 12).
+- The privacy page and the terms say all this (NOW.md, step 12). The privacy page also says the following,
+  so keep it true: a cancelled order's photos go 60 days after it's cancelled, and a photo emailed in goes
+  from the mailbox with the rest; order pages save nothing in the browser and load nothing from other
+  sites; Cloudflare shows us the order Worker's logs for three days, so the Worker logs IDs, never order
+  contents; Slant gets only the STL and the name and address to ship to (put orders@ in its email field);
+  and when an agent looks at a photo, Anthropic or OpenAI processes it.
 
 ## Testing
 
