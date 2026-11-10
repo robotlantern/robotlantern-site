@@ -33,14 +33,31 @@ date.
   heart keepsake recipe, the nearest relative (a gold frame with a ribbon ring). Nothing printed.
 - printdb lists 25 g of white PLA. The four matte spools need adding first (NOW.md, step 3).
 
-## Feasibility (next)
+## Feasibility (2026-11-10, step 14)
 
-- The `ornament` recipe: bulb and cap from an order folder, with Meltbot estimates (time, grams), and a
-  Slant quote for later.
-- The configurator's tone preview, drawn on the bulb.
-- Cost per ornament (filament, cap, box, label), the time per ornament, a weekly cap, prices of
-  comparable ornaments, and a proposed price.
-- The order-by date for Christmas, from the handling time and USPS's holiday dates.
+The recipe is `products/ornament.py` in lithophane-maker (its docs/PRODUCTS.md, section 4). The preview is
+`src/scripts/shop/lithophane-bulb.js`, with a test page at `/shop/test/ornament/`. The light is an option:
+mini LED (72 mm ball), C7 (76 mm) or C9 (84 mm). The bulb and socket sizes are catalogue values until RJ's
+lights are measured.
+
+- **Print time on Meltbot (OrcaSlicer):** bulb 2 h 08 min, 42 g white at 0.16 mm layers, neck down with a
+  brim; cap 19 min, 2 g gold silk. About 2 h 30 min an ornament.
+- **Cost per ornament:** about $1 of filament (white at an assumed ~$20/kg; gold from printdb's price),
+  about $1 for a box and tissue (*estimate*), and Stripe's 2.9% + 30¢. The label is covered by the flat shipping
+  charge. USPS Ground Advantage under 1 lb is now one price per zone, with a holiday surcharge through
+  2027-01-17, so check the real label price in Pirate Ship before the first label (docs/CHARGES.md).
+- **Weekly cap (*proposed*): 10.** That's about 25 h of printing and 2–3 h of RJ's hands (start, trim the brim,
+  assemble, test, pack).
+- **Comparables:** Etsy lithophane ornaments are about $12–30, mostly flat. MAD Made Creations sells one for
+  $9.99. Shutterfly glass photo ornaments are $26–30, and Personalization Mall's lightable glass ones $14–28,
+  with the bulb sold separately.
+- **Proposed price: $34 + $5 shipping.** It's a lit ball rather than a flat disc, made to order by one person,
+  with limited weekly capacity. It nets about $30 after fees, materials and box.
+- **Order-by date for Christmas: Wednesday 2026-12-09.** USPS's recommended Ground Advantage send-by date is
+  2026-12-17 (lower 48). The listing promises shipping within 5 business days.
+- **Calibration wedge:** sliced and checked for Meltbot (lithophane-maker `tools/slice_wedge.py`: 7 min, 3 g,
+  Textured PEI, 220/55 °C). It isn't uploaded yet, because uploading needs the matte white spool in printdb
+  (step 3). Matte PLA is often more opaque than plain white, and the wedge shows whether it's translucent enough.
 
 ## Prototype
 
