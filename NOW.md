@@ -216,3 +216,4 @@ Entries before 2026-11-10 are in [docs/LOG.md](docs/LOG.md).
   terms rewritten for Stripe and photo orders, with nothing left that says Shopify. Not legal advice: RJ's
   reading list and the points for a lawyer are in `.private/legal/policies-2026-11-10.md`, and
   docs/ORDERS.md lists the privacy promises the order code must keep.
+- 2026-11-10: Step 14 in progress (not checked off): lithophane-maker has the ornament recipe (`products/ornament.py`, fit checks pass; bulb 2 h 08 min / 42 g, cap 19 min / 2 g on Meltbot), the white wedge sliced and validated (7 min, 3 g; not uploaded until the matte white is in printdb), and the browser preview `src/scripts/shop/lithophane-bulb.js` (matches the recipe to 0.02 mm) with a test page at /shop/test/ornament/. Left: Blender renders reviewed, the feasibility section with price, cap and order-by date (USPS Ground Advantage send-by Dec 17), printdb registration.
