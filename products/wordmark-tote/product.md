@@ -1,7 +1,7 @@
 ---
 name: Wordmark tote
 stage: parked
-next: After launch, so the photo products come first (proposed 2026-11-10, NOW.md decision 2): agent redoes the placement studies with the new brand (logo tile, wordmarks)
+next: After launch, so the photo products come first (RJ, 2026-11-10; NOW.md decision 2): agent redoes the placement studies with the new brand (logo tile, wordmarks)
 waiting_on: agent
 updated: 2026-11-10
 ---

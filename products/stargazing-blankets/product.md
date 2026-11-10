@@ -1,7 +1,7 @@
 ---
 name: Stargazing blankets (northern sky, southern sky)
 stage: parked
-next: After launch, so the photo products come first (proposed 2026-11-10, NOW.md decision 2): RJ says whether it is worth checking, and answers the open questions
+next: After launch, so the photo products come first (RJ, 2026-11-10; NOW.md decision 2): RJ says whether it is worth checking, and answers the open questions
 waiting_on: rj
 updated: 2026-11-10
 ---

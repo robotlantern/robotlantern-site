@@ -16,7 +16,7 @@ date.
 ## Sketch
 
 - **Bulb:** one piece, printed upright for continuous tone (the engine's `sphere` form with `projection:
-  front`). White at launch (*proposed*, NOW.md decision 7). A coloured wall tints and dims the picture,
+  front`). White at launch (NOW.md decision 7). A coloured wall tints and dims the picture,
   so a colour is offered only after its wedge is printed.
 - **Cap:** gold silk PLA (printdb spool 34, about 200 g); silver (spool 22) could be an option. It clips
   onto the bulb's neck and grips the light's socket or wire.

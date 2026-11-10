@@ -99,4 +99,4 @@ they need a public URL the printer can fetch.
 - **One product, one stage per session**, unless it's trivial. Move the stage, update `next`,
   commit.
 - **What launches.** The shop opens with the photo products whose prototypes have passed, and the rest
-  list as theirs do (*proposed* 2026-11-10, NOW.md decision 1). Fixed products follow after launch.
+  list as theirs do (RJ, 2026-11-10; NOW.md decision 1). Fixed products follow after launch.

@@ -21,7 +21,7 @@ on the ceiling. The lamp is bought once; the shells screw on and swap (RJ's memo
   USB power and a thread or bayonet for the shells.
 - **Light:** it has to be close to a point, because the smaller the emitter, the sharper the picture.
   Slant's lights are diffuse (puck light, tealight), and its mini party light (SL043) is unmeasured. RJ
-  buys two or three small LEDs to try once the agent has listed options and prices (*proposed*, NOW.md
+  buys two or three small LEDs to try once the agent has listed options and prices (NOW.md
   decision 8).
 - **Generator:** our own, from the maths: each point of the picture maps back onto the sphere through the
   pole. The input is a mask (text, an uploaded logo, or a subject from the subject picker) or a halftone.
@@ -34,7 +34,7 @@ on the ceiling. The lamp is bought once; the shells screw on and swap (RJ's memo
   high-power LED on a heat sink at the pole and threaded shells that swap.
 - **Licence: CC BY-SA.** Prints may be sold with credit, and anything adapted from its files must be
   shared under the same licence. Our own generator avoids the share-alike; threonin still gets credit on
-  the Credits page (*proposed*, decision 8).
+  the Credits page (NOW.md decision 8).
 - A customer's logo: they confirm they have the right to use it.
 
 ## Risks

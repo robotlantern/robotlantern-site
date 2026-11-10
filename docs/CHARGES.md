@@ -27,7 +27,7 @@ and Shopify on 2026-09-23 (see [Sources](#sources)). Slant's orders were checked
   created 2026-10-02 with RJ's OK), and STLs have been uploaded for free quotes. One unpaid test draft
   stays on the account for good, because Slant can't cancel or delete a draft.
 - **QPMN:** account, no orders. Its API docs come from QPMN on request.
-- **Photo products** (docs/ORDERS.md): uploads go to Workers KV on the free plan (*proposed*, NOW.md
+- **Photo products** (docs/ORDERS.md): uploads go to Workers KV on the free plan (NOW.md
   decision 5), and RJ makes everything at first, so the only new costs are supplies he buys and, later,
   Slant orders he processes.
 

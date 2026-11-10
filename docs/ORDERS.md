@@ -1,7 +1,7 @@
 # Orders for photo products
 
-Planned 2026-11-10 (NOW.md). Nothing here is built yet. Choices still waiting on RJ are marked *proposed*,
-with their number in NOW.md's decisions.
+Planned 2026-11-10 (NOW.md). Nothing here is built yet. RJ took the plan's choices as recommended the
+same day; NOW.md numbers them, and this page cites those numbers.
 
 Four product lines are made from a customer's photo: the lithophane ornament and lamp, custom cutouts,
 pop-out photos and the stereographic projector (`products/`). Every one is ordered the same way, so the
@@ -20,7 +20,7 @@ a preview module and a recipe. Nothing else changes.
    thank-you page says what happens next.
 5. **RJ makes it.** Paid orders are pulled to Sarcean, where the product's recipe builds the print files
    and a proof. RJ looks at both, then prints, cuts, assembles and ships. If a photo won't make a good
-   one, he emails the customer to swap it, or refunds in full (*proposed*, 4).
+   one, he emails the customer to swap it, or refunds in full (NOW.md decision 4).
 
 No order reaches a printer or a print service until RJ has looked at it. That's on purpose for launch.
 Automation comes once enough orders show which manual steps hurt (lithophane-maker's `docs/REPORT.md`,
@@ -118,7 +118,7 @@ Slant quotes.
   Links fit none of that. They stay for fixed products.
 - **Prices come from the product files**, bundled into the Worker when it's deployed. The browser shows a
   price, but never sets one.
-- **Uploads go to Workers KV on the free plan** (*proposed*, 5). Nothing on the free plan can bill.
+- **Uploads go to Workers KV on the free plan** (NOW.md decision 5). Nothing on the free plan can bill.
   Values can be up to 25 MiB, with 1 GB in all and 1,000 writes a day, which is far more than launch
   needs. Unpaid uploads expire after two days on their own. R2 would need a card on file
   (docs/CHARGES.md).
@@ -143,7 +143,7 @@ Slant quotes.
 
 ## Fulfillment
 
-- **`self`**, every photo product at launch (*proposed*, 3). Prints go through 3d-modeling's print flow
+- **`self`**, every photo product at launch (NOW.md decision 3). Prints go through 3d-modeling's print flow
   (`docs/print-help.md` there), each recorded in printdb with the order ID. Photos and stickers come off
   RJ's printer and are cut on the Cricut. RJ ships them. The listing promises a handling time he can
   keep while working in fits and starts.
@@ -167,7 +167,7 @@ Slant quotes.
 - `python3 tools/orders/queue.py pull` reads completed sessions with the agents' Stripe key, then fetches
   each order's files from the Worker with a token of its own.
 
-## Privacy and retention (*proposed*, 6)
+## Privacy and retention (NOW.md decision 6)
 
 - Photos are personal data, often of children. Only RJ, and the agents working his queue, open them.
 - Unpaid uploads expire after two days. Photos and everything made from them (masks, STLs, stickers) are

@@ -38,10 +38,9 @@ and ships it himself.
   ([docs/SHOP.md](docs/SHOP.md)), the Cloudflare copy, and the DNS records for cutover
   ([docs/HOSTING.md](docs/HOSTING.md)).
 
-## Decisions for RJ
+## Decisions (RJ, 2026-11-10)
 
-These are recommendations, already written into the docs and marked *proposed* where they appear. Say
-"as recommended", or change any of them by number.
+RJ took all twelve as recommended on 2026-11-10. The docs cite them by number.
 
 1. **Launch cut.** The site launches once the ornament can be ordered, plus cutouts if their prototype
    is ready in time. The lamp, pop-out photos and projector open as each prototype passes, aiming for all
@@ -85,7 +84,7 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
 
 ### Accounts, tax and the domain
 
-1. [ ] **RJ** · The decisions above: "as recommended", or changes by number. *5 min*
+1. [x] **RJ** · The decisions above: taken as recommended (2026-11-10). *5 min*
 2. [ ] **RJ** · Sales tax ([docs/SALES-TAX.md](docs/SALES-TAX.md)): check whether the LLC has a West
    Virginia Business Registration Certificate (MyTaxes). If it doesn't, get the EIN, then apply. Do this
    first: it's the step with outside waiting. *10 min to check; 1–2 h if both are needed*
@@ -211,3 +210,5 @@ Entries before 2026-11-10 are in [docs/LOG.md](docs/LOG.md).
   after the LAN move (Git primary now on Bilbo); lithophane-maker, the jack-o'-lantern engine and printdb
   have nothing printed; the projector files are CC BY-SA; Slant has no light small enough for a
   projector; Workers KV's free plan and the 10 ms CPU limit set how uploads work.
+- 2026-11-10: RJ took the twelve decisions as recommended (step 1), and the docs no longer mark them
+  as proposed. The ornament recipe (step 14) started in its own session.

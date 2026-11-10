@@ -22,7 +22,7 @@ Drafts go in `.private/marketing/<slug>/` until they're posted. Listing images g
 
 The agent says which shots it needs in the product's file, and RJ takes them in his prototype step.
 
-## Rules (*proposed*, NOW.md decision 10)
+## Rules (NOW.md decision 10)
 
 - Listings show real prototypes, or renders marked as renders. No AI pictures that redraw the product:
   lithophane-maker's GPT-Image lifestyle shots are concept art, and the faces in them aren't the print's.
@@ -34,7 +34,7 @@ The agent says which shots it needs in the product's file, and RJ takes them in 
   count (one sentence).
 - Build pages carry no shop links: they use ESA data, which is non-commercial (docs/LOG.md, task 15).
 
-## Platforms (*proposed*, NOW.md decision 12)
+## Platforms (NOW.md decision 12)
 
 Instagram, Facebook and Pinterest first: personalised gifts sell from pictures, and Pinterest is where
 people plan gifts. Each one gets the tall image and the video; Pinterest gets the hero and the examples
