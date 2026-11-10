@@ -17,7 +17,7 @@ const feed = await chatFeed();
 const all = await getAuthors();
 const names = entry.data.participants.map((p) => all[p.author]?.name ?? p.name).join(' and ');
 if (entry.data.postedPlaceholder) {
-  console.warn(`[robot-lantern] src/content/conversations/${id}/post.json: the posted date is a placeholder. Set it at launch (NOW.md, task 9).`);
+  console.warn(`[robot-lantern] src/content/conversations/${id}/post.json: the posted date is a placeholder. Set it at launch (NOW.md, "Launch").`);
 }
 ---
 <Base title={entry.data.title} section="chats" description={`A chat between ${names}.`} canonical={`/chats/${id}/`}>

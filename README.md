@@ -18,9 +18,12 @@ essays, conversations, interactives and products.
   may link to an essay but doesn't have to.
 - **Builds (interactives).** Things you can use in the browser, each running full screen, such
   as The Sky, Unprojected.
-- **Products.** Print-on-demand items made from Robot Lantern brand art. Stripe takes payment and
-  Gelato prints and ships ([docs/SHOP.md](docs/SHOP.md)), and RJ ships what he makes himself.
-  Ideas move through the pipeline in [docs/PRODUCTS.md](docs/PRODUCTS.md).
+- **Products.** First, things made from a customer's photo: a lithophane ornament and lamp, custom
+  cutouts, pop-out photos and a stereographic projector. The customer shapes theirs on the product's
+  page and pays through Stripe, and RJ checks, makes and ships it ([docs/ORDERS.md](docs/ORDERS.md)).
+  Print-on-demand items from Robot Lantern's own art come later, with Stripe taking payment and Gelato
+  printing and shipping ([docs/SHOP.md](docs/SHOP.md)). Ideas move through the pipeline in
+  [docs/PRODUCTS.md](docs/PRODUCTS.md).
 - **Home.** A scroll from sunset into night. The top of the page uses the warm oranges of the
   reference sunset photo. As you scroll down, the sky darkens, stars appear, and the robot lantern
   grows brighter along with them.
@@ -42,8 +45,10 @@ sunset and scrolls into night. Every other page lives in the night.
 - **Static first.** Pages build to plain HTML. A page that needs interactivity loads its own
   script, and other pages don't load it.
 - **Commerce is a subsystem.** Products are files in this repo. The site shows them in its own
-  design and hands off to Stripe's hosted checkout. A small Cloudflare Worker passes each paid
-  order to Gelato, which prints and ships it. There's no monthly platform fee.
+  design and hands off to Stripe's hosted checkout. A small Cloudflare Worker keeps each photo
+  order's files until RJ pulls them, and passes printed merch to Gelato. Everything that turns a
+  photo into a print runs in the browser (the preview) or on RJ's machines (the real thing). There's
+  no monthly platform fee.
 - **Backends only where reality requires them.** The first launch needs one: the order Worker.
 
 The previous attempt made Shopify the platform. Conversations and provenance had to squeeze into
@@ -53,14 +58,15 @@ Its Shopify plumbing is not.
 
 ## First launch
 
-A home page, one essay, one conversation, and a shop with a few products. The work is broken into
-tasks in [NOW.md](NOW.md). Each task says where to start and when it's done.
+A home page, an essay, two chats, a build, and a shop built around the four photo product lines,
+each opening when its prototype passes. The work is broken into steps in [NOW.md](NOW.md). Each step
+says what it waits for, and NOW.md says how to start one.
 
 ## Hosting
 
 GitHub Pages serves the old robotlantern.com until cutover. The new site moves to Cloudflare
 (decided 2026-09-27): commerce is in the first launch, and GitHub Pages' terms don't cover sites
 built mainly for commercial transactions. Cutover moves the domain's nameservers to Cloudflare
-(NOW.md, task 9). The build output is static, so the host only changes the deploy step.
+(NOW.md, steps 4–6). The build output is static, so the host only changes the deploy step.
 
 See [AGENTS.md](AGENTS.md) for how work happens here.

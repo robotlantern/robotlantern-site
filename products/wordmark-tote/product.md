@@ -1,9 +1,9 @@
 ---
 name: Wordmark tote
-stage: sketch
-next: Agent redoes the placement studies with the new brand (logo tile, wordmarks) for RJ to pick from
+stage: parked
+next: After launch, so the photo products come first (proposed 2026-11-10, NOW.md decision 2): agent redoes the placement studies with the new brand (logo tile, wordmarks)
 waiting_on: agent
-updated: 2026-10-01
+updated: 2026-11-10
 ---
 
 Brand merch: a cotton tote with the wordmark. One of the Shopify prototype's three Gelato candidates

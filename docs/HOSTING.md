@@ -1,6 +1,6 @@
 # Hosting on Cloudflare
 
-Set up 2026-10-01 (NOW.md, step 11). Until cutover, robotlantern.com is still the old landing
+Set up 2026-10-01 ([LOG.md](LOG.md), task 9). Until cutover, robotlantern.com is still the old landing
 page on GitHub Pages; the new site runs on Cloudflare at a workers.dev address for checking.
 
 ## The site
@@ -26,7 +26,8 @@ page on GitHub Pages; the new site runs on Cloudflare at a workers.dev address f
    Domains & Routes → add custom domains `robotlantern.com` and `www.robotlantern.com`. That
    replaces the GitHub Pages records (the four `A` records and the `www` CNAME), which are
    removed. Equivalent in `wrangler.jsonc`: `"routes": [{ "pattern": "robotlantern.com",
-   "custom_domain": true }, …]`.
+   "custom_domain": true }, …]`. Then route `robotlantern.com/api/*` to the `shop` Worker, for photo
+   orders ([ORDERS.md](ORDERS.md)).
 3. RJ switches the nameservers at DomainRegistry.com. Mail must keep working throughout: the
    MX and DKIM records are copied first.
 4. Afterwards: remove the `CNAME` file, and the GitHub Pages site in the repo's settings.
@@ -67,4 +68,4 @@ for the cutover, if RJ agrees (Google's recommended values):
 | `_dmarc` | TXT | `v=DMARC1; p=none; rua=mailto:<an address RJ reads>` |
 
 `p=none` only reports; it changes no delivery. Cloudflare Email Routing (the order Worker's
-email, NOW.md task 7) adds its own SPF include when it's turned on.
+email, LOG.md task 7) adds its own SPF include when it's turned on.

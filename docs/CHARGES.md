@@ -5,13 +5,14 @@ cost money. Before
 doing anything not listed here, find out what it costs and add it.
 
 Stripe was checked on 2026-09-28, Gelato on 2026-09-23 and 2026-09-28, Cloudflare on 2026-09-27
-and Shopify on 2026-09-23 (see [Sources](#sources)).
+and Shopify on 2026-09-23 (see [Sources](#sources)). Slant's orders were checked on 2026-10-02 in the
+3d-modeling sessions, and Workers KV's free plan on 2026-11-10.
 
 ## Current state
 
 - **The shop is Stripe + Gelato, with no Shopify (RJ, 2026-09-28).** Stripe takes payment, a
   Cloudflare Worker passes each paid order to Gelato's API, and Gelato prints and ships. Nothing
-  has a monthly fee. See NOW.md, task 7.
+  has a monthly fee. See SHOP.md and ORDERS.md.
 - **Shopify:** canceled by RJ on 2026-09-30, before the 2026-10-01 bill. RJ removed its links to
   Gelato and QPMN.
 - **Gelato:** free plan, no Gelato+. API keys work (checked 2026-10-01 with read-only calls).
@@ -22,8 +23,13 @@ and Shopify on 2026-09-23 (see [Sources](#sources)).
   billing and domain registration, so agents treat those as off limits (see below). Since
   2026-10-01 it runs the site's copy (`site`) and the order Worker (`shop`) on the free
   `robotlantern.workers.dev` subdomain (docs/HOSTING.md, docs/SHOP.md).
-- **Slant 3D, QPMN:** accounts, no orders. Slant's key works; QPMN's API docs come from QPMN on
-  request.
+- **Slant 3D:** account and API key (v2), no orders. One platform exists ("Robot Lantern printdb",
+  created 2026-10-02 with RJ's OK), and STLs have been uploaded for free quotes. One unpaid test draft
+  stays on the account for good, because Slant can't cancel or delete a draft.
+- **QPMN:** account, no orders. Its API docs come from QPMN on request.
+- **Photo products** (docs/ORDERS.md): uploads go to Workers KV on the free plan (*proposed*, NOW.md
+  decision 5), and RJ makes everything at first, so the only new costs are supplies he buys and, later,
+  Slant orders he processes.
 
 ## Stripe: actions that cost money
 
@@ -42,7 +48,8 @@ Stripe has no setup or monthly fee. Every fee below is per transaction and comes
 
 - The account itself, and everything in **test mode** (sandboxes), including Stripe Tax there.
   Test cards never move money.
-- Payment Links and hosted Checkout pages, products, prices and fixed shipping rates.
+- Payment Links and hosted Checkout pages, including Checkout Sessions created through the API (photo
+  products, docs/ORDERS.md), products, prices and fixed shipping rates.
 - Email receipts, webhooks and API keys.
 - Fixed tax rates that you set yourself (as opposed to Stripe Tax).
 
@@ -86,9 +93,11 @@ Not re-checked for billing detail; confirm on Cloudflare's pricing pages before 
 | --- | --- |
 | The workers.dev subdomain, and Workers static assets for the site (how Cloudflare now builds new Pages projects) | Free: 500 builds a month, 20,000 files and 25 MiB per file per deploy, no bandwidth limit for static files (checked 2026-09-27) |
 | Moving the domain's nameservers to Cloudflare, DNS | Free |
-| Workers requests that run code (the shop's order Worker, the counted short links in NOW.md task 17) | Free up to 100,000 a day; the paid plan is a monthly fee |
+| Workers requests that run code (the shop's order Worker, the photo-order API, the counted short links in LOG.md task 17) | Free up to 100,000 a day; the paid plan is a monthly fee |
+| Workers KV on the Free plan (photo uploads, docs/ORDERS.md) | Free: 1 GB stored, 100,000 reads and 1,000 writes a day, values up to 25 MiB (checked 2026-11-10). The Free plan has no bill to run up. Keep the account on it: Workers Paid is a monthly fee |
+| Workers CPU on the Free plan | 10 ms per request, which is why uploads stream straight into KV (docs/ORDERS.md). More CPU means Workers Paid |
 | R2 storage (large files, later) | Free up to 10 GB and 1M writes / 10M reads a month; downloads free. Needs a card on file, so going over bills automatically: add a spending check before turning it on |
-| Web Analytics, Bot Fight Mode | Free, but they break the privacy page's claims (NOW.md, task 9) |
+| Web Analytics, Bot Fight Mode | Free, but they break the privacy page's claims (LOG.md, task 9) |
 | Anything under Billing, a paid plan or add-on, or Registrar (buying or transferring a domain) | Costs money. The API token can do these: agents never call them. |
 
 ## Shopify (until the store closes)
@@ -106,7 +115,11 @@ Not re-checked for billing detail; confirm on Cloudflare's pricing pages before 
 | --- | --- |
 | Northwest Registered Agent address as the shop's public address | Check the plan: mail handling or forwarding may be a paid add-on |
 | An email service for shipping notices (for example Resend or Postmark) | Not chosen. Check its free tier before signing up. |
-| Slant 3D: placing an order through the API or dashboard | Charged per order (part, filament and shipping). Reading files, filaments and quotes is free. Not yet checked in detail: read Slant's API docs on orders before writing anything there. |
+| Slant 3D: processing an order (`POST /orders/{id}`, or in the dashboard) | Charged then: parts, components and shipping. Pricing seen so far is about $1.14 a part plus $0.0426 a gram, and shipping appears only on an order (one data point: $10.15 for 684 g to West Virginia). Only RJ processes orders |
+| Slant 3D: drafting an order (`POST /orders`) | Free, but **permanent**: Slant can't cancel or delete a draft. Draft only for a real, checked order, and never in a test (docs/ORDERS.md) |
+| Slant 3D: uploads, quotes (`POST /files/{id}/estimate`), filaments, components, platforms | Free. Quotes go through printdb's `slant.py`, which uploads each STL once |
+| Supplies for prototypes and stock (white filament, frames, LEDs, puck lights, tealights, sticker paper, boxes) | RJ buys them. Agents list options with prices first |
+| Cricut Design Space, for Print Then Cut | Not checked: confirm Print Then Cut needs no paid subscription before the first cut |
 | QPMN: placing an order | Product plus shipping, per order; no fee for API access (QPMN's API page, 2026-10-01). |
 | Lulu (books, later) | Per order. API access is by request. |
 | Shipping labels for things RJ ships himself (USPS through a label service such as Pirate Ship, or USPS Click-N-Ship) | Per label. The accounts are free. Not yet chosen or checked: check before the first label. |

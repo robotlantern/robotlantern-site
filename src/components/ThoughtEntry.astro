@@ -21,7 +21,7 @@ if (sha !== attribution.article_sha256) {
   throw new Error(`${dir}: attribution.json was made for a different article.md. Rerun tools/attribution.`);
 }
 if (entry.data.datePlaceholder) {
-  console.warn(`[robot-lantern] ${dir}/essay.json: the date is a placeholder. Set it at launch (NOW.md, task 9).`);
+  console.warn(`[robot-lantern] ${dir}/essay.json: the date is a placeholder. Set it at launch (NOW.md, "Launch").`);
 }
 
 // Attribution participants map to authors (essay.json), which carry the display names.

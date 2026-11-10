@@ -21,10 +21,15 @@ Read [README.md](README.md) for direction and [NOW.md](NOW.md) for current state
      credential is missing, stop and ask. Don't use browser automation, computer use or
      screenshots as a workaround. Those tools are fine when they're the right tool for the job.
    - **robotlantern.com DNS isn't on Porkbun.** RJ changes it by hand at the registrar's DNS host
-     until cutover moves the nameservers to Cloudflare (NOW.md, task 9).
+     until cutover moves the nameservers to Cloudflare (NOW.md, steps 4–6).
      Prepare the exact records and hand them over.
-   - **Pushing `main` deploys the live site.** Ask first. Pushing to the `samwise` remote is
-     free: that's the preview ([docs/PREVIEW.md](docs/PREVIEW.md)).
+   - **Pushing `main` deploys the live site.** Ask first. Pushing `rebuild` to `bilbo` (the primary)
+     and to `samwise` (the preview) is free ([docs/PREVIEW.md](docs/PREVIEW.md)).
+   - **Slant drafts are permanent.** Slant can't cancel or delete a draft order, so never draft one
+     in a test. Only RJ processes orders, which is when Slant charges ([docs/CHARGES.md](docs/CHARGES.md)).
+   - **Customer photos are personal data.** They live only in the order Worker's store and in
+     `.private/orders/`, are deleted on schedule, and never go in Git or into marketing without the
+     customer's written OK ([docs/ORDERS.md](docs/ORDERS.md)).
 5. **Keep it plain.** Content lives in Markdown and JSON files. Don't add compilers, adapters,
    transport layers or portability abstractions until there's a concrete second use for one.
 6. **Keep docs short.** README, AGENTS and NOW, plus `docs/` for anything that must outlive a
@@ -41,8 +46,8 @@ Read [README.md](README.md) for direction and [NOW.md](NOW.md) for current state
 - `main` is what's live at robotlantern.com. Until cutover, it's the old static landing page,
   served by GitHub Pages from the branch root. After cutover, Cloudflare builds and serves it.
 - `rebuild` holds the new site until the first launch. Nothing from the old landing page carries
-  over. It lives on Sarcean and Samwise, not GitHub, and pushing it to `samwise` updates the
-  preview.
+  over. It lives on Sarcean and Bilbo (the `bilbo` remote, Git's primary since 2026-10-28), not
+  GitHub, and pushing it to `samwise` updates the preview.
 
 ## Stack
 

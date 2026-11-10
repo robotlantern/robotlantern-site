@@ -1,9 +1,9 @@
 ---
 name: Stargazing blankets (northern sky, southern sky)
-stage: sketch
-next: RJ says whether it's worth checking, and answers the open questions
+stage: parked
+next: After launch, so the photo products come first (proposed 2026-11-10, NOW.md decision 2): RJ says whether it is worth checking, and answers the open questions
 waiting_on: rj
-updated: 2026-10-01
+updated: 2026-11-10
 ---
 
 A blanket to take out at night that is also a star map. Laid out with its north edge pointing

@@ -1,8 +1,12 @@
 # The shop
 
-Built in Stripe's sandbox 2026-10-01 (NOW.md, task 7 and step 9). Stripe takes the money, a
+Built in Stripe's sandbox 2026-10-01 ([LOG.md](LOG.md), task 7). Stripe takes the money, a
 Cloudflare Worker passes printed items to Gelato as **draft** orders, and RJ ships what he makes.
 No monthly fees. What costs money is in [CHARGES.md](CHARGES.md).
+
+This page covers fixed products, which sell through Payment Links. Products made from a customer's
+photo, which are the launch's focus, order through their own flow built on this one:
+[ORDERS.md](ORDERS.md).
 
 ## A product's shop file
 
@@ -32,7 +36,8 @@ in dollars; prices exclude sales tax, which Stripe Tax adds at checkout.
 
 - **`fulfillment`:** `gelato` (Gelato prints and ships) or `self` (RJ makes and ships it, with
   `stock`: how many the Payment Link may sell in all; it switches itself off after that many,
-  showing "Sold out". To sell more, raise the number and sync).
+  showing "Sold out". To sell more, raise the number and sync). Photo products add `slant` later
+  ([ORDERS.md](ORDERS.md), "Fulfillment").
 - **`gelato`:** `productUid` (or one per choice under `options`), and `files`: print area →
   file. A path starting with `/` is on the site; any `https://` URL works too. Gelato fetches
   the file when the order is created.
@@ -73,8 +78,9 @@ If Gelato refuses an order (a bad address or file, say), the Worker answers 500.
 retries for three days and shows the failure under Workbench → Webhooks. Its logs are in
 Cloudflare (Workers → `shop` → Logs), with session IDs and no customer details.
 
-Not built yet: Gelato's status webhooks (they arrive with shipping emails, later), and email
-from the Worker itself (waits for Cloudflare Email Routing after cutover).
+Not built yet: photo orders at `/api/orders` ([ORDERS.md](ORDERS.md)), Gelato's status webhooks
+(they arrive with shipping emails, later), and email from the Worker itself (waits for Cloudflare
+Email Routing after cutover).
 
 ## Testing
 
@@ -108,7 +114,11 @@ the state certificate exists (docs/SALES-TAX.md; NOW.md).
    `https://shop.robotlantern.workers.dev/stripe` for the two events above, API version
    `2026-08-26.dahlia`.
 2. Worker secrets, by hand (`cd shop-worker && npx wrangler secret put <NAME>`):
-   `STRIPE_WEBHOOK_SECRET_LIVE`, `STRIPE_SECRET_KEY_LIVE` (a restricted key that can only read
-   Checkout Sessions, not the agent's key), `GELATO_API_KEY_LIVE`.
+   `STRIPE_WEBHOOK_SECRET_LIVE`, `STRIPE_SECRET_KEY_LIVE` (a restricted key RJ creates, not the
+   agent's key; for photo products it also creates Checkout Sessions, so see ORDERS.md, "Stripe"),
+   `GELATO_API_KEY_LIVE`.
 3. `python3 tools/shop/sync.py --live`, set `SHOP_MODE` to `live`, deploy the site.
-4. Stripe's email for successful payments on (it's how self-shipped orders reach RJ).
+4. Stripe's email for successful payments on (it's how self-shipped orders reach RJ), and its email
+   receipts to customers.
+5. Photo products: the live KV namespace bound to the Worker, and `robotlantern.com/api/*` routed to it
+   ([ORDERS.md](ORDERS.md)).

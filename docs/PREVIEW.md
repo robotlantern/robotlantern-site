@@ -1,6 +1,7 @@
 # Previews on Samwise
 
-Status: adopted and set up 2026-09-25.
+Status: adopted and set up 2026-09-25. Since the LAN restructuring of 2026-10-28, Git's primary is
+Bilbo, and Samwise only publishes the previews (checked working 2026-11-10).
 
 | Repo | Preview branch | URL |
 |---|---|---|
@@ -18,13 +19,16 @@ trusted HTTPS. GitHub carries only what's public: `main` of this repo, which is 
 The sibling visualization repos (`unprojection-astra`, `unprojection-opus`) stay off GitHub
 until RJ decides to publish them.
 
-- Pushing to the `samwise` remote needs no permission. Pushing to GitHub does.
-- Samwise holds each repo as a bare repo at `/srv/git/<repo>.git`, like the other Samwise
-  projects.
+- Pushing to the `samwise` remote needs no permission, and neither does pushing to `bilbo`. Pushing
+  to GitHub does.
+- Bilbo holds the primary bare repo at `/srv/git/<repo>.git` (the `bilbo` remote), like every repo
+  Samwise used to host. Samwise keeps only the four preview repos it builds from
+  (bilbo-admin `docs/git.md`).
 
 ## How a preview works
 
-1. Push the preview branch to `samwise`. Here that's `rebuild`; in the siblings it's `main`.
+1. Push the preview branch to `bilbo`, then to `samwise`. Here that's `rebuild`; in the siblings
+   it's `main`.
 2. Samwise builds that commit. If `package.json` has a `build` script, the build runs in a
    Node container and `dist/` is served. Otherwise the committed files are served as they are.
 3. The push output shows the build log and the preview URL. A failed build leaves the last
