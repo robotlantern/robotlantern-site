@@ -108,8 +108,22 @@ const builds = defineCollection({
 });
 
 // Shop listings: products/<slug>/shop.json, beside the product's pipeline file (docs/SHOP.md).
-// tools/shop/sync.py writes the Stripe IDs and Payment Link URLs under "stripe".
-const stripeIds = z.object({ url: z.string().url() }).passthrough();
+// tools/shop/sync.py writes the Stripe IDs and Payment Link URLs under "stripe". Products made from a
+// customer's photo add the fields in docs/ORDERS.md ("The product file") and have no Payment Link:
+// the order Worker prices them from these files and opens a Checkout Session per order.
+const stripeIds = z.object({ url: z.string().url().optional() }).passthrough();
+const id = z.string().regex(/^[a-z0-9][a-z0-9-]*$/);
+// A fixed product's one choice, shown at checkout (docs/SHOP.md).
+const fixedOptions = z.object({
+  label: z.string(),
+  choices: z.array(z.object({ label: z.string() }).passthrough()).min(1),
+});
+// A photo product's options: any number, each choice adding `add` dollars to the price.
+const photoOptions = z.array(z.object({
+  id,
+  label: z.string(),
+  choices: z.array(z.object({ id, label: z.string(), add: z.number().min(0).default(0) }).passthrough()).min(1),
+}));
 const shop = defineCollection({
   loader: glob({ pattern: '*/shop.json', base: './products', generateId: folderId }),
   schema: z.object({
@@ -120,10 +134,37 @@ const shop = defineCollection({
     taxCode: z.string().optional(),
     fulfillment: z.enum(['gelato', 'self']),
     stock: z.number().int().positive().optional(),
+    options: z.union([fixedOptions, photoOptions]).optional(),
+    // Photo products only (docs/ORDERS.md).
+    photo: z.object({
+      minEdge: z.number().int().positive(),
+      crop: z.string().regex(/^(circle|free|rect:\d+x\d+)$/),
+      subject: z.boolean(),
+      count: z.number().int().positive().default(1),
+    }).optional(),
+    preview: z.string().optional(),
+    recipe: z.string().optional(),
+    weeklyCap: z.number().int().min(0).optional(),
+    orderBy: z.iso.date().nullable().optional(),
+    // Why the price isn't final. The order Worker won't sell a provisional product live.
+    provisional: z.string().optional(),
     images: z.array(z.string()).default([]),
     listed: z.boolean().default(false),
     stripe: z.object({ test: stripeIds.optional(), live: stripeIds.optional() }).default({}),
-  }).passthrough(),
+  }).passthrough().superRefine((p, ctx) => {
+    if (!p.photo) return;
+    const need = (path: string, message: string) => ctx.addIssue({ code: 'custom', path: [path], message });
+    for (const key of ['preview', 'recipe', 'weeklyCap'] as const) {
+      if (p[key] === undefined) need(key, `a photo product needs ${key}`);
+    }
+    if (p.options && !Array.isArray(p.options)) need('options', 'a photo product lists its options as an array');
+    if (p.stock) need('stock', 'a photo product has a weeklyCap, not stock');
+    const options = Array.isArray(p.options) ? p.options : [];
+    if (new Set(options.map((o) => o.id)).size < options.length) need('options', 'option ids repeat');
+    for (const o of options) {
+      if (new Set(o.choices.map((c) => c.id)).size < o.choices.length) need('options', `${o.id}: choice ids repeat`);
+    }
+  }),
 });
 
 export const collections = { conversations, essays, authors, pages, builds, shop };

@@ -1,8 +1,13 @@
-// The shop's order Worker (docs/SHOP.md): Stripe calls it when a payment completes, and it
-// passes printed items to Gelato as draft orders. Deploy with tools/shop/worker-deploy.sh.
+// The shop's order Worker (docs/SHOP.md, docs/ORDERS.md): Stripe calls it when a payment completes,
+// it passes printed items to Gelato as draft orders, and it takes photo orders at /api/.
+// Deploy with tools/shop/worker-deploy.sh.
 {
   "name": "shop",
   "main": "index.js",
   "compatibility_date": "2026-10-01",
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  // Bundles the photo products' shop files into catalog.json before every build.
+  "build": { "command": "python3 ../tools/orders/catalog.py" },
+  // Photo orders' files, in Stripe's sandbox. The live namespace is bound at launch (docs/SHOP.md).
+  "kv_namespaces": [{ "binding": "ORDERS_TEST", "id": "d64249f1e9b94db9a4d11b5258b897f0" }]
 }

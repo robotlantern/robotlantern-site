@@ -9,6 +9,10 @@ writes their IDs and the link's URL back into the file under "stripe" -> "test" 
 Prices and shipping rates can't change in Stripe, so a new price or shipping amount makes new
 ones and a new Payment Link (the old link is switched off). A new stock number updates the link
 in place. Nothing here costs money; a Payment Link only charges when someone pays.
+
+A photo product (one with "photo", docs/ORDERS.md) gets only the product and the shipping rate: the
+order Worker prices each order from the file and opens its own Checkout Session, so there's no
+fixed price and no Payment Link. Deploy the Worker after syncing one (tools/shop/worker-deploy.sh).
 """
 import json
 import os
@@ -97,6 +101,22 @@ def metadata(slug, p, mode):
     return md
 
 
+def shipping_rate(stripe, ids, p):
+    """Keep a flat shipping rate for the file's shipping amount. True when it made a new one."""
+    shipping = cents(p['shipping'])
+    if ids.get('shippingRate') and \
+            stripe('GET', f'shipping_rates/{ids["shippingRate"]}')['fixed_amount']['amount'] == shipping:
+        return False
+    old = ids.get('shippingRate')
+    ids['shippingRate'] = stripe('POST', 'shipping_rates', {
+        'display_name': 'Shipping', 'type': 'fixed_amount',
+        'fixed_amount': {'amount': shipping, 'currency': 'usd'},
+        'tax_behavior': 'exclusive', 'tax_code': SHIPPING_TAX_CODE})['id']
+    if old:
+        stripe('POST', f'shipping_rates/{old}', {'active': False})
+    return True
+
+
 def sync(path, stripe, mode):
     p = json.loads(path.read_text())
     slug = path.parent.name
@@ -116,6 +136,12 @@ def sync(path, stripe, mode):
     else:
         ids['product'] = stripe('POST', 'products', {**product, 'metadata': md})['id']
 
+    if 'photo' in p:
+        new_rate = shipping_rate(stripe, ids, p)
+        path.write_text(json.dumps(p, indent=2, ensure_ascii=False) + '\n')
+        print(f'{slug}: photo product {ids["product"]}' + (' (new shipping rate)' if new_rate else ''))
+        return
+
     new_link = not ids.get('paymentLink')
     price = cents(p['price'])
     if not ids.get('price') or stripe('GET', f'prices/{ids["price"]}')['unit_amount'] != price:
@@ -128,16 +154,7 @@ def sync(path, stripe, mode):
             stripe('POST', f'prices/{old}', {'active': False})
         new_link = True
 
-    shipping = cents(p['shipping'])
-    if not ids.get('shippingRate') or \
-            stripe('GET', f'shipping_rates/{ids["shippingRate"]}')['fixed_amount']['amount'] != shipping:
-        old = ids.get('shippingRate')
-        ids['shippingRate'] = stripe('POST', 'shipping_rates', {
-            'display_name': 'Shipping', 'type': 'fixed_amount',
-            'fixed_amount': {'amount': shipping, 'currency': 'usd'},
-            'tax_behavior': 'exclusive', 'tax_code': SHIPPING_TAX_CODE})['id']
-        if old:
-            stripe('POST', f'shipping_rates/{old}', {'active': False})
+    if shipping_rate(stripe, ids, p):
         new_link = True
 
     choices = [c['label'] for c in p.get('options', {}).get('choices', [])]

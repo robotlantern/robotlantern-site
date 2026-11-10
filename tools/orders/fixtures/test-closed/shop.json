@@ -1,0 +1,25 @@
+{
+  "name": "Test closed piece (sandbox only)",
+  "description": "A fixture whose weekly cap is 0, for testing that a full week refuses orders. Never listed.",
+  "price": 30,
+  "shipping": 6,
+  "fulfillment": "self",
+  "photo": {
+    "minEdge": 400,
+    "crop": "free",
+    "subject": false,
+    "count": 1
+  },
+  "preview": "none",
+  "recipe": "test-photo",
+  "options": [],
+  "weeklyCap": 0,
+  "orderBy": null,
+  "listed": false,
+  "stripe": {
+    "test": {
+      "product": "prod_Vba23wEvAQ6DZT",
+      "shippingRate": "shr_1UaMsH9i6BSa9eZ6gBW3xKaa"
+    }
+  }
+}

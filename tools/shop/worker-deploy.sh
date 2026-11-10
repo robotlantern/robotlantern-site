@@ -24,4 +24,5 @@ if [ "${1:-}" = --secrets ]; then
   put STRIPE_SECRET_KEY_TEST "$(val stripe.env STRIPE_SECRET_KEY_TEST)"
   put STRIPE_WEBHOOK_SECRET_TEST "$(val stripe.env STRIPE_WEBHOOK_SECRET_TEST)"
   put GELATO_API_KEY_TEST "$(val gelato.env GELATO_API_KEY_SANDBOX)"
+  put QUEUE_TOKEN_TEST "$(val orders.env ORDERS_QUEUE_TOKEN_TEST)"
 fi

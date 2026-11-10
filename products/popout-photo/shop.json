@@ -1,0 +1,47 @@
+{
+  "name": "Pop-out photo",
+  "description": "Your photo in an ordinary frame, with its subject standing out in front of the glass and past the edge of the frame.",
+  "price": 34,
+  "shipping": 6,
+  "provisional": "Sandbox placeholders until feasibility (NOW.md, step 22) sets the real price, shipping, options and weekly cap.",
+  "fulfillment": "self",
+  "photo": {
+    "minEdge": 1500,
+    "crop": "free",
+    "subject": true,
+    "count": 1
+  },
+  "preview": "popout",
+  "recipe": "popout",
+  "options": [
+    {
+      "id": "size",
+      "label": "Frame size",
+      "choices": [
+        {
+          "id": "4x6",
+          "label": "4 × 6 in"
+        },
+        {
+          "id": "5x7",
+          "label": "5 × 7 in",
+          "add": 6
+        },
+        {
+          "id": "8x10",
+          "label": "8 × 10 in",
+          "add": 14
+        }
+      ]
+    }
+  ],
+  "weeklyCap": 6,
+  "orderBy": null,
+  "listed": false,
+  "stripe": {
+    "test": {
+      "product": "prod_Vba2b6qFigQNBm",
+      "shippingRate": "shr_1UaMsF9i6BSa9eZ6yHVxHQ2w"
+    }
+  }
+}

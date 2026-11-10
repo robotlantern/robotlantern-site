@@ -1,0 +1,42 @@
+{
+  "name": "Stereographic projector",
+  "description": "A small lamp that throws a picture from your photo across the ceiling. The shell over the light carries the picture, and shells swap.",
+  "price": 28,
+  "shipping": 7,
+  "provisional": "Sandbox placeholders until feasibility (NOW.md, step 23) sets the real price, shipping, options and weekly cap.",
+  "fulfillment": "self",
+  "photo": {
+    "minEdge": 800,
+    "crop": "circle",
+    "subject": true,
+    "count": 1
+  },
+  "preview": "projector",
+  "recipe": "projector",
+  "options": [
+    {
+      "id": "lamp",
+      "label": "Lamp",
+      "choices": [
+        {
+          "id": "with-lamp",
+          "label": "Shell and lamp",
+          "add": 24
+        },
+        {
+          "id": "shell-only",
+          "label": "Shell only"
+        }
+      ]
+    }
+  ],
+  "weeklyCap": 3,
+  "orderBy": null,
+  "listed": false,
+  "stripe": {
+    "test": {
+      "product": "prod_Vba2M104qPIvVe",
+      "shippingRate": "shr_1UaMsG9i6BSa9eZ6GUjky67a"
+    }
+  }
+}

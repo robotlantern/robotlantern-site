@@ -1,0 +1,41 @@
+{
+  "name": "Lithophane ornament",
+  "description": "A white ornament with your photo in its wall. It looks like plain white plastic until the tree lights come on, and then the picture appears. For LED string lights.",
+  "price": 32,
+  "shipping": 6,
+  "provisional": "Sandbox placeholders until feasibility (NOW.md, step 14) sets the real price, shipping, options and weekly cap.",
+  "fulfillment": "self",
+  "photo": {
+    "minEdge": 1200,
+    "crop": "circle",
+    "subject": false,
+    "count": 1
+  },
+  "preview": "lithophane-bulb",
+  "recipe": "ornament",
+  "options": [
+    {
+      "id": "cap",
+      "label": "Cap",
+      "choices": [
+        {
+          "id": "gold",
+          "label": "Gold"
+        },
+        {
+          "id": "silver",
+          "label": "Silver"
+        }
+      ]
+    }
+  ],
+  "weeklyCap": 10,
+  "orderBy": null,
+  "listed": false,
+  "stripe": {
+    "test": {
+      "product": "prod_Vba2pFbmZlYMuv",
+      "shippingRate": "shr_1UaMsE9i6BSa9eZ6BxSK0vxj"
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "name": "Custom cutout",
+  "description": "The subject of your photo, a person, a pet or a car, cut out as a 3D-printed shape with your photo on its face. It stands on a shelf or hangs as an ornament.",
+  "price": 22,
+  "shipping": 6,
+  "provisional": "Sandbox placeholders until feasibility (NOW.md, step 16) sets the real price, shipping, options and weekly cap.",
+  "fulfillment": "self",
+  "photo": {
+    "minEdge": 1200,
+    "crop": "free",
+    "subject": true,
+    "count": 1
+  },
+  "preview": "cutout",
+  "recipe": "cutout",
+  "options": [
+    {
+      "id": "style",
+      "label": "Style",
+      "choices": [
+        {
+          "id": "standee",
+          "label": "Standee",
+          "add": 8
+        },
+        {
+          "id": "ornament",
+          "label": "Ornament"
+        }
+      ]
+    },
+    {
+      "id": "backing",
+      "label": "Backing color",
+      "choices": [
+        {
+          "id": "white",
+          "label": "White"
+        },
+        {
+          "id": "black",
+          "label": "Black"
+        },
+        {
+          "id": "red",
+          "label": "Red"
+        },
+        {
+          "id": "blue",
+          "label": "Blue"
+        }
+      ]
+    }
+  ],
+  "weeklyCap": 8,
+  "orderBy": null,
+  "listed": false,
+  "stripe": {
+    "test": {
+      "product": "prod_Vba2ls9kPCNHvy",
+      "shippingRate": "shr_1UaMsF9i6BSa9eZ6K0HdZhPK"
+    }
+  }
+}

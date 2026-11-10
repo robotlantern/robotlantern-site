@@ -1,0 +1,41 @@
+{
+  "name": "Test photo piece (sandbox only)",
+  "description": "A fixture for testing photo orders in Stripe's sandbox. Never listed.",
+  "price": 30,
+  "shipping": 6,
+  "fulfillment": "self",
+  "photo": {
+    "minEdge": 400,
+    "crop": "rect:4x3",
+    "subject": true,
+    "count": 2
+  },
+  "preview": "none",
+  "recipe": "test-photo",
+  "options": [
+    {
+      "id": "color",
+      "label": "Color",
+      "choices": [
+        {
+          "id": "white",
+          "label": "White"
+        },
+        {
+          "id": "red",
+          "label": "Red",
+          "add": 4.5
+        }
+      ]
+    }
+  ],
+  "weeklyCap": 500,
+  "orderBy": null,
+  "listed": false,
+  "stripe": {
+    "test": {
+      "product": "prod_Vba2lWJ30Y9yVf",
+      "shippingRate": "shr_1UaMsH9i6BSa9eZ6n0mqxplD"
+    }
+  }
+}
