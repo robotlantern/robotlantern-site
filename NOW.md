@@ -202,6 +202,10 @@ Any time, in any order:
 
 Entries before 2026-11-10 are in [docs/LOG.md](docs/LOG.md).
 
+- 2026-11-12: Submitted the May–October 2026 $0 WV sales and use tax returns; MyTaxes issued
+  confirmations and showed each request as pending. The receipts are in the tax filings folder. The
+  action center showed no outstanding actions. Verify the December 2025 receipt and ask about a
+  quarterly or annual filing frequency before closing step 2.
 - 2026-11-10: RJ is back after five weeks away, and the launch now centres on four products made from a
   customer's photo (his memo in the 3d-modeling repo, `ideas/ideas-products-nov-2026.md`). Re-planned:
   one order flow built as modules (docs/ORDERS.md), a folder per product, a marketing kit per product
