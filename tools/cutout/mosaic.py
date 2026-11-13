@@ -52,7 +52,8 @@ FILAMENTS = {
     'pink':       ('#e3a3a6', False),
     'green':      ('#3f6b3a', False),
     'skin':       ('#c98a62', False),
-    'charcoal':   ('#4a4a4e', False),   # black fur, so it doesn't vanish into the black back
+    'peach':      ('#e8b796', False),
+    'charcoal':   ('#5a5a60', False),   # black fur, so it doesn't vanish into the black back
 }
 BACKGROUNDS = ['ruby red', 'olive', 'navy']   # festive field colours for the area around the subject
 
@@ -245,6 +246,43 @@ def cleanup(labels, face, spec, contrast, max_pass=60, void=None):
     return L, grid, grown
 
 
+def heal_lines(labels, face, spec, void, grid):
+    """A black detail line that cuts a colour region into pieces too small to print is filled back in with
+    that colour; a line with printable pieces on both sides stays. Holes (eyes) never split a region."""
+    L = labels.copy()
+    er = disk(spec.pin_erode_px)
+    rpx = int(1.0 / spec.mmpx)
+    r = disk(rpx)
+    vmask = (L == void).astype(np.uint8)
+    thin = (vmask > 0) & ~cv2.morphologyEx(vmask, cv2.MORPH_OPEN, r).astype(bool)
+    healed = 0
+    for i in np.unique(L[face]):
+        if i == void or i < 0:
+            continue
+        mi = (L == i).astype(np.uint8)
+        cnt, cc, stats, _ = cv2.connectedComponentsWithStats(mi)
+        if cnt <= 2:
+            continue
+        inner = cv2.erode(mi, er).astype(bool) & grid      # erosion per label approximates per component
+        pinned = set(np.unique(cc[inner])) - {0}
+        for c in range(1, cnt):
+            if c in pinned and stats[c, cv2.CC_STAT_AREA] * spec.mmpx ** 2 >= spec.min_area:
+                continue
+            x, y, w, h = stats[c, :4]
+            pad = 3 * rpx
+            y0, y1, x0, x1 = max(y - pad, 0), y + h + pad, max(x - pad, 0), x + w + pad
+            sub = cc[y0:y1, x0:x1]
+            dc = cv2.dilate((sub == c).astype(np.uint8), r).astype(bool)
+            others = sub[cv2.dilate(dc.astype(np.uint8), r).astype(bool) & (sub > 0) & (sub != c)]
+            for d in np.unique(others):
+                dd = cv2.dilate((sub == d).astype(np.uint8), r).astype(bool)
+                bridge = dc & dd & thin[y0:y1, x0:x1]
+                if bridge.any():
+                    L[y0:y1, x0:x1][bridge] = i
+                    healed += 1
+    return L, healed
+
+
 def fill_from_neighbours(L, hole):
     L = L.copy()
     L[hole] = -2
@@ -400,6 +438,7 @@ def main():
     ap.add_argument('--features', type=float, default=25, help='black-hat threshold for dark features; 0 = off')
     ap.add_argument('--stock-only', action='store_true', help='only filaments already on the shelf')
     ap.add_argument('--stl', action='store_true')
+    ap.add_argument('--heal', action='store_true', help='fill black lines that cut a colour into unprintable slivers')
     ap.add_argument('--void', help="the back's colour (e.g. black): drawn there, no piece is made")
     ap.add_argument('--palette', help='comma-separated filament names the image was drawn in (skips clustering)')
     ap.add_argument('--shape', choices=['circle', 'outline'], default='circle')
@@ -470,6 +509,16 @@ def main():
     contrast = np.sqrt(((centres[:, None] - centres[None]) ** 2).sum(-1))
     Image.fromarray(np.asarray(im.resize((n, n)))).save(out / 'input.png')
     void = names.index(a.void) if a.void else None
+    if void is not None and a.heal:
+        n_ = spec.n
+        step = spec.pitch / spec.mmpx
+        gy = np.arange((n_ / 2) % step, n_, step).round().astype(int)
+        g0 = np.zeros((n_, n_), bool)
+        g0[np.ix_(gy, gy)] = True
+        for _ in range(3):
+            labels, healed = heal_lines(labels, face, spec, void, g0 & face)
+            if not healed:
+                break
     L, grid, grown = cleanup(labels, face, spec, contrast, void=void)
     ps = pieces(L, face, grid, spec, names, void)
     outline = back_outline(face, spec)

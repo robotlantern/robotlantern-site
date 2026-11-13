@@ -178,6 +178,28 @@ in `.private/products/cutout-ornament/feasibility-2026-11-13/gpt-image/`.
   plates plus 33 for its silhouette back, 16 g. Still failing: the cat, whose charcoal is too close to
   the black lines (use a lighter grey, or check the snapped colours), and the mouth inside a portrait's
   beard. Codex made extra portraits it wasn't asked for, so a brief should say "exactly N images".
+- **RJ's verdict on the portraits (2026-11-13):** the black-and-white ones are better; the colour ones are
+  less sharp and a little crude. The round-2 colour portrait added white teeth to a closed-mouth smile,
+  because the brief asked for "the mouth as one simple white shape". Rule: never change the expression.
+  A closed mouth stays closed, and the brief describes what to simplify, not what to add. Portraits lead
+  with black and white.
+- **Family photos (round 3, 2026-11-13).** RJ's nine picks (family photos and pets) as warm cartoons with a
+  festive touch. Every one kept its likeness and its expression. Through the pipeline, six come out well
+  (four of the family photos and two of the dogs, one of them only in part). Three fail the same way: one adult's face, the puggle's wrinkles and the parrot's eye are
+  crossed by black detail lines that cut the colour into slivers too thin to print. `--heal` fills those lines
+  back in, which rescues the faces but erases eyes and expressions elsewhere, so it's off by default.
+- **What that points to: three layers, not one.** A flat mosaic can't hold line art with interior lines at
+  80 mm. Proposed instead (not built):
+  1. the black back;
+  2. a colour layer of big, simple pieces with the interior lines ignored, and black islands (eyes,
+     nostrils) as holes through which the back shows;
+  3. a black **line layer** on top: the outline and every line connected to it, as one stencil-like piece at
+     least 1.2 mm wide, like the lead in stained glass.
+
+  The line layer hides the seams between colour pieces, so their fit stops mattering. It brings back the
+  layered stencil of RJ's 2025 cutouts. To work out: how the line layer fastens (pins down through the
+  colour pieces, or a rim that clips around the back), and lines that touch nothing (they become holes in
+  the colour layer, or get joined to the rest).
 - **Where this leaves the routes:** GPT Image wins on design quality. The template idea fits it well: draw
   each design once per breed and colouring under these rules, approve it, then fit the customer's pet to
   it. Whether a customer's photo goes to GPT Image for recolouring or fitting is the privacy question in
