@@ -2,8 +2,8 @@
 name: Pet ornament (snap-together mosaic)
 stage: feasibility
 fulfillment: self
-next: RJ chooses and labels better pet photos, then an agent compares the routes and builds one (NOW.md, steps 31-32)
-waiting_on: rj
+next: Agent fixes the batch's flaws, then makes the fit coupon and the colour-batched plates (NOW.md, step 32)
+waiting_on: agent
 updated: 2026-11-13
 ---
 
@@ -214,6 +214,70 @@ in `.private/products/cutout-ornament/feasibility-2026-11-13/gpt-image/`.
   each design once per breed and colouring under these rules, approve it, then fit the customer's pet to
   it. Whether a customer's photo goes to GPT Image for recolouring or fitting is the privacy question in
   decision 13.
+
+## Construction and palette (2026-11-13, evening)
+
+**The house palette.** Chosen from RJ's shelf (printdb inventory) against Slant's catalogue (printdb's
+`slant_filaments`, refreshed daily), so every design can be printed by Meltbot now and by Slant later. Ten
+colours; GPT Image is told these exact hexes (Slant's), and `mosaic.py` snaps to them (`HOUSE`):
+
+| Colour | Hex | On RJ's shelf | At Slant |
+| --- | --- | --- | --- |
+| black (back, lines) | #1D1D1F | S44 ELEGOO matte black | PLA BLACK, PLA MATTE BLACK |
+| white | #F2F0EA | S41 ELEGOO matte white | PLA WHITE, PLA+ BONE WHITE |
+| tan | #D49459 | none | PLA TAN |
+| brown | #6B430A | none | PLA BROWN |
+| gray (dark fur) | #666666 | none (silver silk is too light) | PLA GRAY |
+| red | #B3142B | S42 ELEGOO ruby red, S20 SUNLU red | PLA RED (brighter) |
+| green | #26A269 | S25 olive green (duller) | PLA GREEN |
+| gold | #D5B510 | S34 SUNLU light gold silk | PLA GOLD |
+| orange | #F3731D | S18 SUNLU sunny orange | PLA ORANGE |
+| yellow | #F5C211 | S31, nearly empty | PLA YELLOW |
+
+Left out: Slant's pink (magenta, wrong for noses and tongues), blue, purple and the marbles. **To prototype
+pets locally, RJ buys tan, brown, gray, and a true green and yellow** (a charge: his call, docs/CHARGES.md).
+
+**The ornament's shape and name plate** (`mosaic.py --name Sam --year 2008`, plate colour `--plate-color`,
+default gold). The subject takes the top 80% of a 100 mm tall ornament; a rounded 15 mm plate sits under it,
+overlapping. The name and year are cut through the plate in Archivo Black (SIL Open Font License, from
+lithophane-maker) with 1.6 mm letter spacing, so the black back shows in the letters. Counters (A, 0, 6, 8)
+get 1.6 mm stencil bridges, so the plate stays one piece. The plate is drawn at four times the working
+resolution and kept out of the raster cleanup, so the letters stay crisp. Its black border is part of the
+line layer. The year defaults to the current one. The text is never drawn by the image model.
+
+**A batch** is a private manifest (names, years, design and photo paths) run by `tools/cutout/run_batch.py`,
+which writes each ornament's files and a contact sheet.
+
+## The first batch: 14 named pets (2026-11-13, evening)
+
+RJ chose and labelled the photos (now in `.private/products/cutout-ornament/pet-photos-selected/`, moved out
+of the public tree). Everything for the batch is in `.private/products/cutout-ornament/batches/2026-11-13/`:
+`manifest.json` (names, years, source photos, how each year was found), `photos/` (what GPT Image was shown),
+`designs/` (its output), `out/<id>/` (preview, SVG, report, STLs per ornament), `sheet.jpg` and `summary.json`.
+Rerun with `run_batch.py <manifest> --stl`, about 2½ minutes for all 14.
+
+- **The pets and years:** 14 photos of 11 pets, each with a year for its name plate. Years come from the photos'
+  EXIF where it exists; a few are estimated, and an undated photo gets the current year. Correct any of these
+  in the manifest and rerun.
+- **GPT Image** (one `codex exec` run on gpt-6-luna, `photos/BRIEF.md`) drew all 14 in the house palette, each
+  with a different festive touch: Santa hats, scarves, antlers, holly, jingle-bell collars, a bow, a stocking, a
+  candy cane, a wreath. It made one extra Annabel, kept as `designs/extra-annabel-alt.png`.
+- **Through the pipeline,** all 14 come out as clean three-layer ornaments, 100 mm tall, with crisp name
+  plates: 11–21 colour pieces in 5–8 colours, smallest 14–30 mm² (Samson has one of 6 mm²), the line layer one
+  piece each.
+- **Filament for all 14,** colour pieces only: white 33 g, gold 21 g (mostly the plates), tan 19 g, gray 11 g,
+  green 11 g, red 7 g, brown 5 g, yellow 1 g; each colour fits one bed. The black backs and line layers come
+  to about 300 g and most of the print time (one ornament sliced at about 84 minutes, of which 51 are
+  black).
+- **To fix before printing:**
+  - Tucker's pale yellow coat isn't in the palette, so it snapped to white: redraw him in tan, or add a light
+    tan if Slant has one.
+  - Stencil bridges on B, R and 6 cut the top stroke, so a B can read as an L and a 6 as a b. Bridge
+    sideways through the stem for those letters, or pick bridge positions per glyph.
+  - Long names (seven letters plus a year) shrink the letters to about 6 mm. Allow two lines, or a wider
+    plate.
+  - One pet's blue collar became gray (blue isn't in the palette); fine, or say "no blue" in the brief.
+  - The plate overlaps the bottom of the subject; Timmy's legs disappear under it. Leave more room (`--head`).
 
 ## Prototype
 

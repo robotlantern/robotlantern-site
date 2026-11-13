@@ -24,6 +24,12 @@ works if an AI image model first redraws the photo as a flat cartoon. RJ said go
 choosing better photos, labelled with the pets' names, so the routes can be compared properly. Steps 30–34
 take it to a listing.
 
+**Pick up here (2026-11-13, end of day): step 32.** The pet ornament pipeline works end to end: GPT Image
+(through `codex exec` on gpt-6-luna) draws each pet in a ten-colour house palette, and `tools/cutout/` turns it
+into a three-layer, 100 mm ornament with a name plate and STLs. A first batch of 14 named pets is in
+`.private/products/cutout-ornament/batches/2026-11-13/` (`sheet.jpg` shows them all). Step 32 lists what's
+left before the first print; the product file has the details.
+
 - `python3 tools/next.py` prints RJ's next steps; `python3 tools/products/board.py` shows each product's stage.
 - To start an agent step, open a session here and say: "Read AGENTS.md and NOW.md, then do step N."
   Start agent sessions at medium effort; three at once on Max used up the 5-hour window on 2026-11-10.
@@ -103,9 +109,10 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
    folder, and ask the Tax Department whether quarterly or annual filing is allowed. Until then, file a $0
    return each month by the 20th. The EIN is not a launch blocker (it's still wanted for a business bank
    account). *15 min*
-3. [ ] **RJ** · Materials: the four matte spools are in printdb (#41–44, 2026-11-10). Still to say: which
-   inkjet printer, sticker paper and Cricut you have, and which lights are on your tree (mini LED, C7 or
-   C9). *5 min*
+3. [ ] **RJ** · Materials: the four matte spools are in printdb (#41–44, 2026-11-10). Still to say: whether to
+   buy tan, brown, gray, a true green and yellow PLA for the pet ornaments (a charge; the product file's palette
+   table says why); which inkjet printer, sticker paper and Cricut you have; which lights are on your tree
+   (mini LED, C7 or C9). *10 min*
 4. [ ] **RJ** · Cloudflare: look at https://site.robotlantern.workers.dev; say yes or no to SPF and DMARC
    for mail ([docs/HOSTING.md](docs/HOSTING.md)); add robotlantern.com to Cloudflare (dashboard, free
    plan), or give the API token Zone and DNS edit for the change window. *15 min*
@@ -186,16 +193,21 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
 ### The pet ornament ([products/cutout-ornament/product.md](products/cutout-ornament/product.md))
 
 30. [x] **RJ** · Go or no-go on the pet ornament as the first product: go (decision 13, 2026-11-13). *15 min*
-31. [ ] **RJ** · Choose better photos: face-on, sharp, the whole head, one pet per photo, from as many
+31. [x] **RJ** · Choose better photos: face-on, sharp, the whole head, one pet per photo, from as many
     species, breeds and colourings as you have. Name each file with the pet's name, species and breed if
     known (`biscuit-dog-beagle.jpg`), and put them in `.private/products/cutout-ornament/photos/`. Ask the
     owner before any pet is used as the prototype or in the listing (decision 10). While you're at it,
     say: silhouette or round, the proof by email, and which pet colours to buy (a charge, so name the
     amount). *1 h*
-32. [ ] **Agent** · After 31: Compare the routes in the product file ("Approaches") on RJ's photos and
-    recommend one, then build it on `tools/cutout/mosaic.py`: keep the eyes, the species in the prompt, the
-    name and year, a few versions per order to choose from, a thinner back, the fit coupon sliced and uploaded
-    to Meltbot, `queue.py make` for it, and its `shop.json`. *2–3 h*
+32. [ ] **Agent** · After 31: Get the first batch print-ready. Done 2026-11-13: GPT Image chosen over the local
+    model; the house palette (shelf vs. Slant); three layers (back, colour pieces, black line layer); the shape and
+    name plate generator; `run_batch.py`; 14 named pets drawn and turned into STLs. Left: fix Tucker's coat, the
+    stencil bridges on B, R and 6, long names, and the plate overlapping the subject (product file, "To fix");
+    a fit coupon for 1.5 mm pins at three clearances plus a strip of line layer, sliced and uploaded to Meltbot;
+    colour-batched plates (one plate per colour across the ornaments being printed, each piece with a small
+    ID on its pin side, and an assembly map per ornament), sliced for time and grams; one ornament's parts
+    quoted through printdb's Slant client (quotes are free; never draft); `queue.py make` and `shop.json` for
+    the product. *3–4 h*
 33. [ ] **RJ** · After 32: Print the fit coupon and say which clearance snaps and holds; then print one
     ornament, assemble it, and photograph it on the tree. If you like it, confirm the price and weekly cap.
     *45 min hands-on; about 2 h of printing*
@@ -240,6 +252,14 @@ Any time, in any order:
 
 Entries before 2026-11-10 are in [docs/LOG.md](docs/LOG.md).
 
+- 2026-11-13 (evening): Pet ornament, continued. GPT Image through `codex exec` (gpt-6-luna; images land in
+  `~/.codex/generated_images/`, collected from there) beat the local model by far. `mosaic.py` gained a
+  palette snap, black-as-back, three layers (a black line layer over the colour pieces, so detail lines never
+  cut colours into slivers) and the name plate; `run_batch.py` runs a manifest. House palette set from the
+  shelf against Slant's catalogue in printdb: black, white, tan, brown, gray, red, green, gold, orange,
+  yellow. RJ chose and labelled photos (moved to `.private/`); 14 ornaments made, years from EXIF or
+  estimated (product file). Family-photo and portrait tests are in `.private/` too; RJ prefers the
+  black-and-white portraits. RJ to decide: buying tan, brown, gray, green and yellow for local prototypes.
 - 2026-11-13: Picked up after the 2026-11-10 sessions hit the usage limit. Step 9 finished: its test now
   passes end to end in Stripe's sandbox (upload, the price from the product file, two-day expiry, test-card
   payment, webhook and resend, bad signatures, pull, list, purge); docs/ORDERS.md and SHOP.md updated. Stale

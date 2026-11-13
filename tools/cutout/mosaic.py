@@ -59,7 +59,20 @@ FILAMENTS = {
     'peach':      ('#e8b796', False),
     'charcoal':   ('#5a5a60', False),   # black fur, so it doesn't vanish into the black back
 }
-BACKGROUNDS = ['ruby red', 'olive', 'navy']   # festive field colours for the area around the subject
+FILAMENTS.update({                # Slant's PLA colours (printdb slant_filaments, 2026-11-13)
+    'tan':    ('#d49459', False),   # Slant PLA TAN; not on the shelf
+    'brown':  ('#6b430a', False),   # Slant PLA BROWN; not on the shelf
+    'gray':   ('#666666', False),   # Slant PLA GRAY; not on the shelf (dark fur, so it isn't lost in the black)
+    'red':    ('#b3142b', True),    # the shelf's matte Ruby Red; Slant PLA RED is brighter
+    'green':  ('#26a269', False),   # Slant PLA GREEN; the shelf's Olive Green is duller
+    'gold':   ('#d5b510', True),    # Slant PLA GOLD; the shelf's is Light Gold silk
+    'orange': ('#f3731d', True),    # both
+    'yellow': ('#f5c211', False),   # Slant PLA YELLOW; the shelf's is nearly empty
+})
+# The house palette for pet designs: black and white plus eight colours Slant stocks (docs: product file).
+HOUSE = ['black', 'white', 'tan', 'brown', 'gray', 'red', 'green', 'gold', 'orange', 'yellow']
+BACKGROUNDS = ['ruby red', 'olive', 'navy']
+FONT = LITHO / 'fonts/ArchivoBlack-Regular.ttf'   # SIL Open Font License   # festive field colours for the area around the subject
 
 
 def hex_rgb(h):
@@ -96,6 +109,8 @@ class Spec:
         self.line_t = 1.2             # line layer thickness over the colour pieces, mm
         if getattr(a, 'layers', 1) == 3:
             self.rim = 3.0            # wide enough for the line layer's rim pins
+            self.gap = 0.2            # fit clearance only: the line layer hides the seams
+        self.plate_h = 15.0           # name plate height, mm
         self.n = int(round(self.size / self.mmpx))
 
     @property
@@ -333,6 +348,8 @@ def pieces(L, face, grid, spec, names, void=None):
             if g.geom_type == 'MultiPolygon':
                 g = max(g.geoms, key=lambda p: p.area)
             sites = np.stack(np.nonzero(cv2.erode(m, er).astype(bool) & grid), 1)
+            if g.area * spec.mmpx ** 2 < 4:
+                continue                  # a speck: the back shows there instead
             out.append({'color': names[i], 'poly': g, 'pins': sites.tolist(),
                         'area_mm2': g.area * spec.mmpx ** 2})
     return out
@@ -396,6 +413,85 @@ def rim_sites(face, spec, every=10.0):
     step = every / spec.mmpx
     idx = [int(np.searchsorted(dist, d)) for d in np.arange(0, dist[-1], step)]
     return [(c[i][1], c[i][0]) for i in idx if i < len(c)]
+
+
+def add_plate(labels, face, names, centres, spec, text, colour, void):
+    """The name plate: a rounded plaque under the subject in `colour`, with the text cut through it so the
+    black back shows in the letters, inside a black border that joins the line layer. Letter counters (O, A,
+    0, 6, 8 ...) get stencil bridges, so the plate stays one piece. Drawn at 4x resolution and kept out of
+    the raster cleanup, so the letters stay crisp."""
+    from PIL import ImageDraw, ImageFont
+    from shapely.geometry import Polygon
+    from shapely.ops import unary_union
+    if colour not in names:
+        names = names + [colour]
+        centres = np.vstack([centres, to_lab(hex_rgb(FILAMENTS[colour][0])[None])])
+    n, S = spec.n, 4                          # S: supersampling
+    mm = S / spec.mmpx
+    N = n * S
+    ph, border, pad, track = int(spec.plate_h * mm), int(1.6 * mm), int(1.2 * mm), 1.6 * mm
+    max_w = int(0.94 * N) - 2 * (border + pad + int(1.0 * mm))
+
+    def render_text(size):
+        font = ImageFont.truetype(str(FONT), size)
+        widths = [font.getbbox(ch)[2] for ch in text]
+        w = int(sum(widths) + track * (len(text) - 1))
+        top, bot = font.getbbox('H0')[1], font.getbbox('H0')[3]
+        img = Image.new('L', (w + 8, bot + 8), 0)
+        d, x = ImageDraw.Draw(img), 0
+        for ch, cw in zip(text, widths):
+            d.text((x, 0), ch, font=font, fill=255)
+            x += cw + track
+        return (np.asarray(img) > 127)[top:bot + 1]
+    size = int((ph - 2 * (border + pad)) * 1.35)
+    while True:
+        t = render_text(size)
+        if t.shape[1] <= max_w and t.shape[0] <= ph - 2 * (border + pad):
+            break
+        size -= 4
+    pw = t.shape[1] + 2 * (border + pad + int(1.0 * mm))
+    ys = np.nonzero(face.any(1))[0]
+    top = min(ys.max() * S - int(3 * mm), N - ph - 4 * S)
+    x0 = (N - pw) // 2
+    pl = Image.new('L', (N, N), 0)
+    ImageDraw.Draw(pl).rounded_rectangle([x0, top, x0 + pw, top + ph], radius=int(3 * mm), fill=255)
+    plate = np.asarray(pl) > 127
+    inner = cv2.erode(plate.astype(np.uint8), disk(border)).astype(bool)
+    txt = np.zeros((N, N), bool)
+    ty, tx = top + (ph - t.shape[0]) // 2, (N - t.shape[1]) // 2
+    txt[ty:ty + t.shape[0], tx:tx + t.shape[1]] = t
+    txt &= cv2.erode(inner.astype(np.uint8), disk(int(0.8 * mm))).astype(bool)
+    bw = int(1.6 * mm)                        # stencil bridge width
+    for _ in range(30):
+        body = inner & ~txt
+        cnt, cc, st, _ = cv2.connectedComponentsWithStats(body.astype(np.uint8))
+        if cnt <= 2:
+            break
+        main = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))
+        for c in range(1, cnt):
+            if c != main:
+                cx = int(np.nonzero(cc == c)[1].mean())
+                txt[:st[c, cv2.CC_STAT_TOP] + 1, cx - bw // 2:cx + bw // 2 + 1] = False
+    piece = (inner & ~txt).astype(np.uint8)
+    cs, hier = cv2.findContours(piece, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
+    polys = []
+    for j, c in enumerate(cs):
+        if hier[0][j][3] == -1 and len(c) >= 4:
+            holes = [cs[h][:, 0] / S for h in range(len(cs)) if hier[0][h][3] == j and len(cs[h]) >= 4]
+            polys.append(Polygon(c[:, 0] / S, holes).buffer(0))
+    poly = unary_union(polys).simplify(0.15).buffer(-0.1 / spec.mmpx, join_style=2)
+    extra = 0
+    if poly.geom_type == 'MultiPolygon':     # a sliver the bridges missed: drop it (the back shows there)
+        extra = len(poly.geoms) - 1
+        poly = max(poly.geoms, key=lambda g: g.area)
+    small = lambda m: cv2.resize(m.astype(np.uint8), (n, n), interpolation=cv2.INTER_AREA) > 0
+    plate_s, inner_s, piece_s = small(plate), small(inner), cv2.resize(piece, (n, n), interpolation=cv2.INTER_AREA) > 0
+    L = labels.copy()
+    L[plate_s] = void
+    info = {'text': text, 'cap_mm': round(t.shape[0] / mm, 1), 'plate_mm': [round(pw / mm, 1), spec.plate_h],
+            'colour': colour, 'dropped_bits': extra}
+    return L, face | plate_s, names, centres, {'info': info, 'plate': plate_s, 'inner': inner_s,
+                                               'piece': piece_s, 'poly': poly}
 
 
 def back_outline(face, spec):
@@ -545,6 +641,10 @@ def main():
     ap.add_argument('--features', type=float, default=25, help='black-hat threshold for dark features; 0 = off')
     ap.add_argument('--stock-only', action='store_true', help='only filaments already on the shelf')
     ap.add_argument('--stl', action='store_true')
+    ap.add_argument('--name', help="the pet's name, for the name plate")
+    ap.add_argument('--year', type=int, help='default: this year')
+    ap.add_argument('--plate-color', default='gold')
+    ap.add_argument('--head', type=float, default=0.80, help='with --name: the share of the height for the subject')
     ap.add_argument('--layers', type=int, choices=[1, 3], default=1, help='3: colour pieces under a black line layer')
     ap.add_argument('--heal', action='store_true', help='fill black lines that cut a colour into unprintable slivers')
     ap.add_argument('--void', help="the back's colour (e.g. black): drawn there, no piece is made")
@@ -567,6 +667,12 @@ def main():
         edge = tuple(int(v) for v in np.median(np.concatenate([np.asarray(im)[0], np.asarray(im)[-1]]), 0))
         im = ImageOps.expand(im, pad, fill=edge).crop(
             (int(cx - half) + pad, int(cy - half) + pad, int(cx + half) + pad, int(cy + half) + pad))
+        subj = subject_mask(im, n)
+    if a.name:                          # room for the name plate: the subject takes the top part
+        kn = int(n * a.head)
+        canvas = Image.new('RGB', (n, n), (255, 255, 255))
+        canvas.paste(im.resize((kn, kn), Image.LANCZOS), ((n - kn) // 2, 0))
+        im = canvas
         subj = subject_mask(im, n)
     yy, xx = np.mgrid[0:n, 0:n]
     if a.shape == 'outline':            # the ornament is the subject's silhouette, simplified
@@ -608,6 +714,14 @@ def main():
             centres = np.vstack([centres, to_lab(hex_rgb(FILAMENTS['black'][0])[None])])
             labels[feat] = len(names) - 1
     labels = fill_from_neighbours(labels, face & (labels < 0)) if a.shape == 'outline' else labels
+    plate_info = None
+    if a.name:
+        if not a.void:
+            raise SystemExit('--name needs --void black (the letters show the black back)')
+        import datetime
+        text = f'{a.name} {a.year or datetime.date.today().year}'.upper()
+        labels, face, names, centres, plate_info = add_plate(labels, face, names, centres, spec, text,
+                                                            a.plate_color, names.index(a.void))
     if a.shape == 'circle':
         bg_i = len(names)
         bg = a.bg if (a.colors > 2 or a.palette) else 'white'
@@ -631,9 +745,23 @@ def main():
     if a.layers == 3:
         if void is None:
             raise SystemExit('--layers 3 needs --void black')
+        if plate_info:                  # the plate's inside is its own piece, kept out of the raster steps
+            labels[plate_info['inner']] = -1
         labels, cface, line, tall, holes = split_layers(labels, face, spec, void)
+        if plate_info:
+            border = plate_info['plate'] & ~plate_info['inner']
+            line |= border
+            tall |= border
+            holes &= ~plate_info['plate']
+            labels[plate_info['plate']] = -1
+            cface &= ~plate_info['plate']
         L, grid, grown = cleanup(labels, cface, spec, contrast)
         ps = pieces(L, cface, grid, spec, names)
+        if plate_info:
+            er = disk(spec.pin_erode_px)
+            sites = np.stack(np.nonzero(cv2.erode(plate_info['piece'].astype(np.uint8), er).astype(bool) & grid), 1)
+            ps.append({'color': plate_info['info']['colour'], 'poly': plate_info['poly'], 'pins': sites.tolist(),
+                       'area_mm2': plate_info['poly'].area * spec.mmpx ** 2})
         rim_band = cv2.dilate(face.astype(np.uint8), disk(spec.rim / spec.mmpx)).astype(bool) & ~face
         rim_band = np.pad(rim_band, 0)
         tall_sites = np.stack(np.nonzero(cv2.erode(tall.astype(np.uint8), disk(spec.pin_erode_px)).astype(bool) & grid), 1)
@@ -657,6 +785,8 @@ def main():
     rep = {'size_mm': spec.size, 'colors': by, 'pieces': len(ps), 'grown_features': grown,
            'smallest_piece_mm2': round(min(p['area_mm2'] for p in ps), 1),
            'on_shelf': {c: FILAMENTS[c][1] for c in by}}
+    if plate_info:
+        rep['plate'] = plate_info['info']
     if layer:
         lp = layer['line_poly']
         rep['line_layer'] = {'parts': len(lp.geoms) if lp.geom_type == 'MultiPolygon' else 1,
