@@ -16,6 +16,13 @@ cutouts. All four are ordered the same way, so the order flow is built once, as 
 and marketing follows [docs/MARKETING.md](docs/MARKETING.md). At launch RJ looks at every order, then makes
 and ships it himself.
 
+**Proposed 2026-11-13: a pet ornament leads instead of the lithophane.** RJ paused the lithophane ornament
+(slow to print, not distinctive enough, matte PLA untested) and proposed a snap-together mosaic ornament of a
+customer's pet: flat one-colour pieces on a black back, made from the photo by a program
+([products/cutout-ornament/product.md](products/cutout-ornament/product.md)). The feasibility test says it
+works if a local AI model (FLUX.2 klein on Sarcean) first redraws the photo as a flat cartoon. Steps 30–33
+take it to a listing; step 30 is RJ's go or no-go.
+
 - `python3 tools/next.py` prints RJ's next steps; `python3 tools/products/board.py` shows each product's stage.
 - To start an agent step, open a session here and say: "Read AGENTS.md and NOW.md, then do step N."
   Start agent sessions at medium effort; three at once on Max used up the 5-hour window on 2026-11-10.
@@ -69,6 +76,10 @@ RJ took all twelve as recommended on 2026-11-10. The docs cite them by number.
 11. **The About rewrite and the style changes don't hold launch.** Do them when you can.
 12. **Platforms:** Instagram, Facebook and Pinterest first, because personalised gifts sell from pictures
     and Pinterest is where people plan gifts. Change the list if you like.
+13. **First product (*proposed* 2026-11-13, step 30).** The pet ornament replaces the lithophane ornament as
+    the first product. It gets a proof by email before it's made, as an exception to decision 4, because a
+    cartoon of someone's pet has to be checked by someone who knows the pet. The lithophane waits until
+    after launch.
 
 ## Road to launch
 
@@ -120,13 +131,14 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
 12. [x] **Agent** · After 1: Shop policies: shipping, returns and refunds, with personalised items final
     sale except for defects and shipping damage. Privacy and terms rewritten for Stripe, uploaded photos
     and Slant (detail in docs/LOG.md, task 13). *45 min*
-13. [ ] **RJ** · After 10 and 14: On your phone at https://rl.rblt.io/shop/, order an ornament and pay
+13. [ ] **RJ** · After 10 and 31: On your phone at https://rl.rblt.io/shop/, order an ornament and pay
     with test card 4242 4242 4242 4242. Check that it shows in `python3 tools/orders/queue.py list`.
     *20 min*
 
 ### The first two products
 
-14. [ ] **Agent** · Ornament: the bulb-and-cap recipe in lithophane-maker, the configurator's lithophane
+14. [ ] **Agent** · After 30: Paused by RJ on 2026-11-13 (decision 13); the recipe, preview and numbers are
+    done, and the renders and printdb are left. Ornament: the bulb-and-cap recipe in lithophane-maker, the configurator's lithophane
     preview, renders, a white calibration wedge sliced and uploaded to Meltbot, and the feasibility
     numbers with a proposed price and weekly cap (`products/lithophane-ornament/`). *2 h*
 15. [ ] **RJ** · After 3 and 14: Print the wedge, then a bulb and a cap. Photograph the wedge on a light,
@@ -145,7 +157,7 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
 
 ### Launch
 
-20. [ ] **Agent** · After 6, 8, 12, 13 and 18: Launch, once RJ says go. Set the launch dates, rerun the
+20. [ ] **Agent** · After 6, 8, 12, 13 and 33: Launch, once RJ says go. Set the launch dates, rerun the
     privacy pass, remove the frozen prototype and the `CNAME` file, switch the shop to live
     ([docs/SHOP.md](docs/SHOP.md), "Launch"; docs/LOG.md, task 9), merge `rebuild` into `main`, push, and
     deploy to Cloudflare. Check the site, an upload and one live checkout page. *45 min*
@@ -169,6 +181,22 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
 27. [ ] **Agent** · After 24: Lamp listing, as in step 18. *45 min*
 28. [ ] **Agent** · After 25: Pop-out listing, as in step 18. *45 min*
 29. [ ] **Agent** · After 26: Projector listing, as in step 18. *45 min*
+
+### The pet ornament ([products/cutout-ornament/product.md](products/cutout-ornament/product.md))
+
+30. [ ] **RJ** · Look at the comparison sheet (`.private/products/cutout-ornament/feasibility-2026-11-13/`)
+    and the product file, then say: go or no-go on decision 13; silhouette or round; the proof by email; and
+    which pet colours to buy (brown, tan, cream, grey, pink: a charge, so name the amount). Ask a pet's owner
+    whether their pet can be the prototype and the listing's example (decision 10). *15 min*
+31. [ ] **Agent** · After 30: The pet pipeline from the prototype (`tools/cutout/mosaic.py`): keep the eyes,
+    the species in the prompt, three or four cartoons per order to choose from, a thinner back, the fit coupon
+    sliced and uploaded to Meltbot, `queue.py make` for it, and its `shop.json`. *2 h*
+32. [ ] **RJ** · After 31: Print the fit coupon and say which clearance snaps and holds; then print one
+    ornament, assemble it, and photograph it on the tree. If you like it, confirm the price and weekly cap.
+    *45 min hands-on; about 2 h of printing*
+33. [ ] **Agent** · After 32: Pet ornament listing: the configurator's inputs (photo, species, shape), the
+    proof email and its place in the queue (docs/ORDERS.md), the product page, photos, copy, order-by date
+    and marketing kit (docs/MARKETING.md). *2 h*
 
 ### Not needed for launch
 
@@ -207,6 +235,16 @@ Any time, in any order:
 
 Entries before 2026-11-10 are in [docs/LOG.md](docs/LOG.md).
 
+- 2026-11-13: Picked up after the 2026-11-10 sessions hit the usage limit. Step 9 finished: its test now
+  passes end to end in Stripe's sandbox (upload, the price from the product file, two-day expiry, test-card
+  payment, webhook and resend, bad signatures, pull, list, purge); docs/ORDERS.md and SHOP.md updated. Stale
+  items fixed: tax step 2 narrowed to the Dec 2025 receipt and the filing-frequency question; step 8 is RJ's
+  in the Dashboard ("Start collecting immediately", per the Stripe Tax session of 2026-11-12); the matte
+  spools have been in printdb since 2026-11-10. RJ paused the lithophane ornament (step 14) and proposed a
+  snap-together pet ornament. A feasibility prototype (`tools/cutout/`) found it works with a local
+  AI cartoon step and doesn't without one (product file; decision 13 and steps 30–33 added). RJ's
+  Illustrator file and its preview moved to `.private/products/cutout-ornament/`. The pet photos used
+  came from RJ's Immich export of 2026-11-12, which is mostly people: only five pets were in it.
 - 2026-11-12: Submitted the May–October 2026 $0 WV sales and use tax returns; MyTaxes issued
   confirmations and showed each request as pending. The receipts are in the tax filings folder. The
   action center showed no outstanding actions. Verify the December 2025 receipt and ask about a
@@ -252,4 +290,4 @@ Entries before 2026-11-10 are in [docs/LOG.md](docs/LOG.md).
   terms rewritten for Stripe and photo orders, with nothing left that says Shopify. Not legal advice: RJ's
   reading list and the points for a lawyer are in `.private/legal/policies-2026-11-10.md`, and
   docs/ORDERS.md lists the privacy promises the order code must keep.
-- 2026-11-10: Step 14 in progress (not checked off): lithophane-maker has the ornament recipe (`products/ornament.py`, fit checks pass; bulb 2 h 08 min / 42 g, cap 19 min / 2 g on Meltbot), the white wedge sliced and validated (7 min, 3 g; not uploaded until the matte white is in printdb), and the browser preview `src/scripts/shop/lithophane-bulb.js` (matches the recipe to 0.02 mm) with a test page at /shop/test/ornament/. Left: Blender renders reviewed, the feasibility section with price, cap and order-by date (USPS Ground Advantage send-by Dec 17), printdb registration.
+- 2026-11-10 (paused 2026-11-13): Step 14 in progress (not checked off): lithophane-maker has the ornament recipe (`products/ornament.py`, fit checks pass; bulb 2 h 08 min / 42 g, cap 19 min / 2 g on Meltbot), the white wedge sliced and validated (7 min, 3 g; not uploaded until the matte white is in printdb), and the browser preview `src/scripts/shop/lithophane-bulb.js` (matches the recipe to 0.02 mm) with a test page at /shop/test/ornament/. Left: Blender renders reviewed, the feasibility section with price, cap and order-by date (USPS Ground Advantage send-by Dec 17), printdb registration.

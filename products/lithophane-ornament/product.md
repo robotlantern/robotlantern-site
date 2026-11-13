@@ -1,10 +1,10 @@
 ---
 name: Lithophane ornament
-stage: feasibility
+stage: parked
 fulfillment: self
-next: Agent builds the bulb-and-cap recipe, the configurator's preview and the feasibility numbers (NOW.md, step 14)
-waiting_on: agent
-updated: 2026-11-10
+next: Paused by RJ on 2026-11-13 in favour of the pet ornament (products/cutout-ornament/); resume after launch
+waiting_on: rj
+updated: 2026-11-13
 ---
 
 A round Christmas ornament with the customer's photo in its wall as a lithophane. It looks like plain
@@ -34,6 +34,11 @@ date.
 - printdb lists 25 g of white PLA. The four matte spools need adding first (NOW.md, step 3).
 
 ## Feasibility (2026-11-10, step 14)
+
+**Paused (RJ, 2026-11-13):** an ornament takes about 2½ hours to print, it isn't distinctive enough to lead
+the shop, and matte PLA's translucency is untested. Left when it paused: look at the Blender renders
+(lithophane-maker `fixtures/orders/ornament-couple/out/render_*.png`) and register it in printdb. The recipe,
+preview and numbers below stand.
 
 The recipe is `products/ornament.py` in lithophane-maker (its docs/PRODUCTS.md, section 4). The preview is
 `src/scripts/shop/lithophane-bulb.js`, with a test page at `/shop/test/ornament/`. The light is an option:
