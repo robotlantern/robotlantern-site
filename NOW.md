@@ -16,12 +16,13 @@ cutouts. All four are ordered the same way, so the order flow is built once, as 
 and marketing follows [docs/MARKETING.md](docs/MARKETING.md). At launch RJ looks at every order, then makes
 and ships it himself.
 
-**Proposed 2026-11-13: a pet ornament leads instead of the lithophane.** RJ paused the lithophane ornament
+**Since 2026-11-13, a pet ornament leads instead of the lithophane (decision 13).** RJ paused the lithophane ornament
 (slow to print, not distinctive enough, matte PLA untested) and proposed a snap-together mosaic ornament of a
 customer's pet: flat one-colour pieces on a black back, made from the photo by a program
 ([products/cutout-ornament/product.md](products/cutout-ornament/product.md)). The feasibility test says it
-works if a local AI model (FLUX.2 klein on Sarcean) first redraws the photo as a flat cartoon. Steps 30–33
-take it to a listing; step 30 is RJ's go or no-go.
+works if an AI image model first redraws the photo as a flat cartoon. RJ said go the same day, and is
+choosing better photos, labelled with the pets' names, so the routes can be compared properly. Steps 30–34
+take it to a listing.
 
 - `python3 tools/next.py` prints RJ's next steps; `python3 tools/products/board.py` shows each product's stage.
 - To start an agent step, open a session here and say: "Read AGENTS.md and NOW.md, then do step N."
@@ -76,10 +77,10 @@ RJ took all twelve as recommended on 2026-11-10. The docs cite them by number.
 11. **The About rewrite and the style changes don't hold launch.** Do them when you can.
 12. **Platforms:** Instagram, Facebook and Pinterest first, because personalised gifts sell from pictures
     and Pinterest is where people plan gifts. Change the list if you like.
-13. **First product (*proposed* 2026-11-13, step 30).** The pet ornament replaces the lithophane ornament as
-    the first product. It gets a proof by email before it's made, as an exception to decision 4, because a
-    cartoon of someone's pet has to be checked by someone who knows the pet. The lithophane waits until
-    after launch.
+13. **First product: the pet ornament** (RJ, 2026-11-13). It replaces the lithophane ornament, which waits
+    until after launch. It carries the pet's name and a year. Still open: whether it gets a proof by email
+    before it's made (an exception to decision 4), and whether a hosted image model (GPT Image) may see
+    customer photos, which would mean changing the privacy page; RJ will change the policy if needed.
 
 ## Road to launch
 
@@ -131,7 +132,7 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
 12. [x] **Agent** · After 1: Shop policies: shipping, returns and refunds, with personalised items final
     sale except for defects and shipping damage. Privacy and terms rewritten for Stripe, uploaded photos
     and Slant (detail in docs/LOG.md, task 13). *45 min*
-13. [ ] **RJ** · After 10 and 31: On your phone at https://rl.rblt.io/shop/, order an ornament and pay
+13. [ ] **RJ** · After 10 and 32: On your phone at https://rl.rblt.io/shop/, order an ornament and pay
     with test card 4242 4242 4242 4242. Check that it shows in `python3 tools/orders/queue.py list`.
     *20 min*
 
@@ -157,7 +158,7 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
 
 ### Launch
 
-20. [ ] **Agent** · After 6, 8, 12, 13 and 33: Launch, once RJ says go. Set the launch dates, rerun the
+20. [ ] **Agent** · After 6, 8, 12, 13 and 34: Launch, once RJ says go. Set the launch dates, rerun the
     privacy pass, remove the frozen prototype and the `CNAME` file, switch the shop to live
     ([docs/SHOP.md](docs/SHOP.md), "Launch"; docs/LOG.md, task 9), merge `rebuild` into `main`, push, and
     deploy to Cloudflare. Check the site, an upload and one live checkout page. *45 min*
@@ -184,19 +185,23 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
 
 ### The pet ornament ([products/cutout-ornament/product.md](products/cutout-ornament/product.md))
 
-30. [ ] **RJ** · Look at the comparison sheet (`.private/products/cutout-ornament/feasibility-2026-11-13/`)
-    and the product file, then say: go or no-go on decision 13; silhouette or round; the proof by email; and
-    which pet colours to buy (brown, tan, cream, grey, pink: a charge, so name the amount). Ask a pet's owner
-    whether their pet can be the prototype and the listing's example (decision 10). *15 min*
-31. [ ] **Agent** · After 30: The pet pipeline from the prototype (`tools/cutout/mosaic.py`): keep the eyes,
-    the species in the prompt, three or four cartoons per order to choose from, a thinner back, the fit coupon
-    sliced and uploaded to Meltbot, `queue.py make` for it, and its `shop.json`. *2 h*
-32. [ ] **RJ** · After 31: Print the fit coupon and say which clearance snaps and holds; then print one
+30. [x] **RJ** · Go or no-go on the pet ornament as the first product: go (decision 13, 2026-11-13). *15 min*
+31. [ ] **RJ** · Choose better photos: face-on, sharp, the whole head, one pet per photo, from as many
+    species, breeds and colourings as you have. Name each file with the pet's name, species and breed if
+    known (`biscuit-dog-beagle.jpg`), and put them in `.private/products/cutout-ornament/photos/`. Ask the
+    owner before any pet is used as the prototype or in the listing (decision 10). While you're at it,
+    say: silhouette or round, the proof by email, and which pet colours to buy (a charge, so name the
+    amount). *1 h*
+32. [ ] **Agent** · After 31: Compare the routes in the product file ("Approaches") on RJ's photos and
+    recommend one, then build it on `tools/cutout/mosaic.py`: keep the eyes, the species in the prompt, the
+    name and year, a few versions per order to choose from, a thinner back, the fit coupon sliced and uploaded
+    to Meltbot, `queue.py make` for it, and its `shop.json`. *2–3 h*
+33. [ ] **RJ** · After 32: Print the fit coupon and say which clearance snaps and holds; then print one
     ornament, assemble it, and photograph it on the tree. If you like it, confirm the price and weekly cap.
     *45 min hands-on; about 2 h of printing*
-33. [ ] **Agent** · After 32: Pet ornament listing: the configurator's inputs (photo, species, shape), the
-    proof email and its place in the queue (docs/ORDERS.md), the product page, photos, copy, order-by date
-    and marketing kit (docs/MARKETING.md). *2 h*
+34. [ ] **Agent** · After 33: Pet ornament listing: the configurator's inputs (photo, species, name, year,
+    shape), the proof email if there is one and its place in the queue (docs/ORDERS.md), the product page,
+    photos, copy, order-by date and marketing kit (docs/MARKETING.md). *2 h*
 
 ### Not needed for launch
 
@@ -242,7 +247,10 @@ Entries before 2026-11-10 are in [docs/LOG.md](docs/LOG.md).
   in the Dashboard ("Start collecting immediately", per the Stripe Tax session of 2026-11-12); the matte
   spools have been in printdb since 2026-11-10. RJ paused the lithophane ornament (step 14) and proposed a
   snap-together pet ornament. A feasibility prototype (`tools/cutout/`) found it works with a local
-  AI cartoon step and doesn't without one (product file; decision 13 and steps 30–33 added). RJ's
+  AI cartoon step and doesn't without one (product file; decision 13 and steps 30–34 added). RJ said go,
+  with names and years on the ornament, and wants to pick and label better photos before the routes are
+  compared again (an LLM description fed to the image model; GPT Image through Codex; a library of breed
+  templates recoloured from the customer's photo). RJ's
   Illustrator file and its preview moved to `.private/products/cutout-ornament/`. The pet photos used
   came from RJ's Immich export of 2026-11-12, which is mostly people: only five pets were in it.
 - 2026-11-12: Submitted the May–October 2026 $0 WV sales and use tax returns; MyTaxes issued

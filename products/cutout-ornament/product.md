@@ -2,7 +2,7 @@
 name: Pet ornament (snap-together mosaic)
 stage: feasibility
 fulfillment: self
-next: RJ decides whether it's the first product, which shape, and the pet filament colours (NOW.md, step 30)
+next: RJ chooses and labels better pet photos, then an agent compares the routes and builds one (NOW.md, steps 31-32)
 waiting_on: rj
 updated: 2026-11-13
 ---
@@ -11,8 +11,8 @@ A flat ornament of a customer's pet, made from their photo: the pet's head as a 
 coloured PLA that snap onto a black back, like a small stained-glass window or a mosaic puzzle. Each piece
 prints flat in one colour, so the files can be made from the photo by a program, Meltbot (and later
 Slant) prints them, and the customer only snaps the pieces into place. Putting it together is part of the
-gift. RJ proposed it on 2026-11-13 as the first product in place of the lithophane ornament, which prints
-slowly, isn't distinctive enough, and hasn't been tried in matte PLA.
+gift. On 2026-11-13 RJ made it the first product in place of the lithophane ornament, which prints slowly,
+isn't distinctive enough, and hasn't been tried in matte PLA (NOW.md, decision 13).
 
 It comes from RJ's 2025 paper portraits: photos traced by hand in Illustrator into colour layers, cut on
 the Cricut and stacked. The tracing was the work that made them impractical to sell, and it's the part
@@ -34,6 +34,9 @@ layer that snaps on.
   recommended), or a round 80 mm ornament with a festive field colour around the pet. A round back is the
   same for every order, so it could be printed in stock. A silhouette back is made per order.
 - **Size:** 80 mm across. Bigger is easier to print and keeps more detail.
+- **Name and year** (RJ, 2026-11-13): the pet's name and a year on the ornament. Where and how is open:
+  a name plate as its own piece under the head, raised letters on the back, or both. Letters must be at
+  least 1.2 mm wide in every stroke, which at 80 mm favours a bold font and short names.
 
 ## Feasibility (2026-11-13)
 
@@ -118,6 +121,25 @@ proofs and plate swaps, not the printer.
 cartoon is a new drawing of the customer's photo, which they confirm they may use (the terms already say
 so).
 
+## Approaches to compare (step 32)
+
+The first test (above) used FLUX.2 klein on single photos. RJ's photos, chosen and labelled with names
+(NOW.md, step 31), are for comparing these properly. Under discussion on 2026-11-13, not decided:
+
+1. **Local image model, photo in** (what was tested): FLUX.2 klein on Sarcean, about 50 s an image, the
+   photo stays on Sarcean.
+2. **Describe, then draw:** a vision LLM writes a structured description (species, breed, coat colours and
+   where the markings are, ear shape, eye colour), and the image model draws from that, with or without
+   the photo as a reference.
+3. **GPT Image through Codex:** likely better at following the markings and at flat, clean shapes. The
+   customer's photo would go to OpenAI, so the privacy page and docs/ORDERS.md change first (RJ: change the
+   policy if needed). Per-image cost goes in docs/CHARGES.md before it's used for orders.
+4. **Breed templates:** a library of cartoon heads, generated once, by species, breed and colouring, each
+   already split into clean pieces. An order picks the nearest template, then recolours and reshapes it to
+   the customer's photo (coat colours, markings, ear and muzzle proportions). Quality is set once per
+   template rather than per order, and each order needs less compute. The work is deciding how much a
+   template can be changed (recolour only, or warp too) before it stops looking like the pet.
+
 ## Prototype
 
 1. **Fit coupon:** pins and sockets at three clearances (15 min, 3 g). RJ reports which one snaps and holds.
@@ -126,7 +148,10 @@ so).
 
 ## Questions
 
-- Is this the first product (NOW.md, step 30)? Silhouette or round, or both as options?
+- Silhouette or round, or both as options?
+- Name and year: is the year the Christmas year, or birth and death years for a memorial ornament (a large
+  share of pet ornaments)? Name plate or lettering on the back?
+- A proof by email before making it, or not?
 - Which pet colours to buy, and how much?
 - Should the black-and-white "stencil" version be offered too, cheaper ($29?) and from stock colours?
 - People as well as pets later? Likeness matters more for people, so pets first.
