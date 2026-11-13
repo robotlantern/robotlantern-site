@@ -1,7 +1,9 @@
 # Orders for photo products
 
-Planned 2026-11-10 (NOW.md). Nothing here is built yet. RJ took the plan's choices as recommended the
-same day; NOW.md numbers them, and this page cites those numbers.
+Planned 2026-11-10 (NOW.md). RJ took the plan's choices as recommended the same day; NOW.md numbers
+them, and this page cites those numbers. Built so far (2026-11-13, sandbox only): order intake at
+`/api/orders` in the shop Worker, on the `shop-orders-test` KV namespace, and `tools/orders/queue.py`.
+The configurator, the subject picker and the live namespace are still to come.
 
 Four product lines are made from a customer's photo: the lithophane ornament and lamp, custom cutouts,
 pop-out photos and the stereographic projector (`products/`). Every one is ordered the same way, so the
@@ -186,6 +188,13 @@ Slant quotes.
 
 ## Testing
 
+- `python3 tools/orders/test_order.py` places a photo order end to end in the sandbox: it uploads a drawn
+  test picture (never anyone's photo), checks the browser's price is ignored and unpaid files expire in two
+  days, pays with the test card, checks the webhook (and a resend, and a bad signature), then pulls, lists
+  and purges the order. It refuses a live key. Passed in full 2026-11-13. Each run uses about 20 of KV's
+  1,000 free writes a day.
+- Workers KV can cache a "not found" for up to a minute, so the configurator resends a missing file and
+  retries checkout rather than failing.
 - Stripe's sandbox and test cards for every checkout, and a separate KV namespace for test orders.
 - Recipes run on fixture photos (lithophane-maker `fixtures/photos/`, never committed).
 - Slant: dry runs only. Gelato: drafts only, as now.

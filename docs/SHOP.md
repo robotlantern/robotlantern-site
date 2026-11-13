@@ -78,7 +78,8 @@ If Gelato refuses an order (a bad address or file, say), the Worker answers 500.
 retries for three days and shows the failure under Workbench → Webhooks. Its logs are in
 Cloudflare (Workers → `shop` → Logs), with session IDs and no customer details.
 
-Not built yet: photo orders at `/api/orders` ([ORDERS.md](ORDERS.md)), Gelato's status webhooks
+Photo orders at `/api/orders` are built and tested in the sandbox ([ORDERS.md](ORDERS.md)). Not built
+yet: Gelato's status webhooks
 (they arrive with shipping emails, later), and email from the Worker itself (waits for Cloudflare
 Email Routing after cutover).
 

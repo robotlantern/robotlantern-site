@@ -1,6 +1,6 @@
 # Now
 
-_Last updated 2026-11-10._
+_Last updated 2026-11-13._
 
 ## Start here
 
@@ -18,7 +18,7 @@ and ships it himself.
 
 - `python3 tools/next.py` prints RJ's next steps; `python3 tools/products/board.py` shows each product's stage.
 - To start an agent step, open a session here and say: "Read AGENTS.md and NOW.md, then do step N."
-  Steps 9, 12 and 14 touch different files and can run at the same time.
+  Start agent sessions at medium effort; three at once on Max used up the 5-hour window on 2026-11-10.
 - History before 2026-11-10 (the old road, task notes 1–20 and the log) is in [docs/LOG.md](docs/LOG.md).
 
 ### What changed while this was paused (checked 2026-11-10)
@@ -27,8 +27,8 @@ and ships it himself.
   Pushing `rebuild` to `samwise` still publishes the preview, and the preview works.
 - **The lithophane engine exists**: `~/work/lab/lithophane-maker` (2026-10-04) turns a photo into printable
   lithophanes (flat, curved, cylinder, globe), cuts them to a subject's outline, and has three product
-  recipes, a test bench and a hosting report. Nothing from it has been printed. printdb lists only 25 g
-  of white PLA; the four matte spools from early October aren't in it.
+  recipes, a test bench and a hosting report. Nothing from it has been printed. The four matte 1 kg spools (ELEGOO PLA Matte: white,
+  ruby red, navy blue, black) were added to printdb on 2026-11-10 as spools #41–44.
 - **Photo orders were worked out once already**, for a photo jack-o'-lantern (memos of 2026-10-02 in
   `inbox/`). They hold Slant's API facts too: a Slant draft can't be cancelled or deleted, and processing
   an order is what charges. Both are folded into docs/ORDERS.md and docs/CHARGES.md.
@@ -85,12 +85,15 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
 ### Accounts, tax and the domain
 
 1. [x] **RJ** · The decisions above: taken as recommended (2026-11-10). *5 min*
-2. [ ] **RJ** · Sales tax ([docs/SALES-TAX.md](docs/SALES-TAX.md)): check whether the LLC has a West
-   Virginia Business Registration Certificate (MyTaxes). If it doesn't, get the EIN, then apply. Do this
-   first: it's the step with outside waiting. *10 min to check; 1–2 h if both are needed*
-3. [ ] **RJ** · Materials: are the four matte 1 kg spools (white, red, blue, black) on the shelf? Add
-   them to printdb, or say they aren't there (every lithophane needs white). Say which inkjet printer,
-   sticker paper and Cricut you have, and which lights are on your tree (mini LED, C7 or C9). *10 min*
+2. [ ] **RJ** · Sales tax ([docs/SALES-TAX.md](docs/SALES-TAX.md)): the LLC is already registered with West
+   Virginia (certificate 2025-12-16, monthly sales and use tax account), and the $0 returns for Dec 2025
+   through Oct 2026 were submitted by 2026-11-12. Left: check the December 2025 receipt is in your tax
+   folder, and ask the Tax Department whether quarterly or annual filing is allowed. Until then, file a $0
+   return each month by the 20th. The EIN is not a launch blocker (it's still wanted for a business bank
+   account). *15 min*
+3. [ ] **RJ** · Materials: the four matte spools are in printdb (#41–44, 2026-11-10). Still to say: which
+   inkjet printer, sticker paper and Cricut you have, and which lights are on your tree (mini LED, C7 or
+   C9). *5 min*
 4. [ ] **RJ** · Cloudflare: look at https://site.robotlantern.workers.dev; say yes or no to SPF and DMARC
    for mail ([docs/HOSTING.md](docs/HOSTING.md)); add robotlantern.com to Cloudflare (dashboard, free
    plan), or give the API token Zone and DNS edit for the change window. *15 min*
@@ -98,14 +101,16 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
    (docs/HOSTING.md, "Cutover"). *15 min*
 6. [ ] **RJ** · After 5: Switch the nameservers at DomainRegistry.com to Cloudflare's. Changes can take up
    to a day to spread. *10 min*
-7. [ ] **RJ** · After 2: Once the EIN arrives, change Stripe's business details to Robot Lantern LLC, and
-   create the order Worker's restricted live key ([docs/ORDERS.md](docs/ORDERS.md), "Stripe"). *20 min*
-8. [ ] **Agent** · After 2 and 7: Turn on West Virginia in Stripe Tax (live), with the registration's
-   start date. *10 min*
+7. [ ] **RJ** · After 2: Stripe: create the order Worker's restricted live key ([docs/ORDERS.md](docs/ORDERS.md),
+   "Stripe"). Changing the business details to Robot Lantern LLC needs an EIN and is optional: the account
+   already takes live payments on RJ's SSN (docs/SALES-TAX.md). *20 min*
+8. [ ] **RJ** · After 2 and 7: Turn on West Virginia in Stripe Tax (live) in the Dashboard, choosing "Start
+   collecting immediately" with the Combined Sales and Use account number (docs/SALES-TAX.md, step 5). An
+   agent then reads the registration back. *10 min*
 
 ### The order flow ([docs/ORDERS.md](docs/ORDERS.md))
 
-9. [ ] **Agent** · After 1: Order intake in Stripe's sandbox: the photo products' `shop.json` files,
+9. [x] **Agent** · After 1: Order intake in Stripe's sandbox: the photo products' `shop.json` files,
    `/api/orders` in the shop Worker (Workers KV, Checkout Sessions), the webhook's paid step, and
    `tools/orders/` (pull, list, make, ship, purge). Tested with Stripe's test card. *2 h*
 10. [ ] **Agent** · After 9: The configurator: product page, photo step (upright, crop, resize), options,
@@ -214,6 +219,33 @@ Entries before 2026-11-10 are in [docs/LOG.md](docs/LOG.md).
   after the LAN move (Git primary now on Bilbo); lithophane-maker, the jack-o'-lantern engine and printdb
   have nothing printed; the projector files are CC BY-SA; Slant has no light small enough for a
   projector; Workers KV's free plan and the 10 ms CPU limit set how uploads work.
+- 2026-11-12 (end of day): RJ phoned the WV Tax Department, which got him a MyTaxes login (his SSN entered
+  with ID type FEIN) and confirmed there is no charge for unfiled $0 returns. He is filing Dec 2025 through
+  Oct 2026 and saving the confirmations (Jan and Feb were in his tax folder when checked). The Business4WV
+  summary shows the LLC was registered with the state on 2025-12-11 using his SSN, so no EIN came from
+  formation. That weakens the earlier guess that an EIN already exists: the IRS online tool's reference
+  number 101 (a name match, per third-party guides) may be some other entity's similar name. IRS phone
+  calls end in "high call volume". Fallbacks: fax the SS-4 (draft in `.private/tax/`) and the Taxpayer
+  Advocate Service. The EIN is optional for launch. docs/SALES-TAX.md "Before the first sale" is rewritten
+  to match; the three entries below are superseded where they differ.
+- 2026-11-12 (latest, superseded): the IRS online tool failed again at Review & Submit with reference number
+  101 (a name match with an existing record, per third-party guides), which fits an EIN already existing
+  for the LLC. Next: RJ calls the IRS (800-829-4933) and the WV Tax Department (see `.private/tax/`).
+- 2026-11-12 (later): RJ downloaded the 14 PDFs from Northwest's portal. They show the LLC already has a
+  WV Business Registration Certificate (issued 2025-12-16) and a monthly sales and use tax account, and
+  that the "monthly tax forms" are blank WV sales and use tax returns for Dec 2025 to Oct 2026: none
+  filed, no delinquency letters among them. The annual report was filed 2026-04-10 and Northwest's
+  letter says the LLC is in good standing. So the EIN is no longer on the launch path, and step 2 becomes
+  "bring the account current". Open: which federal ID WV has on file; whether an EIN already exists
+  (a year of failed IRS attempts fits); the penalties, if any, for the late $0 returns.
+- 2026-11-12: Step 2 rechecked against the IRS, Stripe and the state's own pages (docs/SALES-TAX.md). No
+  EIN yet: the IRS site has not worked for RJ. Findings (the first two now superseded, see above): the EIN
+  is the dependency for West Virginia's
+  registration (an LLC registers with it), not for Stripe, which already takes live payments on RJ's SSN;
+  the IRS no longer issues EINs by phone; fax gives the EIN in about 4 business days and mail in about 4
+  weeks, so mail would miss the Dec 9 order-by date. Not found: the state's processing time for the
+  certificate. Open question for RJ: whether "haven't filed taxes" means 2026 (not due until
+  2027-04-15) or an earlier year.
 - 2026-11-10: RJ took the twelve decisions as recommended (step 1), and the docs no longer mark them
   as proposed. The ornament recipe (step 14) started in its own session.
 - 2026-11-10: Shop policies (step 12): new Shipping, Returns and Contact pages in the footer; privacy and
