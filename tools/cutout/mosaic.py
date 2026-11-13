@@ -50,6 +50,9 @@ FILAMENTS = {
     'grey':       ('#8a8d91', False),
     'light grey': ('#c6c8ca', False),
     'pink':       ('#e3a3a6', False),
+    'green':      ('#3f6b3a', False),
+    'skin':       ('#c98a62', False),
+    'charcoal':   ('#4a4a4e', False),   # black fur, so it doesn't vanish into the black back
 }
 BACKGROUNDS = ['ruby red', 'olive', 'navy']   # festive field colours for the area around the subject
 
@@ -74,12 +77,12 @@ class Spec:
         self.gap = 0.6                # black line between pieces, mm
         self.min_width = 1.2          # narrowest printable part of a piece, mm (3 lines of a 0.4 nozzle)
         self.pitch = a.pitch          # socket grid pitch, mm
-        self.pin = 2.0                # square pin side, mm
+        self.pin = a.pin              # square pin side, mm
         self.pin_margin = 0.6         # piece material left around a pin, mm
         self.piece_t = 1.6            # piece thickness, mm
         self.pin_h = 1.2
         self.back_t = 2.4
-        self.socket = 2.2             # socket side, mm (0.1 mm clearance a side; set by a test print)
+        self.socket = a.pin + 0.2     # socket side, mm (0.1 mm clearance a side; set by a test print)
         self.socket_d = 1.4
         self.rim = 2.0                # back's border outside the face, mm
         self.min_area = a.min_area    # non-salient regions smaller than this merge away, mm²
@@ -147,8 +150,11 @@ def assign_filaments(centres, k, stock_only):
     return [names[j] for j in best]
 
 
-def cleanup(labels, face, spec, contrast, max_pass=60):
-    """Make every connected region printable: wide enough, and holding at least one pin."""
+def cleanup(labels, face, spec, contrast, max_pass=60, void=None):
+    """Make every connected region printable: wide enough, and holding at least one pin.
+
+    `void` is the label of the back's own colour (black): no piece is made there, the back shows through,
+    so its lines and shapes may be any width. Pieces too small or thin to print give way to it."""
     n = spec.n
     ys, xs = np.mgrid[0:n, 0:n]
     step = spec.pitch / spec.mmpx
@@ -171,6 +177,9 @@ def cleanup(labels, face, spec, contrast, max_pass=60):
         # 2. thin necks: open each label, hand the removed pixels to their neighbours
         keep = np.zeros_like(face)
         for i in ids:
+            if i == void:
+                keep |= L2 == i
+                continue
             keep |= cv2.morphologyEx((L2 == i).astype(np.uint8), cv2.MORPH_OPEN, open_k).astype(bool)
         L2 = fill_from_neighbours(L2, face & ~keep)
         if (L2 != L).any():
@@ -186,6 +195,8 @@ def cleanup(labels, face, spec, contrast, max_pass=60):
                 comps.append((int(m.sum()), i, m, int((inner & grid).sum())))
         comps.sort(key=lambda t: t[0])
         for area, i, m, sites in comps:
+            if i == void:
+                continue
             if sites and area * spec.mmpx ** 2 >= spec.min_area:
                 continue
             if sites and any(lab == i and m[y, x] for lab, y, x in seeds):
@@ -204,12 +215,19 @@ def cleanup(labels, face, spec, contrast, max_pass=60):
             if nb.size == 0:
                 continue
             host = np.bincount(nb).argmax()
+            if void is not None:
+                # prefer a similar-coloured piece next to it over the back
+                cnt_ = np.bincount(nb, minlength=len(contrast))
+                near = [j for j in np.nonzero(cnt_)[0] if j not in (void, i) and contrast[i][j] < spec.salient
+                        and cnt_[j] >= 0.15 * nb.size]
+                if near:
+                    host = max(near, key=lambda j: cnt_[j])
             hcc = cv2.connectedComponents((L == host).astype(np.uint8))[1]
             host_area = (hcc == np.bincount(hcc[ring & (L == host)]).argmax()).sum() * spec.mmpx ** 2
             # a mark on a small feature (a catchlight in an eye) merges; a mark on a big area is a feature
             cy0, cx0 = [v.mean() for v in np.nonzero(m)]
             regrow = any(lab == i and np.hypot(y - cy0, x - cx0) < 40 for lab, y, x in seeds)
-            if (not sites and not regrow and contrast[i][host] > spec.salient and area * spec.mmpx ** 2 > 0.8
+            if (void is None and not sites and not regrow and contrast[i][host] > spec.salient and area * spec.mmpx ** 2 > 0.8
                     and host_area > 150):
                 # salient (an eye, a nose): grow it about its centre until it holds a pin
                 cy, cx = [int(v.mean()) for v in np.nonzero(m)]
@@ -244,13 +262,15 @@ def fill_from_neighbours(L, hole):
     return L
 
 
-def pieces(L, face, grid, spec, names):
+def pieces(L, face, grid, spec, names, void=None):
     """Vector pieces: one polygon per connected region, inset by half the gap, with its pin sites."""
     from shapely.geometry import Polygon
     from shapely.ops import unary_union
     out = []
     er = disk(spec.pin_erode_px)
     for i in np.unique(L[face]):
+        if i == void or i < 0:
+            continue
         cnt, cc = cv2.connectedComponents((L == i).astype(np.uint8))
         for c in range(1, cnt):
             m = (cc == c).astype(np.uint8)
@@ -373,12 +393,15 @@ def main():
     ap.add_argument('--crop', type=lambda s: tuple(int(v) for v in s.split(',')))
     ap.add_argument('--size', type=float, default=80)
     ap.add_argument('--pitch', type=float, default=4.0)
+    ap.add_argument('--pin', type=float, default=2.0, help='square pin side, mm')
     ap.add_argument('--bg', default='ruby red')
     ap.add_argument('--min-area', type=float, default=30, help='mm²; smaller plain regions merge')
     ap.add_argument('--smooth', type=float, default=4.0)
     ap.add_argument('--features', type=float, default=25, help='black-hat threshold for dark features; 0 = off')
     ap.add_argument('--stock-only', action='store_true', help='only filaments already on the shelf')
     ap.add_argument('--stl', action='store_true')
+    ap.add_argument('--void', help="the back's colour (e.g. black): drawn there, no piece is made")
+    ap.add_argument('--palette', help='comma-separated filament names the image was drawn in (skips clustering)')
     ap.add_argument('--shape', choices=['circle', 'outline'], default='circle')
     ap.add_argument('--no-fit', dest='fit', action='store_false')
     a = ap.parse_args()
@@ -405,7 +428,16 @@ def main():
         face = subj.copy()
     else:
         face = np.hypot(yy - n / 2 + .5, xx - n / 2 + .5) <= n / 2
-    if a.colors == 2:
+    if a.palette:
+        # the image was drawn in known filament colours: snap each pixel to the nearest one
+        names = a.palette.split(',')
+        rgb = np.asarray(im.resize((n, n), Image.LANCZOS))
+        rgb = cv2.medianBlur(rgb, 5)
+        lab = cv2.cvtColor(rgb, cv2.COLOR_RGB2LAB).astype(np.float32)
+        centres = to_lab(np.array([hex_rgb(FILAMENTS[c][0]) for c in names]))
+        d = ((lab[..., None, :] - centres[None, None]) ** 2).sum(-1)
+        labels = np.where(subj & face, d.argmin(-1), -1).astype(np.int32)
+    elif a.colors == 2:
         names = ['black', 'white']
         g = cv2.cvtColor(np.asarray(im.resize((n, n), Image.LANCZOS)), cv2.COLOR_RGB2GRAY)
         g = cv2.createCLAHE(2.0, (8, 8)).apply(cv2.bilateralFilter(g, 9, 30, 9))
@@ -415,7 +447,7 @@ def main():
     else:
         labels, centres, _ = quantize(im, n, subj, a.colors, face)
         names = assign_filaments(centres, a.colors, a.stock_only)
-    if a.features and a.colors > 2:
+    if a.features and a.colors > 2 and not a.palette:
         # eyes, nose, mouth: locally dark spots inside the subject become the darkest filament
         g = cv2.cvtColor(np.asarray(im.resize((n, n), Image.LANCZOS)), cv2.COLOR_RGB2GRAY)
         g = cv2.bilateralFilter(g, 9, 30, 9)
@@ -431,14 +463,15 @@ def main():
     labels = fill_from_neighbours(labels, face & (labels < 0)) if a.shape == 'outline' else labels
     if a.shape == 'circle':
         bg_i = len(names)
-        bg = a.bg if a.colors > 2 else 'white'
+        bg = a.bg if (a.colors > 2 or a.palette) else 'white'
         names = names + [bg]            # its own label even when it shares a colour: the line traces the outline
         labels[(~subj) & face] = bg_i
         centres = np.vstack([centres, to_lab(hex_rgb(FILAMENTS[bg][0])[None])])
     contrast = np.sqrt(((centres[:, None] - centres[None]) ** 2).sum(-1))
     Image.fromarray(np.asarray(im.resize((n, n)))).save(out / 'input.png')
-    L, grid, grown = cleanup(labels, face, spec, contrast)
-    ps = pieces(L, face, grid, spec, names)
+    void = names.index(a.void) if a.void else None
+    L, grid, grown = cleanup(labels, face, spec, contrast, void=void)
+    ps = pieces(L, face, grid, spec, names, void)
     outline = back_outline(face, spec)
     render(ps, spec, out / 'preview.png', outline)
     write_svg(ps, spec, out / 'layers.svg', outline)

@@ -34,9 +34,16 @@ layer that snaps on.
   recommended), or a round 80 mm ornament with a festive field colour around the pet. A round back is the
   same for every order, so it could be printed in stock. A silhouette back is made per order.
 - **Size:** 80 mm across. Bigger is easier to print and keeps more detail.
-- **Name and year** (RJ, 2026-11-13): the pet's name and a year on the ornament. Where and how is open:
-  a name plate as its own piece under the head, raised letters on the back, or both. Letters must be at
-  least 1.2 mm wide in every stroke, which at 80 mm favours a bold font and short names.
+- **Name and year** (RJ, 2026-11-13): the pet's name and a year. The year defaults to the current one, and
+  the customer can enter any year, so a photo of a pet long gone works too. It isn't framed as a memorial:
+  the buyer reads the year as they like. More text may be allowed, depending on how the tool turns out.
+  Letters must be at least 1.2 mm wide in every stroke, which at 80 mm favours a bold font and a plate or
+  banner as its own piece.
+- **More fun than a head** (RJ, 2026-11-13): designs with a joke or a prop, such as a Santa hat, reindeer
+  antlers, a "Good boy" medal, a stocking, tangled lights or a "Naughty list" banner. These suit the
+  template route (below): each design is drawn once per breed and recoloured for the customer's pet.
+- **A portrait version** for people, as in RJ's 2025 cutouts: black and white, or colour. GPT Image
+  reproduced both from his photo (below).
 
 ## Feasibility (2026-11-13)
 
@@ -140,6 +147,42 @@ The first test (above) used FLUX.2 klein on single photos. RJ's photos, chosen a
    template rather than per order, and each order needs less compute. The work is deciding how much a
    template can be changed (recolour only, or warp too) before it stops looking like the pet.
 
+### GPT Image test (2026-11-13)
+
+Run through `codex exec` with `-m gpt-6-luna` (RJ: same image quality as the default model, far fewer
+tokens). Codex's built-in image tool saves to `~/.codex/generated_images/`; a sandboxed run can't copy the
+file out, so collect it from there. Close stdin (`< /dev/null`), or `codex exec` waits on it. The images are
+in `.private/products/cutout-ornament/feasibility-2026-11-13/gpt-image/`.
+
+- **Portraits** (RJ's 2025 photo and his two artboards as the style reference): the black-and-white and
+  colour versions came out very close to his hand-cut ones, in a few minutes, from one prompt.
+- **Pet designs** (generic breeds, no customer photo): a Santa-hat retriever, a cat in a stocking, a "Good
+  boy" beagle with antlers, a lab tangled in lights, and a "Naughty list" tabby, among others. They're
+  shop-quality flat art with names and years drawn in. This is far better than the local model.
+- **Black is the back.** `mosaic.py --void black` makes no piece where the drawing is black. The back
+  shows there, so black lines can be any width (closed eyes, a mouth line). Only the coloured and white
+  areas become pieces. `--palette` snaps each pixel to the filament colours the prompt allowed.
+- **A 3 mm grid with 1.5 mm pins** (`--pitch 3 --pin 1.5`) keeps small regions, like a muzzle, that a
+  4 mm grid loses. The fit coupon has to prove a 1.5 mm pin holds.
+- **What fails, and the rules it gives the prompt:**
+  - Black fur vanishes into the back (the lab, the tuxedo cat). Pure black is only for lines and eyes;
+    black fur is charcoal, a filament to buy.
+  - Busy designs lose their small parts at 80 mm. Every coloured region must be at least about 6% of the
+    width across, with no catchlights or teeth, or the ornament gets bigger.
+  - Lettering drawn by the model can't be printed: the gaps between letters are under a millimetre. **Our
+    code draws the name plate**, from a bold font with printable spacing, so the customer's text never goes
+    through the model and can't be misspelled.
+- **Round 2 used those rules** (`round2/BRIEF.md`): the beagle with antlers, the retriever in a Santa hat
+  and the pug in a sweater collar now come through almost whole: 9–11 pieces in 4–5 colours, smallest
+  35–43 mm², and the pieces read as the drawing (`round2-pieces.jpg`). The pug sliced at 29 minutes of face
+  plates plus 33 for its silhouette back, 16 g. Still failing: the cat, whose charcoal is too close to
+  the black lines (use a lighter grey, or check the snapped colours), and the mouth inside a portrait's
+  beard. Codex made extra portraits it wasn't asked for, so a brief should say "exactly N images".
+- **Where this leaves the routes:** GPT Image wins on design quality. The template idea fits it well: draw
+  each design once per breed and colouring under these rules, approve it, then fit the customer's pet to
+  it. Whether a customer's photo goes to GPT Image for recolouring or fitting is the privacy question in
+  decision 13.
+
 ## Prototype
 
 1. **Fit coupon:** pins and sockets at three clearances (15 min, 3 g). RJ reports which one snaps and holds.
@@ -149,8 +192,7 @@ The first test (above) used FLUX.2 klein on single photos. RJ's photos, chosen a
 ## Questions
 
 - Silhouette or round, or both as options?
-- Name and year: is the year the Christmas year, or birth and death years for a memorial ornament (a large
-  share of pet ornaments)? Name plate or lettering on the back?
+- Name plate as its own piece, or lettering on the back too?
 - A proof by email before making it, or not?
 - Which pet colours to buy, and how much?
 - Should the black-and-white "stencil" version be offered too, cheaper ($29?) and from stock colours?
