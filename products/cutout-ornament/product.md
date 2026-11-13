@@ -189,7 +189,7 @@ in `.private/products/cutout-ornament/feasibility-2026-11-13/gpt-image/`.
   crossed by black detail lines that cut the colour into slivers too thin to print. `--heal` fills those lines
   back in, which rescues the faces but erases eyes and expressions elsewhere, so it's off by default.
 - **What that points to: three layers, not one.** A flat mosaic can't hold line art with interior lines at
-  80 mm. Proposed instead (not built):
+  80 mm. Built the same day as `mosaic.py --layers 3`:
   1. the black back;
   2. a colour layer of big, simple pieces with the interior lines ignored, and black islands (eyes,
      nostrils) as holes through which the back shows;
@@ -200,6 +200,16 @@ in `.private/products/cutout-ornament/feasibility-2026-11-13/gpt-image/`.
   layered stencil of RJ's 2025 cutouts. To work out: how the line layer fastens (pins down through the
   colour pieces, or a rim that clips around the back), and lines that touch nothing (they become holes in
   the colour layer, or get joined to the rest).
+- **Three layers, tested on all ten designs (2026-11-13).** It fixes all three failures: one adult's face,
+  the puggle's wrinkles and the parrot's eye come back, and eyes and expressions survive everywhere. In
+  each design the line layer is one connected piece. Wide black (hair, a beard, the 3 mm rim) stands down
+  onto the back and carries about 30 pins; thin lines lie over the colour pieces and hide their seams. Black
+  that touches nothing becomes a hole in the colour layer. The adult portrait's ornament: 11 colour pieces in 5
+  colours, about 33 minutes of colour plates, 19 minutes for the line layer (10.5 g) and 32 for the
+  silhouette back. About 84 minutes and 28 g in all, every mesh watertight. Left to fix: stray colour spots
+  where the palette snap mixes neighbouring colours (a red dot on a cheek, mottled stripes); a thinner
+  back, or the tall black parts fused into it, to save time; and whether the line layer stays flat across
+  its middle with pins only at the wide parts, which the fit coupon and the first print will show.
 - **Where this leaves the routes:** GPT Image wins on design quality. The template idea fits it well: draw
   each design once per breed and colouring under these rules, approve it, then fit the customer's pet to
   it. Whether a customer's photo goes to GPT Image for recolouring or fitting is the privacy question in

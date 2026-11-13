@@ -15,8 +15,12 @@ The printability rules are applied to the picture itself, so whatever comes out 
 - a small region that stands out (an eye, a nose) is grown until it holds a pin, the way a cartoonist
   exaggerates features; a small region that doesn't stand out is merged into its neighbour.
 
+For drawn art with black lines (a GPT Image design), use `--palette ... --void black --layers 3`: the
+drawing's black becomes a line layer on top of the colour pieces (see split_layers), so detail lines
+never cut the colours into unprintable slivers.
+
 Outputs: preview.png, layers.svg (one group per colour), report.json, and with --stl one STL per colour
-plate plus back.stl. Customer photos never go in Git; write outputs outside the repo or in .private/.
+plate plus back.stl (and plate-lines-black.stl with --layers 3). Customer photos never go in Git; write outputs outside the repo or in .private/.
 """
 from __future__ import annotations
 
@@ -89,6 +93,9 @@ class Spec:
         self.min_area = a.min_area    # non-salient regions smaller than this merge away, mm²
         self.salient = 30             # Lab distance that makes a small region a feature worth keeping
         self.smooth = a.smooth        # boundary smoothing, px
+        self.line_t = 1.2             # line layer thickness over the colour pieces, mm
+        if getattr(a, 'layers', 1) == 3:
+            self.rim = 3.0            # wide enough for the line layer's rim pins
         self.n = int(round(self.size / self.mmpx))
 
     @property
@@ -331,6 +338,66 @@ def pieces(L, face, grid, spec, names, void=None):
     return out
 
 
+def split_layers(labels, face, spec, void):
+    """Three layers (--layers 3): the black back, a colour layer, and a black line layer on top.
+
+    The drawing's black becomes the line layer where it connects to the outline, thickened so every line is
+    at least `min_width`. Wide black masses (hair, a beard, the rim) are "tall": they stand on the back at
+    full height and carry pins, which fastens the line layer. Thin lines lie on top of the colour pieces and
+    hide their seams. Black that touches nothing (an eye, a nostril) is a hole in the colour layer, through
+    which the back shows. Under the thin lines, colour runs on from the neighbouring region, so the colour
+    pieces are big and simple."""
+    blk = (labels == void) & face
+    r_min = spec.min_width / 2 / spec.mmpx
+    opened = cv2.morphologyEx(blk.astype(np.uint8), cv2.MORPH_OPEN, disk(r_min)).astype(bool)
+    thin = blk & ~opened
+    blk |= cv2.dilate(thin.astype(np.uint8), disk(max(r_min / 2, 1))).astype(bool) & face
+    edge = face & ~cv2.erode(face.astype(np.uint8), disk(1.5 / spec.mmpx)).astype(bool)
+    cnt, cc = cv2.connectedComponents(blk.astype(np.uint8))
+    touch = [c for c in np.unique(cc[edge & blk]) if c]
+    line = np.isin(cc, touch) & blk
+    holes = blk & ~line
+    tall = cv2.morphologyEx(line.astype(np.uint8), cv2.MORPH_OPEN, disk(2.0 / spec.mmpx)).astype(bool)
+    L = labels.copy()
+    L[L == void] = -1
+    L[holes | tall] = -1
+    L = fill_from_neighbours(L, line & ~tall)
+    colour_face = face & ~holes & ~tall & (L >= 0)
+    L[~colour_face] = -1
+    return L, colour_face, line, tall, holes
+
+
+def mask_polys(mask, spec, blur=1.5):
+    """A boolean mask in px as a shapely (Multi)Polygon, smoothed."""
+    from shapely.geometry import Polygon
+    from shapely.ops import unary_union
+    m = cv2.GaussianBlur(mask.astype(np.float32), (0, 0), blur) > 0.5
+    pad = 4
+    m = np.pad(m, pad).astype(np.uint8)
+    cs, hier = cv2.findContours(m, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
+    polys = []
+    for j, c in enumerate(cs):
+        if hier[0][j][3] != -1 or len(c) < 4:
+            continue
+        holes = [cs[h][:, 0] - pad for h in range(len(cs)) if hier[0][h][3] == j and len(cs[h]) >= 4]
+        polys.append(Polygon(c[:, 0] - pad, holes).buffer(0))
+    return unary_union(polys).simplify(0.6) if polys else Polygon()
+
+
+def rim_sites(face, spec, every=10.0):
+    """Pin sites along the middle of the rim band, every `every` mm, as (y, x) px."""
+    pad = int(spec.rim / spec.mmpx) + 2
+    m = cv2.copyMakeBorder(face.astype(np.uint8), pad, pad, pad, pad, cv2.BORDER_CONSTANT, 0)
+    m = cv2.dilate(m, disk(spec.rim / 2 / spec.mmpx))
+    cs, _ = cv2.findContours(m, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    c = max(cs, key=cv2.contourArea)[:, 0].astype(float) - pad
+    seg = np.hypot(*np.diff(c, axis=0).T)
+    dist = np.concatenate([[0], np.cumsum(seg)])
+    step = every / spec.mmpx
+    idx = [int(np.searchsorted(dist, d)) for d in np.arange(0, dist[-1], step)]
+    return [(c[i][1], c[i][0]) for i in idx if i < len(c)]
+
+
 def back_outline(face, spec):
     """The back's outline in px: the face grown by the rim, as one polygon."""
     from shapely.geometry import Polygon
@@ -342,7 +409,7 @@ def back_outline(face, spec):
     return Polygon(c).simplify(0.6)
 
 
-def render(ps, spec, path, outline):
+def render(ps, spec, path, outline, line_poly=None):
     n = spec.n
     img = np.zeros((n + 80, n + 80, 3), np.uint8) + 235
     cv2.fillPoly(img, [np.asarray(outline.exterior.coords, np.int32) + 40], (31, 29, 29), cv2.LINE_AA)
@@ -354,10 +421,29 @@ def render(ps, spec, path, outline):
             cv2.fillPoly(mask, [np.asarray(h.coords, np.int32) + 40], 0, cv2.LINE_AA)
         a = mask[..., None] / 255.0
         img[:] = (img * (1 - a) + np.array(col) * a).astype(np.uint8)
+    if line_poly is not None and not line_poly.is_empty:
+        geoms = line_poly.geoms if line_poly.geom_type == 'MultiPolygon' else [line_poly]
+        mask = np.zeros(img.shape[:2], np.uint8)
+        for g in geoms:
+            cv2.fillPoly(mask, [np.asarray(g.exterior.coords, np.int32) + 40], 255, cv2.LINE_AA)
+            for h in g.interiors:
+                cv2.fillPoly(mask, [np.asarray(h.coords, np.int32) + 40], 0, cv2.LINE_AA)
+        a = mask[..., None] / 255.0
+        img[:] = (img * (1 - a) + np.array((24, 23, 25)) * a).astype(np.uint8)
     Image.fromarray(img).save(path)
 
 
-def write_svg(ps, spec, path, outline):
+def poly_d(g, s):
+    geoms = g.geoms if g.geom_type == 'MultiPolygon' else [g]
+    d = ''
+    for p in geoms:
+        d += 'M' + 'L'.join(f'{x * s:.2f},{y * s:.2f}' for x, y in p.exterior.coords) + 'Z'
+        for h in p.interiors:
+            d += 'M' + 'L'.join(f'{x * s:.2f},{y * s:.2f}' for x, y in h.coords) + 'Z'
+    return d
+
+
+def write_svg(ps, spec, path, outline, line_poly=None):
     s = spec.mmpx
     groups = {}
     back = 'M' + 'L'.join(f'{x * s:.2f},{y * s:.2f}' for x, y in outline.exterior.coords) + 'Z'
@@ -372,10 +458,12 @@ def write_svg(ps, spec, path, outline):
         for c, ds in groups.items())
     Path(path).write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{spec.size}mm" height="{spec.size}mm" '
                           f'viewBox="{-spec.rim} {-spec.rim} {spec.size + 2 * spec.rim} {spec.size + 2 * spec.rim}">'
-                          f'<path id="back" d="{back}" fill="#1d1d1f"/>{body}</svg>')
+                          f'<path id="back" d="{back}" fill="#1d1d1f"/>{body}'
+                          + (f'<path id="lines" d="{poly_d(line_poly, s)}" fill="#181719" fill-rule="evenodd"/>'
+                             if line_poly is not None and not line_poly.is_empty else '') + '</svg>')
 
 
-def write_stl(ps, spec, out, outline, face):
+def write_stl(ps, spec, out, outline, face, layer=None):
     """One STL per colour plate (pieces face-down, pins up) and the stock back. Plates are laid out by
     the slicer's arrange step."""
     import manifold3d as m3
@@ -420,6 +508,25 @@ def write_stl(ps, spec, out, outline, face):
             if inner[gy, gx]:
                 back = back - m3.Manifold.cube([spec.socket, spec.socket, spec.socket_d + 1]).translate(
                     [gx * s - spec.socket / 2, -gy * s - spec.socket / 2, spec.back_t - spec.socket_d])
+    if layer:
+        # the line layer, printed face-down: the lattice is line_t thick; tall parts reach down to the back
+        # and carry the pins
+        lp = affinity.scale(layer['line_poly'], s, -s, origin=(0, 0))
+        tp = affinity.scale(layer['tall_poly'], s, -s, origin=(0, 0))
+        geoms = lambda g: g.geoms if g.geom_type == 'MultiPolygon' else [g]
+        body = None
+        for g in geoms(lp):
+            e = extrude(g, spec.line_t)
+            body = e if body is None else body + e
+        for g in geoms(tp):
+            body = body + extrude(g, spec.line_t + spec.piece_t)
+        for y, x in layer['pins']:
+            body = body + m3.Manifold.cube([spec.pin, spec.pin, spec.pin_h]).translate(
+                [x * s - spec.pin / 2, -y * s - spec.pin / 2, spec.line_t + spec.piece_t])
+        to_tm(body).export(out / 'plate-lines-black.stl')
+        for y, x in layer['rim_pins']:
+            back = back - m3.Manifold.cube([spec.socket, spec.socket, spec.socket_d + 1]).translate(
+                [x * s - spec.socket / 2, -y * s - spec.socket / 2, spec.back_t - spec.socket_d])
     to_tm(back).export(out / 'back.stl')
 
 
@@ -438,6 +545,7 @@ def main():
     ap.add_argument('--features', type=float, default=25, help='black-hat threshold for dark features; 0 = off')
     ap.add_argument('--stock-only', action='store_true', help='only filaments already on the shelf')
     ap.add_argument('--stl', action='store_true')
+    ap.add_argument('--layers', type=int, choices=[1, 3], default=1, help='3: colour pieces under a black line layer')
     ap.add_argument('--heal', action='store_true', help='fill black lines that cut a colour into unprintable slivers')
     ap.add_argument('--void', help="the back's colour (e.g. black): drawn there, no piece is made")
     ap.add_argument('--palette', help='comma-separated filament names the image was drawn in (skips clustering)')
@@ -519,11 +627,27 @@ def main():
             labels, healed = heal_lines(labels, face, spec, void, g0 & face)
             if not healed:
                 break
-    L, grid, grown = cleanup(labels, face, spec, contrast, void=void)
-    ps = pieces(L, face, grid, spec, names, void)
+    layer = None
+    if a.layers == 3:
+        if void is None:
+            raise SystemExit('--layers 3 needs --void black')
+        labels, cface, line, tall, holes = split_layers(labels, face, spec, void)
+        L, grid, grown = cleanup(labels, cface, spec, contrast)
+        ps = pieces(L, cface, grid, spec, names)
+        rim_band = cv2.dilate(face.astype(np.uint8), disk(spec.rim / spec.mmpx)).astype(bool) & ~face
+        rim_band = np.pad(rim_band, 0)
+        tall_sites = np.stack(np.nonzero(cv2.erode(tall.astype(np.uint8), disk(spec.pin_erode_px)).astype(bool) & grid), 1)
+        rp = rim_sites(face, spec)
+        layer = {'line_poly': mask_polys(line, spec).union(back_outline(face, spec).difference(mask_polys(face, spec))),
+                 'tall_poly': mask_polys(tall, spec).union(back_outline(face, spec).difference(mask_polys(face, spec))),
+                 'pins': tall_sites.tolist() + [list(v) for v in rp], 'rim_pins': rp,
+                 'holes_mm2': round(holes.sum() * spec.mmpx ** 2, 1)}
+    else:
+        L, grid, grown = cleanup(labels, face, spec, contrast, void=void)
+        ps = pieces(L, face, grid, spec, names, void)
     outline = back_outline(face, spec)
-    render(ps, spec, out / 'preview.png', outline)
-    write_svg(ps, spec, out / 'layers.svg', outline)
+    render(ps, spec, out / 'preview.png', outline, layer and layer['line_poly'])
+    write_svg(ps, spec, out / 'layers.svg', outline, layer and layer['line_poly'])
     by = {}
     for p in ps:
         b = by.setdefault(p['color'], {'pieces': 0, 'area_mm2': 0.0, 'pins': 0})
@@ -533,9 +657,14 @@ def main():
     rep = {'size_mm': spec.size, 'colors': by, 'pieces': len(ps), 'grown_features': grown,
            'smallest_piece_mm2': round(min(p['area_mm2'] for p in ps), 1),
            'on_shelf': {c: FILAMENTS[c][1] for c in by}}
+    if layer:
+        lp = layer['line_poly']
+        rep['line_layer'] = {'parts': len(lp.geoms) if lp.geom_type == 'MultiPolygon' else 1,
+                             'area_mm2': round(lp.area * spec.mmpx ** 2, 1), 'pins': len(layer['pins']),
+                             'holes_mm2': layer['holes_mm2']}
     (out / 'report.json').write_text(json.dumps(rep, indent=1))
     if a.stl:
-        write_stl(ps, spec, out, outline, face)
+        write_stl(ps, spec, out, outline, face, layer)
     print(json.dumps(rep))
 
 
