@@ -251,6 +251,15 @@ Any time, in any order:
 
 Entries before 2026-11-17 are in [docs/LOG.md](docs/LOG.md).
 
+- 2026-11-17: Market research on the pet ornament, written while RJ was away:
+  [products/cutout-ornament/market-research.md](products/cutout-ornament/market-research.md). Found no
+  one selling a two-colour flat stencil pet ornament printed on demand. Nearest: Meshy's full-colour printed
+  keychain ($39), Etsy 3D-printed pet items ($11.70–$35), laser-cut wood silhouettes ($15–$20), and
+  $10–$30 printed-photo ornaments (the volume market). Suggests pricing in the $19–$29 band and offering a
+  proof or remake promise; informs step 36. Open: Slant's shipping for one box decides the margin. Several
+  competitor pages blocked fetches, so some prices are search snippets to re-check. Nothing charged, no
+  code changed.
+
 - 2026-11-17: The pet ornament became a two-part stencil, fulfilled by Slant (decisions 14 and 15). The
   mosaic had too many pieces. Built in the scratch folder: GPT Image stencil briefs; a builder that bridges
   loose details, adds pegs, pocket, a hanging ring with a filleted neck, and a name tag in five stencil fonts
