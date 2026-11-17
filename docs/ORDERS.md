@@ -6,7 +6,9 @@ them, and this page cites those numbers. Built so far (2026-11-13, sandbox only)
 The configurator, the subject picker and the live namespace are still to come.
 
 Four product lines are made from a customer's photo: the lithophane ornament and lamp, custom cutouts,
-pop-out photos and the stereographic projector (`products/`). Every one is ordered the same way, so the
+pop-out photos and the stereographic projector (`products/`). Since 2026-11-17 a two-part pet ornament,
+printed by Slant, leads the launch (`products/cutout-ornament/`). Its inputs are the photo, two colours and
+an optional name and font; how its orders reach Slant is NOW.md step 34. Every one is ordered the same way, so the
 order flow is built once, as modules joined by file contracts. A new photo product adds a product file,
 a preview module and a recipe. Nothing else changes.
 

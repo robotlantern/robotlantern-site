@@ -2,7 +2,7 @@
 name: Lithophane ornament
 stage: parked
 fulfillment: self
-next: Paused by RJ on 2026-11-13 in favour of the pet ornament (products/cutout-ornament/); resume after launch
+next: Paused by RJ on 2026-11-13 in favour of the pet ornament (products/cutout-ornament/, a two-part stencil since 2026-11-17); resume after launch
 waiting_on: rj
 updated: 2026-11-13
 ---

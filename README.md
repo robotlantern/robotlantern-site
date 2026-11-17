@@ -18,8 +18,8 @@ essays, conversations, interactives and products.
   may link to an essay but doesn't have to.
 - **Builds (interactives).** Things you can use in the browser, each running full screen, such
   as The Sky, Unprojected.
-- **Products.** First, things made from a customer's photo: a lithophane ornament and lamp, custom
-  cutouts, pop-out photos and a stereographic projector. The customer shapes theirs on the product's
+- **Products.** First, things made from a customer's photo, led by a two-part pet ornament printed by Slant
+  3D, then a lithophane ornament and lamp, custom cutouts, pop-out photos and a stereographic projector. The customer shapes theirs on the product's
   page and pays through Stripe, and RJ checks, makes and ships it ([docs/ORDERS.md](docs/ORDERS.md)).
   Print-on-demand items from Robot Lantern's own art come later, with Stripe taking payment and Gelato
   printing and shipping ([docs/SHOP.md](docs/SHOP.md)). Ideas move through the pipeline in

@@ -1,4 +1,7 @@
-"""Feasibility prototype: a photo becomes a snap-together mosaic ornament (products/cutout-ornament/).
+"""SUPERSEDED 2026-11-17 by the two-part stencil ornament (products/cutout-ornament/); kept for reference.
+The mosaic design is recorded in docs/LOG.md.
+
+Feasibility prototype: a photo becomes a snap-together mosaic ornament.
 
     PY=~/work/lab/lithophane-maker/.venv/bin/python   # cv2, shapely, manifold3d, trimesh, onnxruntime
     $PY tools/cutout/mosaic.py photo.jpg out/ --colors 4 [--crop x0,y0,x1,y1] [--size 80] [--stl]

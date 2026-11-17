@@ -1,6 +1,6 @@
 # Now
 
-_Last updated 2026-11-13._
+_Last updated 2026-11-17._
 
 ## Start here
 
@@ -9,84 +9,93 @@ The new site is built on the `rebuild` branch and previewed at https://rl.rblt.i
 robotlantern.com is still the old landing page. Design rules are in [docs/PAGES.md](docs/PAGES.md), the home
 page in [docs/HOME.md](docs/HOME.md) and the brand in [docs/BRAND.md](docs/BRAND.md).
 
-**The launch is now about four products made from a customer's photo** (RJ, 2026-11-10): lithophanes (an
-ornament, and a lamp with slide-in photo tiles), a stereographic projector, pop-out photos and custom
-cutouts. All four are ordered the same way, so the order flow is built once, as modules
-([docs/ORDERS.md](docs/ORDERS.md)). Each product has a folder in `products/` ([docs/PRODUCTS.md](docs/PRODUCTS.md)),
-and marketing follows [docs/MARKETING.md](docs/MARKETING.md). At launch RJ looks at every order, then makes
-and ships it himself.
+**The launch is about products made from a customer's photo** (RJ, 2026-11-10), ordered through one flow
+built as modules ([docs/ORDERS.md](docs/ORDERS.md)), each with a folder in `products/`
+([docs/PRODUCTS.md](docs/PRODUCTS.md)) and a marketing kit ([docs/MARKETING.md](docs/MARKETING.md)).
 
-**Since 2026-11-13, a pet ornament leads instead of the lithophane (decision 13).** RJ paused the lithophane ornament
-(slow to print, not distinctive enough, matte PLA untested) and proposed a snap-together mosaic ornament of a
-customer's pet: flat one-colour pieces on a black back, made from the photo by a program
-([products/cutout-ornament/product.md](products/cutout-ornament/product.md)). The feasibility test says it
-works if an AI image model first redraws the photo as a flat cartoon. RJ said go the same day, and is
-choosing better photos, labelled with the pets' names, so the routes can be compared properly. Steps 30–34
-take it to a listing.
+**The first product is a two-part pet ornament, printed and shipped by Slant 3D** (decisions 13 and 14;
+[products/cutout-ornament/product.md](products/cutout-ornament/product.md)). A base in one PLA colour and a
+stencil sheet in another press together with pegs, no glue. The pet is drawn as cut-outs in the stencil, and
+an optional name tag hangs below. GPT Image redraws the photo as a two-colour stencil, and a builder turns
+that into two STLs. Ten family pets are designed and quoted at Slant ($3.56–4.01 each with a name tag, before
+shipping). RJ approved the design on 2026-11-17 after seeing all ten printed at actual size on paper. It
+replaced the mosaic design of 2026-11-13, which had too many pieces ([docs/LOG.md](docs/LOG.md)).
 
-**Pick up here (2026-11-13, end of day): step 32.** The pet ornament pipeline works end to end: GPT Image
-(through `codex exec` on gpt-6-luna) draws each pet in a ten-colour house palette, and `tools/cutout/` turns it
-into a three-layer, 100 mm ornament with a name plate and STLs. A first batch of 14 named pets is in
-`.private/products/cutout-ornament/batches/2026-11-13/` (`sheet.jpg` shows them all). Step 32 lists what's
-left before the first print; the product file has the details.
+**Pick up here (2026-11-17): more ornament design work with RJ, interactively** (step 35). He wants more
+than one ornament prototyped for launch photos, even if the others say "coming soon". The fit test (step 33)
+waits until RJ is ready to print: he doesn't want prints running while he works.
+
+### The scratch folder (not in Git, not in printdb)
+
+The ornament work lives in `../ornaments-design-session/`, next to this repo. It stays untracked because the
+designs come from family photos (decision 15). Don't copy it into the repo or commit it. What's there:
+
+- `tools/`: `build.py` (drawing → `base.stl` + `stencil.stl` + preview + picker SVGs, with the one-piece and
+  watertight checks), `nametag.py` (stencil fonts to outlines, fitted to the tag), `run_palette.py` (builds
+  every pet in a palette file), `plates.py` (packs parts onto Meltbot plates by colour), `quote.py` (Slant
+  quotes and Orca slices through `~/work/3d-modeling/tools/estimate.py`). They run with
+  `~/work/lab/lithophane-maker/.venv/bin/python`. The builder's defaults are the approved design.
+- `batch-01/`: the ten pets. `<pet>/BRIEF.md` is each GPT Image brief, `art-N.png` the drawings, `picks.txt`
+  the chosen ones, `palette.json` the colours, names and fonts. **`build-v3/` is the approved build** (parts,
+  previews, quotes, plates). `build-v1`, `v2`, `v4` and `v5` are superseded tries (no tag; no ring neck; a tag
+  border; a tag rule).
+- `proto-01/`: the first Tucker prototype and the font trials.
+- `picker/`: the customer's colour and name-tag picker, a front-end prototype that sends nothing
+  (`python3 -m http.server` in that folder). Its spec is `briefs/colour-picker.md`.
+- `PRINT-QUEUE.md`: the nine Meltbot plates for build-v3, fit test first. RJ prints them himself in Creality
+  Print (the upload tool needs printdb, and these stay out of it). An agent hands him files and marks rows.
+- `print-proof/proof.pdf`: the ten designs at actual size, as printed on Inkbot Alpha.
+- `research/sticker-pod.md`: sticker print-on-demand APIs for the printed-photo version (summarised in
+  `products/photo-cutout/product.md`).
+- `svg-edit/`: copies of the build-v5 SVGs RJ took for hand editing (superseded).
+
+### Running things
 
 - `python3 tools/next.py` prints RJ's next steps; `python3 tools/products/board.py` shows each product's stage.
 - To start an agent step, open a session here and say: "Read AGENTS.md and NOW.md, then do step N."
   Start agent sessions at medium effort; three at once on Max used up the 5-hour window on 2026-11-10.
-- History before 2026-11-10 (the old road, task notes 1–20 and the log) is in [docs/LOG.md](docs/LOG.md).
+- History, older logs and the mosaic design are in [docs/LOG.md](docs/LOG.md).
 
-### What changed while this was paused (checked 2026-11-10)
+## Decisions
 
-- **Git moved to Bilbo** in the LAN restructuring of 2026-10-28: the `bilbo` remote is now the primary.
-  Pushing `rebuild` to `samwise` still publishes the preview, and the preview works.
-- **The lithophane engine exists**: `~/work/lab/lithophane-maker` (2026-10-04) turns a photo into printable
-  lithophanes (flat, curved, cylinder, globe), cuts them to a subject's outline, and has three product
-  recipes, a test bench and a hosting report. Nothing from it has been printed. The four matte 1 kg spools (ELEGOO PLA Matte: white,
-  ruby red, navy blue, black) were added to printdb on 2026-11-10 as spools #41–44.
-- **Photo orders were worked out once already**, for a photo jack-o'-lantern (memos of 2026-10-02 in
-  `inbox/`). They hold Slant's API facts too: a Slant draft can't be cancelled or deleted, and processing
-  an order is what charges. Both are folded into docs/ORDERS.md and docs/CHARGES.md.
-- **The projector's reference files are CC BY-SA** (Thingiverse 2078413, by threonin). Prints can be
-  sold, with credit.
-- Shop work from October still stands: Stripe's sandbox, the order Worker and Stripe Tax
-  ([docs/SHOP.md](docs/SHOP.md)), the Cloudflare copy, and the DNS records for cutover
-  ([docs/HOSTING.md](docs/HOSTING.md)).
+RJ took 1–12 as recommended on 2026-11-10. The docs cite them by number.
 
-## Decisions (RJ, 2026-11-10)
-
-RJ took all twelve as recommended on 2026-11-10. The docs cite them by number.
-
-1. **Launch cut.** The site launches once the ornament can be ordered, plus cutouts if their prototype
+1. **Launch cut.** The site launches once the first product can be ordered, plus cutouts if their prototype
    is ready in time. The lamp, pop-out photos and projector open as each prototype passes, aiming for all
-   four by Black Friday, 2026-11-27. The other way is to hold launch until all four are ready.
+   by Black Friday, 2026-11-27. The other way is to hold launch until all are ready.
 2. **Merch waits.** The tee, mug, tote and blankets are parked until after launch.
 3. **You make everything at first**, with Meltbot, your printer and the Cricut, and a weekly cap per
-   product. A product moves to Slant only after one paid test order of it, on your go.
+   product. A product moves to Slant only after one paid test order of it, on your go. (The pet ornament is
+   the exception: decision 14.)
 4. **Pay, then check, then make.** Customers pay at checkout. You look at every order before making it.
    If a photo won't work, you email the customer from help@ to swap it, or refund in full. There's no
    proof round by default.
 5. **Uploads go to Cloudflare Workers KV on the free plan.** Nothing there can bill, and unpaid uploads
    delete themselves after two days.
 6. **Photos are deleted 60 days after the order ships**, along with the files made from them. Order
-   records without photos are kept seven years, as now. Customer photos never go into marketing without
-   the customer's written OK.
-7. **Ornaments are white at launch and for LED lights only.** Colours come after each one's test wedge.
-   PLA softens at about 60 °C, and older incandescent bulbs can run hotter than that.
+   records without photos are kept seven years. Customer photos never go into marketing without the
+   customer's written OK.
+7. **Lithophane ornaments are white at launch and for LED lights only.** Colours come after each one's test
+   wedge. PLA softens at about 60 °C, and older incandescent bulbs can run hotter than that.
 8. **The projector gets our own generator**, written from the maths rather than threonin's code, with
-   credit to threonin's projector on the Credits page. You buy two or three small LEDs to try, once I've
-   listed options and prices. None of Slant's lights is small enough.
-9. **Lines that aren't ready show "coming soon"**, with an email link to signup@ ("tell me when it's
-   ready"). There's no form, and nothing is stored on the site.
+   credit to threonin's projector on the Credits page.
+9. **Lines that aren't ready show "coming soon"**, with an email link to signup@. There's no form, and
+   nothing is stored on the site.
 10. **Pictures are honest.** Listings show real prototypes, or renders marked as renders. Example photos
     are yours, family's with their OK, or AI-made stand-ins marked as such. No AI "lifestyle" pictures
     that redraw the product.
-11. **The About rewrite and the style changes don't hold launch.** Do them when you can.
-12. **Platforms:** Instagram, Facebook and Pinterest first, because personalised gifts sell from pictures
-    and Pinterest is where people plan gifts. Change the list if you like.
-13. **First product: the pet ornament** (RJ, 2026-11-13). It replaces the lithophane ornament, which waits
-    until after launch. It carries the pet's name and a year. Still open: whether it gets a proof by email
-    before it's made (an exception to decision 4), and whether a hosted image model (GPT Image) may see
-    customer photos, which would mean changing the privacy page; RJ will change the policy if needed.
+11. **The About rewrite and the style changes don't hold launch.**
+12. **Platforms:** Instagram, Facebook and Pinterest first.
+13. **First product: the pet ornament** (RJ, 2026-11-13), in place of the lithophane ornament, which waits
+    until after launch. Still open (step 36): whether it gets a proof by email before it's made (an
+    exception to decision 4), and whether a customer's photo may go to GPT Image, a hosted model, which
+    means changing the privacy page first.
+14. **Slant fulfils the pet ornament from launch** (RJ, 2026-11-17). Two parts, any two of Slant's 20 PLA
+    colours, which the customer picks (we suggest pairs). The listing photos are our own Meltbot prints in the
+    nearest shelf colours, marked as examples, and the listing says who makes what. Slant photos replace them
+    once we have some.
+15. **The pet ornament designs stay out of printdb and Git** (RJ, 2026-11-17). They come from family photos
+    and live in the scratch folder. Only the product file and the decisions are in the repo.
 
 ## Road to launch
 
@@ -94,25 +103,20 @@ Steps in order. **RJ** steps are his; **Agent** steps are one session each. "Aft
 waits for step 6. Times are rough: agent time is wall-clock, RJ time is hands-on. Check a step off when
 it's done.
 
-Launching with the ornament takes about 8½ hours of agent time and 3–4 hours of RJ's, plus about 4
-hours of printing. Cutouts add about 4 agent hours and 1 of RJ's. That's this week if the tax
-registration is quick and the first ornament prints well; otherwise next week, still before Black
-Friday. If the tax certificate is slow, the site can go live with the shop showing "coming soon" until
-it arrives. Steps 21–29 bring in the other three products: about 9 more agent hours and 3 of RJ's.
+The pet ornament's remaining path is steps 33–36, then 13 and 20. If the tax certificate is slow, the site can
+go live with the shop showing "coming soon" until it arrives.
 
 ### Accounts, tax and the domain
 
-1. [x] **RJ** · The decisions above: taken as recommended (2026-11-10). *5 min*
-2. [ ] **RJ** · Sales tax ([docs/SALES-TAX.md](docs/SALES-TAX.md)): the LLC is already registered with West
-   Virginia (certificate 2025-12-16, monthly sales and use tax account), and the $0 returns for Dec 2025
-   through Oct 2026 were submitted by 2026-11-12. Left: check the December 2025 receipt is in your tax
-   folder, and ask the Tax Department whether quarterly or annual filing is allowed. Until then, file a $0
-   return each month by the 20th. The EIN is not a launch blocker (it's still wanted for a business bank
-   account). *15 min*
-3. [ ] **RJ** · Materials: the four matte spools are in printdb (#41–44, 2026-11-10). Still to say: whether to
-   buy tan, brown, gray, a true green and yellow PLA for the pet ornaments (a charge; the product file's palette
-   table says why); which inkjet printer, sticker paper and Cricut you have; which lights are on your tree
-   (mini LED, C7 or C9). *10 min*
+1. [x] **RJ** · The decisions above: 1–12 taken as recommended (2026-11-10). *5 min*
+2. [ ] **RJ** · Sales tax ([docs/SALES-TAX.md](docs/SALES-TAX.md)): the LLC is registered with West Virginia
+   (certificate 2025-12-16, monthly sales and use tax account), and the $0 returns for Dec 2025 through
+   Oct 2026 were submitted by 2026-11-12. Left: check the December 2025 receipt is in your tax folder, and ask
+   the Tax Department whether quarterly or annual filing is allowed. Until then, file a $0 return each month
+   by the 20th. The EIN is not a launch blocker. *15 min*
+3. [ ] **RJ** · Materials: say whether to buy PLA in tan, brown and bone white, so three of the ten
+   pets can be printed for photos (a charge; the product file and the print queue list them). Also which sticker paper and
+   Cricut you have, and which lights are on your tree (mini LED, C7 or C9). *10 min*
 4. [ ] **RJ** · Cloudflare: look at https://site.robotlantern.workers.dev; say yes or no to SPF and DMARC
    for mail ([docs/HOSTING.md](docs/HOSTING.md)); add robotlantern.com to Cloudflare (dashboard, free
    plan), or give the API token Zone and DNS edit for the change window. *15 min*
@@ -121,8 +125,7 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
 6. [ ] **RJ** · After 5: Switch the nameservers at DomainRegistry.com to Cloudflare's. Changes can take up
    to a day to spread. *10 min*
 7. [ ] **RJ** · After 2: Stripe: create the order Worker's restricted live key ([docs/ORDERS.md](docs/ORDERS.md),
-   "Stripe"). Changing the business details to Robot Lantern LLC needs an EIN and is optional: the account
-   already takes live payments on RJ's SSN (docs/SALES-TAX.md). *20 min*
+   "Stripe"). Changing the business details to Robot Lantern LLC needs an EIN and is optional. *20 min*
 8. [ ] **RJ** · After 2 and 7: Turn on West Virginia in Stripe Tax (live) in the Dashboard, choosing "Start
    collecting immediately" with the Combined Sales and Use account number (docs/SALES-TAX.md, step 5). An
    agent then reads the registration back. *10 min*
@@ -133,34 +136,33 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
    `/api/orders` in the shop Worker (Workers KV, Checkout Sessions), the webhook's paid step, and
    `tools/orders/` (pull, list, make, ship, purge). Tested with Stripe's test card. *2 h*
 10. [ ] **Agent** · After 9: The configurator: product page, photo step (upright, crop, resize), options,
-    a slot for the product's preview, order button and thank-you page. Checked at phone size. *1.5 h*
+    a slot for the product's preview, order button and thank-you page. Checked at phone size. The pet
+    ornament's picker prototype (scratch folder, `picker/`) is its first options-and-preview module. *1.5 h*
 11. [ ] **Agent** · After 10: The subject picker: tap to select, running in the browser on a self-hosted
     model, with a lasso fallback. *2 h*
 12. [x] **Agent** · After 1: Shop policies: shipping, returns and refunds, with personalised items final
     sale except for defects and shipping damage. Privacy and terms rewritten for Stripe, uploaded photos
-    and Slant (detail in docs/LOG.md, task 13). *45 min*
-13. [ ] **RJ** · After 10 and 32: On your phone at https://rl.rblt.io/shop/, order an ornament and pay
+    and Slant (docs/LOG.md, task 13). *45 min*
+13. [ ] **RJ** · After 10 and 34: On your phone at https://rl.rblt.io/shop/, order a pet ornament and pay
     with test card 4242 4242 4242 4242. Check that it shows in `python3 tools/orders/queue.py list`.
     *20 min*
 
-### The first two products
+### The other photo products
 
-14. [ ] **Agent** · After 30: Paused by RJ on 2026-11-13 (decision 13); the recipe, preview and numbers are
-    done, and the renders and printdb are left. Ornament: the bulb-and-cap recipe in lithophane-maker, the configurator's lithophane
-    preview, renders, a white calibration wedge sliced and uploaded to Meltbot, and the feasibility
-    numbers with a proposed price and weekly cap (`products/lithophane-ornament/`). *2 h*
+14. [ ] **Agent** · After 30: Paused by RJ on 2026-11-13 (decision 13). Lithophane ornament: the recipe,
+    preview and numbers are done in lithophane-maker; renders and the feasibility section are left
+    (`products/lithophane-ornament/`). *2 h*
 15. [ ] **RJ** · After 3 and 14: Print the wedge, then a bulb and a cap. Photograph the wedge on a light,
-    and the ornament lit on your tree, as the product file asks. If you like it, confirm or change its
-    price and weekly cap. *45 min hands-on; about 4 h of printing*
+    and the ornament lit on your tree. If you like it, confirm or change its price and weekly cap.
+    *45 min hands-on; about 4 h of printing*
 16. [ ] **Agent** · After 11: Cutouts: the standee and ornament recipe, sticker and cut files for Print
-    Then Cut, the preview, and feasibility with a proposed price and weekly cap (`products/photo-cutout/`).
-    *1.5 h*
+    Then Cut (or a sticker print-on-demand service; the product file has the research), the preview,
+    and feasibility with a proposed price and weekly cap (`products/photo-cutout/`). *1.5 h*
 17. [ ] **RJ** · After 3 and 16: Print a cutout and its base, print the photo and cut it on the Cricut, and
     put it together. Photograph it as the product file asks. If you like it, confirm its price and weekly
     cap. *1 h hands-on; 1–2 h of printing*
-18. [ ] **Agent** · After 15: Ornament listing: calibrate from the wedge, then the product page, listing
-    photos and copy, the order-by date for Christmas, its marketing kit, and the counted short links
-    before the first post (docs/MARKETING.md; docs/LOG.md, task 17). *1 h*
+18. [ ] **Agent** · After 15: Lithophane ornament listing: calibrate from the wedge, then the product page,
+    photos, copy, order-by date and marketing kit (docs/MARKETING.md). *1 h*
 19. [ ] **Agent** · After 17: Cutouts listing, the same way. *45 min*
 
 ### Launch
@@ -173,17 +175,15 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
 ### The other three, each opening when its prototype passes
 
 21. [ ] **Agent** · After 14: Lithophane lamp: base designs sharing one tile size, the tile recipe, the
-    light, preview and feasibility (`products/lithophane-lamp/`). It shares lithophane-maker with step 14,
-    so it follows it. *2 h*
+    light, preview and feasibility (`products/lithophane-lamp/`). *2 h*
 22. [ ] **Agent** · After 11: Pop-out photos: the silhouette, tab and shim recipe for 4×6, 5×7 and 8×10;
     sticker, cut and background-print files; preview and feasibility (`products/popout-photo/`). *2 h*
-23. [ ] **Agent** · After 11: Projector: the generator (text, logo or silhouette into a shell), a lamp
-    base for a small LED, preview, feasibility, and two or three LED options with prices
-    (`products/stereographic-projector/`). *3 h*
+23. [ ] **Agent** · After 11: Projector: the generator, a lamp base for a small LED, preview, feasibility,
+    and two or three LED options with prices (`products/stereographic-projector/`). *3 h*
 24. [ ] **RJ** · After 21: Print the lamp prototype, light it and swap a tile. Confirm its price and cap
     if you like it. *1 h*
-25. [ ] **RJ** · After 22: Pop-out prototype from the fisherman photo, in real 4×6, 5×7 and 8×10 frames
-    (buy three cheap ones if you have none). Confirm its price and cap if you like it. *1 h*
+25. [ ] **RJ** · After 22: Pop-out prototype from the fisherman photo, in real 4×6, 5×7 and 8×10 frames.
+    Confirm its price and cap if you like it. *1 h*
 26. [ ] **RJ** · After 23: Buy the LED you pick, print the projector, and try it in a dark room. Confirm
     its price and cap if you like it. *1 h*
 27. [ ] **Agent** · After 24: Lamp listing, as in step 18. *45 min*
@@ -193,27 +193,26 @@ it arrives. Steps 21–29 bring in the other three products: about 9 more agent 
 ### The pet ornament ([products/cutout-ornament/product.md](products/cutout-ornament/product.md))
 
 30. [x] **RJ** · Go or no-go on the pet ornament as the first product: go (decision 13, 2026-11-13). *15 min*
-31. [x] **RJ** · Choose better photos: face-on, sharp, the whole head, one pet per photo, from as many
-    species, breeds and colourings as you have. Name each file with the pet's name, species and breed if
-    known (`biscuit-dog-beagle.jpg`), and put them in `.private/products/cutout-ornament/photos/`. Ask the
-    owner before any pet is used as the prototype or in the listing (decision 10). While you're at it,
-    say: silhouette or round, the proof by email, and which pet colours to buy (a charge, so name the
-    amount). *1 h*
-32. [ ] **Agent** · After 31: Get the first batch print-ready. Done 2026-11-13: GPT Image chosen over the local
-    model; the house palette (shelf vs. Slant); three layers (back, colour pieces, black line layer); the shape and
-    name plate generator; `run_batch.py`; 14 named pets drawn and turned into STLs. Left: fix Tucker's coat, the
-    stencil bridges on B, R and 6, long names, and the plate overlapping the subject (product file, "To fix");
-    a fit coupon for 1.5 mm pins at three clearances plus a strip of line layer, sliced and uploaded to Meltbot;
-    colour-batched plates (one plate per colour across the ornaments being printed, each piece with a small
-    ID on its pin side, and an assembly map per ornament), sliced for time and grams; one ornament's parts
-    quoted through printdb's Slant client (quotes are free; never draft); `queue.py make` and `shop.json` for
-    the product. *3–4 h*
-33. [ ] **RJ** · After 32: Print the fit coupon and say which clearance snaps and holds; then print one
-    ornament, assemble it, and photograph it on the tree. If you like it, confirm the price and weekly cap.
-    *45 min hands-on; about 2 h of printing*
-34. [ ] **Agent** · After 33: Pet ornament listing: the configurator's inputs (photo, species, name, year,
-    shape), the proof email if there is one and its place in the queue (docs/ORDERS.md), the product page,
-    photos, copy, order-by date and marketing kit (docs/MARKETING.md). *2 h*
+31. [x] **RJ** · Choose and label better photos (in `.private/products/cutout-ornament/pet-photos-selected/`). *1 h*
+32. [x] **Agent** · After 31: The design and its pipeline (2026-11-17): the two-part stencil (pegs, pocket,
+    ring, name tag in five stencil fonts), GPT Image briefs, the builder and its checks, ten pets designed,
+    Slant quotes for all twenty parts with no supports flagged, colour plates and a print queue, the picker
+    prototype, and an actual-size paper proof RJ approved. All in the scratch folder. *a day*
+33. [ ] **RJ** · After 32: When you're ready to print, the fit test: plates 1 and 2 of the scratch folder's
+    `PRINT-QUEUE.md` in Creality Print, then put Tucker together and answer its questions (pegs, pocket,
+    ring, thin spots). If the fit is right, print the rest and photograph them on the tree for the listing.
+    *1 h hands-on; about 7 h of printing, spread out*
+34. [ ] **Agent** · After 10, 33 and 36: Pet ornament listing: the picker into the configurator as its options
+    and preview, `shop.json`, and the order path (the photo through GPT Image, the builder, a person checking
+    the preview, the parts to Slant, priced and drafted only for a real order that RJ processes;
+    docs/ORDERS.md, docs/CHARGES.md). Then the product page, photos, copy, order-by date and marketing kit.
+    *3 h*
+35. [ ] **Agent** · After 32: Design work with RJ, interactively, in the scratch folder: more ornaments for
+    launch photos ("coming soon" is fine for the rest). On the table: standard shapes (star, bell, round)
+    for designs without a pet silhouette, recesses or holes in the base for shadow detail, and the plain
+    backing for the printed-photo sticker version (`products/photo-cutout/`). *open-ended; size it with RJ first*
+36. [ ] **RJ** · After 32: Decide the ornament's price, whether customer photos may go to GPT Image (the
+    privacy page changes first if so), and whether there's a proof by email (decision 13). *15 min*
 
 ### Not needed for launch
 
@@ -225,13 +224,13 @@ Any time, in any order:
 - **RJ** · Delete the two test drafts that the shop build left in Gelato (Orders → Drafts).
 - **RJ** · Sign the assignment to the LLC (`.private/legal/assignment-to-llc.md`; full legal name), scan
   it, and keep it with the LLC's papers.
-- **RJ** · Trim the Cloudflare token's Billing and Registrar access, or leave it (agents won't call them;
-  docs/CHARGES.md).
+- **RJ** · Trim the Cloudflare token's Billing and Registrar access, or leave it (docs/CHARGES.md).
 - **RJ** · Delete `shopify.env` from the secrets folder.
 - **RJ** · Untracked files from 2026-09-30 and 10-01: `design/brand/BRAND-GUIDE.md`, `masters/`,
   `_archive/`, `favicon-logo.svg` and `prompts/`. Commit them, move them to `.private/`, or delete them.
-- **RJ** · Ask QPMN for its API docs (Developer Center, Integration with API); ask Lulu for API access
-  when books come up.
+- **RJ** · Ask QPMN for its API docs; ask Lulu for API access when books come up.
+- **RJ** · A Printful die-cut sticker sample (3×3 in, about $4 plus shipping) to test the printed-photo
+  version. It's a charge: add it to docs/CHARGES.md first.
 - **Optional** · `design/brand/mark-blob.*` can go when RJ's done with it.
 
 ## Parked
@@ -240,82 +239,24 @@ Any time, in any order:
   (`products/`; decision 2). Night sky prints wait for photos RJ wants printed.
 - The photo jack-o'-lantern (3d-modeling `jack-o-lantern/`, designed 2026-10-07, not printed), for
   Halloween 2027. It would order through the same flow.
-- Essay: why the machines have names (RJ says there's a practical reason; the About page promises it).
-- Post: what "the model" means in a chat app. Per-turn routing, personalization and the in-app context
-  all shape a reply, and only the account export records which model answered.
-- `unprojection-astra`, the other build of the sky visualization (GPT-6-Astra, open brief), is previewed
-  on Samwise and stays off the site for now. The Opus build is live as a build.
-- Large files as the site grows: video on YouTube; big downloads or self-hosted video on Cloudflare R2
-  behind a subdomain (free tier 10 GB; it needs a card on file, so add it to docs/CHARGES.md first).
+- Essay: why the machines have names (the About page promises it).
+- Post: what "the model" means in a chat app.
+- `unprojection-astra`, the other build of the sky visualization, is previewed on Samwise and stays off
+  the site for now.
+- Large files as the site grows: video on YouTube; big downloads on Cloudflare R2 behind a subdomain
+  (needs a card on file, so add it to docs/CHARGES.md first).
+- The mosaic pet ornament engine, `tools/cutout/`, superseded and kept for reference (docs/LOG.md).
 
 ## Log
 
-Entries before 2026-11-10 are in [docs/LOG.md](docs/LOG.md).
+Entries before 2026-11-17 are in [docs/LOG.md](docs/LOG.md).
 
-- 2026-11-13 (evening): Pet ornament, continued. GPT Image through `codex exec` (gpt-6-luna; images land in
-  `~/.codex/generated_images/`, collected from there) beat the local model by far. `mosaic.py` gained a
-  palette snap, black-as-back, three layers (a black line layer over the colour pieces, so detail lines never
-  cut colours into slivers) and the name plate; `run_batch.py` runs a manifest. House palette set from the
-  shelf against Slant's catalogue in printdb: black, white, tan, brown, gray, red, green, gold, orange,
-  yellow. RJ chose and labelled photos (moved to `.private/`); 14 ornaments made, years from EXIF or
-  estimated (product file). Family-photo and portrait tests are in `.private/` too; RJ prefers the
-  black-and-white portraits. RJ to decide: buying tan, brown, gray, green and yellow for local prototypes.
-- 2026-11-13: Picked up after the 2026-11-10 sessions hit the usage limit. Step 9 finished: its test now
-  passes end to end in Stripe's sandbox (upload, the price from the product file, two-day expiry, test-card
-  payment, webhook and resend, bad signatures, pull, list, purge); docs/ORDERS.md and SHOP.md updated. Stale
-  items fixed: tax step 2 narrowed to the Dec 2025 receipt and the filing-frequency question; step 8 is RJ's
-  in the Dashboard ("Start collecting immediately", per the Stripe Tax session of 2026-11-12); the matte
-  spools have been in printdb since 2026-11-10. RJ paused the lithophane ornament (step 14) and proposed a
-  snap-together pet ornament. A feasibility prototype (`tools/cutout/`) found it works with a local
-  AI cartoon step and doesn't without one (product file; decision 13 and steps 30–34 added). RJ said go,
-  with names and years on the ornament, and wants to pick and label better photos before the routes are
-  compared again (an LLM description fed to the image model; GPT Image through Codex; a library of breed
-  templates recoloured from the customer's photo). RJ's
-  Illustrator file and its preview moved to `.private/products/cutout-ornament/`. The pet photos used
-  came from RJ's Immich export of 2026-11-12, which is mostly people: only five pets were in it.
-- 2026-11-12: Submitted the May–October 2026 $0 WV sales and use tax returns; MyTaxes issued
-  confirmations and showed each request as pending. The receipts are in the tax filings folder. The
-  action center showed no outstanding actions. Verify the December 2025 receipt and ask about a
-  quarterly or annual filing frequency before closing step 2.
-- 2026-11-10: RJ is back after five weeks away, and the launch now centres on four products made from a
-  customer's photo (his memo in the 3d-modeling repo, `ideas/ideas-products-nov-2026.md`). Re-planned:
-  one order flow built as modules (docs/ORDERS.md), a folder per product, a marketing kit per product
-  (docs/MARKETING.md), and a new road to launch with twelve proposed decisions. Merch parked. Old road,
-  task notes and log moved to docs/LOG.md. Checked on the way: the preview and the Cloudflare copy work
-  after the LAN move (Git primary now on Bilbo); lithophane-maker, the jack-o'-lantern engine and printdb
-  have nothing printed; the projector files are CC BY-SA; Slant has no light small enough for a
-  projector; Workers KV's free plan and the 10 ms CPU limit set how uploads work.
-- 2026-11-12 (end of day): RJ phoned the WV Tax Department, which got him a MyTaxes login (his SSN entered
-  with ID type FEIN) and confirmed there is no charge for unfiled $0 returns. He is filing Dec 2025 through
-  Oct 2026 and saving the confirmations (Jan and Feb were in his tax folder when checked). The Business4WV
-  summary shows the LLC was registered with the state on 2025-12-11 using his SSN, so no EIN came from
-  formation. That weakens the earlier guess that an EIN already exists: the IRS online tool's reference
-  number 101 (a name match, per third-party guides) may be some other entity's similar name. IRS phone
-  calls end in "high call volume". Fallbacks: fax the SS-4 (draft in `.private/tax/`) and the Taxpayer
-  Advocate Service. The EIN is optional for launch. docs/SALES-TAX.md "Before the first sale" is rewritten
-  to match; the three entries below are superseded where they differ.
-- 2026-11-12 (latest, superseded): the IRS online tool failed again at Review & Submit with reference number
-  101 (a name match with an existing record, per third-party guides), which fits an EIN already existing
-  for the LLC. Next: RJ calls the IRS (800-829-4933) and the WV Tax Department (see `.private/tax/`).
-- 2026-11-12 (later): RJ downloaded the 14 PDFs from Northwest's portal. They show the LLC already has a
-  WV Business Registration Certificate (issued 2025-12-16) and a monthly sales and use tax account, and
-  that the "monthly tax forms" are blank WV sales and use tax returns for Dec 2025 to Oct 2026: none
-  filed, no delinquency letters among them. The annual report was filed 2026-04-10 and Northwest's
-  letter says the LLC is in good standing. So the EIN is no longer on the launch path, and step 2 becomes
-  "bring the account current". Open: which federal ID WV has on file; whether an EIN already exists
-  (a year of failed IRS attempts fits); the penalties, if any, for the late $0 returns.
-- 2026-11-12: Step 2 rechecked against the IRS, Stripe and the state's own pages (docs/SALES-TAX.md). No
-  EIN yet: the IRS site has not worked for RJ. Findings (the first two now superseded, see above): the EIN
-  is the dependency for West Virginia's
-  registration (an LLC registers with it), not for Stripe, which already takes live payments on RJ's SSN;
-  the IRS no longer issues EINs by phone; fax gives the EIN in about 4 business days and mail in about 4
-  weeks, so mail would miss the Dec 9 order-by date. Not found: the state's processing time for the
-  certificate. Open question for RJ: whether "haven't filed taxes" means 2026 (not due until
-  2027-04-15) or an earlier year.
-- 2026-11-10: RJ took the twelve decisions as recommended (step 1), and the docs no longer mark them
-  as proposed. The ornament recipe (step 14) started in its own session.
-- 2026-11-10: Shop policies (step 12): new Shipping, Returns and Contact pages in the footer; privacy and
-  terms rewritten for Stripe and photo orders, with nothing left that says Shopify. Not legal advice: RJ's
-  reading list and the points for a lawyer are in `.private/legal/policies-2026-11-10.md`, and
-  docs/ORDERS.md lists the privacy promises the order code must keep.
-- 2026-11-10 (paused 2026-11-13): Step 14 in progress (not checked off): lithophane-maker has the ornament recipe (`products/ornament.py`, fit checks pass; bulb 2 h 08 min / 42 g, cap 19 min / 2 g on Meltbot), the white wedge sliced and validated (7 min, 3 g; not uploaded until the matte white is in printdb), and the browser preview `src/scripts/shop/lithophane-bulb.js` (matches the recipe to 0.02 mm) with a test page at /shop/test/ornament/. Left: Blender renders reviewed, the feasibility section with price, cap and order-by date (USPS Ground Advantage send-by Dec 17), printdb registration.
+- 2026-11-17: The pet ornament became a two-part stencil, fulfilled by Slant (decisions 14 and 15). The
+  mosaic had too many pieces. Built in the scratch folder: GPT Image stencil briefs; a builder that bridges
+  loose details, adds pegs, pocket, a hanging ring with a filleted neck, and a name tag in five stencil fonts
+  (Black Ops One dropped, its gaps print too thin); Slant quotes ($3.56–4.01 a pet, no supports); colour
+  plates; a print queue; and the picker prototype, built in its own session. Tried and dropped: an
+  embossed border round the tag, then a rule above the name. RJ preferred the plain tag once he saw all ten
+  at actual size on paper. Timmy (turtle) dropped: weak drawing. Sticker print-on-demand researched
+  (products/photo-cutout/). Docs passed for stale references: README, docs/ORDERS.md, docs/LOG.md, the
+  product files, and `tools/cutout/` marked superseded.

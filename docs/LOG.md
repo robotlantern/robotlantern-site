@@ -1,8 +1,97 @@
 # History
 
-What NOW.md recorded before the re-plan of 2026-11-10, moved here unchanged so NOW.md can stay short.
+What NOW.md recorded before its rewrites of 2026-11-10 and 2026-11-17, moved here unchanged so NOW.md can stay short.
 It keeps the reasons behind earlier decisions. The current state, the road to launch and newer log
 entries are in [NOW.md](../NOW.md).
+
+## NOW.md log, 2026-11-10 to 2026-11-13
+
+Moved here unchanged when NOW.md was rewritten on 2026-11-17 for the two-part stencil ornament.
+
+- 2026-11-13 (evening): Pet ornament, continued. GPT Image through `codex exec` (gpt-6-luna; images land in
+  `~/.codex/generated_images/`, collected from there) beat the local model by far. `mosaic.py` gained a
+  palette snap, black-as-back, three layers (a black line layer over the colour pieces, so detail lines never
+  cut colours into slivers) and the name plate; `run_batch.py` runs a manifest. House palette set from the
+  shelf against Slant's catalogue in printdb: black, white, tan, brown, gray, red, green, gold, orange,
+  yellow. RJ chose and labelled photos (moved to `.private/`); 14 ornaments made, years from EXIF or
+  estimated (product file). Family-photo and portrait tests are in `.private/` too; RJ prefers the
+  black-and-white portraits. RJ to decide: buying tan, brown, gray, green and yellow for local prototypes.
+- 2026-11-13: Picked up after the 2026-11-10 sessions hit the usage limit. Step 9 finished: its test now
+  passes end to end in Stripe's sandbox (upload, the price from the product file, two-day expiry, test-card
+  payment, webhook and resend, bad signatures, pull, list, purge); docs/ORDERS.md and SHOP.md updated. Stale
+  items fixed: tax step 2 narrowed to the Dec 2025 receipt and the filing-frequency question; step 8 is RJ's
+  in the Dashboard ("Start collecting immediately", per the Stripe Tax session of 2026-11-12); the matte
+  spools have been in printdb since 2026-11-10. RJ paused the lithophane ornament (step 14) and proposed a
+  snap-together pet ornament. A feasibility prototype (`tools/cutout/`) found it works with a local
+  AI cartoon step and doesn't without one (product file; decision 13 and steps 30–34 added). RJ said go,
+  with names and years on the ornament, and wants to pick and label better photos before the routes are
+  compared again (an LLM description fed to the image model; GPT Image through Codex; a library of breed
+  templates recoloured from the customer's photo). RJ's
+  Illustrator file and its preview moved to `.private/products/cutout-ornament/`. The pet photos used
+  came from RJ's Immich export of 2026-11-12, which is mostly people: only five pets were in it.
+- 2026-11-12: Submitted the May–October 2026 $0 WV sales and use tax returns; MyTaxes issued
+  confirmations and showed each request as pending. The receipts are in the tax filings folder. The
+  action center showed no outstanding actions. Verify the December 2025 receipt and ask about a
+  quarterly or annual filing frequency before closing step 2.
+- 2026-11-10: RJ is back after five weeks away, and the launch now centres on four products made from a
+  customer's photo (his memo in the 3d-modeling repo, `ideas/ideas-products-nov-2026.md`). Re-planned:
+  one order flow built as modules (docs/ORDERS.md), a folder per product, a marketing kit per product
+  (docs/MARKETING.md), and a new road to launch with twelve proposed decisions. Merch parked. Old road,
+  task notes and log moved to docs/LOG.md. Checked on the way: the preview and the Cloudflare copy work
+  after the LAN move (Git primary now on Bilbo); lithophane-maker, the jack-o'-lantern engine and printdb
+  have nothing printed; the projector files are CC BY-SA; Slant has no light small enough for a
+  projector; Workers KV's free plan and the 10 ms CPU limit set how uploads work.
+- 2026-11-12 (end of day): RJ phoned the WV Tax Department, which got him a MyTaxes login (his SSN entered
+  with ID type FEIN) and confirmed there is no charge for unfiled $0 returns. He is filing Dec 2025 through
+  Oct 2026 and saving the confirmations (Jan and Feb were in his tax folder when checked). The Business4WV
+  summary shows the LLC was registered with the state on 2025-12-11 using his SSN, so no EIN came from
+  formation. That weakens the earlier guess that an EIN already exists: the IRS online tool's reference
+  number 101 (a name match, per third-party guides) may be some other entity's similar name. IRS phone
+  calls end in "high call volume". Fallbacks: fax the SS-4 (draft in `.private/tax/`) and the Taxpayer
+  Advocate Service. The EIN is optional for launch. docs/SALES-TAX.md "Before the first sale" is rewritten
+  to match; the three entries below are superseded where they differ.
+- 2026-11-12 (latest, superseded): the IRS online tool failed again at Review & Submit with reference number
+  101 (a name match with an existing record, per third-party guides), which fits an EIN already existing
+  for the LLC. Next: RJ calls the IRS (800-829-4933) and the WV Tax Department (see `.private/tax/`).
+- 2026-11-12 (later): RJ downloaded the 14 PDFs from Northwest's portal. They show the LLC already has a
+  WV Business Registration Certificate (issued 2025-12-16) and a monthly sales and use tax account, and
+  that the "monthly tax forms" are blank WV sales and use tax returns for Dec 2025 to Oct 2026: none
+  filed, no delinquency letters among them. The annual report was filed 2026-04-10 and Northwest's
+  letter says the LLC is in good standing. So the EIN is no longer on the launch path, and step 2 becomes
+  "bring the account current". Open: which federal ID WV has on file; whether an EIN already exists
+  (a year of failed IRS attempts fits); the penalties, if any, for the late $0 returns.
+- 2026-11-12: Step 2 rechecked against the IRS, Stripe and the state's own pages (docs/SALES-TAX.md). No
+  EIN yet: the IRS site has not worked for RJ. Findings (the first two now superseded, see above): the EIN
+  is the dependency for West Virginia's
+  registration (an LLC registers with it), not for Stripe, which already takes live payments on RJ's SSN;
+  the IRS no longer issues EINs by phone; fax gives the EIN in about 4 business days and mail in about 4
+  weeks, so mail would miss the Dec 9 order-by date. Not found: the state's processing time for the
+  certificate. Open question for RJ: whether "haven't filed taxes" means 2026 (not due until
+  2027-04-15) or an earlier year.
+- 2026-11-10: RJ took the twelve decisions as recommended (step 1), and the docs no longer mark them
+  as proposed. The ornament recipe (step 14) started in its own session.
+- 2026-11-10: Shop policies (step 12): new Shipping, Returns and Contact pages in the footer; privacy and
+  terms rewritten for Stripe and photo orders, with nothing left that says Shopify. Not legal advice: RJ's
+  reading list and the points for a lawyer are in `.private/legal/policies-2026-11-10.md`, and
+  docs/ORDERS.md lists the privacy promises the order code must keep.
+- 2026-11-10 (paused 2026-11-13): Step 14 in progress (not checked off): lithophane-maker has the ornament recipe (`products/ornament.py`, fit checks pass; bulb 2 h 08 min / 42 g, cap 19 min / 2 g on Meltbot), the white wedge sliced and validated (7 min, 3 g; not uploaded until the matte white is in printdb), and the browser preview `src/scripts/shop/lithophane-bulb.js` (matches the recipe to 0.02 mm) with a test page at /shop/test/ornament/. Left: Blender renders reviewed, the feasibility section with price, cap and order-by date (USPS Ground Advantage send-by Dec 17), printdb registration.
+
+## The mosaic pet ornament (2026-11-13, superseded 2026-11-17)
+
+The first pet-ornament design: flat colour pieces on pins over a black back, with a black line layer on top
+(`tools/cutout/mosaic.py`, `run_batch.py`; `products/cutout-ornament/product.md` in Git history before
+2026-11-17). RJ dropped it on 2026-11-17: too many separate pieces to assemble, and Slant charges per part.
+Step 32 as it stood then:
+
+32. [ ] **Agent** · After 31: Get the first batch print-ready. Done 2026-11-13: GPT Image chosen over the local
+    model; the house palette (shelf vs. Slant); three layers (back, colour pieces, black line layer); the shape and
+    name plate generator; `run_batch.py`; 14 named pets drawn and turned into STLs. Left: fix Tucker's coat, the
+    stencil bridges on B, R and 6, long names, and the plate overlapping the subject (product file, "To fix");
+    a fit coupon for 1.5 mm pins at three clearances plus a strip of line layer, sliced and uploaded to Meltbot;
+    colour-batched plates (one plate per colour across the ornaments being printed, each piece with a small
+    ID on its pin side, and an assembly map per ornament), sliced for time and grams; one ornament's parts
+    quoted through printdb's Slant client (quotes are free; never draft); `queue.py make` and `shop.json` for
+    the product. *3–4 h*
 
 ## The road to launch as it stood on 2026-10-01
 
