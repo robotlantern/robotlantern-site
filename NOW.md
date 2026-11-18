@@ -42,6 +42,8 @@ designs come from family photos (decision 15). Don't copy it into the repo or co
 - `proto-01/`: the first Tucker prototype and the font trials.
 - `picker/`: the customer's colour and name-tag picker, a front-end prototype that sends nothing
   (`python3 -m http.server` in that folder). Its spec is `briefs/colour-picker.md`.
+- `people-01/`: people as head ornaments (step 35). `rj/` and `heads/<subject>/` hold a `BRIEF.md`, three
+  tries and their builds. `group/` is a three-person round bauble, too fine to read at 80 mm.
 - `PRINT-QUEUE.md`: the nine Meltbot plates for build-v3, fit test first. RJ prints them himself in Creality
   Print (the upload tool needs printdb, and these stay out of it). An agent hands him files and marks rows.
 - `print-proof/proof.pdf`: the ten designs at actual size, as printed on Inkbot Alpha.
@@ -250,6 +252,11 @@ Any time, in any order:
 ## Log
 
 Entries before 2026-11-17 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-18: People as head ornaments, through the pet stencil brief (scratch folder `people-01/`). A
+  three-person round bauble was too fine at 80 mm. Heads work: four family photos, three tries each, all
+  one piece. The style was steady in 11 of 12 tries; likeness varies. Bridges over 3 mm are common, so the
+  builder's bridge placement needs a look before people go on sale.
 
 - 2026-11-17: Market research on the pet ornament, written while RJ was away:
   [products/cutout-ornament/market-research.md](products/cutout-ornament/market-research.md). Found no
