@@ -47,7 +47,7 @@ No order reaches Slant until it has passed the checks and RJ has processed it.
 | Briefs | `products/cutout-ornament/briefs/pet.md`, `person.md` | The GPT Image prompt for each subject. Bundled into the Worker at deploy, like the catalog |
 | The page | `src/pages/shop/[slug].astro`, `src/scripts/shop/` | Photo, crop, drawing, preview, choices, order, thank-you page |
 | Ornament preview | `src/scripts/shop/stencil-ornament.js` | Draws the ornament from a drawing (below) |
-| Fonts | `public/shop/fonts/` | The five stencil fonts (OFL), for the page and the builder alike |
+| Fonts | `public/shop/fonts/` | The five stencil fonts (OFL), for the page and the builder alike: `allerta-stencil.ttf`, `saira-stencil-one.ttf`, `big-shoulders-stencil.ttf` (the variable font; use wght 800, opsz 72), `emblema-one.ttf`, `wallpoet.ttf`, each with its `OFL-<name>.txt`. Keys as in `nametag.py`: `allerta`, `saira`, `big-shoulders`, `emblema`, `wallpoet` |
 | Worker | `shop-worker/` | Drawings, orders, checkout, webhook, queue, Slant drafts |
 | Recipe | `tools/ornament/` | Drawing and choices → `base.stl`, `stencil.stl`, `proof.png`, `build.json` |
 | Order run | `tools/orders/` | The routine's scripts: list, build, check, Slant, state, purge |
