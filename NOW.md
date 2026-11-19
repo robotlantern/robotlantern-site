@@ -26,7 +26,8 @@ than one ornament prototyped for launch photos, even if the others say "coming s
 waits until RJ is ready to print: he doesn't want prints running while he works.
 **2026-11-19:** RJ printed Buster (v1, no tag) as a first fit test: it fits and looks great, but a stencil
 neck about 1.0 mm wide nearly let the left eye patch break off. The builder now widens such necks, and its
-bridges, to 1.8 mm (`--neck`, `--bridge`). Before printing more, rebuild the approved set with it (build-v6).
+bridges, to 1.8 mm (`--neck`, `--bridge`). Tucker, Annabel, Cashew, Sam, Toby and Wiggles are rebuilt with it (build-v6); their white bases are on two
+sliced plates, three each (scratch folder's `PRINT-QUEUE.md`). Their stencils are built but not plated.
 
 ### The scratch folder (not in Git, not in printdb)
 
