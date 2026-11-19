@@ -321,6 +321,12 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   No session merges into `rebuild` or changes the launch steps on its own. Each reports, and the orchestrator
   folds the results into decisions and steps 9–11.
 
+  RJ, later the same evening: if starting a session is refused or waits on his approval in the app, the
+  test runs as a background subagent of the orchestrating session instead, with the same brief and its
+  findings on disk. Each test below says which way it ran. A subagent can't be opened as a session; read
+  its findings file.
+  - Test 1 (buildings) ran as a session: findings in `~/work/ornaments-design-session/buildings-01/FINDINGS.md`.
+
 - 2026-11-19: Slant costs measured, at RJ's request, with 15 drafts of the test order (docs/CHARGES.md).
   Shipping depends a little on zone ($5.73 to Idaho, $6.93 to WV, $8.95 to Hawaii), and it barely grows with
   count: one ornament costs $10.95 to WV, and a dozen cost $4.87 each. Parts have no volume discount. Drafts
