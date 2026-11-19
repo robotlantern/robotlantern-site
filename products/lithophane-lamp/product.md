@@ -2,7 +2,7 @@
 name: Lithophane lamp (slide-in photo tiles)
 stage: feasibility
 fulfillment: self
-next: Agent designs the bases on one tile size and builds the tile recipe, after the ornament (NOW.md, step 21)
+next: Agent designs the bases on one tile size and builds the tile recipe, after the ornament (the 2026-11-10 plan, step 21, in docs/LOG.md)
 waiting_on: agent
 updated: 2026-11-10
 ---

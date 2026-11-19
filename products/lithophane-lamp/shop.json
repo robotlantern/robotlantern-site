@@ -3,7 +3,7 @@
   "description": "A small lamp whose sides are photo tiles that slide in and out, so the pictures can change with the season.",
   "price": 58,
   "shipping": 9,
-  "provisional": "Sandbox placeholders until feasibility (NOW.md, step 21) sets the real price, shipping, options and weekly cap.",
+  "provisional": "Sandbox placeholders until feasibility (the 2026-11-10 plan, step 21, in docs/LOG.md) sets the real price, shipping, options and weekly cap.",
   "fulfillment": "self",
   "photo": {
     "minEdge": 1200,

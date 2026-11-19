@@ -3,7 +3,7 @@
   "description": "A small lamp that throws a picture from your photo across the ceiling. The shell over the light carries the picture, and shells swap.",
   "price": 28,
   "shipping": 7,
-  "provisional": "Sandbox placeholders until feasibility (NOW.md, step 23) sets the real price, shipping, options and weekly cap.",
+  "provisional": "Sandbox placeholders until feasibility (the 2026-11-10 plan, step 23, in docs/LOG.md) sets the real price, shipping, options and weekly cap.",
   "fulfillment": "self",
   "photo": {
     "minEdge": 800,

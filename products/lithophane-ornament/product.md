@@ -31,7 +31,7 @@ date.
 
 - lithophane-maker (2026-10-04): the `sphere` form, the optical tone curve, the calibration wedge, and the
   heart keepsake recipe, the nearest relative (a gold frame with a ribbon ring). Nothing printed.
-- printdb lists 25 g of white PLA. The four matte spools need adding first (NOW.md, step 3).
+- printdb lists 25 g of white PLA. The four matte spools need adding first (the 2026-11-10 plan, step 3, in docs/LOG.md).
 
 ## Feasibility (2026-11-10, step 14)
 
@@ -72,6 +72,6 @@ ornament lit on the tree for the listing.
 
 ## Questions
 
-- Which lights are on RJ's tree: mini LED, C7 or C9? (NOW.md, step 3)
+- Which lights are on RJ's tree: mini LED, C7 or C9? (the 2026-11-10 plan, step 3, in docs/LOG.md)
 - The picture on the front only, or wrapped around the ball?
 - A ribbon loop on the cap too, so it can hang where there's no light?

@@ -3,7 +3,7 @@
   "description": "Your photo in an ordinary frame, with its subject standing out in front of the glass and past the edge of the frame.",
   "price": 34,
   "shipping": 6,
-  "provisional": "Sandbox placeholders until feasibility (NOW.md, step 22) sets the real price, shipping, options and weekly cap.",
+  "provisional": "Sandbox placeholders until feasibility (the 2026-11-10 plan, step 22, in docs/LOG.md) sets the real price, shipping, options and weekly cap.",
   "fulfillment": "self",
   "photo": {
     "minEdge": 1500,

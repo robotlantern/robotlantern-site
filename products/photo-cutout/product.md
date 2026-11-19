@@ -2,7 +2,7 @@
 name: Custom cutouts (standees and ornaments)
 stage: feasibility
 fulfillment: self
-next: Agent builds the cutout recipe and the sticker files, after the subject picker (NOW.md, step 16)
+next: Agent builds the cutout recipe and the sticker files, after the subject picker (the 2026-11-10 plan, step 16, in docs/LOG.md)
 waiting_on: agent
 updated: 2026-11-17
 ---
@@ -57,6 +57,6 @@ A web search on 2026-11-17 found these. Prices are catalogue base costs, unconfi
 ## Questions
 
 - Which inkjet printer, sticker paper and Cricut? Print Then Cut's size limit sets the biggest standee.
-  (NOW.md, step 3)
+  (the 2026-11-10 plan, step 3, in docs/LOG.md)
 - Seal the sticker with a laminate or clear coat so it survives handling?
 - Base style: the customer's choice, or automatic?

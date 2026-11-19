@@ -1,6 +1,6 @@
 # What costs money
 
-This doc lists every action on Stripe, Gelato, Cloudflare and the other print services that can
+This doc lists every action on Stripe, Gelato, Cloudflare, OpenAI, Claude and the print services that can
 cost money. Before
 doing anything not listed here, find out what it costs and add it.
 
@@ -28,8 +28,23 @@ and Shopify on 2026-09-23 (see [Sources](#sources)). Slant's orders were checked
   stays on the account for good, because Slant can't cancel or delete a draft.
 - **QPMN:** account, no orders. Its API docs come from QPMN on request.
 - **Photo products** (docs/ORDERS.md): uploads go to Workers KV on the free plan (NOW.md
-  decision 5), and RJ makes everything at first, so the only new costs are supplies he buys and, later,
-  Slant orders he processes.
+  decision 5). The stencil ornament adds two costs: OpenAI drawings, which are capped, and the Slant order
+  RJ processes for each sale (both below).
+- **OpenAI API:** from NOW.md step 3, a project with prepaid credit and auto-recharge off (decision 21).
+  No key existed before 2026-11-19.
+
+## The stencil ornament, per order (estimates, 2026-11-19)
+
+| Cost | Amount | When |
+| --- | --- | --- |
+| Slant: both parts, with a name tag | $3.56–4.01 (quotes for ten pets) | RJ processes the draft |
+| Slant: shipping one small box | unknown until the first order; one data point was $10.15 for 684 g | the same |
+| Stripe | 2.9% + 30¢, so about $1.14 on $29 | each payment |
+| Stripe Tax | 0.5% of West Virginia orders only | each WV payment |
+| OpenAI drawings | about $0.05–0.25 each, up to 3 per photo, including people who don't buy | each drawing |
+
+At $29 with shipping included (decision 20), that leaves roughly $12–17 an order, less the drawings of people
+who don't buy. The acceptance order (NOW.md step 17) gives the real shipping figure.
 
 ## Stripe: actions that cost money
 
@@ -95,7 +110,7 @@ Not re-checked for billing detail; confirm on Cloudflare's pricing pages before 
 | Moving the domain's nameservers to Cloudflare, DNS | Free |
 | Workers requests that run code (the shop's order Worker, the photo-order API, the counted short links in LOG.md task 17) | Free up to 100,000 a day; the paid plan is a monthly fee |
 | Workers KV on the Free plan (photo uploads, docs/ORDERS.md) | Free: 1 GB stored, 100,000 reads and 1,000 writes a day, values up to 25 MiB (checked 2026-11-10). The Free plan has no bill to run up. Keep the account on it: Workers Paid is a monthly fee |
-| Workers CPU on the Free plan | 10 ms per request, which is why uploads stream straight into KV (docs/ORDERS.md). More CPU means Workers Paid |
+| Workers CPU on the Free plan | 10 ms per request, which is why uploads stream straight into KV (docs/ORDERS.md). More CPU means Workers Paid (a monthly fee, $5 when last seen): only on RJ's go, if the drawings endpoint can't fit |
 | R2 storage (large files, later) | Free up to 10 GB and 1M writes / 10M reads a month; downloads free. Needs a card on file, so going over bills automatically: add a spending check before turning it on |
 | Web Analytics, Bot Fight Mode | Free, but they break the privacy page's claims (LOG.md, task 9) |
 | Anything under Billing, a paid plan or add-on, or Registrar (buying or transferring a domain) | Costs money. The API token can do these: agents never call them. |
@@ -108,6 +123,25 @@ Not re-checked for billing detail; confirm on Cloudflare's pricing pages before 
 | Pausing ("Pause and Build") | About $9 per 30 days. Not needed now that the shop doesn't use Shopify. |
 | Closing the store | Free. Any charges still outstanding are billed at closing. All apps are uninstalled, including Gelato. Reopening means choosing a paid plan again. |
 | Anything else: paid apps, Gelato+ through the Shopify app, themes, domains, labels | Don't. |
+
+## OpenAI API (customer drawings)
+
+Drawings are made through our Worker only, under the caps in docs/PRODUCTION.md. Prices were read on
+2026-11-19 from third-party summaries, which disagree about model names. Whoever makes the key (step 3) or
+wires the Worker (step 9) checks [OpenAI's pricing page](https://openai.com/api/pricing/) and sets
+`costPerDrawing` from it.
+
+| Action | Cost |
+| --- | --- |
+| One drawing (GPT Image edit, 1024 × 1024) | Billed in tokens. About $0.05 at medium quality and $0.17–0.21 at high, plus a cent or two for the photo going in |
+| Prepaid credit | RJ buys it. With auto-recharge off, the balance is a hard cap |
+| Auto-recharge, a raised limit, other models, fine-tuning, a ChatGPT plan | Not used. Agents never turn any of these on |
+
+## Claude (cloud routines)
+
+Routines and cloud sessions draw on RJ's Claude subscription usage like any other session, and nothing is
+billed separately. Don't turn on paid extra usage for them. An idle `rl-orders` run stops after one command
+(docs/PRODUCTION.md).
 
 ## Other services
 

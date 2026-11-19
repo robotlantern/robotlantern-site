@@ -20,17 +20,24 @@ page on GitHub Pages; the new site runs on Cloudflare at a workers.dev address f
 
 ## Cutover
 
-1. RJ adds robotlantern.com to Cloudflare (free plan). The dashboard scans the old DNS host
-   and suggests records. Check them against the list below before anything else.
-2. Enter or correct every record below, then add the site: in the `site` Worker, Settings →
-   Domains & Routes → add custom domains `robotlantern.com` and `www.robotlantern.com`. That
-   replaces the GitHub Pages records (the four `A` records and the `www` CNAME), which are
-   removed. Equivalent in `wrangler.jsonc`: `"routes": [{ "pattern": "robotlantern.com",
-   "custom_domain": true }, …]`. Then route `robotlantern.com/api/*` to the `shop` Worker, for photo
-   orders ([ORDERS.md](ORDERS.md)).
-3. RJ switches the nameservers at DomainRegistry.com. Mail must keep working throughout: the
-   MX and DKIM records are copied first.
-4. Afterwards: remove the `CNAME` file, and the GitHub Pages site in the repo's settings.
+The domain moves first and the site switches later, so the slow part (nameservers spreading) never holds the
+launch (NOW.md steps 2, 12, 13 and 16):
+
+1. **RJ adds robotlantern.com to Cloudflare** (free plan) and gives the agents' token Zone · DNS · Edit and
+   Zone · Workers Routes · Edit for it (step 2). The dashboard scans the old DNS host and suggests records.
+2. **An agent enters or corrects every record below** (step 12), checks them against the scan, and keeps the
+   GitHub Pages records (the four `A` records and the `www` CNAME) **DNS-only** (grey cloud), so the old page
+   keeps working and GitHub can still renew its certificate. Mail must keep working throughout, so the MX and
+   DKIM records go in first. SPF and DMARC are added if RJ said yes.
+3. **RJ switches the nameservers** at DomainRegistry.com (step 13). Cloudflare emails him when the zone is
+   active. Until then, both hosts answer the same records, so nothing breaks while it spreads.
+4. **At launch** (step 16): in the `site` Worker, Settings → Domains & Routes, add the custom domains
+   `robotlantern.com` and `www.robotlantern.com`, which replace the GitHub Pages records (delete them), and
+   route `robotlantern.com/api/*` to the `shop` Worker ([ORDERS.md](ORDERS.md)). The equivalent in
+   `wrangler.jsonc` is `"routes": [{ "pattern": "robotlantern.com", "custom_domain": true }, …]`. The new
+   site is live from that moment.
+5. Afterwards: remove the `CNAME` file, the GitHub Pages site in the repo's settings, and the
+   `_github-pages-challenge` record.
 
 ## DNS records for robotlantern.com
 

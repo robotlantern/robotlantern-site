@@ -2,7 +2,7 @@
 name: Pop-out photos
 stage: feasibility
 fulfillment: self
-next: Agent builds the silhouette, tab and shim recipe and the sticker files, after the subject picker (NOW.md, step 22)
+next: Agent builds the silhouette, tab and shim recipe and the sticker files, after the subject picker (the 2026-11-10 plan, step 22, in docs/LOG.md)
 waiting_on: agent
 updated: 2026-11-10
 ---

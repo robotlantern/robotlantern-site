@@ -1,10 +1,10 @@
 ---
 name: Pet ornament (two-part stencil)
-stage: design
+stage: listing
 fulfillment: slant
-next: RJ prints the fit test (Tucker) on Meltbot when he's ready, then an agent turns the picker into the product page (NOW.md, steps 33–34)
-waiting_on: rj
-updated: 2026-11-17
+next: the launch, NOW.md steps 7-17 (the tools in the repo, the Worker, the page, then a live order)
+waiting_on: agent
+updated: 2026-11-19
 ---
 
 A flat ornament of a customer's pet in two colours of PLA: a **base** in one colour and a **stencil** sheet
@@ -42,9 +42,11 @@ RJ saw the first ten printed on paper at actual size and approved them as they a
 
 ## How a design is made
 
-1. **Drawing:** GPT Image (through `codex exec` on gpt-6-luna) redraws the photo as a two-colour stencil:
-   head and neck only, mostly solid colour with the features as white cut-outs, one connected piece, no
-   line or gap under 2% of the width. One brief per pet.
+1. **Drawing:** GPT Image redraws the photo as a two-colour stencil. For customers, our Worker calls OpenAI's API
+   (decision 16). For design work it ran through `codex exec` on gpt-6-luna. The brief asks for
+   the head and neck only, mostly solid colour with the features as white cut-outs, in one connected piece,
+   with no line or gap under 2% of the width. There's one generic brief per subject (`briefs/`, NOW.md
+   step 7).
 2. **Builder:** reads the drawing as ink on white, drops specks, thickens thin strokes, fills thin gaps,
    bridges loose pieces, then makes the outline, pocket, pegs, ring and tag. Out come `base.stl`,
    `stencil.stl`, a preview and two SVGs for the picker (with and without the name cut). It checks the
@@ -53,9 +55,10 @@ RJ saw the first ten printed on paper at actual size and approved them as they a
    for each colour on Meltbot. A packer lays parts onto 220 mm plates by colour.
 4. **Quotes:** `~/work/3d-modeling/tools/estimate.py --slant`, free, through printdb's cache.
 
-The builder, the batch, the picker and the print queue live in a scratch folder next to this repo,
-`../ornaments-design-session/`. It stays out of Git because the designs come from family photos. **These
-designs don't go in printdb** (RJ, 2026-11-17).
+The builder and the picker move into the repo (`tools/ornament/`, the product page; NOW.md steps 7 and 10). The
+family batch, its drawings and the print queue stay in the scratch folder next to this repo,
+`../ornaments-design-session/`, because they come from family photos. **These designs don't go in printdb or
+Git** (decision 15).
 
 ## Numbers (first batch, ten family pets)
 
@@ -75,15 +78,39 @@ close, and the name tag with live fitting and the five fonts. It sends nothing. 
 builder needs (colours with Slant ids, text, font). Photo swatches of each colour are being gathered so it
 doesn't rely on reported hex values.
 
+## At launch (2026-11-20; NOW.md decisions 16-25)
+
+- **The one product at launch.** Pets, and people too if decision 25 says yes. Ordered on
+  `/shop/cutout-ornament/`, drawn by GPT Image through OpenAI's API (capped), built and checked by the
+  `rl-orders` routine, drafted at Slant by our Worker, and processed by RJ ([docs/ORDERS.md](../../docs/ORDERS.md),
+  [docs/PRODUCTION.md](../../docs/PRODUCTION.md)).
+- **Choices:** any two of Slant's PLA colours (clear hidden), name tag on or off, one line of text up to 16
+  characters, five stencil fonts. One size, 84 mm wide.
+- **Defaults** (decision 20): $29 with US shipping and the name tag included; 25 a week; order by Dec 10 for
+  Christmas until the first order shows Slant's timing; a free remake or refund if it arrives broken or
+  doesn't match the preview.
+- **Fit:** Buster (v1) printed 2026-11-19 and fits. Thin necks are widened to 1.8 mm since then (build-v6).
+- **Listing photos:** Buster, Tucker and the heads from MeltBot, marked as examples (decisions 10 and 14).
+
+## Next variants (after launch)
+
+RJ, 2026-11-19, on seeing the prints: they're big, so other ways to show them would sell. Ones that need no
+prototype go first. Their checks, Slant quotes and renders are enough for RJ to say yes.
+
+- **Large,** about 150 mm, filling a plate. The builder takes `--width`. Pegs, rim and thicknesses stay in mm,
+  so it's the same design with bigger features, which print more easily. The quote rises with grams.
+- **Wall:** the ring left off and an adhesive strip from Slant's components in the box. The ring already
+  hangs flush on a small nail, so the listing can say that from day one.
+- **Needs a print first:** a kickstand (print-in-place, or a slot-in third part), standard shapes (star, bell,
+  round) for subjects without a clean silhouette, and the bridge placement for people.
+
 ## Open
 
-- **Fit:** do the pegs hold, and is the pocket right? (step 33)
-- **Price** and whether Slant ships it from the first order (decision 14).
-- **Customer photos and GPT Image:** a customer's photo would go to OpenAI. The privacy page changes
-  first if so (decision 13 left this open).
-- **A proof by email** before it's made (decision 13).
-- **Weak drawings:** the turtle failed; some images come back with a part that can't print (a lost bridge),
-  which the one-piece check catches. Regenerate or pick another image. A person looks at every preview.
+- **Shipping from Slant** for one small box. The acceptance order (NOW.md step 17) gives the number. The price
+  may move after that.
+- **Weak drawings:** the turtle failed, and some drawings come back with a part that can't print. The builder's
+  one-piece check catches those, and the order goes to RJ instead of Slant.
+- **Cheaper drawings:** test lower quality and cheaper models right after launch (decision 16).
 
 ## Related
 

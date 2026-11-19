@@ -78,7 +78,7 @@ If Gelato refuses an order (a bad address or file, say), the Worker answers 500.
 retries for three days and shows the failure under Workbench → Webhooks. Its logs are in
 Cloudflare (Workers → `shop` → Logs), with session IDs and no customer details.
 
-Photo orders at `/api/orders` are built and tested in the sandbox ([ORDERS.md](ORDERS.md)). Not built
+Photo orders at `/api/orders` are built and tested in the sandbox ([ORDERS.md](ORDERS.md)). From launch the Worker also makes customers' drawings and drafts Slant orders ([PRODUCTION.md](PRODUCTION.md)). Not built
 yet: Gelato's status webhooks
 (they arrive with shipping emails, later), and email from the Worker itself (waits for Cloudflare
 Email Routing after cutover).
@@ -114,10 +114,11 @@ the state certificate exists (docs/SALES-TAX.md; NOW.md).
 1. Live webhook endpoint: Stripe dashboard (live) → Workbench → Webhooks → add
    `https://shop.robotlantern.workers.dev/stripe` for the two events above, API version
    `2026-08-26.dahlia`.
-2. Worker secrets, by hand (`cd shop-worker && npx wrangler secret put <NAME>`):
-   `STRIPE_WEBHOOK_SECRET_LIVE`, `STRIPE_SECRET_KEY_LIVE` (a restricted key RJ creates, not the
-   agent's key; for photo products it also creates Checkout Sessions, so see ORDERS.md, "Stripe"),
-   `GELATO_API_KEY_LIVE`.
+2. Worker secrets, loaded from the secrets folder with `npx wrangler secret put <NAME>` in `shop-worker/`
+   ([PRODUCTION.md](PRODUCTION.md), "Secrets"): `STRIPE_WEBHOOK_SECRET_LIVE`, `STRIPE_SECRET_KEY_LIVE` (the
+   restricted key RJ creates in NOW.md step 4, not the agents' key), `OPENAI_API_KEY`, `SLANT_API_KEY`,
+   `QUEUE_TOKEN_LIVE` and `PROOF_LINK_SECRET`. `GELATO_API_KEY_LIVE` is needed only once a Gelato product is
+   listed.
 3. `python3 tools/shop/sync.py --live`, set `SHOP_MODE` to `live`, deploy the site.
 4. Stripe's email for successful payments on (it's how self-shipped orders reach RJ), and its email
    receipts to customers.

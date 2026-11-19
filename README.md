@@ -18,9 +18,12 @@ essays, conversations, interactives and products.
   may link to an essay but doesn't have to.
 - **Builds (interactives).** Things you can use in the browser, each running full screen, such
   as The Sky, Unprojected.
-- **Products.** First, things made from a customer's photo, led by a two-part pet ornament printed by Slant
-  3D, then a lithophane ornament and lamp, custom cutouts, pop-out photos and a stereographic projector. The customer shapes theirs on the product's
-  page and pays through Stripe, and RJ checks, makes and ships it ([docs/ORDERS.md](docs/ORDERS.md)).
+- **Products.** First, things made from a customer's photo. The launch product is a two-part stencil ornament
+  of a pet, drawn from the customer's photo and printed and shipped by Slant 3D. A lithophane ornament and
+  lamp, custom cutouts, pop-out photos and a stereographic projector come later. The customer shapes theirs
+  on the product's page and pays through Stripe. A Claude routine in the cloud builds and checks the print
+  files, and RJ approves each order at Slant ([docs/ORDERS.md](docs/ORDERS.md),
+  [docs/PRODUCTION.md](docs/PRODUCTION.md)).
   Print-on-demand items from Robot Lantern's own art come later, with Stripe taking payment and Gelato
   printing and shipping ([docs/SHOP.md](docs/SHOP.md)). Ideas move through the pipeline in
   [docs/PRODUCTS.md](docs/PRODUCTS.md).
@@ -46,10 +49,11 @@ sunset and scrolls into night. Every other page lives in the night.
   script, and other pages don't load it.
 - **Commerce is a subsystem.** Products are files in this repo. The site shows them in its own
   design and hands off to Stripe's hosted checkout. A small Cloudflare Worker keeps each photo
-  order's files until RJ pulls them, and passes printed merch to Gelato. Everything that turns a
-  photo into a print runs in the browser (the preview) or on RJ's machines (the real thing). There's
-  no monthly platform fee.
-- **Backends only where reality requires them.** The first launch needs one: the order Worker.
+  order's files, asks OpenAI's image API for the customer's drawing (capped), drafts Slant orders, and
+  passes printed merch to Gelato. The preview runs in the browser. Print files are made by scheduled
+  Claude routines in the cloud, so nothing waits on RJ's machines. There's no monthly platform fee.
+- **Backends only where reality requires them.** The first launch needs two: the order Worker and the
+  cloud routines ([docs/PRODUCTION.md](docs/PRODUCTION.md)).
 
 The previous attempt made Shopify the platform. Conversations and provenance had to squeeze into
 Shopify's blog and metafield model, and most of the engineering went into working around that.
@@ -58,8 +62,8 @@ Its Shopify plumbing is not.
 
 ## First launch
 
-A home page, an essay, two chats, a build, and a shop built around the four photo product lines,
-each opening when its prototype passes. The work is broken into steps in [NOW.md](NOW.md). Each step
+A home page, an essay, two chats, a build, and a shop with one product, the stencil ornament, working end to
+end. The other photo product lines open as their prototypes pass. The work is broken into steps in [NOW.md](NOW.md). Each step
 says what it waits for, and NOW.md says how to start one.
 
 ## Hosting
@@ -67,6 +71,6 @@ says what it waits for, and NOW.md says how to start one.
 GitHub Pages serves the old robotlantern.com until cutover. The new site moves to Cloudflare
 (decided 2026-09-27): commerce is in the first launch, and GitHub Pages' terms don't cover sites
 built mainly for commercial transactions. Cutover moves the domain's nameservers to Cloudflare
-(NOW.md, steps 4–6). The build output is static, so the host only changes the deploy step.
+(NOW.md, steps 2, 12 and 13). The build output is static, so the host only changes the deploy step.
 
 See [AGENTS.md](AGENTS.md) for how work happens here.

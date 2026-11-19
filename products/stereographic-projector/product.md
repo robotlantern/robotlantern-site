@@ -2,7 +2,7 @@
 name: Stereographic projector
 stage: feasibility
 fulfillment: self
-next: Agent writes the generator and a lamp base, and lists LED options with prices (NOW.md, step 23)
+next: Agent writes the generator and a lamp base, and lists LED options with prices (the 2026-11-10 plan, step 23, in docs/LOG.md)
 waiting_on: agent
 updated: 2026-11-10
 ---

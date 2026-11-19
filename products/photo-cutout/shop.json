@@ -3,7 +3,7 @@
   "description": "The subject of your photo, a person, a pet or a car, cut out as a 3D-printed shape with your photo on its face. It stands on a shelf or hangs as an ornament.",
   "price": 22,
   "shipping": 6,
-  "provisional": "Sandbox placeholders until feasibility (NOW.md, step 16) sets the real price, shipping, options and weekly cap.",
+  "provisional": "Sandbox placeholders until feasibility (the 2026-11-10 plan, step 16, in docs/LOG.md) sets the real price, shipping, options and weekly cap.",
   "fulfillment": "self",
   "photo": {
     "minEdge": 1200,

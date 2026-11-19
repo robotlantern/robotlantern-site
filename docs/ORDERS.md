@@ -1,213 +1,254 @@
 # Orders for photo products
 
-Planned 2026-11-10 (NOW.md). RJ took the plan's choices as recommended the same day; NOW.md numbers
-them, and this page cites those numbers. Built so far (2026-11-13, sandbox only): order intake at
-`/api/orders` in the shop Worker, on the `shop-orders-test` KV namespace, and `tools/orders/queue.py`.
-The configurator, the subject picker and the live namespace are still to come.
+The flow for anything made from a customer's photo. It's built once, as modules joined by the contracts below,
+and each product adds a product file, a preview module and a recipe. **The stencil ornament is the first, and
+the only one at launch** (NOW.md, decisions 16–25). How it runs day to day, what's in the cloud and how RJ hears
+about orders are in [PRODUCTION.md](PRODUCTION.md).
 
-Four product lines are made from a customer's photo: the lithophane ornament and lamp, custom cutouts,
-pop-out photos and the stereographic projector (`products/`). Since 2026-11-17 a two-part pet ornament,
-printed by Slant, leads the launch (`products/cutout-ornament/`). Its inputs are the photo, two colours and
-an optional name and font; how its orders reach Slant is NOW.md step 34. Every one is ordered the same way, so the
-order flow is built once, as modules joined by file contracts. A new photo product adds a product file,
-a preview module and a recipe. Nothing else changes.
+Built and tested in Stripe's sandbox (2026-11-13): order intake at `/api/orders` in the shop Worker on the
+`shop-orders-test` KV namespace, the webhook's paid step, and `tools/orders/queue.py`. The rest of this page is
+what NOW.md steps 7, 9 and 10 build, in parallel, against these contracts. If a contract has to change, change it
+here first and say so in NOW.md's log.
 
-## The flow
+## The flow (stencil ornament)
 
-1. **Choose a product** on `/shop/`, which opens its page, `/shop/<slug>/`.
-2. **Add a photo.** The browser turns it upright, shrinks it to at most 4,000 px on the long edge and
-   re-encodes it as JPEG. That drops its metadata, GPS included, before anything is sent.
-3. **Shape it.** Crop to the product's shape, tap the subject where the product needs one, and pick the
-   options. The preview redraws as you go. Nothing has left the phone yet.
-4. **Order.** The button sends the photo and the choices to our Worker, which keeps them and opens
-   Stripe's hosted checkout for that one order. Stripe's receipt is the customer's confirmation, and the
-   thank-you page says what happens next.
-5. **RJ makes it.** Paid orders are pulled to Sarcean, where the product's recipe builds the print files
-   and a proof. RJ looks at both, then prints, cuts, assembles and ships. If a photo won't make a good
-   one, he emails the customer to swap it, or refunds in full (NOW.md decision 4).
+1. **Photo.** On `/shop/cutout-ornament/`, the browser turns the photo upright and the customer crops it square
+   on the head. The browser re-encodes the crop as a 1024 × 1024 JPEG. That drops the camera's hidden
+   details, GPS included. Nothing has left the phone yet.
+2. **Drawing.** "Make my drawing" sends that JPEG to the Worker (`POST /api/drawings`). The Worker checks the
+   caps, keeps the photo in KV for two days, and asks OpenAI's GPT Image to redraw it as a red-on-white stencil
+   using the product's brief. It keeps the drawing and returns it. "Try again" makes another, up to three per
+   photo. A drawing takes roughly half a minute to a minute, so the page shows that it's working.
+3. **Preview and choices.** The browser draws the ornament from the drawing in the customer's colours, with
+   the name tag if they want one (see "The page"). The red in the drawing only marks what is stencil. Any two
+   of Slant's colours can be chosen afterwards without a new drawing.
+4. **Order.** The page sends `design.json` (`POST /api/orders`), uploads `preview.jpg` (the picture the
+   customer approved), and asks for checkout. Stripe's page takes the payment, the address and the tax.
+5. **Paid.** Stripe's webhook marks the order paid. The Worker keeps its photo, drawing and preview with no
+   expiry, and adds it to the queue.
+6. **Made.** The `rl-orders` routine (PRODUCTION.md) does these in order:
+   - builds both STLs from the drawing with the order's choices,
+   - checks them, and compares the proof with `preview.jpg`,
+   - uploads them to Slant and gets a quote (both free),
+   - asks the Worker to draft the Slant order,
+   - emails RJ.
 
-No order reaches a printer or a print service until RJ has looked at it. That's on purpose for launch.
-Automation comes once enough orders show which manual steps hurt (lithophane-maker's `docs/REPORT.md`,
-"From Sarcean to fully automated").
+   RJ processes the draft in Slant's dashboard, which is when Slant charges. Slant prints and ships.
+7. **Shipped and purged.** `rl-daily` follows the Slant order to "shipped" and drafts the customer's shipping
+   email for RJ to send. It deletes the photo and everything made from it 60 days later (decision 6).
+
+No order reaches Slant until it has passed the checks and RJ has processed it.
 
 ## Modules
 
-| Module | Lives in | Job | Used by |
-| --- | --- | --- | --- |
-| Product file | `products/<slug>/shop.json` | Price, options and what they add, photo needs, preview and recipe names, fulfillment, weekly cap | all |
-| Configurator | `src/pages/shop/[slug].astro`, `src/scripts/shop/` | Photo, crop, options, preview, order button, thank-you page | all |
-| Tone preview | `src/scripts/shop/` | How the lithophane looks lit: the engine's tone curve and filament optics, ported to JavaScript | ornament, lamp |
-| Subject picker | `src/scripts/shop/`, model under `public/shop/` | Tap to select the subject, tap again to add or remove; a lasso where the model can't run | cutouts, pop-outs, projector |
-| Product previews | `src/scripts/shop/` | One small drawing module per product | one each |
-| Order intake | `shop-worker/`, `/api/orders` | Checks an order against the product files, stores it, creates its Checkout Session | all |
-| Payment webhook | `shop-worker/`, `/stripe` (exists) | Marks the order paid and keeps its files | all |
-| Order queue | `tools/orders/` | `pull`, `list`, `make`, `ship`, `purge` | all |
-| Recipes | `~/work/lab/lithophane-maker` | Order folder in; print files, sticker and cut files, proof and print sheet out | one each |
+| Module | Lives in | Job |
+| --- | --- | --- |
+| Product file | `products/cutout-ornament/shop.json` | Price, options and what they add, photo needs, drawing model and brief, weekly cap, Stripe IDs |
+| Briefs | `products/cutout-ornament/briefs/pet.md`, `person.md` | The GPT Image prompt for each subject. Bundled into the Worker at deploy, like the catalog |
+| The page | `src/pages/shop/[slug].astro`, `src/scripts/shop/` | Photo, crop, drawing, preview, choices, order, thank-you page |
+| Ornament preview | `src/scripts/shop/stencil-ornament.js` | Draws the ornament from a drawing (below) |
+| Fonts | `public/shop/fonts/` | The five stencil fonts (OFL), for the page and the builder alike |
+| Worker | `shop-worker/` | Drawings, orders, checkout, webhook, queue, Slant drafts |
+| Recipe | `tools/ornament/` | Drawing and choices → `base.stl`, `stencil.stl`, `proof.png`, `build.json` |
+| Order run | `tools/orders/` | The routine's scripts: list, build, check, Slant, state, purge |
+
+Other photo products keep the earlier plan's modules (a tone preview, a subject picker, lithophane-maker's
+recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.md has that plan.
 
 ## Contracts
 
 ### The product file
 
-A photo product's `shop.json` has the fields in docs/SHOP.md, plus:
+`products/cutout-ornament/shop.json` has the fields in docs/SHOP.md, plus:
 
 ```json
 {
-  "fulfillment": "self",
-  "photo": { "minEdge": 1200, "crop": "circle", "subject": false, "count": 1 },
-  "preview": "lithophane-bulb",
-  "recipe": "ornament",
+  "fulfillment": "slant",
+  "photo": { "via": "drawing", "crop": "square", "edge": 1024 },
+  "drawing": { "model": "<GPT Image model>", "quality": "high", "size": "1024x1024",
+               "subjects": ["pet"], "triesPerPhoto": 3 },
   "options": [
-    { "id": "cap", "label": "Cap", "choices": [
-      { "id": "gold", "label": "Gold" },
-      { "id": "silver", "label": "Silver", "add": 0 }
-    ] }
+    { "id": "base", "label": "Base", "choices": [ { "id": "white", "label": "White", "slant": "<filament id>" } ] },
+    { "id": "stencil", "label": "Stencil", "choices": [ "…the same colours…" ] },
+    { "id": "tag", "label": "Name tag", "choices": [ { "id": "yes", "label": "Yes" }, { "id": "no", "label": "No" } ] },
+    { "id": "font", "label": "Font", "choices": [ { "id": "allerta", "label": "Allerta Stencil" } ] }
   ],
-  "weeklyCap": 10,
-  "orderBy": null
+  "text": { "max": 16, "allowed": "A-Za-z0-9 '&.-" },
+  "weeklyCap": 25,
+  "orderBy": "2026-12-10"
 }
 ```
 
-- **`photo`:** the smallest long edge in pixels, the crop shape (`circle`, `rect:<w>x<h>`, `free`),
-  whether a subject is picked, and how many photos one order takes (a lamp's tiles).
-- **`preview`, `recipe`:** module names, for the configurator and for lithophane-maker.
-- **`options`:** any number. `add` is what a choice adds to the price, in dollars. A choice can name its
-  filament or part for the recipe.
-- **`weeklyCap`:** how many RJ can make in a week. Past it, the page says when ordering reopens.
-- **`orderBy`:** for seasonal products, the last day to order for the holiday, from the handling time
-  and USPS's holiday dates.
+- **Colours:** Slant's PLAs, from the picker's `colours.json` (scratch folder), each with Slant's filament id,
+  its hex value and whether it's offered. Clear is off, because the tree shows through it.
+- **`drawing.subjects`:** add `"person"` when decision 25 says yes. `model` and `quality` live here, so a cheaper
+  model is a one-line change.
+- **Price** comes from the product file, which is bundled into the Worker at deploy. The browser shows a price
+  but never sets one.
 
-### The order bundle
+### Drawings API (the Worker)
 
-What the browser sends, and what the Worker keeps under the order's ID:
+- **`POST /api/drawings`**: the body is the 1024 × 1024 JPEG (`image/jpeg`, at most 4 MB) with the header
+  `X-Subject: pet` (or `person` once allowed). The answer is `201 {"id", "n": 1, "left": 2, "image"}`, where
+  `image` is the drawing as base64 PNG and `id` is 12 characters from the order-ID alphabet.
+- **`POST /api/drawings/<id>/again`**: the next try with the same photo, until `left` is 0.
+- **Refusals:**
+  - `429 {"error", "retryAfter"}` when the visitor's or the day's cap is reached.
+  - `503` when drawings are switched off.
+  - `502` when OpenAI fails. A failed call doesn't use up a try.
+- **Storage:** KV `drawing:<id>` (the record: subject, tries, created), `file:drawing:<id>/photo.jpg` and
+  `file:drawing:<id>/<n>.png`, all expiring after two days unless an order is paid.
+- **The OpenAI call:** images edit, `model`/`quality`/`size` from the product file, the brief for the subject,
+  one image, PNG out. Send a `user` value: the visitor's daily hash (below).
+- **CPU:** the free plan gives a request 10 ms of CPU. Build the multipart body from KV bytes without decoding the
+  image, and don't `JSON.parse` OpenAI's answer of a megabyte or more in the Worker if that busts the limit.
+  Instead, stream it into KV and to the page as it comes, and let the page and the routine take the PNG out.
+  If neither fits, stop and tell RJ: Workers Paid is a charge (CHARGES.md).
+- **Caps** (decision 21; numbers in `shop-worker/limits.json`, so changing one means a deploy):
+  - `triesPerPhoto` (3).
+  - `perVisitorPerDay` (6), counted under a SHA-256 of the IP address and that day's salt. It's kept one
+    day and never logged.
+  - `dollarsPerDay` (10), counted as `costPerDrawing` × drawings. `costPerDrawing` is set from OpenAI's price
+    for the model and quality, rounded up.
+  - KV counters can overshoot by a few in a burst. The OpenAI balance is the hard cap behind them.
+- **Switches:** KV `switch:drawings` and `switch:orders` set to `off` stop new drawings or new orders at once.
+  The page then says to come back later.
 
-- `design.json`: the product, options, crop, subject taps, the price the page showed, and the
-  configurator's version;
-- `photo-1.jpg` (and `photo-2.jpg` and so on, for tiles);
-- `mask-1.png`, where a subject was picked;
-- `preview.jpg`: the picture the customer approved.
+### Orders
 
-### The order folder
+- **`POST /api/orders`** with `design.json`:
 
-`.private/orders/<YYYY-MM-DD>-<id>/` on Sarcean, git-ignored:
+  ```json
+  { "product": "cutout-ornament",
+    "drawing": { "id": "k3v9q0m2x7ab", "n": 2 },
+    "options": { "base": "white", "stencil": "red", "tag": "yes", "font": "allerta" },
+    "text": "Tucker",
+    "price": 29,
+    "version": "<the page's build id>" }
+  ```
 
-- `order.json`: the Stripe Checkout Session ID, test or live, the product, options, amount paid, status
-  and dates. It holds no address. The address stays in Stripe, and the queue shows it only while a label
-  is being made.
-- the bundle's files;
-- `out/`, from the recipe.
+  The Worker checks that the drawing exists and try `n` was made, and that each option is one of the product
+  file's choices. Base and stencil can't be the same colour. The text has to fit `text`: it's needed when the
+  tag is `yes` and dropped when it's `no`. The only file the order takes is `preview.jpg`. The photo and the
+  drawing come from the drawing record.
+- `PUT /api/orders/<id>/preview.jpg`, then `POST /api/orders/<id>/checkout`, as they work now.
+- **Paid** (webhook): `photo.jpg`, the chosen drawing as `drawing.png`, and `preview.jpg` are written again under
+  `file:<id>/` with no expiry, and the order goes to `paid` and into the queue.
+- **Order record** (KV `order:<id>`): as now, plus `state`, `history` (state, when, note) and `slant` (below).
+  It never holds the address or email. Those stay in Stripe.
 
-### Recipes
+### Queue endpoints (the routine's; the queue token)
 
-`<recipe> <order folder>` writes `out/`:
+| Call | Does |
+| --- | --- |
+| `GET /api/queue` | Orders not yet `shipped`, `cancelled` or `purged`: id, product, state, paid date |
+| `GET /api/orders/<id>` | The record (exists) |
+| `GET /api/orders/<id>/<file>` | `design.json`, `photo.jpg`, `drawing.png`, `preview.jpg`, or an `out/` file (exists) |
+| `PUT /api/orders/<id>/out/<name>` | Stores `proof.png` (at most 5 MB), `base.stl`, `stencil.stl` (at most 25 MB), `build.json` |
+| `PATCH /api/orders/<id>` | `{"state", "note"}`, only along the arrows in "States" below |
+| `POST /api/orders/<id>/slant` | Drafts the Slant order (below) |
+| `GET /api/orders/<id>/contact` | The customer's name and email from Stripe, only for a shipping email, and only once shipped |
+| `GET /api/orders/<id>/link/proof.png` | A signed link to the proof that lasts seven days, for RJ's email |
+| `GET /api/stats` | Drawings and estimated dollars today and this month, orders this week, the switches |
+| `DELETE /api/orders/<id>` | Purge (exists). Now also the `out/` files and the drawing's files. The record stays, without the design's photo or drawing references |
 
-- the parts (STL or 3MF), posed for printing;
-- `sticker.png` and `cut.svg` at the same scale, for Print Then Cut (cutouts, pop-outs);
-- `print.pdf`, the background print (pop-outs);
-- `proof.png`, what the finished piece should look like, to compare with the customer's `preview.jpg`;
-- `sheet.md`: filaments, settings, time and grams, the parts list, assembly.
+**States:** `paid → built → drafted → processed → shipped → purged`. `needs-rj` can come from any state before
+`processed`, and goes back to `built` once RJ has sorted it out. `cancelled` follows a full refund.
 
-The same folder always gives the same files. The configurator and the recipe share the tone curve, the
-filament optics and the customer's mask, so what the customer approved is what gets made. A recipe may
-smooth an outline or drop specks too small to print. It never changes what's included, and its proof
-shows any cleanup.
+### Slant drafts (the Worker)
 
-The recipes live in lithophane-maker, beside the engine they call. It already has the forms, the tone
-curve, background removal (IS-Net), outlines from a mask, three product recipes, slicing estimates and
-Slant quotes.
+`POST /api/orders/<id>/slant` with
+`{"items": [{"fileId", "filamentId", "part": "base"}, {"fileId", "filamentId", "part": "stencil"}]}`.
 
-## Choices made in this plan, and why
+1. The order must be `built`. If it already has `slant.state`, the call returns what's recorded and does
+   nothing else, so a retry can never make a second draft.
+2. The Worker writes `slant.state = "drafting"`, reads the shipping name and address from the order's Checkout
+   Session, and drafts at Slant: the two print items, `orders@robotlantern.com` as the email, and
+   `SLANT_PLATFORM_ID`.
+3. It records `slant: {orderId, printingCost, deliveryCost, drafted}`, moves the order to `drafted`, and
+   returns that.
+4. **In the sandbox, it never calls Slant.** It returns the request it would have sent, marked `dryRun`.
+   Slant can't cancel or delete a draft (CHARGES.md).
 
-- **The Worker builds Checkout Sessions; photo products don't use Payment Links.** Each order carries its
-  own photo and choices, options change the price, and a lamp order can carry several photos. Payment
-  Links fit none of that. They stay for fixed products.
-- **Prices come from the product files**, bundled into the Worker when it's deployed. The browser shows a
-  price, but never sets one.
-- **Uploads go to Workers KV on the free plan** (NOW.md decision 5). Nothing on the free plan can bill.
-  Values can be up to 25 MiB, with 1 GB in all and 1,000 writes a day, which is far more than launch
-  needs. Unpaid uploads expire after two days on their own. R2 would need a card on file
-  (docs/CHARGES.md).
-- **The Worker streams photos straight into KV.** On the free plan a request gets 10 ms of CPU. Waiting
-  on KV doesn't count, so uploads are raw `PUT`s, one file per request, and never parsed forms. An order
-  is one small `POST`, then the uploads, then a `POST` that checks the files are all there and returns
-  Stripe's checkout URL.
-- **No geometry in the Worker.** A job peaks at 1–2.4 GB against a Worker's 128 MB, and the meshing
-  libraries don't run there (lithophane-maker's report). Recipes run on Sarcean.
-- **The subject picker runs in the browser,** so a photo leaves the phone only when someone orders, and
-  there's no server to pay for. The candidates are SlimSAM on ONNX Runtime Web (Apache 2.0) and
-  MediaPipe's interactive segmenter (check its model's licence). The rules: self-hosted, because the
-  privacy page promises no requests to other sites; at most 25 MiB a file; loaded only at the subject
-  step; usable on a three-year-old phone. Not usable: BRIA's RMBG (non-commercial licence) and
-  @imgly/background-removal (AGPL).
-- **The API is at `robotlantern.com/api/` after cutover**, a route to the `shop` Worker, so pages talk
-  only to their own site. Until then it's `shop.robotlantern.workers.dev`, which allows the preview hosts
-  by CORS.
-- **Capacity:** a count per product per week in KV, checked against `weeklyCap`.
-- **Abuse:** sizes and file types are checked, and unpaid uploads expire. There's no CAPTCHA, which would
-  load another site's script. Revisit if anyone abuses it.
+Nothing in our code processes a Slant order. Only RJ does, in Slant's dashboard.
 
-## Fulfillment
+### The recipe (`tools/ornament/`)
 
-- **`self`**, every photo product at launch (NOW.md decision 3). Prints go through 3d-modeling's print flow
-  (`docs/print-help.md` there), each recorded in printdb with the order ID. Photos and stickers come off
-  RJ's printer and are cut on the Cricut. RJ ships them. The listing promises a handling time he can
-  keep while working in fits and starts.
-- **`slant`**, later and per product, after one paid test order on RJ's go. The queue uploads the
-  recipe's STL, quotes it, and creates the Slant draft only for a real, checked order. RJ processes it
-  in Slant's dashboard, which is when Slant charges. **A Slant draft can't be cancelled or deleted, so
-  nothing ever drafts in a test.** The code has a dry run that builds the request and stops, and the queue
-  records "order → Slant draft" before drafting, so a retry can't make a second one. Slant ships parts
-  and components loose and does no assembly, so only a product the customer can put together goes there.
-- **`gelato`**: fixed products, as now (docs/SHOP.md).
+`python3 tools/ornament/make.py <order folder>` reads `design.json` and `drawing.png` and writes `out/`:
 
-## Stripe
+- `base.stl` and `stencil.stl`, posed for printing: the base face up, the stencil face down with its pegs up.
+- `proof.png`, the builder's preview in the order's colours, with the tag.
+- `build.json`, the builder's report and the checks: the stencil is one piece, both meshes are watertight, no
+  bridge is over 3 mm, the tag text fits, and no warnings.
 
-- Sandbox first: the Worker uses `STRIPE_SECRET_KEY_TEST`, as it does now.
-- Live: a restricted key RJ creates, allowed to write Checkout Sessions and to read their line items and
-  products (the build session confirms the exact set). It replaces the read-only key planned in
-  docs/SHOP.md, "Launch".
-- Each session has US shipping addresses only, the product's flat shipping, Stripe Tax on with the
-  product's tax code, and the order ID as `client_reference_id` and in `metadata`.
-- Turn on Stripe's email receipts (free), and the payment email to RJ, which is how he hears of an order.
-- `python3 tools/orders/queue.py pull` reads completed sessions with the agents' Stripe key, then fetches
-  each order's files from the Worker with a token of its own.
+It exits non-zero if a check fails. The same folder always gives the same files. The builder may drop specks,
+thicken thin lines and add bridges, and the proof shows that. It never adds or removes a feature the customer
+saw.
 
-## Privacy and retention (NOW.md decision 6)
+`tools/ornament/slant.py upload|quote <stl> --filament <id>` talks to Slant directly with `SLANT_API_KEY`,
+or with no key where the cloud's proxy adds it (PRODUCTION.md). It has no draft or process command.
 
-- Photos are personal data, often of children. Only RJ, and the agents working his queue, open them.
-- Unpaid uploads expire after two days. Photos and everything made from them (masks, STLs, stickers) are
-  deleted from KV and from Sarcean 60 days after the order ships (`queue.py purge`). Order records without
-  photos stay seven years, for tax.
-- They never go in Git, never into marketing without the customer's written OK, and nowhere except
-  Slant, which gets the STL for a product it makes.
-- The customer confirms they have the right to use the photo. RJ may refuse an order (someone else's
-  artwork, a trademark, anything unlawful) and refund it.
-- The privacy page and the terms say all this (NOW.md, step 12). The privacy page also says the following,
-  so keep it true: a cancelled order's photos go 60 days after it's cancelled, and a photo emailed in goes
-  from the mailbox with the rest; order pages save nothing in the browser and load nothing from other
-  sites; Cloudflare shows us the order Worker's logs for three days, so the Worker logs IDs, never order
-  contents; Slant gets only the STL and the name and address to ship to (put orders@ in its email field);
-  and when an agent looks at a photo, Anthropic or OpenAI processes it.
+### The page
+
+- Photo in, turned upright, then a square crop with drag and pinch. The hint is: fill the square with the
+  head.
+- One button makes the drawing, with a short wait message. The page then shows the tries as thumbnails, says
+  how many are left, and lets the customer pick one.
+- **The preview** (`stencil-ornament.js`) copies the builder's geometry, so the page and the print agree:
+  - Ink is any pixel more than 120 (RGB distance) from white.
+  - Crop to the ink with padding, and scale so the ink is 80 mm wide.
+  - The silhouette is the ink with its holes filled. The base is the silhouette grown by the 2 mm rim, in the
+    base colour.
+  - The stencil is the ink, in the stencil colour.
+  - The 10 mm ring, with its 4 mm hole, sits at the top on the outline's centre line.
+  - The tag is 17 mm tall and 0.8 of the art's width (50–72 mm), with the text cut through in the base colour.
+    The text is fitted the way the picker and `nametag.fit` do it.
+  - A line under the preview says small details are tidied for printing.
+- The picker comes from the scratch folder (`picker/`): colours, suggested pairs, swap, the close-colours note,
+  the name tag and the five fonts. The fonts load from `public/shop/fonts/`, never Google: the privacy page
+  promises no requests to other sites.
+- Order: the price comes from the product file. The page renders `preview.jpg` (1024 px) from the canvas,
+  then sends the order, uploads the preview and goes to checkout. If checkout reports a missing file, the page
+  sends it again and retries.
+- Nothing is stored in the browser. Tap targets are at least 44 px, it works at 375 px, and the selection
+  ring doesn't rely on colour alone.
+
+## Choices made, and why
+
+- **The drawing is made before payment**, because the customer needs to see their ornament to buy it. The caps
+  and the OpenAI balance limit what previews from people who don't buy can cost.
+- **One red-on-white drawing serves every colour pair.** The ink only says what is stencil, and the page and
+  the builder recolour it.
+- **The Worker drafts at Slant, not the routine.** The address goes from Stripe to Slant inside Cloudflare, so
+  the agent never sees it. It's also the single writer, which makes the "never a second draft" check
+  reliable.
+- **No geometry in the Worker.** Meshing needs Python libraries and more memory than a Worker has, so the
+  routine does it in the cloud.
+- **Uploads stream into KV, never parsed** (10 ms of CPU on the free plan), as before.
+- **The API is at `robotlantern.com/api/` after cutover**, a route to the `shop` Worker. Until then it's
+  `shop.robotlantern.workers.dev`, which allows the preview hosts by CORS. The host sets the mode:
+  robotlantern.com is live, workers.dev is the sandbox.
+- **Abuse:** sizes, types and caps are checked, and unpaid files expire. There's no CAPTCHA, which would load
+  another site's script. Revisit if someone abuses it.
+
+## Privacy and retention (decision 6)
+
+- Photos are personal data, often of children. The people and services that see them:
+  - OpenAI, which makes the drawing.
+  - RJ, and the agents that run his orders. Anthropic processes what an agent looks at.
+  - Slant, which sees the STLs and never the photo.
+- Unpaid photos and drawings expire after two days. Photos and everything made from them are deleted from KV
+  60 days after the order ships or is cancelled. The order record, without photos, stays for seven years.
+- OpenAI keeps API inputs and outputs for up to 30 days to monitor abuse, and doesn't train on them by default
+  (check its current policy when writing the privacy page).
+- The privacy page says all this (NOW.md step 11). Keep it true when anything here changes.
+- Logs carry IDs, never order contents. Cloudflare shows us the Worker's logs for three days.
 
 ## Testing
 
-- `python3 tools/orders/test_order.py` places a photo order end to end in the sandbox: it uploads a drawn
-  test picture (never anyone's photo), checks the browser's price is ignored and unpaid files expire in two
-  days, pays with the test card, checks the webhook (and a resend, and a bad signature), then pulls, lists
-  and purges the order. It refuses a live key. Passed in full 2026-11-13. Each run uses about 20 of KV's
-  1,000 free writes a day.
-- Workers KV can cache a "not found" for up to a minute, so the configurator resends a missing file and
-  retries checkout rather than failing.
-- Stripe's sandbox and test cards for every checkout, and a separate KV namespace for test orders.
-- Recipes run on fixture photos (lithophane-maker `fixtures/photos/`, never committed).
-- Slant: dry runs only. Gelato: drafts only, as now.
-
-## Later
-
-- Slant from the queue, with its signed webhook for shipping updates.
-- Shipping emails with tracking. A label service may email tracking to the customer (check when choosing
-  one). Our own email waits for Cloudflare Email Routing after cutover.
-- Proofs the customer approves, if refunds show they're needed: authorize at checkout, capture on
-  approval. Card authorizations last about seven days (check before relying on it), which is tight when
-  working in fits and starts.
-- A queue Samwise drains, then the engine in Cloudflare Containers (lithophane-maker's report, phases 2
-  and 3).
+- `python3 tools/orders/test_order.py` places a photo order end to end in the sandbox. It uses a drawn test
+  picture, never anyone's photo, and refuses a live key. Step 9 extends it to drawings, with OpenAI stubbed
+  unless `--real-drawing` is given. A real drawing costs money and counts against the cap.
+- Stripe's sandbox and test cards for every checkout, and the sandbox KV namespace for test orders.
+- Slant: upload and quote freely. Drafts only as dry runs in tests.
+- The recipe: a drawing made for the test, in Git; family drawings only locally.

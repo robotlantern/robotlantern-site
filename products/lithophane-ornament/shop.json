@@ -3,7 +3,7 @@
   "description": "A white ornament with your photo in its wall. It looks like plain white plastic until the tree lights come on, and then the picture appears. For LED string lights.",
   "price": 32,
   "shipping": 6,
-  "provisional": "Sandbox placeholders until feasibility (NOW.md, step 14) sets the real price, shipping, options and weekly cap.",
+  "provisional": "Sandbox placeholders until feasibility (the 2026-11-10 plan, step 14, in docs/LOG.md) sets the real price, shipping, options and weekly cap.",
   "fulfillment": "self",
   "photo": {
     "minEdge": 1200,
