@@ -88,8 +88,8 @@ MeltBot.
     Gmail drafts that RJ sends himself until he says otherwise.
 24. **Soft launch without asking again** (confirmed by RJ, 2026-11-19). Once steps 14 and 16's checks pass, an agent switches
     robotlantern.com to the new site. Nothing is announced until RJ's own order (step 17) works.
-25. **RJ, after the heads are printed: people at launch.** Yes if the three heads look right assembled and
-    those three people are happy to be shown. Then the page offers "pet or person".
+25. **People at launch: yes** (RJ, 2026-11-19: the heads are proven). The page offers "pet or person". Photos of
+    the three test people go in marketing only with their OK.
 
 26. **The tooling is for any subject, and an order can hold several ornaments** (RJ, 2026-11-19). The builder
     doesn't care what the drawing shows, so a church or school for its minister or principal, or a family's
@@ -306,6 +306,20 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-19 (evening): RJ reports the pet and person heads are proven. Decision 25 is settled: people are
+  a launch subject, and photos of the three people still need their OK before they appear in marketing. RJ
+  asked for four test sessions, run one at a time by the orchestrating session, which logs its decisions here:
+  1. **Buildings** (a church, a school, a hospital, then 12 photos in all). It reports first.
+  2. **Agent-friendly ordering**: instructions for LLM agents, and agentic checkout. It runs second, not
+     fourth, because RJ called it the #1 thing to settle today and it shapes the Worker's contracts before
+     steps 9 and 10 build them.
+  3. **Logos**: the Davisson Brothers Band cap logo, traced from vectors with no inference, and the inlay
+     option. Local tests only; not in the launch.
+  4. **Objects and gag gifts**: a list, and tests of the best ideas, as possible pre-made ornaments.
+
+  No session merges into `rebuild` or changes the launch steps on its own. Each reports, and the orchestrator
+  folds the results into decisions and steps 9–11.
 
 - 2026-11-19: Slant costs measured, at RJ's request, with 15 drafts of the test order (docs/CHARGES.md).
   Shipping depends a little on zone ($5.73 to Idaho, $6.93 to WV, $8.95 to Hawaii), and it barely grows with
