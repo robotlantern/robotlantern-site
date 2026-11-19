@@ -248,10 +248,32 @@ Any time, in any order:
 - Large files as the site grows: video on YouTube; big downloads on Cloudflare R2 behind a subdomain
   (needs a card on file, so add it to docs/CHARGES.md first).
 - The mosaic pet ornament engine, `tools/cutout/`, superseded and kept for reference (docs/LOG.md).
+- Secret Santa snowflakes: a one-colour QR ornament that tells each person who they're buying for,
+  generated from a web matcher (`tools/qr-ornament/`, log 2026-11-19). Next is one print of each
+  variant, scanned on an iPhone and an Android phone.
 
 ## Log
 
 Entries before 2026-11-17 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-19: Secret Santa snowflake, a feasibility prototype (`tools/qr-ornament/`; test files in
+  `.private/products/qr-snowflake/print-test/`). The message is plain text in a QR code turned 45°, with
+  pixel arms, a hanging loop, and the giver's name and year debossed on the back of a tag. Two
+  one-colour variants, both a single watertight body on Meltbot's profile:
+  - **Stencil:** a white plate with holes, scanned lying on something dark. A 42-character message with
+    2 mm modules came out as one piece: 68 corner discs and 4 bridges (the finder and alignment rings).
+    It prints in 32 min and uses 8.6 g at 1.6 mm thick.
+  - **Relief:** a 0.6 mm backing with raised modules and a 3 mm rim, scanned held up to a light. It
+    prints in 41 min and uses 14.6 g.
+
+  Simulated photos run through zbar and OpenCV, 27 conditions each (a perfect print as control: 25/27):
+  - Stencil at 1.2–1.6 mm: 18–23/27. Deep holes fail at 40° tilt.
+  - Relief: 20–23/27 if white PLA scatters little, 10–16 at moderate scatter, 0 at heavy scatter, and
+    0 front-lit.
+  - 1.5 mm modules (74 mm wide instead of 99 mm) score a little lower on both.
+
+  How much light white PLA lets through is a guess until one print is measured. Messages over about
+  42 characters step up a QR size: 60 characters is version 4, 82 is version 5.
 
 - 2026-11-18: People as head ornaments, through the pet stencil brief (scratch folder `people-01/`). A
   three-person round bauble was too fine at 80 mm. Heads work: four family photos, three tries each, all
