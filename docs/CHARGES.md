@@ -24,8 +24,11 @@ and Shopify on 2026-09-23 (see [Sources](#sources)). Slant's orders were checked
   2026-10-01 it runs the site's copy (`site`) and the order Worker (`shop`) on the free
   `robotlantern.workers.dev` subdomain (docs/HOSTING.md, docs/SHOP.md).
 - **Slant 3D:** account and API key (v2), no orders. One platform exists ("Robot Lantern printdb",
-  created 2026-10-02 with RJ's OK), and STLs have been uploaded for free quotes. One unpaid test draft
-  stays on the account for good, because Slant can't cancel or delete a draft.
+  created 2026-10-02 with RJ's OK), and STLs have been uploaded for free quotes. Three unpaid test drafts
+  stay on the account for good: one from 2026-10-02, and two from 2026-11-19 that RJ asked for, to measure
+  shipping. Re-checked 2026-11-19: the October
+  draft was still there after 47 days, and `DELETE` still answers "Can not cancel a draft order", so drafts
+  neither expire nor delete.
 - **QPMN:** account, no orders. Its API docs come from QPMN on request.
 - **Photo products** (docs/ORDERS.md): uploads go to Workers KV on the free plan (NOW.md
   decision 5). The stencil ornament adds two costs: OpenAI drawings, which are capped, and the Slant order
@@ -37,14 +40,17 @@ and Shopify on 2026-09-23 (see [Sources](#sources)). Slant's orders were checked
 
 | Cost | Amount | When |
 | --- | --- | --- |
-| Slant: both parts, with a name tag | $3.56–4.01 (quotes for ten pets) | RJ processes the draft |
-| Slant: shipping one small box | unknown until the first order; one data point was $10.15 for 684 g | the same |
+| Slant: both parts, with a name tag | $3.56–4.02 (quotes for ten pets and the test cat); no discount for quantity | RJ processes the draft |
+| Slant: shipping to West Virginia | $6.93 for one ornament, $7.35 for three (about 21¢ for each extra ornament) | the same |
 | Stripe | 2.9% + 30¢, so about $1.14 on $29 | each payment |
 | Stripe Tax | 0.5% of West Virginia orders only | each WV payment |
 | OpenAI drawings | about $0.05–0.25 each, up to 3 per photo, including people who don't buy | each drawing |
 
-At $29 with shipping included (decision 20), that leaves roughly $12–17 an order, less the drawings of people
-who don't buy. The acceptance order (NOW.md step 17) gives the real shipping figure.
+Measured 2026-11-19 with two drafts of the test order (`tools/ornament/fixtures/test-order`: white base, red
+stencil, name tag) to RJ's address: one ornament costs **$10.95** at Slant ($4.02 parts + $6.93 shipping), and
+three in one order cost **$19.41** ($12.06 + $7.35), or $6.47 each. Each extra ornament in an order adds about
+$4.23. Shipping is mostly a fixed charge per box. The drafts were from Idaho to West Virginia, which is a long
+way, so other US addresses probably cost about the same or less. Add Stripe's fee and the drawings.
 
 ## Stripe: actions that cost money
 
@@ -149,8 +155,8 @@ billed separately. Don't turn on paid extra usage for them. An idle `rl-orders` 
 | --- | --- |
 | Northwest Registered Agent address as the shop's public address | Check the plan: mail handling or forwarding may be a paid add-on |
 | An email service for shipping notices (for example Resend or Postmark) | Not chosen. Check its free tier before signing up. |
-| Slant 3D: processing an order (`POST /orders/{id}`, or in the dashboard) | Charged then: parts, components and shipping. Pricing seen so far is about $1.14 a part plus $0.0426 a gram, and shipping appears only on an order (one data point: $10.15 for 684 g to West Virginia). Only RJ processes orders |
-| Slant 3D: drafting an order (`POST /orders`) | Free, but **permanent**: Slant can't cancel or delete a draft. Draft only for a real, checked order, and never in a test (docs/ORDERS.md) |
+| Slant 3D: processing an order (`POST /orders/{id}`, or in the dashboard) | Charged then: parts, components and shipping. Pricing seen so far is about $1.14 a part plus $0.0426 a gram, and shipping appears only on an order (to West Virginia: $6.93 for one ornament, $7.35 for three, $10.15 for 684 g). Only RJ processes orders |
+| Slant 3D: drafting an order (`POST /orders`) | Free, but **permanent**: Slant can't cancel or delete a draft, and drafts don't expire (re-checked 2026-11-19). Draft only for a real, checked order, and never in a test unless RJ asks (docs/ORDERS.md) |
 | Slant 3D: uploads, quotes (`POST /files/{id}/estimate`), filaments, components, platforms | Free. Quotes go through printdb's `slant.py`, which uploads each STL once |
 | Supplies for prototypes and stock (white filament, frames, LEDs, puck lights, tealights, sticker paper, boxes) | RJ buys them. Agents list options with prices first |
 | Cricut Design Space, for Print Then Cut | Not checked: confirm Print Then Cut needs no paid subscription before the first cut |

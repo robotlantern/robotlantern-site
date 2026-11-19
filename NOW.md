@@ -187,8 +187,8 @@ step off (`[x]`) when it's done.
     - Start from `products/cutout-ornament/market-research.md`. Re-check the prices it took from search snippets, and
       add current Christmas 2026 prices for custom pet ornaments that compete for the same buyer: printed-photo,
       3D-printed, laser-cut and wood, on Etsy and elsewhere, including their shipping.
-    - Our cost floor per ornament (docs/CHARGES.md): Slant parts, shipping (an estimate until step 17),
-      Stripe, and drawings including those for people who don't buy. Also, where a low-margin price lands
+    - Our cost floor per ornament (docs/CHARGES.md): Slant parts and shipping, measured 2026-11-19 ($10.95 for one
+      ornament, $19.41 for three in one box), Stripe, and drawings including those for people who don't buy. Also, where a low-margin price lands
       against the field.
     - Volume promotions:
       - several ornaments in one order sharing one Slant shipment (this would change steps 9 and 10's contract
@@ -288,6 +288,10 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-19: Slant shipping measured, at RJ's request, with two drafts of the test order to his address.
+  One ornament costs $4.02 + $6.93 shipping. Three in one order cost $12.06 + $7.35. Drafts still can't be
+  deleted, and the October one hadn't expired after 47 days, so no more drafts were made (docs/CHARGES.md).
 
 - 2026-11-19: RJ confirmed decisions 21–24 and asked for price research before the price is set (step 19,
   decision 20). Step 7 started in its own session at medium effort. Steps 9 and 10 wait for RJ's
