@@ -70,21 +70,23 @@ MeltBot.
     approves is the proof. The routine checks the build against it, and anything that doesn't match goes to
     RJ ("Needs you") rather than to Slant.
 20. **Defaults the agents have taken** (2026-11-19; RJ changes any of them by saying so):
-    - **Price:** $29 with US shipping included, name tag included.
+    - **Price: open, pending step 19's research** (RJ, 2026-11-19). RJ wants margins as low as is sustainable,
+      to sell volume in a crowded space. $29 with US shipping and the name tag included is a placeholder for
+      building and testing until step 19 sets the price and any volume promotion.
     - **Orders:** a weekly cap of 25, and "order by Dec 10 for Christmas" until the acceptance order
       shows Slant's real timing.
     - **Remake promise:** a free remake or a refund if it arrives broken or doesn't match the preview.
     - **Who's in it:** pets at launch. People are added once decision 25 says so.
-21. **RJ to confirm: image spending.** $25 of prepaid credit at OpenAI, with auto-recharge off, so the balance
+21. **Image spending** (confirmed by RJ, 2026-11-19). $25 of prepaid credit at OpenAI, with auto-recharge off, so the balance
     is a hard cap. Our Worker also stops drawings at an estimated $10 a day, 3 tries per photo and 6
     drawings per visitor a day.
-22. **RJ to confirm: put `rebuild` on GitHub.** After the privacy pass (step 8), push `rebuild` to the public
+22. **Put `rebuild` on GitHub** (confirmed by RJ, 2026-11-19). After the privacy pass (step 8), push `rebuild` to the public
     GitHub repo, because cloud routines can only run code from GitHub. Until now only `main` went there
     (docs/PREVIEW.md).
-23. **RJ to confirm: two cloud routines that email you.** `rl-orders` runs hourly from 7:00 to 23:00 and
+23. **Two cloud routines that email RJ** (confirmed by RJ, 2026-11-19). `rl-orders` runs hourly from 7:00 to 23:00 and
     `rl-daily` once a day (docs/PRODUCTION.md). They email RJ and no one else. Customer shipping emails are
     Gmail drafts that RJ sends himself until he says otherwise.
-24. **RJ to confirm: soft launch without asking again.** Once steps 14 and 16's checks pass, an agent switches
+24. **Soft launch without asking again** (confirmed by RJ, 2026-11-19). Once steps 14 and 16's checks pass, an agent switches
     robotlantern.com to the new site. Nothing is announced until RJ's own order (step 17) works.
 25. **RJ, after the heads are printed: people at launch.** Yes if the three heads look right assembled and
     those three people are happy to be shown. Then the page offers "pet or person".
@@ -98,7 +100,7 @@ step off (`[x]`) when it's done.
 
 ### Tonight: RJ's setup (each one unblocks agents; any order)
 
-1. [ ] **RJ** · Answer decisions 21–24 in one reply ("take the recommendations" covers them all).
+1. [x] **RJ** · Answer decisions 21–24 in one reply: all four confirmed (2026-11-19).
 2. [ ] **RJ** · Cloudflare ([docs/HOSTING.md](docs/HOSTING.md), "Cutover"):
    - In the dashboard, add robotlantern.com on the Free plan. Stop when it shows two nameservers, and don't
      change anything at the registrar yet.
@@ -164,7 +166,7 @@ step off (`[x]`) when it's done.
     - The order button, the thank-you page, and the shop page linking here.
 
     Check it at 375 px on the preview host, with a drawing made for the test.
-11. [ ] **Agent** · After 1: Words and pages:
+11. [ ] **Agent** · After 1 and 19: Words and pages:
     - Privacy, terms, shipping and returns for this product: OpenAI makes the drawing, Slant prints and
       ships, the remake promise, and how long things take.
     - The product's copy and FAQ, and `shop.json` with decision 20's price and options.
@@ -179,6 +181,23 @@ step off (`[x]`) when it's done.
 13. [ ] **RJ** · After 12: At DomainRegistry.com, replace the nameservers with Cloudflare's two. Mail and the
     old site keep working while the change spreads. Cloudflare emails you when the site is active, so tell an
     agent then.
+
+19. [ ] **Agent** · Price research (RJ, 2026-11-19). RJ's instinct is margins as low as sustainable, to sell volume
+    in a crowded space where the idea alone doesn't show how competitive we are.
+    - Start from `products/cutout-ornament/market-research.md`. Re-check the prices it took from search snippets, and
+      add current Christmas 2026 prices for custom pet ornaments that compete for the same buyer: printed-photo,
+      3D-printed, laser-cut and wood, on Etsy and elsewhere, including their shipping.
+    - Our cost floor per ornament (docs/CHARGES.md): Slant parts, shipping (an estimate until step 17),
+      Stripe, and drawings including those for people who don't buy. Also, where a low-margin price lands
+      against the field.
+    - Volume promotions:
+      - several ornaments in one order sharing one Slant shipment (this would change steps 9 and 10's contract
+        from one design per order);
+      - a code for a second order (Stripe promotion codes are free);
+      - a launch price.
+      Note which of these launch can carry without new build work.
+    - Ends with a recommended price and promotion written into decision 20 and `products/cutout-ornament/`, for
+      RJ's one-line yes. Steps 11 and 16 use it.
 
 ### Integrate, launch, accept
 
@@ -269,6 +288,10 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-19: RJ confirmed decisions 21–24 and asked for price research before the price is set (step 19,
+  decision 20). Step 7 started in its own session at medium effort. Steps 9 and 10 wait for RJ's
+  orchestration rules.
 
 - 2026-11-19: **The launch plan.** RJ set the target: launch on 11-20 with the ornament, working end to
   end. Customer drawings come from GPT Image's API with capped spending. Production runs in Claude cloud
