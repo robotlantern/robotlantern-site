@@ -24,8 +24,8 @@ and Shopify on 2026-09-23 (see [Sources](#sources)). Slant's orders were checked
   2026-10-01 it runs the site's copy (`site`) and the order Worker (`shop`) on the free
   `robotlantern.workers.dev` subdomain (docs/HOSTING.md, docs/SHOP.md).
 - **Slant 3D:** account and API key (v2), no orders. One platform exists ("Robot Lantern printdb",
-  created 2026-10-02 with RJ's OK), and STLs have been uploaded for free quotes. Three unpaid test drafts
-  stay on the account for good: one from 2026-10-02, and two from 2026-11-19 that RJ asked for, to measure
+  created 2026-10-02 with RJ's OK), and STLs have been uploaded for free quotes. Sixteen unpaid test drafts
+  stay on the account for good: one from 2026-10-02, and fifteen from 2026-11-19 that RJ asked for, to measure
   shipping. Re-checked 2026-11-19: the October
   draft was still there after 47 days, and `DELETE` still answers "Can not cancel a draft order", so drafts
   neither expire nor delete.
@@ -36,21 +36,42 @@ and Shopify on 2026-09-23 (see [Sources](#sources)). Slant's orders were checked
 - **OpenAI API:** from NOW.md step 3, a project with prepaid credit and auto-recharge off (decision 21).
   No key existed before 2026-11-19.
 
-## The stencil ornament, per order (estimates, 2026-11-19)
+## The stencil ornament, per order (measured 2026-11-19)
 
 | Cost | Amount | When |
 | --- | --- | --- |
-| Slant: both parts, with a name tag | $3.56–4.02 (quotes for ten pets and the test cat); no discount for quantity | RJ processes the draft |
-| Slant: shipping to West Virginia | $6.93 for one ornament, $7.35 for three (about 21¢ for each extra ornament) | the same |
-| Stripe | 2.9% + 30¢, so about $1.14 on $29 | each payment |
+| Slant: both parts, with a name tag | $3.56–4.02 an ornament (quotes for ten pets and the test cat) | RJ processes the draft |
+| Slant: shipping | $5.73–6.93 for one ornament in the lower 48, $8.41 to Alaska, $8.95 to Hawaii; more ornaments in a box add little (below) | the same |
+| Stripe | 2.9% + 30¢ (about $1.14 on $29) | each payment |
 | Stripe Tax | 0.5% of West Virginia orders only | each WV payment |
 | OpenAI drawings | about $0.05–0.25 each, up to 3 per photo, including people who don't buy | each drawing |
 
-Measured 2026-11-19 with two drafts of the test order (`tools/ornament/fixtures/test-order`: white base, red
-stencil, name tag) to RJ's address: one ornament costs **$10.95** at Slant ($4.02 parts + $6.93 shipping), and
-three in one order cost **$19.41** ($12.06 + $7.35), or $6.47 each. Each extra ornament in an order adds about
-$4.23. Shipping is mostly a fixed charge per box. The drafts were from Idaho to West Virginia, which is a long
-way, so other US addresses probably cost about the same or less. Add Stripe's fee and the drawings.
+**How it was measured.** Slant shows shipping only on a draft order, and drafts are permanent (below). At RJ's
+request, 15 free drafts were made of the test order (`tools/ornament/fixtures/test-order`: white base, red
+stencil, name tag; 39 g an ornament by Slant's weights). Single ornaments went to state capitols. The volume
+drafts went to RJ's address in West Virginia, the dearest lower-48 zone we tried. Slant's farm is in Idaho.
+
+**Parts don't get cheaper in volume.** Quotes at 1, 6, 12, 20, 50 and 100 all priced each part the same ($2.39
+base, $1.63 stencil). Twelve different designs cost exactly what twelve copies of one design cost. So any discount
+Slant offers isn't in the API's prices: NOW.md step 19's research brief asks about it.
+
+**Shipping by place** (one ornament): ID $5.73 · CA $5.95 · TX $6.06 · IL $6.06 · FL $6.85 · ME $6.85 ·
+WV $6.93 · AK $8.41 · HI $8.95.
+
+**Shipping by count** (to WV; it rises in weight steps and levels off):
+
+| Ornaments | Parts | Shipping | Slant total | Each |
+| --- | --- | --- | --- | --- |
+| 1 | $4.02 | $6.93 | $10.95 | $10.95 |
+| 3 | $12.06 | $7.35 | $19.41 | $6.47 |
+| 6 | $24.12 | $8.40 | $32.52 | $5.42 |
+| 12 (same or all different) | $48.24 | $10.15 | $58.39 | $4.87 |
+| 20 | $80.40 | $10.15 | $90.55 | $4.53 |
+| 50 | $201.00 | $11.95 | $212.95 | $4.26 |
+
+So the cheapest an ornament can be made is about $4.02 plus a share of one box, and a single ornament carries the
+most shipping by far. Add Stripe's fee and the drawings (at most 3 per design). Other zones will run up to about
+$1.20 less than WV in the lower 48. Alaska and Hawaii run about $1.50–2.00 more, probably more at volume.
 
 ## Stripe: actions that cost money
 
@@ -155,7 +176,7 @@ billed separately. Don't turn on paid extra usage for them. An idle `rl-orders` 
 | --- | --- |
 | Northwest Registered Agent address as the shop's public address | Check the plan: mail handling or forwarding may be a paid add-on |
 | An email service for shipping notices (for example Resend or Postmark) | Not chosen. Check its free tier before signing up. |
-| Slant 3D: processing an order (`POST /orders/{id}`, or in the dashboard) | Charged then: parts, components and shipping. Pricing seen so far is about $1.14 a part plus $0.0426 a gram, and shipping appears only on an order (to West Virginia: $6.93 for one ornament, $7.35 for three, $10.15 for 684 g). Only RJ processes orders |
+| Slant 3D: processing an order (`POST /orders/{id}`, or in the dashboard) | Charged then: parts, components and shipping. Pricing seen so far is about $1.14 a part plus $0.0426 a gram, and shipping appears only on an order (measured by place and count in "The stencil ornament, per order" above). Only RJ processes orders |
 | Slant 3D: drafting an order (`POST /orders`) | Free, but **permanent**: Slant can't cancel or delete a draft, and drafts don't expire (re-checked 2026-11-19). Draft only for a real, checked order, and never in a test unless RJ asks (docs/ORDERS.md) |
 | Slant 3D: uploads, quotes (`POST /files/{id}/estimate`), filaments, components, platforms | Free. Quotes go through printdb's `slant.py`, which uploads each STL once |
 | Supplies for prototypes and stock (white filament, frames, LEDs, puck lights, tealights, sticker paper, boxes) | RJ buys them. Agents list options with prices first |

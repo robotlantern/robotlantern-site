@@ -92,12 +92,12 @@ commit, not a routine edit. They check out `rebuild` until launch and `main` aft
 1. Run `/opt/rl/bin/python tools/orders/run.py status --live`. If it says there's nothing to do, stop. Most
    runs end here.
 2. For each `paid` order: `run.py build <id>`. This downloads the order to a temporary folder, runs
-   `tools/ornament/make.py`, stores `out/` with the order, and moves it to `built`, or to `needs-rj` with the
+   `tools/ornament/make.py` on each design's folder, stores each `out/` with the order, and moves it to `built`, or to `needs-rj` with the
    failed check.
-3. Look at `proof.png` next to `preview.jpg`. Check that it's the same subject and the same colours, the tag
+3. For each design, look at `proof.png` next to its `preview.jpg`. Check that it's the same subject and the same colours, the tag
    text is right, and nothing is missing, broken or new. If not, run `run.py flag <id> "<what's wrong>"` and
    go on to the next order.
-4. `run.py slant <id>`: uploads both STLs, quotes them, and asks the Worker for the draft. The order moves to
+4. `run.py slant <id>`: uploads every design's two STLs, quotes them, and asks the Worker for the draft. The order moves to
    `drafted`.
 5. Email RJ, one email per order (below).
 

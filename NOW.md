@@ -91,6 +91,16 @@ MeltBot.
 25. **RJ, after the heads are printed: people at launch.** Yes if the three heads look right assembled and
     those three people are happy to be shown. Then the page offers "pet or person".
 
+26. **The tooling is for any subject, and an order can hold several ornaments** (RJ, 2026-11-19). The builder
+    doesn't care what the drawing shows, so a church or school for its minister or principal, or a family's
+    childhood home, uses the same path as a pet. Launch can still offer pets only, but nothing in the Worker,
+    the page or the routine may assume pets or one ornament per order:
+    - Subjects are data. The product file lists them, each with its brief (`briefs/<subject>.md`), its
+      crop hint and its label, so adding "place" is a brief and a line, not a code change.
+    - An order is a list of designs, each with a quantity, shipped in one Slant box. Slant's shipping barely
+      grows with count (docs/CHARGES.md: one ornament costs $10.95 at Slant, a dozen $4.87 each), so volume
+      pricing comes from this. Step 19 sets the prices.
+
 RJ processes every Slant order himself (decision 14 stands). That's the one recurring cost.
 
 ## Road to launch
@@ -156,6 +166,8 @@ step off (`[x]`) when it's done.
    - The queue endpoints, signed proof links, and purge of the new files.
    - The Slant draft endpoint, which only ever dry-runs in the sandbox.
    - The live KV namespace, and the fix for `fulfil()` demanding a Gelato key on photo orders.
+   - Decision 26: subjects come from the product file, an order holds several designs with quantities, and
+     the price comes from the product file's tiers.
 
    Extend `tools/orders/test_order.py` with OpenAI stubbed, and make one real drawing call after step 3.
    Deploy to the sandbox Worker.
@@ -164,6 +176,8 @@ step off (`[x]`) when it's done.
     - The preview drawn in the browser from the drawing.
     - The scratch folder's picker (colours, pairs, swap, name tag, self-hosted fonts).
     - The order button, the thank-you page, and the shop page linking here.
+    - Decision 26: wording and crop hints come from the subject, so no "pet" is hard-coded; a quantity for
+      each design; "add another design" to the same order; the price shown from the product file's tiers.
 
     Check it at 375 px on the preview host, with a drawing made for the test.
 11. [ ] **Agent** · After 1 and 19: Words and pages:
@@ -187,12 +201,16 @@ step off (`[x]`) when it's done.
     - Start from `products/cutout-ornament/market-research.md`. Re-check the prices it took from search snippets, and
       add current Christmas 2026 prices for custom pet ornaments that compete for the same buyer: printed-photo,
       3D-printed, laser-cut and wood, on Etsy and elsewhere, including their shipping.
-    - Our cost floor per ornament (docs/CHARGES.md): Slant parts and shipping, measured 2026-11-19 ($10.95 for one
-      ornament, $19.41 for three in one box), Stripe, and drawings including those for people who don't buy. Also, where a low-margin price lands
+    - Our cost floor per ornament (docs/CHARGES.md): Slant parts and shipping, measured 2026-11-19 by place and by
+      count ($10.95 for one ornament to WV, $4.87 each for a dozen, $4.26 each for 50), Stripe, and drawings,
+      including those for people who don't buy. Slant's API quotes give no volume discount; research whether
+      Slant offers one any other way (its business or bulk program).
+    - Buyers beyond pet owners (decision 26): a church, school or club ordering a dozen or more of one design,
+      and families with several designs. Price the tiers for them too, even though launch offers pets only. Also, where a low-margin price lands
       against the field.
     - Volume promotions:
-      - several ornaments in one order sharing one Slant shipment (this would change steps 9 and 10's contract
-        from one design per order);
+      - several ornaments in one order sharing one Slant shipment (decision 26 builds this in; step 19 sets
+        the tiers);
       - a code for a second order (Stripe promotion codes are free);
       - a launch price.
       Note which of these launch can carry without new build work.
@@ -289,9 +307,11 @@ does other things.
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
 
-- 2026-11-19: Slant shipping measured, at RJ's request, with two drafts of the test order to his address.
-  One ornament costs $4.02 + $6.93 shipping. Three in one order cost $12.06 + $7.35. Drafts still can't be
-  deleted, and the October one hadn't expired after 47 days, so no more drafts were made (docs/CHARGES.md).
+- 2026-11-19: Slant costs measured, at RJ's request, with 15 drafts of the test order (docs/CHARGES.md).
+  Shipping depends a little on zone ($5.73 to Idaho, $6.93 to WV, $8.95 to Hawaii), and it barely grows with
+  count: one ornament costs $10.95 to WV, and a dozen cost $4.87 each. Parts have no volume discount. Drafts
+  still can't be deleted, and they don't expire. RJ will run a Codex research brief on what Slant keeps
+  (`.private/research/slant-api-brief.md`). New decision 26: any subject, several ornaments to an order.
 
 - 2026-11-19: RJ confirmed decisions 21–24 and asked for price research before the price is set (step 19,
   decision 20). Step 7 started in its own session at medium effort. Steps 9 and 10 wait for RJ's

@@ -13,7 +13,7 @@ here first and say so in NOW.md's log.
 ## The flow (stencil ornament)
 
 1. **Photo.** On `/shop/cutout-ornament/`, the browser turns the photo upright and the customer crops it square
-   on the head. The browser re-encodes the crop as a 1024 × 1024 JPEG. That drops the camera's hidden
+   as the subject's crop hint says (the head, for a pet). The browser re-encodes the crop as a 1024 × 1024 JPEG. That drops the camera's hidden
    details, GPS included. Nothing has left the phone yet.
 2. **Drawing.** "Make my drawing" sends that JPEG to the Worker (`POST /api/drawings`). The Worker checks the
    caps, keeps the photo in KV for two days, and asks OpenAI's GPT Image to redraw it as a red-on-white stencil
@@ -22,15 +22,16 @@ here first and say so in NOW.md's log.
 3. **Preview and choices.** The browser draws the ornament from the drawing in the customer's colours, with
    the name tag if they want one (see "The page"). The red in the drawing only marks what is stencil. Any two
    of Slant's colours can be chosen afterwards without a new drawing.
-4. **Order.** The page sends `design.json` (`POST /api/orders`), uploads `preview.jpg` (the picture the
-   customer approved), and asks for checkout. Stripe's page takes the payment, the address and the tax.
+4. **Order.** An order holds one or more designs, each with a quantity (decision 26); "add another design"
+   repeats steps 1–3. The page sends the designs (`POST /api/orders`), uploads each `preview.jpg` (the picture
+   the customer approved), and asks for checkout. Stripe's page takes the payment, the address and the tax.
 5. **Paid.** Stripe's webhook marks the order paid. The Worker keeps its photo, drawing and preview with no
    expiry, and adds it to the queue.
 6. **Made.** The `rl-orders` routine (PRODUCTION.md) does these in order:
-   - builds both STLs from the drawing with the order's choices,
+   - builds both STLs for each design from its drawing and choices,
    - checks them, and compares the proof with `preview.jpg`,
    - uploads them to Slant and gets a quote (both free),
-   - asks the Worker to draft the Slant order,
+   - asks the Worker to draft one Slant order for all of it, shipped in one box,
    - emails RJ.
 
    RJ processes the draft in Slant's dashboard, which is when Slant charges. Slant prints and ships.
@@ -65,8 +66,10 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 {
   "fulfillment": "slant",
   "photo": { "via": "drawing", "crop": "square", "edge": 1024 },
-  "drawing": { "model": "<GPT Image model>", "quality": "high", "size": "1024x1024",
-               "subjects": ["pet"], "triesPerPhoto": 3 },
+  "drawing": { "model": "<GPT Image model>", "quality": "high", "size": "1024x1024", "triesPerPhoto": 3,
+               "subjects": [ { "id": "pet", "label": "Pet", "brief": "briefs/pet.md",
+                               "crop": "Fit your pet's head and shoulders in the square" } ] },
+  "pricing": { "tiers": [ { "from": 1, "each": 29 } ], "maxPerOrder": 50, "maxDesigns": 12 },
   "options": [
     { "id": "base", "label": "Base", "choices": [ { "id": "white", "label": "White", "slant": "<filament id>" } ] },
     { "id": "stencil", "label": "Stencil", "choices": [ "…the same colours…" ] },
@@ -81,15 +84,20 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 
 - **Colours:** Slant's PLAs, from the picker's `colours.json` (scratch folder), each with Slant's filament id,
   its hex value and whether it's offered. Clear is off, because the tree shows through it.
-- **`drawing.subjects`:** add `"person"` when decision 25 says yes. `model` and `quality` live here, so a cheaper
-  model is a one-line change.
+- **`drawing.subjects`** (decision 26): each subject is data, with its brief, label and crop hint. Adding `person`
+  (decision 25) or `place` (a church, a school, a childhood home) is a brief and an entry here, not code. Nothing
+  in the Worker, page or routine names a subject. `model` and `quality` live here too, so a cheaper model is a
+  one-line change.
+- **`pricing`** (decision 26): each ornament in an order is priced by the tier its order's total count falls
+  in, and shipping is included. `maxPerOrder` and `maxDesigns` cap an order. Step 19 sets the numbers; the
+  values above are placeholders.
 - **Price** comes from the product file, which is bundled into the Worker at deploy. The browser shows a price
   but never sets one.
 
 ### Drawings API (the Worker)
 
 - **`POST /api/drawings`**: the body is the 1024 × 1024 JPEG (`image/jpeg`, at most 4 MB) with the header
-  `X-Subject: pet` (or `person` once allowed). The answer is `201 {"id", "n": 1, "left": 2, "image"}`, where
+  `X-Subject: <subject id>`, which has to be one of the product file's subjects. The answer is `201 {"id", "n": 1, "left": 2, "image"}`, where
   `image` is the drawing as base64 PNG and `id` is 12 characters from the order-ID alphabet.
 - **`POST /api/drawings/<id>/again`**: the next try with the same photo, until `left` is 0.
 - **Refusals:**
@@ -116,24 +124,32 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 
 ### Orders
 
-- **`POST /api/orders`** with `design.json`:
+- **`POST /api/orders`** with a list of designs (decision 26), each with a quantity:
 
   ```json
   { "product": "cutout-ornament",
-    "drawing": { "id": "k3v9q0m2x7ab", "n": 2 },
-    "options": { "base": "white", "stencil": "red", "tag": "yes", "font": "allerta" },
-    "text": "Tucker",
+    "designs": [
+      { "drawing": { "id": "k3v9q0m2x7ab", "n": 2 },
+        "options": { "base": "white", "stencil": "red", "tag": "yes", "font": "allerta" },
+        "text": "Tucker", "quantity": 1 },
+      { "drawing": { "id": "p8w2c4h6j1rt", "n": 1 },
+        "options": { "base": "white", "stencil": "matte-black", "tag": "no", "font": "allerta" },
+        "quantity": 12 } ],
     "price": 29,
     "version": "<the page's build id>" }
   ```
 
-  The Worker checks that the drawing exists and try `n` was made, and that each option is one of the product
-  file's choices. Base and stencil can't be the same colour. The text has to fit `text`: it's needed when the
-  tag is `yes` and dropped when it's `no`. The only file the order takes is `preview.jpg`. The photo and the
-  drawing come from the drawing record.
-- `PUT /api/orders/<id>/preview.jpg`, then `POST /api/orders/<id>/checkout`, as they work now.
-- **Paid** (webhook): `photo.jpg`, the chosen drawing as `drawing.png`, and `preview.jpg` are written again under
-  `file:<id>/` with no expiry, and the order goes to `paid` and into the queue.
+  `price` is the total the page showed. The Worker works it out again from `pricing` and refuses a mismatch.
+  For each design, the Worker checks that the drawing exists and try `n` was made, and that each option is one
+  of the product file's choices. Base and stencil can't be the same colour. The text has to fit `text`: it's
+  needed when the tag is `yes` and dropped when it's `no`. It also checks `maxPerOrder` and `maxDesigns`.
+  Designs are numbered `1`, `2`, … in list order.
+- `PUT /api/orders/<id>/<k>/preview.jpg` for each design `k`, then `POST /api/orders/<id>/checkout`. Checkout
+  has one line per design, with its quantity.
+- **Paid** (webhook): for each design `k`, `design.json` (the design as above, plus `product`), `photo.jpg`, the
+  chosen drawing as `drawing.png`, and `preview.jpg` are written again under `file:<id>/<k>/` with no expiry. The
+  order then goes to `paid` and into the queue. Each `file:<id>/<k>/` folder is exactly what
+  `tools/ornament/make.py` reads.
 - **Order record** (KV `order:<id>`): as now, plus `state`, `history` (state, when, note) and `slant` (below).
   It never holds the address or email. Those stay in Stripe.
 
@@ -143,8 +159,8 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 | --- | --- |
 | `GET /api/queue` | Orders not yet `shipped`, `cancelled` or `purged`: id, product, state, paid date |
 | `GET /api/orders/<id>` | The record (exists) |
-| `GET /api/orders/<id>/<file>` | `design.json`, `photo.jpg`, `drawing.png`, `preview.jpg`, or an `out/` file (exists) |
-| `PUT /api/orders/<id>/out/<name>` | Stores `proof.png` (at most 5 MB), `base.stl`, `stencil.stl` (at most 25 MB), `build.json` |
+| `GET /api/orders/<id>/<k>/<file>` | Design `k`'s `design.json`, `photo.jpg`, `drawing.png`, `preview.jpg`, or an `out/` file |
+| `PUT /api/orders/<id>/<k>/out/<name>` | Stores design `k`'s `proof.png` (at most 5 MB), `base.stl`, `stencil.stl` (at most 25 MB), `build.json` |
 | `PATCH /api/orders/<id>` | `{"state", "note"}`, only along the arrows in "States" below |
 | `POST /api/orders/<id>/slant` | Drafts the Slant order (below) |
 | `GET /api/orders/<id>/contact` | The customer's name and email from Stripe, only for a shipping email, and only once shipped |
@@ -158,12 +174,14 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 ### Slant drafts (the Worker)
 
 `POST /api/orders/<id>/slant` with
-`{"items": [{"fileId", "filamentId", "part": "base"}, {"fileId", "filamentId", "part": "stencil"}]}`.
+`{"items": [{"design": 1, "part": "base", "fileId", "filamentId", "quantity"}, {"design": 1, "part": "stencil", …}, …]}`:
+two items per design, each with that design's quantity. The Worker checks that the items match the order's
+designs and quantities.
 
 1. The order must be `built`. If it already has `slant.state`, the call returns what's recorded and does
    nothing else, so a retry can never make a second draft.
 2. The Worker writes `slant.state = "drafting"`, reads the shipping name and address from the order's Checkout
-   Session, and drafts at Slant: the two print items, `orders@robotlantern.com` as the email, and
+   Session, and drafts at Slant: all the print items, in one order and one box, `orders@robotlantern.com` as the email, and
    `SLANT_PLATFORM_ID`.
 3. It records `slant: {orderId, printingCost, deliveryCost, drafted}`, moves the order to `drafted`, and
    returns that.
@@ -174,7 +192,8 @@ Nothing in our code processes a Slant order. Only RJ does, in Slant's dashboard.
 
 ### The recipe (`tools/ornament/`)
 
-`python3 tools/ornament/make.py <order folder>` reads `design.json` and `drawing.png` and writes `out/`:
+`python3 tools/ornament/make.py <design folder>` (one per design: an order's `<k>/`) reads `design.json` and
+`drawing.png` and writes `out/`:
 
 - `base.stl` and `stencil.stl`, posed for printing: the base face up, the stencil face down with its pegs up.
 - `proof.png`, the builder's preview in the order's colours, with the tag.
@@ -190,8 +209,8 @@ or with no key where the cloud's proxy adds it (PRODUCTION.md). It has no draft 
 
 ### The page
 
-- Photo in, turned upright, then a square crop with drag and pinch. The hint is: fill the square with the
-  head.
+- Photo in, turned upright, then a square crop with drag and pinch. The hint is the subject's `crop` text from the
+  product file. The page's wording comes from the subject's label, so no subject is named in code.
 - One button makes the drawing, with a short wait message. The page then shows the tries as thumbnails, says
   how many are left, and lets the customer pick one.
 - **The preview** (`stencil-ornament.js`) copies the builder's geometry, so the page and the print agree:
@@ -207,8 +226,10 @@ or with no key where the cloud's proxy adds it (PRODUCTION.md). It has no draft 
 - The picker comes from the scratch folder (`picker/`): colours, suggested pairs, swap, the close-colours note,
   the name tag and the five fonts. The fonts load from `public/shop/fonts/`, never Google: the privacy page
   promises no requests to other sites.
+- Quantity for each design, and "add another design" (up to `maxDesigns`). The order's total shows the tier
+  price, and how much the next tier saves.
 - Order: the price comes from the product file. The page renders `preview.jpg` (1024 px) from the canvas,
-  then sends the order, uploads the preview and goes to checkout. If checkout reports a missing file, the page
+  then sends the order, uploads each design's preview and goes to checkout. If checkout reports a missing file, the page
   sends it again and retries.
 - Nothing is stored in the browser. Tap targets are at least 44 px, it works at 375 px, and the selection
   ring doesn't rely on colour alone.
