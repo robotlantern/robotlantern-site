@@ -1,0 +1,9 @@
+# The stencil ornament builder (docs/PRODUCTION.md, rl-production's setup script). Python 3.13.
+numpy==2.5.3
+opencv-python-headless==5.0.0.93
+pillow==12.3.0
+scipy==1.18.1
+shapely==2.1.2
+manifold3d==3.5.4
+trimesh==5.1.1
+fonttools==4.66.1

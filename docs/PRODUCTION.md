@@ -49,7 +49,8 @@ Created by RJ at claude.ai/code (NOW.md step 5). Both use the repository `robotl
 
 - **Network:** Limited, with "Allow package managers" on, plus these hosts:
   - `slant3dapi.com`
-  - the host in Slant's upload links (step 7 records it here)
+  - `slant-gatekeeper.s3.us-west-2.amazonaws.com`, the host in Slant's presigned upload links (seen 2026-11-19).
+    The upload's PUT carries its own signature, so it gets no network secret.
   - `robotlantern.com`
   - `shop.robotlantern.workers.dev`
 - **Network secrets:**

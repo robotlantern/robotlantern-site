@@ -1,0 +1,8 @@
+{
+ "product": "cutout-ornament",
+ "drawing": { "id": "test00000001", "n": 1 },
+ "options": { "base": "white", "stencil": "red", "tag": "yes", "font": "allerta" },
+ "text": "Test Cat",
+ "price": 29,
+ "version": "fixture"
+}

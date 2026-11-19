@@ -136,7 +136,7 @@ step off (`[x]`) when it's done.
 
 ### Build: agents, in parallel, each in its own worktree (step 14 merges them)
 
-7. [ ] **Agent** · Ornament tools into the repo, in `tools/ornament/` (docs/ORDERS.md, "Recipe"):
+7. [x] **Agent** · Ornament tools into the repo, in `tools/ornament/` (docs/ORDERS.md, "Recipe"):
    - The builder and name-tag code from the scratch folder, with today's defaults (1.8 mm necks and bridges).
    - The five stencil fonts and their OFL licences in `public/shop/fonts/`, used by both the builder and the
      page.
@@ -289,6 +289,9 @@ does other things.
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
 
+- 2026-11-19: Step 7 done: `tools/ornament/` (builder, name tag, `make.py`, `slant.py`, test), the five fonts in
+  `public/shop/fonts/`, and the pet and person briefs. `make.py` reproduces build-v6 byte for byte for two pets;
+  Slant's upload host is recorded in docs/PRODUCTION.md.
 - 2026-11-19: RJ confirmed decisions 21–24 and asked for price research before the price is set (step 19,
   decision 20). Step 7 started in its own session at medium effort. Steps 9 and 10 wait for RJ's
   orchestration rules.
