@@ -252,8 +252,8 @@ Any time, in any order:
   pair. The square and dotted QR codes both scanned in simulation, but RJ didn't like either look. A
   custom code read in the browser had enough room for a name but didn't look enough like a snowflake.
 - Secret Santa tag pair (`tools/tag-pair/`): two one-colour tags printed stacked as one piece, with the
-  recipient's name hidden on the inner face. The test plate is on Meltbot, not started (printdb print 162).
-  After it prints, pull each pair apart and hold D up to a lamp.
+  recipient's name hidden on the inner face. Test v1 (print 162) failed: the full seam wall sealed shut and
+  pillars alone were too weak. Next is a v2 test plate with a weaker, adjustable seam (see the log).
 
 ## Log
 
@@ -268,6 +268,13 @@ Entries before 2026-11-17 are in [docs/LOG.md](docs/LOG.md).
   - B: gap 0.8 mm, sealed
   - C: gap 1.0 mm, thinner 0.6 mm pillar tips, no seal
   - D: gap 0.8 mm, sealed, 2 mm tags, to test whether the name shows against a lamp
+
+  Result (RJ, same day): the name didn't show through any tag against a lamp, even at 1.2 mm.
+  A, B and D sealed solid and couldn't be pulled apart, even straight off the plate. C fell apart as it came
+  off the plate, and printed messy. So the continuous seam is the bond, and 0.6 mm tips alone don't hold.
+  v2 should keep 1.2 mm tags and a 0.8 mm gap, and vary the seam: dashed walls at different duty cycles, a
+  seam that stops one layer short, and stronger pillars with no seam. Add a pry notch.
+  The history sync only links prints whose `external_ref` is empty. Leave it blank when registering a print.
 
   Each top tag's first layer slices as a plain bridge, with no supports. The plate is 42 min 50 s and
   19.3 g in ELEGOO Matte White (spool 41) at 205/60 °C on Textured PEI, and the G-code validated.
