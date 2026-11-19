@@ -248,13 +248,29 @@ Any time, in any order:
 - Large files as the site grows: video on YouTube; big downloads on Cloudflare R2 behind a subdomain
   (needs a card on file, so add it to docs/CHARGES.md first).
 - The mosaic pet ornament engine, `tools/cutout/`, superseded and kept for reference (docs/LOG.md).
-- Secret Santa snowflakes: a one-colour QR ornament that tells each person who they're buying for,
-  generated from a web matcher (`tools/qr-ornament/`, log 2026-11-19). Next is one print of each
-  variant, scanned on an iPhone and an Android phone.
+- Secret Santa QR snowflakes (`tools/qr-ornament/`), parked 2026-11-19 in favour of the stacked tag
+  pair. The square and dotted QR codes both scanned in simulation, but RJ didn't like either look. A
+  custom code read in the browser had enough room for a name but didn't look enough like a snowflake.
+- Secret Santa tag pair (`tools/tag-pair/`): two one-colour tags printed stacked as one piece, with the
+  recipient's name hidden on the inner face. The test plate is on Meltbot, not started (printdb print 162).
+  After it prints, pull each pair apart and hold D up to a lamp.
 
 ## Log
 
 Entries before 2026-11-17 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-19: Secret Santa tag pair test piece (`tools/tag-pair/coupon.py`; printdb model 155, version
+  214, print 162; uploaded to Meltbot as `Tag-Pair-Coupon-v1.gcode`, not started). Two 50 × 28 mm tags
+  are stacked with an air gap. "TO: SALLY" is raised on the hidden face and "FROM: <variant>" on top.
+  Tapered pillars in the margins snap off at their tips. A seam wall, one line thick, seals the gap and
+  tears open. Four pairs:
+  - A: gap 0.6 mm, sealed
+  - B: gap 0.8 mm, sealed
+  - C: gap 1.0 mm, thinner 0.6 mm pillar tips, no seal
+  - D: gap 0.8 mm, sealed, 2 mm tags, to test whether the name shows against a lamp
+
+  Each top tag's first layer slices as a plain bridge, with no supports. The plate is 42 min 50 s and
+  19.3 g in ELEGOO Matte White (spool 41) at 205/60 °C on Textured PEI, and the G-code validated.
 
 - 2026-11-19: Secret Santa snowflake, a feasibility prototype (`tools/qr-ornament/`; test files in
   `.private/products/qr-snowflake/print-test/`). The message is plain text in a QR code turned 45°, with
