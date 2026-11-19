@@ -252,8 +252,9 @@ Any time, in any order:
   pair. The square and dotted QR codes both scanned in simulation, but RJ didn't like either look. A
   custom code read in the browser had enough room for a name but didn't look enough like a snowflake.
 - Secret Santa tag pair (`tools/tag-pair/`): two one-colour tags printed stacked as one piece, with the
-  recipient's name hidden on the inner face. Test v1 (print 162) failed: the full seam wall sealed shut and
-  pillars alone were too weak. Next is a v2 test plate with a weaker, adjustable seam (see the log).
+  recipient's name hidden on the inner face. Test v1 (print 162) failed. Test v2 is one coupon (variant E,
+  printdb print 172), uploaded to Meltbot as `Tag-Pair-Coupon-v2.gcode`. RJ starts it from the LCD once
+  matte white is loaded again.
 
 ## Log
 
@@ -272,8 +273,12 @@ Entries before 2026-11-17 are in [docs/LOG.md](docs/LOG.md).
   Result (RJ, same day): the name didn't show through any tag against a lamp, even at 1.2 mm.
   A, B and D sealed solid and couldn't be pulled apart, even straight off the plate. C fell apart as it came
   off the plate, and printed messy. So the continuous seam is the bond, and 0.6 mm tips alone don't hold.
-  v2 should keep 1.2 mm tags and a 0.8 mm gap, and vary the seam: dashed walls at different duty cycles, a
-  seam that stops one layer short, and stronger pillars with no seam. Add a pry notch.
+  RJ's read: C was the best. Its mess and its separation came from the gaps being too tall and from the big
+  empty areas above and below the name, which had nothing in them. One layer of difference is enough to read
+  the name. No dashed seams, and one coupon at a time.
+- 2026-11-19: tag pair test v2, variant E (printdb version 215, print 172; 10 min 25 s, 4.15 g). This is C
+  with the hidden name raised one layer (0.2 mm) and one layer of air above it, so the pillars are 0.4 mm
+  tall. It has 16 pillars, including new ones near the left and right edges. Uploaded and not started.
   The history sync only links prints whose `external_ref` is empty. Leave it blank when registering a print.
 
   Each top tag's first layer slices as a plain bridge, with no supports. The plate is 42 min 50 s and
