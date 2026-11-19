@@ -100,6 +100,16 @@ MeltBot.
     - An order is a list of designs, each with a quantity, shipped in one Slant box. Slant's shipping barely
       grows with count (docs/CHARGES.md: one ornament costs $10.95 at Slant, a dozen $4.87 each), so volume
       pricing comes from this. Step 19 sets the prices.
+27. **Places come after launch, but the launch code is ready for them** (orchestrator's call under RJ's direction,
+    2026-11-19, from the buildings test). All 12 test buildings drew and built cleanly with a "place" brief and
+    the unchanged builder. But the head crop, the fixed name tag, the ring's position and the lack of a height
+    limit look wrong on some buildings, and fixing them the day before launch risks pets and people. So:
+    - Before launch, the three fixes that protect every subject: a size limit, a detail-loss check and a shared
+      name-tag fit test (step 7's follow-up, and step 10).
+    - The page takes its crop mode (fill or fit) from the subject, so places need no page change later.
+    - "Place" is the first addition after launch ("Not needed for launch").
+    - Until then, RJ can take church, school and company orders by hand, building them with `make.py` and
+      checking the proof himself.
 
 RJ processes every Slant order himself (decision 14 stands). That's the one recurring cost.
 
@@ -157,6 +167,16 @@ step off (`[x]`) when it's done.
 
    Done when `make.py` reproduces build-v6 for two pets locally (their art stays out of Git) and passes on a
    drawing made for the test.
+
+   Follow-up on the same branch, before step 14 (decision 27; the buildings test found these, and they apply to
+   every subject):
+   - A size limit: the art fits a box (80 mm wide, at most 110 mm tall), and a check fails a base outside it.
+     Without it, a tall drawing printed 84 × 270 mm with every check passing.
+   - A "white kept" check: the cut-out area in the proof divided by the cut-out area in the drawing. Below 0.8
+     it fails, because the gap-fill has silently removed features the customer saw (outline-drawn windows,
+     for example). Good builds score 0.9–1.1.
+   - The name-tag fit test as a function the page can mirror, so the page refuses text that won't fit before
+     checkout. Counting 16 characters isn't enough: "Fairmont General" fails.
 8. [ ] **Agent** · After 1: Privacy pass over everything `rebuild` would publish, files and history (AGENTS.md
    rule 7). Then push `rebuild` to GitHub (decision 22) and make the desktop app see the GitHub remote, so
    cloud sessions can start. Report anything that had to change.
@@ -176,6 +196,8 @@ step off (`[x]`) when it's done.
     - The preview drawn in the browser from the drawing.
     - The scratch folder's picker (colours, pairs, swap, name tag, self-hosted fonts).
     - The order button, the thank-you page, and the shop page linking here.
+    - Decision 27: the subject also sets the crop mode, "fill" (crop to the square) or "fit" (letterbox in
+      white). The name tag uses the builder's fit test, not a character count.
     - Decision 26: wording and crop hints come from the subject, so no "pet" is hard-coded; a quantity for
       each design; "add another design" to the same order; the price shown from the product file's tiers.
 
@@ -269,6 +291,14 @@ does other things.
   - A kickstand, print-in-place or slot-in.
   - Standard shapes (star, bell, round).
   - The bridge placement for people.
+- **Agent** · Places, the first addition after launch (decision 27). The buildings test's folder
+  (`../ornaments-design-session/buildings-01/`) has the brief, the photos and their licences.
+  - Ring placement that can't land in a notch beside a tower.
+  - A shorter name tag for wide art, or the name set into the ground band.
+  - Add `briefs/place.md` and the subject to the product file, then re-tune on the API model with 3 tries per
+    photo.
+  - Marketing: the courthouse, the covered bridge, the country church and the lighthouse (public domain).
+    Never use institutions' names or logos in our copy.
 - **Agent** · Later automation:
   - Shipping emails sent automatically, once RJ has seen a few drafts.
   - Slant's webhook.
@@ -325,7 +355,8 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   test runs as a background subagent of the orchestrating session instead, with the same brief and its
   findings on disk. Each test below says which way it ran. A subagent can't be opened as a session; read
   its findings file.
-  - Test 1 (buildings) ran as a session: findings in `~/work/ornaments-design-session/buildings-01/FINDINGS.md`.
+  - Test 1 (buildings) ran as a session: findings in `../ornaments-design-session/buildings-01/FINDINGS.md`. It recommended places
+    after launch, with three builder checks before it; decision 27 takes that.
 
 - 2026-11-19: Slant costs measured, at RJ's request, with 15 drafts of the test order (docs/CHARGES.md).
   Shipping depends a little on zone ($5.73 to Idaho, $6.93 to WV, $8.95 to Hawaii), and it barely grows with
