@@ -14,8 +14,12 @@ Four pairs on one plate, each changing one thing:
     B  gap 0.8, tip 0.8, seam,    tags 1.2 mm
     C  gap 1.0, tip 0.6, no seam, tags 1.2 mm
     D  gap 0.8, tip 0.8, seam,    tags 2.0 mm   (held to a lamp: does the name show through?)
+v1 result: A, B and D sealed solid, and C (no seam) fell apart; nothing showed through against a lamp.
+    E  (v2, printed alone) C, but the hidden name is raised one layer and has one layer of air above it,
+       so the pillars are 0.4 mm tall. Pillars also go near the left and right edges.
 "gap" is the air between the tops of the hidden letters and the top tag's underside.
-Writes pair-<X>.stl for each, plus plan.png. Dimensions are multiples of 0.2 mm layers.
+    $PY tools/tag-pair/coupon.py OUT_DIR E      # only some variants
+Writes pair-<X>.stl for each. Dimensions are multiples of 0.2 mm layers.
 """
 from __future__ import annotations
 
@@ -42,6 +46,8 @@ VARIANTS = {
     'B': dict(gap=0.8, tip=0.8, seam=True, t=1.2),
     'C': dict(gap=1.0, tip=0.6, seam=False, t=1.2),
     'D': dict(gap=0.8, tip=0.8, seam=True, t=2.0),
+    'E': dict(gap=0.2, tip=0.6, seam=False, t=1.2, emboss=0.2, tip_h=0.4,
+              extra=[(1.8, H / 2), (W - 1.6, 8.0), (W - 1.6, H / 2), (W - 1.6, H - 8.0)]),
 }
 
 
@@ -73,19 +79,21 @@ def pair(v):
     outline = box(0, 0, W, H).buffer(-R, join_style=2).buffer(R, 32)
     hole = Point(HOLE[0], HOLE[1]).buffer(HOLE[2], 48)
     tag = outline.difference(hole)
-    z0 = t + EMBOSS + gap                      # underside of the top tag
+    emboss, tip_h = v.get('emboss', EMBOSS), v.get('tip_h', TIP_H)
+    z0 = t + emboss + gap                      # underside of the top tag
     body = extrude(tag, t)                                                     # bottom tag
-    body = body + extrude(label('TO: SALLY', 12, W - 3, 7.0), EMBOSS + 0.02, t - 0.02)   # the secret
+    body = body + extrude(label('TO: SALLY', 12, W - 3, 7.0), emboss + 0.02, t - 0.02)   # the secret
     body = body + extrude(tag, t, z0)                                          # top tag
     body = body + extrude(label(f'FROM: {v["name"]}', 12, W - 3, 7.0), EMBOSS + 0.02, z0 + t - 0.02)
     # pillars in the margins, tapering to the tip where they meet the top tag
     xs = [13.0, 21.5, 30.0, 38.5, 47.0]
-    pts = [(x, 2.6) for x in xs] + [(x, H - 2.6) for x in xs] + [(2.8, 5.0), (2.8, H - 5.0)]
+    pts = [(x, 2.6) for x in xs] + [(x, H - 2.6) for x in xs] + [(2.8, 5.0), (2.8, H - 5.0)] + v.get('extra', [])
     for x, y in pts:
-        stem_h = z0 - TIP_H - t
-        stem = m3.Manifold.cylinder(stem_h + 0.02, PILLAR_D / 2, PILLAR_D / 2, 32).translate([x, y, t - 0.02])
-        cone = m3.Manifold.cylinder(TIP_H + 0.05, PILLAR_D / 2, tip / 2, 32).translate([x, y, z0 - TIP_H])
-        body = body + stem + cone
+        stem_h = z0 - tip_h - t
+        if stem_h > 0:
+            body = body + m3.Manifold.cylinder(stem_h + 0.02, PILLAR_D / 2, PILLAR_D / 2, 32).translate([x, y, t - 0.02])
+        cone = m3.Manifold.cylinder(tip_h + 0.05 + (0.02 if stem_h <= 0 else 0), PILLAR_D / 2, tip / 2, 32)
+        body = body + cone.translate([x, y, z0 - tip_h - (0.02 if stem_h <= 0 else 0)])
     if v['seam']:
         seam = outline.difference(outline.buffer(-SEAM_W, join_style=2))
         seam = seam.union(hole.buffer(SEAM_W, 48).difference(hole))
@@ -99,7 +107,8 @@ def main():
     out = Path(sys.argv[1])
     out.mkdir(parents=True, exist_ok=True)
     report = {}
-    for name, v in VARIANTS.items():
+    pick = sys.argv[2:] or list(VARIANTS)
+    for name, v in ((k, VARIANTS[k]) for k in pick):
         tm, _ = pair({**v, 'name': name})
         parts = [b for b in tm.split(only_watertight=False) if abs(b.volume) > 1.0]
         tm = trimesh.util.concatenate(parts)
