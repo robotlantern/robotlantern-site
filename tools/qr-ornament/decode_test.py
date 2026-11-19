@@ -32,6 +32,7 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import snowflake as sf  # noqa: E402
+import dotflake as df  # noqa: E402
 
 PPM = 10                       # render resolution, px per mm
 MODULE_PX = [4, 6, 10]         # camera pixels per module
@@ -131,11 +132,12 @@ def camera(img, module_px, blur, tilt, module_mm):
 def run(args):
     args.out.mkdir(parents=True, exist_ok=True)
     dark, version, ecc = sf.qr_matrix(args.text, 'm')
-    ns = argparse.Namespace(**{**sf_defaults(), 'module': args.module, 'text': args.text, 'plate': args.plate})
+    mod, base = (df, df.defaults()) if args.style == 'dot' else (sf, sf_defaults())
+    ns = argparse.Namespace(**{**base, 'module': args.module, 'text': args.text, 'plate': args.plate})
     models = {}
     for v in ('stencil', 'relief'):
         ns.variant_now = v
-        models[v] = sf.build(ns, dark)
+        models[v] = mod.build(ns, dark)
     bounds = models['stencil']['outline'].buffer(6).bounds
     scenarios = [('control', 'control', 'stencil', {})]
     only = args.only
@@ -172,7 +174,7 @@ def run(args):
         results.append(row)
         print(f"{row['pass']:2d}/{row['total']}  {label}   {row['by_decoder']}", flush=True)
     rep = {'text': args.text, 'version': version, 'modules': int(dark.shape[0]), 'module_mm': args.module,
-           'stencil_bridges': models['stencil']['bridges'], 'stencil_parts': models['stencil']['parts'],
+           'style': args.style, 'stencil_bridges': models['stencil'].get('bridges'), 'stencil_parts': models['stencil']['parts'],
            'size_mm': models['stencil']['size_mm'], 'results': results}
     (args.out / 'decode-report.json').write_text(json.dumps(rep, indent=2))
     contact_sheet(samples, args.out / 'decode-samples.jpg')
@@ -208,5 +210,6 @@ if __name__ == '__main__':
     ap.add_argument('--module', type=float, default=2.0)
     ap.add_argument('--text', default='Your Secret Santa is Sally! Make it merry.')
     ap.add_argument('--plate', type=float, default=2.0, help='stencil thickness, mm')
+    ap.add_argument('--style', default='diamond', choices=['diamond', 'dot'])
     ap.add_argument('--only', default='', help='comma list of kinds: control,stencil,relief_back,relief_front')
     run(ap.parse_args())

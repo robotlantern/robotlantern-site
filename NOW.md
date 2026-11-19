@@ -275,6 +275,20 @@ Entries before 2026-11-17 are in [docs/LOG.md](docs/LOG.md).
   How much light white PLA lets through is a guess until one print is measured. Messages over about
   42 characters step up a QR size: 60 characters is version 4, 82 is version 5.
 
+- 2026-11-19: The round, dotted snowflake (`tools/qr-ornament/dotflake.py`; files in
+  `.private/products/qr-snowflake/dot-print-test/`). Dark modules are dots and the finder squares
+  ("eyes") have rounded corners. The code sits on a disc with six arms grown from the giver's name and
+  year, so every ornament's arms differ. The name and year are debossed along the back rim.
+  - **Corner rounding:** fully rounded eyes defeat OpenCV completely (0/27 even on a perfect print).
+    Half-module corners keep every decoder working, so that's the default (`--eye-r`).
+  - **Stencil:** dots need no bridges, just two ties per eye. But the dots shrink to 1.3 mm to keep a
+    0.7 mm web, and then only zbar reads it: 15–20/27 at 2 mm modules, 22–24/27 at 2.5 mm.
+  - **Relief:** better than the square relief (23–25/27 with little scatter, 21 with moderate). It
+    still reads at 1.6 mm modules.
+  - **Size is the catch:** a circle round a square is 1.4× wider. At 2 mm the ornament is 113 × 134 mm
+    (stencil 55 min, 11.5 g). The relief at 1.6 mm is 98 × 116 mm (40 min, 8.5 g).
+  - A message of 26 characters or fewer would drop one QR size.
+
 - 2026-11-18: People as head ornaments, through the pet stencil brief (scratch folder `people-01/`). A
   three-person round bauble was too fine at 80 mm. Heads work: four family photos, three tries each, all
   one piece. The style was steady in 11 of 12 tries; likeness varies. Bridges over 3 mm are common, so the
