@@ -357,6 +357,9 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   its findings file.
   - Test 1 (buildings) ran as a session: findings in `../ornaments-design-session/buildings-01/FINDINGS.md`. It recommended places
     after launch, with three builder checks before it; decision 27 takes that.
+  - Test 2 (agent-friendly ordering) runs as a background subagent, because sessions can't be started over
+    Remote Control: findings in `../ornaments-design-session/agents-01/FINDINGS.md`. Step 7's follow-up
+    waits until it's done, because the test runs that branch's builder.
 
 - 2026-11-19: Slant costs measured, at RJ's request, with 15 drafts of the test order (docs/CHARGES.md).
   Shipping depends a little on zone ($5.73 to Idaho, $6.93 to WV, $8.95 to Hawaii), and it barely grows with
