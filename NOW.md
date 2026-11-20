@@ -153,10 +153,12 @@ MeltBot.
       casserole) and five Appalachian (miner's hard hat, coal bucket, banjo, pepperoni roll, mason jar). They're
       our own drawings of generic objects, sold with a tag-text and colour choice, and need no photo, no OpenAI
       credit and no tries. All ten build and pass.
-    - The contracts carry them now (`source: "static"`, docs/ORDERS.md), so steps 9 and 10 build them once.
-      They go on the launch page only if step 14's checks pass with them and RJ has said yes to the ten
-      drawings. Otherwise they're the first addition after launch, before places, because Christmas orders
-      close 2026-12-10.
+    - **RJ said yes to all ten for the launch page** (2026-11-19). They're in
+      `products/cutout-ornament/static/`, normalised to 1024 × 1024 two-colour PNGs, with `designs.json`
+      (ids, labels, alt text, suggested text, font and SHA-256). All ten pass step 7's updated builder. The
+      contracts carry them (`source: "static"`, docs/ORDERS.md), steps 9 and 10 build them, and step 11 adds
+      the two subjects to `shop.json`. If they hold up step 14, they go up just after launch, before places,
+      because Christmas orders close 2026-12-10.
     - Stuffed animals: generic plush is fine; branded or licensed plush, characters, and car or sports marks
       are refused or drawn generically.
 
@@ -281,6 +283,8 @@ step off (`[x]`) when it's done.
       "Ordering with an AI assistant" page, `drawing-spec.json`, and `product.json` built from `shop.json`.
       Check the prices and dates against step 19. Decision 30: `product.json` lists the ready-made designs,
       and `llms.txt` says they need no photo.
+    - Decision 30: the "Gag gifts" and "Appalachian" subjects in `shop.json`, from
+      `products/cutout-ornament/static/designs.json`, and copy for the gallery.
     - In the terms and privacy pages, test 2's text on consent for people and children, no logos or
       characters, an assistant acting for the customer, and the own-drawing route (`../ornaments-design-session/agents-01/FINDINGS.md`,
       "Policy and privacy text").
@@ -377,9 +381,7 @@ does other things.
   - Marketing: the courthouse, the covered bridge, the country church and the lighthouse (public domain).
     Never use institutions' names or logos in our copy.
 - **Agent + RJ** · Objects and the ready-made range (decision 30; `../ornaments-design-session/objects-01/FINDINGS.md`):
-  - RJ: yes or no to the ten ready-made drawings (`../ornaments-design-session/objects-01/static/contact-sheet.jpg`). Once he says
-    yes, an agent adds them under `products/cutout-ornament/static/` with their SHA-256s, plus some as example
-    renders, marked as renders (decision 10).
+  - Some of the ten as example renders for the home and product pages, marked as renders (decision 10).
   - The pepperoni roll was the weakest: five tries to read as a roll. Consider a skillet from the reserves.
   - "Thing" as a subject with places: `briefs/thing.md`, crop mode fit, re-tuned on the API model.
   - Later, product feeds for the ready-made designs (OpenAI, Google Merchant Center): a catalog row can carry

@@ -1,0 +1,96 @@
+{
+  "gag": [
+    {
+      "id": "toilet",
+      "label": "Toilet",
+      "drawing": "static/gag-toilet-1.png",
+      "sha256": "6bd6ea526cafbc0fa0c0b151e686d7fc755528b9133a0ca28c0c68e3216584b1",
+      "text": "Never Forget",
+      "font": "allerta",
+      "alt": "A toilet with its lid up"
+    },
+    {
+      "id": "coal",
+      "label": "Lump of coal",
+      "drawing": "static/gag-coal-1.png",
+      "sha256": "af45d1cbb689ffdde317eaa96f119d41882fd261891b8023c59b1614ff3cc110",
+      "text": "Naughty List",
+      "font": "allerta",
+      "alt": "A lump of coal"
+    },
+    {
+      "id": "duck",
+      "label": "Rubber duck",
+      "drawing": "static/gag-duck-1.png",
+      "sha256": "004bd97e3c597238712a030e39bbd872bc0102adf57b9cabca61cdb5cc428621",
+      "text": "Debug Duck",
+      "font": "allerta",
+      "alt": "A rubber duck"
+    },
+    {
+      "id": "dumpster",
+      "label": "Dumpster fire",
+      "drawing": "static/gag-dumpster-1.png",
+      "sha256": "c4e0bad74519a52653302415331177b553d51a11c161f10240c4ba2b63d2063d",
+      "text": "2026 So Far",
+      "font": "allerta",
+      "alt": "A dumpster with flames rising out of it"
+    },
+    {
+      "id": "casserole",
+      "label": "Burnt casserole",
+      "drawing": "static/gag-casserole-1.png",
+      "sha256": "b017824d5aa4168a2b235a90d1ac41cdb59942df5d3774a96fe04b34a8bd065d",
+      "text": "Turkey Day 2026",
+      "font": "allerta",
+      "alt": "A casserole dish with steam rising"
+    }
+  ],
+  "appalachian": [
+    {
+      "id": "minerhat",
+      "label": "Miner's hard hat and lamp",
+      "drawing": "static/appalachian-minerhat-1.png",
+      "sha256": "36a143e56976f59e16315101c23d2b5411feea50f66d8eae8fe201722ff50c2e",
+      "text": "WV Coal Miner",
+      "font": "allerta",
+      "alt": "A coal miner's hard hat with its lamp"
+    },
+    {
+      "id": "bucket",
+      "label": "Coal bucket",
+      "drawing": "static/appalachian-bucket-1.png",
+      "sha256": "307ac1ce8ce9819def896e446282d8af1153635d9285d43b06f75b8a191affd1",
+      "text": "Mamaw's Bucket",
+      "font": "big-shoulders",
+      "alt": "A bucket of coal"
+    },
+    {
+      "id": "banjo",
+      "label": "Banjo",
+      "drawing": "static/appalachian-banjo-1.png",
+      "sha256": "7368c18afdf5916c470c506d9a6ca78a05b11fd06448a3a1c253fbf118f829d3",
+      "text": "Born to Pick",
+      "font": "allerta",
+      "alt": "A banjo"
+    },
+    {
+      "id": "pepperoni",
+      "label": "Pepperoni roll",
+      "drawing": "static/appalachian-pepperoni-1.png",
+      "sha256": "2b735fc1c1793f0bc7fb368a36c77dc49924d85898db05b290f84fcf36909189",
+      "text": "Pepperoni Roll",
+      "font": "allerta",
+      "alt": "A pepperoni roll"
+    },
+    {
+      "id": "jar",
+      "label": "Mason jar",
+      "drawing": "static/appalachian-jar-1.png",
+      "sha256": "d07a804d7b377b4d65e73c599243ef8b19599fcc354de20f09d163ea6bb89daf",
+      "text": "Moonshine",
+      "font": "allerta",
+      "alt": "A mason jar"
+    }
+  ]
+}
