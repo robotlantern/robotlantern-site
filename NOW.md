@@ -478,6 +478,16 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   - Step 7's follow-up runs as a background subagent on Opus at high effort, in step 7's worktree, committing
     to its branch only (no merge, no push). It covers the size box, the "white kept" check, the font-aware tag
     fit, `kind` and `parts`, an upload-check function, and test 2's two builder bugs.
+    Done: four commits on `claude/zealous-moore-326e78` (0425c37 to 1e965f1), and `test_make.py` passes. The
+    test drawing builds the same except for the 64 mm tag minimum. Test 2's two bugs had other causes than
+    guessed (a traced fleck, and cut-outs touching at a point), and both are fixed. On the earlier test sets,
+    the only new failures are the ones the new checks are for: a church and two tabbies lose detail ("white
+    kept" 0.73–0.78). The orchestrator's calls:
+    - The page runs `check_drawing` on every try and doesn't offer one that would fail, so the customer never
+      pays for a drawing the routine would refuse (docs/ORDERS.md, "The page" and "Own drawings").
+    - The base limit is 90 × 125 mm, the subagent's pick, because no quoted size was written down.
+    - The ring stays on the centre line. Lifting it out of a notch would also lift it from between a pet's
+      ears, so it waits for places ("Not needed for launch").
 
 - 2026-11-19: Slant costs measured, at RJ's request, with 15 drafts of the test order (docs/CHARGES.md).
   Shipping depends a little on zone ($5.73 to Idaho, $6.93 to WV, $8.95 to Hawaii), and it barely grows with

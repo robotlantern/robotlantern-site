@@ -261,7 +261,9 @@ Nothing in our code processes a Slant order. Only RJ does, in Slant's dashboard.
 - `base.stl` and `stencil.stl`, posed for printing: the base face up, the stencil face down with its pegs up.
 - `proof.png`, the builder's preview in the order's colours, with the tag.
 - `build.json`, the builder's report and the checks: the stencil is one piece, both meshes are watertight, no
-  bridge is over 3 mm, the tag text fits, and no warnings. It lists what Slant prints (decision 29):
+  bridge is over 3 mm, the tag text fits (`nametag.tag_fit`), the base is within the size limit (`size_ok`),
+  "white kept" is at least 0.8 (`white_kept`: the cut-out area in the proof ÷ that in the drawing, so the
+  builder's tidying hasn't removed features the customer saw), and no warnings. It lists what Slant prints (decision 29):
   `"parts": [{"part": "base", "file": "base.stl", "colour": "white"}, {"part": "stencil", "file": "stencil.stl",
   "colour": "red"}]`. The routine uploads every listed file and never assumes two.
 
@@ -283,14 +285,18 @@ or with no key where the cloud's proxy adds it (PRODUCTION.md). It has no draft 
   how many are left, and lets the customer pick one.
 - **The preview** (`stencil-ornament.js`) copies the builder's geometry, so the page and the print agree:
   - Ink is any pixel more than 120 (RGB distance) from white.
-  - Crop to the ink with padding, and scale so the ink is 80 mm wide.
+  - Crop to the ink with padding, and scale the ink to fit an 80 × 85 mm box (the builder's defaults).
   - The silhouette is the ink with its holes filled. The base is the silhouette grown by the 2 mm rim, in the
     base colour.
   - The stencil is the ink, in the stencil colour.
   - The 10 mm ring, with its 4 mm hole, sits at the top on the outline's centre line.
-  - The tag is 17 mm tall and 0.8 of the art's width (50–72 mm), with the text cut through in the base colour.
-    The text is fitted the way the picker and `nametag.fit` do it.
+  - The tag is 17 mm tall and 0.8 of the art's width, held between 64 and 72 mm, with the text cut through in
+    the base colour. The text is fitted as `nametag.tag_fit` does it (at least 5 mm tall in the chosen font).
   - A line under the preview says small details are tidied for printing.
+  - The page runs the builder's drawing check (`tools/ornament/drawing.py`, `check_drawing`) on each try, made
+    or uploaded, and doesn't offer a try that would fail it (an island too far to bridge, or "white kept" under
+    0.8). It says why and suggests another try. So the customer never pays for a drawing the routine would
+    refuse.
 - The picker comes from the scratch folder (`picker/`): colours, suggested pairs, swap, the close-colours note,
   the name tag and the five fonts. The fonts load from `public/shop/fonts/`, never Google: the privacy page
   promises no requests to other sites.
@@ -327,10 +333,9 @@ in words.
   - fills the whole image (a frame, a background box, or a subject cut off at the edges), or one shape
     covers more than 80%;
   - no features (under 3% of the silhouette cut out);
-  - taller than 1.375 × its width;
-  - more than one piece after the builder's cleanup, with an island the builder can't bridge.
+  - more than one piece after the builder's cleanup, with an island the builder can't bridge, or "white kept"
+    under 0.8 (both from `check_drawing`, as for a made drawing).
 - **Warned, but allowed:**
-  - "white kept" under 0.8;
   - art touching an edge;
   - more than six pieces to bridge;
   - ink that isn't red;
