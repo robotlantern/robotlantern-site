@@ -182,7 +182,7 @@ step off (`[x]`) when it's done.
      Allow, and keep Bot Fight Mode off. Blocking training crawlers is fine, but allow user-driven and search
      agents (ChatGPT-User, OAI-SearchBot, Claude-User, PerplexityBot), or assistants can't read the shop
      (decision 28). Free.
-3. [ ] **RJ** · OpenAI API (decision 21; [docs/CHARGES.md](docs/CHARGES.md)), at platform.openai.com:
+3. [x] **RJ** · OpenAI API (decision 21; [docs/CHARGES.md](docs/CHARGES.md)), at platform.openai.com:
    - Create a project called "Robot Lantern shop".
    - Under Billing, buy the prepaid credit with auto-recharge off.
    - In the project's limits, allow only the image models.
@@ -440,6 +440,20 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-19 (night): RJ made the OpenAI key and loaded $30 (step 3, docs/CHARGES.md), approved Workers Paid
+  and up to $5 of paid test calls, and asked for steps 8, 9, 10 and 19 to run one at a time as subagents
+  while he does step 2. The orchestrator fixed the key file's variable name (`OPENAIAPI_KEY` →
+  `OPENAI_API_KEY`) and checked the key with a free call. Order, one at a time:
+  1. The model A/B test (`../ornaments-design-session/model-ab-01/`), capped at $4.50. It sets the production
+     model before step 9 wires it.
+  2. Step 8.
+  3. Step 9.
+  4. Step 10.
+  5. Step 19.
+
+  Steps 8, 9 and 10 commit on their own branches or worktrees. Nothing is merged without RJ, and step 8's
+  push to GitHub waits for the orchestrator to review the privacy pass.
 
 - 2026-11-19 (evening): RJ reports the pet and person heads are proven. Decision 25 is settled: people are
   a launch subject, and photos of the three people still need their OK before they appear in marketing. RJ
