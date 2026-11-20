@@ -75,6 +75,12 @@ MeltBot.
     - **Price: open, pending step 19's research** (RJ, 2026-11-19). RJ wants margins as low as is sustainable,
       to sell volume in a crowded space. $29 with US shipping and the name tag included is a placeholder for
       building and testing until step 19 sets the price and any volume promotion.
+      **Step 19's proposal, waiting for RJ's yes** (`products/cutout-ornament/pricing.md` on branch
+      `worktree-agent-ace7fbf82c065561a`): per ornament by the order's count, shipping and tag included: 1 $22,
+      2 $17, 3 $15, 6 $13, 12 $11, 25 $9.50, 50 $8.50; over 50 by quote. No separate launch price. One
+      promotion code, `AGAIN`, $3 off, 100 uses, until 2026-12-10, shown on the thanks page and the shipping
+      email. Margin is 41–53% expected and 35–41% in the bad case. The code needs `allow_promotion_codes: true`
+      on the Worker's Checkout Session (step 14).
     - **Orders:** a weekly cap of 25, and "order by Dec 10 for Christmas" until the acceptance order
       shows Slant's real timing.
     - **Remake promise:** a free remake or a refund if it arrives broken or doesn't match the preview.
@@ -313,7 +319,7 @@ step off (`[x]`) when it's done.
     old site keep working while the change spreads. Cloudflare emails you when the site is active, so tell an
     agent then.
 
-19. [ ] **Agent** · Price research (RJ, 2026-11-19). RJ's instinct is margins as low as sustainable, to sell volume
+19. [x] **Agent** · Price research (RJ, 2026-11-19). RJ's instinct is margins as low as sustainable, to sell volume
     in a crowded space where the idea alone doesn't show how competitive we are.
     - Start from `products/cutout-ornament/market-research.md`. Re-check the prices it took from search snippets, and
       add current Christmas 2026 prices for custom pet ornaments that compete for the same buyer: printed-photo,
@@ -454,6 +460,12 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-20: Step 19 (subagent, Sonnet, high effort) proposed the price ladder now in decision 20, waiting for
+  RJ's yes. Etsy refused every fetch with a 403, so the Etsy figures come from search summaries. Slant publishes
+  no bulk programme. A question for Slant's support (API vs web-quoter volume prices, a business rate,
+  shipping, lead time for 25–50 ornaments in early December) is in `pricing.md` for RJ to send. Steps 9, 10
+  and 19 are all done on their branches. Step 14 (integration) is next for agents, and merging needs RJ's word.
 
 - 2026-11-20: Step 10 (subagent, Opus, high effort) built the product page on a branch based on step 9's.
   `npm run build` passes and the 125 tag-fit cases agree with the Worker. The page's drawing check matches
