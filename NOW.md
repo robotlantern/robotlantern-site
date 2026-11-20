@@ -145,6 +145,20 @@ MeltBot.
     $1.20 at Slant, if Slant prints all of one colour's pieces as one multi-body part; if it charges per piece,
     costs balloon. One free quote of a multi-body STL settles it. Logo orders need the owner's written OK
     (draft terms in `../ornaments-design-session/logos-01/FINDINGS.md`), and every one goes to `needs-rj` for a rights check.
+30. **Objects, and a ready-made range** (orchestrator's call under RJ's direction, 2026-11-19, from test 4).
+    - **"Thing" works as a subject.** With a tuned brief, 11 of 12 photographed objects built and passed, and no
+      lettering or brand mark survived. It comes after launch with places, once decision 27's size box is in:
+      without it, 9 of 24 objects came out over 120 mm tall.
+    - **A ready-made range of ten:** five gag gifts (toilet, lump of coal, rubber duck, dumpster fire, burnt
+      casserole) and five Appalachian (miner's hard hat, coal bucket, banjo, pepperoni roll, mason jar). They're
+      our own drawings of generic objects, sold with a tag-text and colour choice, and need no photo, no OpenAI
+      credit and no tries. All ten build and pass.
+    - The contracts carry them now (`source: "static"`, docs/ORDERS.md), so steps 9 and 10 build them once.
+      They go on the launch page only if step 14's checks pass with them and RJ has said yes to the ten
+      drawings. Otherwise they're the first addition after launch, before places, because Christmas orders
+      close 2026-12-10.
+    - Stuffed animals: generic plush is fine; branded or licensed plush, characters, and car or sports marks
+      are refused or drawn generically.
 
 RJ processes every Slant order himself (decision 14 stands). That's the one recurring cost.
 
@@ -209,13 +223,17 @@ step off (`[x]`) when it's done.
 
    Follow-up on the same branch, before step 14 (decision 27; the buildings test found these, and they apply to
    every subject):
-   - A size limit: the art fits a box (80 mm wide, at most 110 mm tall), and a check fails a base outside it.
-     Without it, a tall drawing printed 84 × 270 mm with every check passing.
+   - A size limit: the art fits a box, 80 × 85 mm by default and set by parameters, instead of being scaled
+     to 80 mm wide. A check fails a base outside the size Slant was quoted for. Without it, a tall drawing
+     printed 84 × 270 mm with every check passing (test 4: objects up to 197 mm).
    - A "white kept" check: the cut-out area in the proof divided by the cut-out area in the drawing. Below 0.8
      it fails, because the gap-fill has silently removed features the customer saw (outline-drawn windows,
      for example). Good builds score 0.9–1.1.
    - The name-tag fit test as a function the page can mirror, so the page refuses text that won't fit before
      checkout. Counting 16 characters isn't enough: "Fairmont General" fails.
+   - From test 4 (decision 30): the tag at least 64 mm wide however narrow the art; `, ! ?` allowed in the
+     text (all five fonts have them); and a font-aware fit function the page can call. "Thanksgiving 2026" is 17
+     characters but fits in three fonts.
    - From test 3 (decision 29): `kind` in `design.json` (exit 2 on an unknown kind), and `parts` in
      `build.json`. Keep the size box from decision 27 a parameter, because wide logos want 110 × 80 mm.
    - From test 2 (decision 28):
@@ -234,6 +252,7 @@ step off (`[x]`) when it's done.
    - The live KV namespace, and the fix for `fulfil()` demanding a Gelato key on photo orders.
    - Decision 26: subjects come from the product file, an order holds several designs with quantities, and
      the price comes from the product file's tiers.
+   - Decision 30: ready-made designs, `{"static": "<subject>/<design>"}`, with no drawing record.
    - Decision 28: the `X-Source: upload` route, the `agentDrawingsPerDay` and `uploadsPerVisitorPerDay` caps,
      the KV-writes count in `/api/stats`, and `source` on drawings and designs (docs/ORDERS.md).
 
@@ -248,6 +267,7 @@ step off (`[x]`) when it's done.
       white). The name tag uses the builder's fit test, not a character count.
     - Decision 26: wording and crop hints come from the subject, so no "pet" is hard-coded; a quantity for
       each design; "add another design" to the same order; the price shown from the product file's tiers.
+    - Decision 30: a gallery for ready-made subjects, and fonts offered only where the tag text fits.
     - Decision 28: "I have my own drawing" with the upload check, the controls an agent can operate, and
       JSON-LD (docs/ORDERS.md, "The page", "Own drawings" and "Agents").
 
@@ -259,7 +279,8 @@ step off (`[x]`) when it's done.
     - The home page leading with the product: one plain section and a link, with the sunset scroll kept.
     - Decision 28's agent files, from `../ornaments-design-session/agents-01/drafts/`: `public/llms.txt`, the
       "Ordering with an AI assistant" page, `drawing-spec.json`, and `product.json` built from `shop.json`.
-      Check the prices and dates against step 19.
+      Check the prices and dates against step 19. Decision 30: `product.json` lists the ready-made designs,
+      and `llms.txt` says they need no photo.
     - In the terms and privacy pages, test 2's text on consent for people and children, no logos or
       characters, an assistant acting for the customer, and the own-drawing route (`../ornaments-design-session/agents-01/FINDINGS.md`,
       "Policy and privacy text").
@@ -355,6 +376,14 @@ does other things.
     photo.
   - Marketing: the courthouse, the covered bridge, the country church and the lighthouse (public domain).
     Never use institutions' names or logos in our copy.
+- **Agent + RJ** · Objects and the ready-made range (decision 30; `../ornaments-design-session/objects-01/FINDINGS.md`):
+  - RJ: yes or no to the ten ready-made drawings (`../ornaments-design-session/objects-01/static/contact-sheet.jpg`). Once he says
+    yes, an agent adds them under `products/cutout-ornament/static/` with their SHA-256s, plus some as example
+    renders, marked as renders (decision 10).
+  - The pepperoni roll was the weakest: five tries to read as a roll. Consider a skillet from the reserves.
+  - "Thing" as a subject with places: `briefs/thing.md`, crop mode fit, re-tuned on the API model.
+  - Later, product feeds for the ready-made designs (OpenAI, Google Merchant Center): a catalog row can carry
+    a fixed design, unlike a custom drawing.
 - **Agent + RJ** · Logos (decision 29; `../ornaments-design-session/logos-01/FINDINGS.md`):
   - RJ's Davisson Brothers ornament: built from his printdb cap SVG, it passes at 110 × 60 mm and is blobby
     at 80 mm. It's one piece, so it comes out the same as a stencil or an inlay. Show or sell it only with the
@@ -444,6 +473,8 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   - Test 4 (objects and gag gifts) runs as a background subagent on Sonnet at high effort: it's mostly
     listing, drawing and building, with less judgement than tests 2 and 3. Findings in
     `../ornaments-design-session/objects-01/FINDINGS.md`. Step 7's follow-up waits for it, as before.
+    It recommended "thing" after launch and a ready-made range of ten; decision 30 takes both, with the
+    range's contracts in now. All four tests are done. Next: step 7's follow-up on its branch.
 
 - 2026-11-19: Slant costs measured, at RJ's request, with 15 drafts of the test order (docs/CHARGES.md).
   Shipping depends a little on zone ($5.73 to Idaho, $6.93 to WV, $8.95 to Hawaii), and it barely grows with

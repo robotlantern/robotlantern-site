@@ -82,7 +82,7 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
     { "id": "tag", "label": "Name tag", "choices": [ { "id": "yes", "label": "Yes" }, { "id": "no", "label": "No" } ] },
     { "id": "font", "label": "Font", "choices": [ { "id": "allerta", "label": "Allerta Stencil" } ] }
   ],
-  "text": { "max": 16, "allowed": "A-Za-z0-9 '&.-" },
+  "text": { "max": 16, "allowed": "A-Za-z0-9 '&.,!?-", "minTagWidth": 64 },
   "weeklyCap": 25,
   "orderBy": "2026-12-10"
 }
@@ -93,13 +93,32 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 - **`drawing.subjects`** (decision 26): each subject is data, with its brief, label and crop hint. Adding `person`
   (decision 25) or `place` (a church, a school, a childhood home) is a brief and an entry here, not code. Nothing
   in the Worker, page or routine names a subject. `model` and `quality` live here too, so a cheaper model is a
-  one-line change.
+  one-line change. A subject may set `"cropMode": "fit"` (the whole subject in the square, letterboxed in white)
+  instead of the default `"fill"` (decision 27).
+- **Ready-made subjects** (decision 30). A subject with `"source": "static"` has no brief, crop hint or tries. It
+  lists designs that RJ drew and checked once, so an order from it makes no drawing:
+  ```json
+  { "id": "gag", "label": "Gag gifts", "source": "static",
+    "designs": [ { "id": "toilet", "label": "Toilet", "drawing": "static/gag-toilet-1.png",
+                   "sha256": "<hex of the PNG>", "text": "Never Forget", "font": "allerta",
+                   "alt": "A toilet with its lid up" } ] }
+  ```
+  A subject's `source` is `made` when missing. `drawing` is a path under `products/cutout-ornament/`: a
+  1024 × 1024 two-colour PNG that passed `make.py` with `text` in `font`. The file is public, because the page
+  and `product.json` show it. A published drawing is never edited: a redraw is a new file name (`-2.png`), and
+  `sha256` pins it. The page shows a ready-made subject's designs as a gallery in place of the photo step, with
+  `text` as the tag's starting text.
+- **Text:** 16 characters is a ceiling, not a promise. The text must also fit the tag in the chosen font (text
+  at least 5 mm tall), so the page runs the builder's own fit function and offers only the fonts where the text
+  fits. The tag is at least `minTagWidth` mm wide, however narrow the art. A ready-made design's `font` is the one
+  its `text` was checked in (decisions 27 and 30).
 - **`pricing`** (decision 26): each ornament in an order is priced by the tier its order's total count falls
   in, and shipping is included. `maxPerOrder` and `maxDesigns` cap an order. Step 19 sets the numbers; the
   values above are placeholders.
   - `pricing.modifiers` (decision 29): a list, empty at launch. Each design is priced on its own:
     `price(design)` is the tier's `each` plus the sum of the modifiers that apply to it (for example
-    `{"when": {"kind": "inlay"}, "add": 3}`, or a per-extra-colour amount). The Worker and the page use the same
+    `{"when": {"kind": "inlay"}, "add": 3}`, `{"when": {"source": "static"}, "add": 0}`, or a per-extra-colour
+    amount). The Worker and the page use the same
     function, so a logo inlay's surcharge is data, not code.
 - **Price** comes from the product file, which is bundled into the Worker at deploy. The browser shows a price
   but never sets one.
@@ -113,7 +132,9 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 - **`source`** on a drawing is `made` (GPT Image) or `upload` (an own drawing). `vector` (a customer's SVG or
   PDF) and `trace` (a flat raster traced on the page) are reserved for logos (decision 29). Those are stored
   the same way, plus `art.svg` and `layers.png` (an indexed PNG: 0 is the background, 1–4 the logo's colours)
-  beside `<n>.png`. `make.py` ignores files it doesn't need.
+  beside `<n>.png`. `make.py` ignores files it doesn't need. `static` (a ready-made design, decision 30) never
+  goes through `/api/drawings`: no OpenAI call, no photo, no drawing record and no cap count, and
+  `switch:drawings` doesn't stop it.
 - **`POST /api/drawings` with `X-Source: upload`** (decision 28): the body is the customer's own drawing, a
   1024 × 1024 PNG (`image/png`, at most 4 MB) that the page made from their file. The Worker reads only the PNG
   signature and IHDR (width, height), never decodes it, and stores it as try 1:
@@ -168,6 +189,10 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
   ```
 
   `price` is the total the page showed. The Worker works it out again from `pricing` and refuses a mismatch.
+  A design's `drawing` is `{"id", "n"}` (a made or uploaded drawing) or `{"static": "<subject>/<design>"}`, for
+  example `{"static": "gag/toilet"}` (decision 30). For a ready-made design, the Worker checks that the pair is in
+  the product file, reads and writes no drawing record, and puts `source: "static"` and the product file's
+  `sha256` in `design.json`. Its `text` starts as the design's `text` and follows the same rule as any other.
   For each design, the Worker checks that the drawing exists and try `n` was made, and that each option is one
   of the product file's choices: each key in `options` must be an option id in the product file, and each
   value one of its choices, with no option id named in code (decision 29). Base and stencil can't be the same
@@ -181,6 +206,12 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
   chosen drawing as `drawing.png`, and `preview.jpg` are written again under `file:<id>/<k>/` with no expiry. The
   order then goes to `paid` and into the queue. Each `file:<id>/<k>/` folder is exactly what
   `tools/ornament/make.py` reads.
+- **Paid, ready-made designs** (decision 30): the webhook writes `design.json` and `preview.jpg` under
+  `file:<id>/<k>/`, and no `photo.jpg` or `drawing.png`. The routine copies the drawing from its checkout of the
+  repo (`products/cutout-ornament/<drawing>`) into the build folder as `drawing.png`, checks its SHA-256
+  against the design's, and sends a mismatch to `needs-rj`. Then `make.py` runs as for any design. The routine
+  skips the logo and character check on ready-made designs, because RJ looked at each drawing when he added it,
+  but keeps the proof-versus-preview comparison.
 - **Order record** (KV `order:<id>`): as now, plus `state`, `history` (state, when, note) and `slant` (below).
   It never holds the address or email. Those stay in Stripe.
 
@@ -318,7 +349,9 @@ characters, text and brand marks.
   - `/shop/cutout-ornament/ai/` ("Ordering with an AI assistant");
   - `/shop/cutout-ornament/drawing-spec.json`;
   - `/shop/cutout-ornament/product.json`, built from `shop.json`: subjects, colours with hex values, fonts,
-    the tag rule, price tiers, limits and the order-by date, but never Stripe IDs, filament IDs or caps.
+    the tag rule, price tiers, limits and the order-by date, but never Stripe IDs, filament IDs or caps. It
+    also lists each ready-made design (id, label, `alt`, the drawing's URL, suggested `text`), so an assistant
+    can order one by naming it, and `llms.txt` says those need no photo or drawing (decision 30).
 - **A person pays.** Money moves only on Stripe's hosted Checkout, paid by the customer or by their own
   wallet with their approval. We take no card details, payment tokens or credentials through our API.
 - **A person sees the preview.** Checkout is reachable only from the page, after it has rendered and uploaded
