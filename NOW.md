@@ -47,6 +47,8 @@ MeltBot.
 5. **Uploads go to Cloudflare Workers KV on the free plan.** Unpaid uploads delete themselves after two days.
 6. **Photos are deleted 60 days after the order ships**, with everything made from them. Order records
    without photos are kept seven years. Customer photos never go into marketing without written OK.
+   Amended by decision 28: `preview.jpg` and `build.json` stay 180 days after shipping, as evidence for card
+   disputes.
 7. **Lithophane ornaments are white at launch and for LED lights only** (when that line opens).
 8. **The projector gets our own generator**, with credit to threonin's projector on the Credits page.
 9. **Lines that aren't ready show "coming soon"**, with an email link to signup@. Nothing is stored.
@@ -110,6 +112,22 @@ MeltBot.
     - "Place" is the first addition after launch ("Not needed for launch").
     - Until then, RJ can take church, school and company orders by hand, building them with `make.py` and
       checking the proof himself.
+28. **Agent-friendly ordering, with a person always paying** (orchestrator's call under RJ's direction, 2026-11-19,
+    from test 2). ChatGPT Wallet (launched 2026-11-13) pays on a shop's own checkout page, so Stripe Checkout
+    already works and nothing needs applying for. The protocols that sell a catalog row inside the chat (Stripe's
+    Agentic Commerce Suite, ACP, Google's UCP, Shopify Catalog) can't carry a drawing made before purchase, so
+    they wait. At launch:
+    - Static agent files: `llms.txt`, an "Ordering with an AI assistant" page, a drawing spec and a product
+      file (docs/ORDERS.md, "Agents").
+    - A page an agent can operate (step 10).
+    - **Bring your own drawing.** In the test, a customer's own LLM made a usable drawing from every one of
+      9 stand-in photos, using only our public instructions; 67% of single tries were usable. It costs us no
+      OpenAI credit, and we never receive the photo. If the page's upload slips past launch, drop its lines
+      from the agent files until it lands.
+    - An agent pool in the caps, because agent browsers share IP addresses.
+    - Money moves only on Stripe's page, by the customer or their wallet with their approval. We never take
+      payment tokens or card details through our API.
+    - `preview.jpg` and `build.json` kept 180 days after shipping (amends decision 6).
 
 RJ processes every Slant order himself (decision 14 stands). That's the one recurring cost.
 
@@ -127,6 +145,10 @@ step off (`[x]`) when it's done.
    - Under My Profile → API Tokens, edit the agents' token to add Zone · DNS · Edit and Zone · Workers
      Routes · Edit for robotlantern.com.
    - Say yes or no to SPF and DMARC for mail (yes recommended).
+   - Under Security → Settings → Bot traffic → "AI Crawler and Agent access policies", set "dots, OpenAI" to
+     Allow, and keep Bot Fight Mode off. Blocking training crawlers is fine, but allow user-driven and search
+     agents (ChatGPT-User, OAI-SearchBot, Claude-User, PerplexityBot), or assistants can't read the shop
+     (decision 28). Free.
 3. [ ] **RJ** · OpenAI API (decision 21; [docs/CHARGES.md](docs/CHARGES.md)), at platform.openai.com:
    - Create a project called "Robot Lantern shop".
    - Under Billing, buy the prepaid credit with auto-recharge off.
@@ -177,6 +199,11 @@ step off (`[x]`) when it's done.
      for example). Good builds score 0.9–1.1.
    - The name-tag fit test as a function the page can mirror, so the page refuses text that won't fit before
      checkout. Counting 16 characters isn't enough: "Fairmont General" fails.
+   - From test 2 (decision 28):
+     - The builder's cleanup and bridge measurement as a function, for the page's upload check.
+       `../ornaments-design-session/agents-01/tools/validate.py` is the prototype; it refused three islands that `make.py` bridged.
+     - Two builder bugs: the tag join on a ragged fur bottom ("tag text leaves 1 loose pieces"), and a 2.0 mm
+       island giving "STENCIL IS NOT ONE PIECE" and "MESH NOT WATERTIGHT". The runs are in `../ornaments-design-session/agents-01/runs/`.
 8. [ ] **Agent** · After 1: Privacy pass over everything `rebuild` would publish, files and history (AGENTS.md
    rule 7). Then push `rebuild` to GitHub (decision 22) and make the desktop app see the GitHub remote, so
    cloud sessions can start. Report anything that had to change.
@@ -188,6 +215,8 @@ step off (`[x]`) when it's done.
    - The live KV namespace, and the fix for `fulfil()` demanding a Gelato key on photo orders.
    - Decision 26: subjects come from the product file, an order holds several designs with quantities, and
      the price comes from the product file's tiers.
+   - Decision 28: the `X-Source: upload` route, the `agentDrawingsPerDay` and `uploadsPerVisitorPerDay` caps,
+     the KV-writes count in `/api/stats`, and `source` on drawings and designs (docs/ORDERS.md).
 
    Extend `tools/orders/test_order.py` with OpenAI stubbed, and make one real drawing call after step 3.
    Deploy to the sandbox Worker.
@@ -200,6 +229,8 @@ step off (`[x]`) when it's done.
       white). The name tag uses the builder's fit test, not a character count.
     - Decision 26: wording and crop hints come from the subject, so no "pet" is hard-coded; a quantity for
       each design; "add another design" to the same order; the price shown from the product file's tiers.
+    - Decision 28: "I have my own drawing" with the upload check, the controls an agent can operate, and
+      JSON-LD (docs/ORDERS.md, "The page", "Own drawings" and "Agents").
 
     Check it at 375 px on the preview host, with a drawing made for the test.
 11. [ ] **Agent** · After 1 and 19: Words and pages:
@@ -207,6 +238,12 @@ step off (`[x]`) when it's done.
       ships, the remake promise, and how long things take.
     - The product's copy and FAQ, and `shop.json` with decision 20's price and options.
     - The home page leading with the product: one plain section and a link, with the sunset scroll kept.
+    - Decision 28's agent files, from `../ornaments-design-session/agents-01/drafts/`: `public/llms.txt`, the
+      "Ordering with an AI assistant" page, `drawing-spec.json`, and `product.json` built from `shop.json`.
+      Check the prices and dates against step 19.
+    - In the terms and privacy pages, test 2's text on consent for people and children, no logos or
+      characters, an assistant acting for the customer, and the own-drawing route (`../ornaments-design-session/agents-01/FINDINGS.md`,
+      "Policy and privacy text").
 
     docs/PAGES.md's rules apply.
 12. [ ] **Agent** · After 2: DNS (docs/HOSTING.md, "Cutover"):
@@ -299,6 +336,12 @@ does other things.
     photo.
   - Marketing: the courthouse, the covered bridge, the country church and the lighthouse (public domain).
     Never use institutions' names or logos in our copy.
+- **Agent** · Agents, the week after launch (decision 28; `../ornaments-design-session/agents-01/FINDINGS.md`):
+  - A review link from `POST /api/orders` for agents that don't browse, and `/api/openapi.json`.
+  - Verify Web Bot Auth signatures ourselves (Cloudflare's field needs Enterprise).
+  - A live test with a real ChatGPT dot on the preview host, stopping at Stripe's page. Whether a dot can fill
+    a file input is the biggest unknown.
+  - Optional, for RJ: an OpenAI Business Hub claim and Google Merchant Center listings (free; identity checks).
 - **Agent** · Later automation:
   - Shipping emails sent automatically, once RJ has seen a few drafts.
   - Slant's webhook.
@@ -359,7 +402,9 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
     after launch, with three builder checks before it; decision 27 takes that.
   - Test 2 (agent-friendly ordering) runs as a background subagent, because sessions can't be started over
     Remote Control: findings in `../ornaments-design-session/agents-01/FINDINGS.md`. Step 7's follow-up
-    waits until it's done, because the test runs that branch's builder.
+    waits until it's done, because the test runs that branch's builder. It recommended agent files, an
+    own-drawing upload and agent caps at launch; decision 28 takes that, and docs/ORDERS.md has the contracts.
+    The subagent couldn't write its own report file, so the orchestrator saved it from its final message.
 
 - 2026-11-19: Slant costs measured, at RJ's request, with 15 drafts of the test order (docs/CHARGES.md).
   Shipping depends a little on zone ($5.73 to Idaho, $6.93 to WV, $8.95 to Hawaii), and it barely grows with

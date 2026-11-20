@@ -19,6 +19,12 @@ here first and say so in NOW.md's log.
    caps, keeps the photo in KV for two days, and asks OpenAI's GPT Image to redraw it as a red-on-white stencil
    using the product's brief. It keeps the drawing and returns it. "Try again" makes another, up to three per
    photo. A drawing takes roughly half a minute to a minute, so the page shows that it's working.
+
+   **Or the customer's own drawing** (decision 28). "I have my own drawing" takes an image the customer, or
+   their AI assistant, made to our drawing spec (`/shop/cutout-ornament/drawing-spec.json`). The browser checks
+   it (see "Own drawings"), squares it to 1024 × 1024, makes it exactly two colours and sends it
+   (`POST /api/drawings` with `X-Source: upload`). No photo is sent and OpenAI isn't called. The rest of the
+   flow is the same.
 3. **Preview and choices.** The browser draws the ornament from the drawing in the customer's colours, with
    the name tag if they want one (see "The page"). The red in the drawing only marks what is stencil. Any two
    of Slant's colours can be chosen afterwards without a new drawing.
@@ -100,6 +106,13 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
   `X-Subject: <subject id>`, which has to be one of the product file's subjects. The answer is `201 {"id", "n": 1, "left": 2, "image"}`, where
   `image` is the drawing as base64 PNG and `id` is 12 characters from the order-ID alphabet.
 - **`POST /api/drawings/<id>/again`**: the next try with the same photo, until `left` is 0.
+- **`POST /api/drawings` with `X-Source: upload`** (decision 28): the body is the customer's own drawing, a
+  1024 × 1024 PNG (`image/png`, at most 4 MB) that the page made from their file. The Worker reads only the PNG
+  signature and IHDR (width, height), never decodes it, and stores it as try 1:
+  `201 {"id", "n": 1, "left": 0, "source": "upload"}`, with no image echoed back. There's no OpenAI call, and it
+  counts only against `uploadsPerVisitorPerDay`. `/again` refuses an upload with `409`. It's stored as
+  `drawing:<id>` with `source: "upload"` and `file:drawing:<id>/1.png`, with no `photo.jpg`, and expires after
+  two days unless paid.
 - **Refusals:**
   - `429 {"error", "retryAfter"}` when the visitor's or the day's cap is reached.
   - `503` when drawings are switched off.
@@ -118,6 +131,13 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
     day and never logged.
   - `dollarsPerDay` (10), counted as `costPerDrawing` × drawings. `costPerDrawing` is set from OpenAI's price
     for the model and quality, rounded up.
+  - `agentDrawingsPerDay` (10, decision 28): a request with a `Signature-Agent` header counts here, across
+    all agents, instead of `perVisitorPerDay`. Agent browsers such as ChatGPT's share cloud IP addresses, so a
+    per-IP count would shut them all out after six drawings. An unverified header can only move a request
+    into this smaller pool, never past a cap.
+  - `uploadsPerVisitorPerDay` (20): own-drawing uploads, counted like `perVisitorPerDay`.
+  - Free-plan KV allows 1,000 writes a day across everything, and a drawing writes about five keys, so a busy
+    day hits that before the dollar cap. `GET /api/stats` reports writes today, and `rl-daily` warns above 600.
   - KV counters can overshoot by a few in a burst. The OpenAI balance is the hard cap behind them.
 - **Switches:** KV `switch:drawings` and `switch:orders` set to `off` stop new drawings or new orders at once.
   The page then says to come back later.
@@ -146,7 +166,8 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
   Designs are numbered `1`, `2`, … in list order.
 - `PUT /api/orders/<id>/<k>/preview.jpg` for each design `k`, then `POST /api/orders/<id>/checkout`. Checkout
   has one line per design, with its quantity.
-- **Paid** (webhook): for each design `k`, `design.json` (the design as above, plus `product`), `photo.jpg`, the
+- **Paid** (webhook): for each design `k`, `design.json` (the design as above, plus `product` and the drawing's `source`),
+  `photo.jpg` (made drawings only), the
   chosen drawing as `drawing.png`, and `preview.jpg` are written again under `file:<id>/<k>/` with no expiry. The
   order then goes to `paid` and into the queue. Each `file:<id>/<k>/` folder is exactly what
   `tools/ornament/make.py` reads.
@@ -233,6 +254,65 @@ or with no key where the cloud's proxy adds it (PRODUCTION.md). It has no draft 
   sends it again and retries.
 - Nothing is stored in the browser. Tap targets are at least 44 px, it works at 375 px, and the selection
   ring doesn't rely on colour alone.
+- **An agent can operate it** (decision 28):
+  - two labelled file inputs, "Add a photo" and "I have my own drawing";
+  - a crop that works without gestures (centred and filled by default, a zoom slider);
+  - colours as labelled radio groups, the font as a `<select>`, and native, labelled controls for the tag,
+    quantity, "add another design" and "Order";
+  - drawing progress, tries left, upload-check results, tag fit and the total as text in an `aria-live`
+    region;
+  - the facts in the HTML: what it is, its size, the colours, the price tiers with shipping, US only, made to
+    order, the order-by date and the remake promise;
+  - `Product` and `Offer` JSON-LD, and `<link rel="alternate" type="application/json" href="product.json">`;
+  - a line near the upload: "Using an AI assistant? Here's what it can do."
+
+### Own drawings (decision 28)
+
+An uploaded drawing goes through the same builder, so it meets the same spec. The page checks it before
+sending, using the builder's own cleanup and bridge measurement from `tools/ornament/`, and says what's wrong
+in words.
+
+- **Refused:**
+  - not PNG, JPEG or WebP;
+  - not square (within 2%), under 1024 or over 4096 px, or over 4 MB;
+  - transparent;
+  - a photo or shaded art (more than 6% of pixels between ink and white);
+  - fills the whole image (a frame, a background box, or a subject cut off at the edges), or one shape
+    covers more than 80%;
+  - no features (under 3% of the silhouette cut out);
+  - taller than 1.375 × its width;
+  - more than one piece after the builder's cleanup, with an island the builder can't bridge.
+- **Warned, but allowed:**
+  - "white kept" under 0.8;
+  - art touching an edge;
+  - more than six pieces to bridge;
+  - ink that isn't red;
+  - art under half the width.
+- The page then squares it to 1024 × 1024 and maps every pixel more than 120 (RGB distance) from white to
+  `#E01010`, and the rest to white. The preview is drawn from that, as for a made drawing.
+
+The routine runs `make.py` as for any design, and a failed build goes to `needs-rj`. An uploaded design has
+no `photo.jpg`, so the routine compares the proof with `preview.jpg` only. It also looks for logos,
+characters, text and brand marks.
+
+### Agents (decision 28)
+
+- **Public and static, with no Worker:**
+  - `/llms.txt`;
+  - `/shop/cutout-ornament/ai/` ("Ordering with an AI assistant");
+  - `/shop/cutout-ornament/drawing-spec.json`;
+  - `/shop/cutout-ornament/product.json`, built from `shop.json`: subjects, colours with hex values, fonts,
+    the tag rule, price tiers, limits and the order-by date, but never Stripe IDs, filament IDs or caps.
+- **A person pays.** Money moves only on Stripe's hosted Checkout, paid by the customer or by their own
+  wallet with their approval. We take no card details, payment tokens or credentials through our API.
+- **A person sees the preview.** Checkout is reachable only from the page, after it has rendered and uploaded
+  `preview.jpg`. After launch, `POST /api/orders` also returns a review link (`/shop/cutout-ornament/?order=<id>`)
+  for agents that don't browse.
+- **Agents aren't blocked:**
+  - no CAPTCHA;
+  - Cloudflare allows "dots, OpenAI";
+  - agents get their own pool in "Caps";
+  - `llms.txt` points them to bringing their own drawing.
 
 ## Choices made, and why
 
@@ -258,8 +338,12 @@ or with no key where the cloud's proxy adds it (PRODUCTION.md). It has no draft 
   - OpenAI, which makes the drawing.
   - RJ, and the agents that run his orders. Anthropic processes what an agent looks at.
   - Slant, which sees the STLs and never the photo.
+- With an own drawing (decision 28), we never get the photo. The customer's assistant, and whoever runs it,
+  sees it under their own terms.
 - Unpaid photos and drawings expire after two days. Photos and everything made from them are deleted from KV
-  60 days after the order ships or is cancelled. The order record, without photos, stays for seven years.
+  60 days after the order ships or is cancelled, except `preview.jpg` and `build.json`. Those stay 180 days
+  after shipping as evidence of what the customer approved, because a card dispute can come up to about 120
+  days after delivery (decision 28). The order record, without photos, stays for seven years.
 - OpenAI keeps API inputs and outputs for up to 30 days to monitor abuse, and doesn't train on them by default
   (check its current policy when writing the privacy page).
 - The privacy page says all this (NOW.md step 11). Keep it true when anything here changes.
