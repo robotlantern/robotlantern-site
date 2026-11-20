@@ -426,6 +426,14 @@
       ]
     }
   ],
+  "pairs": [
+    { "base": "white", "stencil": "red", "label": "Classic" },
+    { "base": "white", "stencil": "green", "label": "Classic green" },
+    { "base": "esun-bone-white", "stencil": "brown", "label": "Gingerbread" },
+    { "base": "tan", "stencil": "white", "label": "Iced gingerbread" },
+    { "base": "black", "stencil": "gold", "label": "Formal" },
+    { "base": "white", "stencil": "blue", "label": "Winter" }
+  ],
   "differ": [
     [
       "base",
