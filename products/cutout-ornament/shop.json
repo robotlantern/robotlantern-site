@@ -1,0 +1,454 @@
+{
+  "name": "Stencil ornament",
+  "description": "A two-part ornament from your photo: a stencil over a coloured base, with an optional name tag. US shipping included.",
+  "shipping": 0,
+  "fulfillment": "slant",
+  "photo": {
+    "via": "drawing",
+    "crop": "square",
+    "edge": 1024
+  },
+  "drawing": {
+    "model": "gpt-image-2.6-sunburst",
+    "quality": "medium",
+    "size": "1024x1024",
+    "triesPerPhoto": 3,
+    "subjects": [
+      {
+        "id": "pet",
+        "label": "Pet",
+        "brief": "briefs/pet.md",
+        "crop": "Fit your pet's head and shoulders in the square"
+      },
+      {
+        "id": "person",
+        "label": "Person",
+        "brief": "briefs/person.md",
+        "crop": "Fit the person's head and hair in the square"
+      },
+      {
+        "id": "gag",
+        "label": "Gag gifts",
+        "source": "static",
+        "designs": [
+          {
+            "id": "toilet",
+            "label": "Toilet",
+            "drawing": "static/gag-toilet-1.png",
+            "sha256": "6bd6ea526cafbc0fa0c0b151e686d7fc755528b9133a0ca28c0c68e3216584b1",
+            "text": "Never Forget",
+            "font": "allerta",
+            "alt": "A toilet with its lid up"
+          },
+          {
+            "id": "coal",
+            "label": "Lump of coal",
+            "drawing": "static/gag-coal-1.png",
+            "sha256": "af45d1cbb689ffdde317eaa96f119d41882fd261891b8023c59b1614ff3cc110",
+            "text": "Naughty List",
+            "font": "allerta",
+            "alt": "A lump of coal"
+          },
+          {
+            "id": "duck",
+            "label": "Rubber duck",
+            "drawing": "static/gag-duck-1.png",
+            "sha256": "004bd97e3c597238712a030e39bbd872bc0102adf57b9cabca61cdb5cc428621",
+            "text": "Debug Duck",
+            "font": "allerta",
+            "alt": "A rubber duck"
+          },
+          {
+            "id": "dumpster",
+            "label": "Dumpster fire",
+            "drawing": "static/gag-dumpster-1.png",
+            "sha256": "c4e0bad74519a52653302415331177b553d51a11c161f10240c4ba2b63d2063d",
+            "text": "2026 So Far",
+            "font": "allerta",
+            "alt": "A dumpster with flames rising out of it"
+          },
+          {
+            "id": "casserole",
+            "label": "Burnt casserole",
+            "drawing": "static/gag-casserole-1.png",
+            "sha256": "b017824d5aa4168a2b235a90d1ac41cdb59942df5d3774a96fe04b34a8bd065d",
+            "text": "Turkey Day 2026",
+            "font": "allerta",
+            "alt": "A casserole dish with steam rising"
+          }
+        ]
+      },
+      {
+        "id": "appalachian",
+        "label": "Appalachian",
+        "source": "static",
+        "designs": [
+          {
+            "id": "minerhat",
+            "label": "Miner's hard hat and lamp",
+            "drawing": "static/appalachian-minerhat-1.png",
+            "sha256": "36a143e56976f59e16315101c23d2b5411feea50f66d8eae8fe201722ff50c2e",
+            "text": "WV Coal Miner",
+            "font": "allerta",
+            "alt": "A coal miner's hard hat with its lamp"
+          },
+          {
+            "id": "bucket",
+            "label": "Coal bucket",
+            "drawing": "static/appalachian-bucket-1.png",
+            "sha256": "307ac1ce8ce9819def896e446282d8af1153635d9285d43b06f75b8a191affd1",
+            "text": "Mamaw's Bucket",
+            "font": "big-shoulders",
+            "alt": "A bucket of coal"
+          },
+          {
+            "id": "banjo",
+            "label": "Banjo",
+            "drawing": "static/appalachian-banjo-1.png",
+            "sha256": "7368c18afdf5916c470c506d9a6ca78a05b11fd06448a3a1c253fbf118f829d3",
+            "text": "Born to Pick",
+            "font": "allerta",
+            "alt": "A banjo"
+          },
+          {
+            "id": "pepperoni",
+            "label": "Pepperoni roll",
+            "drawing": "static/appalachian-pepperoni-1.png",
+            "sha256": "2b735fc1c1793f0bc7fb368a36c77dc49924d85898db05b290f84fcf36909189",
+            "text": "Pepperoni Roll",
+            "font": "allerta",
+            "alt": "A pepperoni roll"
+          },
+          {
+            "id": "jar",
+            "label": "Mason jar",
+            "drawing": "static/appalachian-jar-1.png",
+            "sha256": "d07a804d7b377b4d65e73c599243ef8b19599fcc354de20f09d163ea6bb89daf",
+            "text": "Moonshine",
+            "font": "allerta",
+            "alt": "A mason jar"
+          }
+        ]
+      }
+    ]
+  },
+  "pricing": {
+    "tiers": [
+      {
+        "from": 1,
+        "each": 29
+      }
+    ],
+    "maxPerOrder": 50,
+    "maxDesigns": 12,
+    "modifiers": []
+  },
+  "options": [
+    {
+      "id": "base",
+      "label": "Base",
+      "choices": [
+        {
+          "id": "white",
+          "label": "White",
+          "hex": "#ffffff",
+          "slant": "8f598975-6fdd-45a5-80a7-aafaa9b9015e"
+        },
+        {
+          "id": "esun-bone-white",
+          "label": "Bone White",
+          "hex": "#f9f6ee",
+          "slant": "ad1dbeb2-7519-4ef7-a4c3-eb6d161493fc"
+        },
+        {
+          "id": "black",
+          "label": "Black",
+          "hex": "#000000",
+          "slant": "76fe1f79-3f1e-43e4-b8f4-61159de5b93c"
+        },
+        {
+          "id": "matte-black",
+          "label": "Matte Black",
+          "hex": "#000000",
+          "slant": "97e187cd-3051-4463-9f0c-59e361afc10e"
+        },
+        {
+          "id": "red",
+          "label": "Red",
+          "hex": "#f91010",
+          "slant": "92b84110-6e43-4fc9-88aa-8f63967bb2d5"
+        },
+        {
+          "id": "matte-muted-red",
+          "label": "Matte Muted Red",
+          "hex": "#ff5f2e",
+          "slant": "b5a59cee-48fc-461b-ae5f-8d9ead9ce411"
+        },
+        {
+          "id": "orange",
+          "label": "Orange",
+          "hex": "#ff7300",
+          "slant": "50b13324-63a0-4c06-a02b-8c1c15a3acd5"
+        },
+        {
+          "id": "yellow",
+          "label": "Yellow",
+          "hex": "#f5c211",
+          "slant": "a72a0ac4-d957-47ee-ac82-c55ac34b0780"
+        },
+        {
+          "id": "gold",
+          "label": "Gold",
+          "hex": "#d5b510",
+          "slant": "278023e9-62e8-4657-b6c4-577fbffe7487"
+        },
+        {
+          "id": "green",
+          "label": "Green",
+          "hex": "#26a269",
+          "slant": "6484baac-fcf4-4e1d-a1a4-7480b89c7e07"
+        },
+        {
+          "id": "esun-mint",
+          "label": "Mint",
+          "hex": "#95e8c3",
+          "slant": "be63f8c5-8c1c-450d-b343-6708029ae065"
+        },
+        {
+          "id": "blue",
+          "label": "Blue",
+          "hex": "#0000cc",
+          "slant": "8cfbf30a-2995-486e-a1e8-8f7d41488f1e"
+        },
+        {
+          "id": "matte-blue",
+          "label": "Matte Blue",
+          "hex": "#4ddbd4",
+          "slant": "e3023238-9d59-4bf0-a0f0-223708c8e6b9"
+        },
+        {
+          "id": "purple",
+          "label": "Purple",
+          "hex": "#9c0cdf",
+          "slant": "16cc520a-c5f6-4337-95a7-14f7f8d95e0f"
+        },
+        {
+          "id": "pink",
+          "label": "Pink",
+          "hex": "#ea5dcb",
+          "slant": "1ffdded1-56ed-42aa-b07f-9e5f25a93fce"
+        },
+        {
+          "id": "brown",
+          "label": "Brown",
+          "hex": "#6b430a",
+          "slant": "195d4a9e-c06b-470b-bf6e-4ca15b862221"
+        },
+        {
+          "id": "tan",
+          "label": "Tan",
+          "hex": "#d49459",
+          "slant": "11572791-2e31-45d4-9fce-e27d4405e995"
+        },
+        {
+          "id": "gray",
+          "label": "Gray",
+          "hex": "#666666",
+          "slant": "d7977dd2-9dc4-433a-9d9c-a9cc09bc165f"
+        },
+        {
+          "id": "marble",
+          "label": "Marble",
+          "hex": "#b9b4b1",
+          "slant": "bb405c27-451b-4783-8c01-81945b4a4ba7"
+        }
+      ]
+    },
+    {
+      "id": "stencil",
+      "label": "Stencil",
+      "choices": [
+        {
+          "id": "white",
+          "label": "White",
+          "hex": "#ffffff",
+          "slant": "8f598975-6fdd-45a5-80a7-aafaa9b9015e"
+        },
+        {
+          "id": "esun-bone-white",
+          "label": "Bone White",
+          "hex": "#f9f6ee",
+          "slant": "ad1dbeb2-7519-4ef7-a4c3-eb6d161493fc"
+        },
+        {
+          "id": "black",
+          "label": "Black",
+          "hex": "#000000",
+          "slant": "76fe1f79-3f1e-43e4-b8f4-61159de5b93c"
+        },
+        {
+          "id": "matte-black",
+          "label": "Matte Black",
+          "hex": "#000000",
+          "slant": "97e187cd-3051-4463-9f0c-59e361afc10e"
+        },
+        {
+          "id": "red",
+          "label": "Red",
+          "hex": "#f91010",
+          "slant": "92b84110-6e43-4fc9-88aa-8f63967bb2d5"
+        },
+        {
+          "id": "matte-muted-red",
+          "label": "Matte Muted Red",
+          "hex": "#ff5f2e",
+          "slant": "b5a59cee-48fc-461b-ae5f-8d9ead9ce411"
+        },
+        {
+          "id": "orange",
+          "label": "Orange",
+          "hex": "#ff7300",
+          "slant": "50b13324-63a0-4c06-a02b-8c1c15a3acd5"
+        },
+        {
+          "id": "yellow",
+          "label": "Yellow",
+          "hex": "#f5c211",
+          "slant": "a72a0ac4-d957-47ee-ac82-c55ac34b0780"
+        },
+        {
+          "id": "gold",
+          "label": "Gold",
+          "hex": "#d5b510",
+          "slant": "278023e9-62e8-4657-b6c4-577fbffe7487"
+        },
+        {
+          "id": "green",
+          "label": "Green",
+          "hex": "#26a269",
+          "slant": "6484baac-fcf4-4e1d-a1a4-7480b89c7e07"
+        },
+        {
+          "id": "esun-mint",
+          "label": "Mint",
+          "hex": "#95e8c3",
+          "slant": "be63f8c5-8c1c-450d-b343-6708029ae065"
+        },
+        {
+          "id": "blue",
+          "label": "Blue",
+          "hex": "#0000cc",
+          "slant": "8cfbf30a-2995-486e-a1e8-8f7d41488f1e"
+        },
+        {
+          "id": "matte-blue",
+          "label": "Matte Blue",
+          "hex": "#4ddbd4",
+          "slant": "e3023238-9d59-4bf0-a0f0-223708c8e6b9"
+        },
+        {
+          "id": "purple",
+          "label": "Purple",
+          "hex": "#9c0cdf",
+          "slant": "16cc520a-c5f6-4337-95a7-14f7f8d95e0f"
+        },
+        {
+          "id": "pink",
+          "label": "Pink",
+          "hex": "#ea5dcb",
+          "slant": "1ffdded1-56ed-42aa-b07f-9e5f25a93fce"
+        },
+        {
+          "id": "brown",
+          "label": "Brown",
+          "hex": "#6b430a",
+          "slant": "195d4a9e-c06b-470b-bf6e-4ca15b862221"
+        },
+        {
+          "id": "tan",
+          "label": "Tan",
+          "hex": "#d49459",
+          "slant": "11572791-2e31-45d4-9fce-e27d4405e995"
+        },
+        {
+          "id": "gray",
+          "label": "Gray",
+          "hex": "#666666",
+          "slant": "d7977dd2-9dc4-433a-9d9c-a9cc09bc165f"
+        },
+        {
+          "id": "marble",
+          "label": "Marble",
+          "hex": "#b9b4b1",
+          "slant": "bb405c27-451b-4783-8c01-81945b4a4ba7"
+        }
+      ]
+    },
+    {
+      "id": "tag",
+      "label": "Name tag",
+      "choices": [
+        {
+          "id": "yes",
+          "label": "Yes"
+        },
+        {
+          "id": "no",
+          "label": "No"
+        }
+      ]
+    },
+    {
+      "id": "font",
+      "label": "Font",
+      "default": "allerta",
+      "choices": [
+        {
+          "id": "allerta",
+          "label": "Allerta Stencil"
+        },
+        {
+          "id": "saira",
+          "label": "Saira Stencil One"
+        },
+        {
+          "id": "big-shoulders",
+          "label": "Big Shoulders Stencil"
+        },
+        {
+          "id": "emblema",
+          "label": "Emblema One"
+        },
+        {
+          "id": "wallpoet",
+          "label": "Wallpoet"
+        }
+      ]
+    }
+  ],
+  "differ": [
+    [
+      "base",
+      "stencil"
+    ]
+  ],
+  "text": {
+    "max": 16,
+    "allowed": "A-Za-z0-9 '&.,!?-",
+    "minTagWidth": 64,
+    "when": {
+      "tag": "yes"
+    },
+    "font": "font"
+  },
+  "weeklyCap": 25,
+  "orderBy": "2026-12-10",
+  "listed": false,
+  "provisional": "The price is a placeholder until NOW.md step 19, and step 11 writes the copy.",
+  "stripe": {
+    "test": {
+      "product": "prod_Vf4xlEGwD29YMH",
+      "shippingRate": "shr_1UdknV9i6BSa9eZ6C2wGD8YA"
+    }
+  }
+}
