@@ -207,11 +207,11 @@ step off (`[x]`) when it's done.
    - Put Tucker and the three heads together. Photograph them with Buster, front-on against a plain
      background and hanging on the tree.
    - Put the photos in `.private/products/cutout-ornament/listing-photos/`.
-   - Answer decision 25.
+   - [x] Answer decision 25 (people at launch: yes).
 
 ### Build: agents, in parallel, each in its own worktree (step 14 merges them)
 
-7. [ ] **Agent** · Ornament tools into the repo, in `tools/ornament/` (docs/ORDERS.md, "Recipe"):
+7. [x] **Agent** · Ornament tools into the repo, in `tools/ornament/` (docs/ORDERS.md, "Recipe"):
    - The builder and name-tag code from the scratch folder, with today's defaults (1.8 mm necks and bridges).
    - The five stencil fonts and their OFL licences in `public/shop/fonts/`, used by both the builder and the
      page.
