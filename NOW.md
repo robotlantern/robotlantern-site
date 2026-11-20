@@ -475,6 +475,9 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
     `../ornaments-design-session/objects-01/FINDINGS.md`. Step 7's follow-up waits for it, as before.
     It recommended "thing" after launch and a ready-made range of ten; decision 30 takes both, with the
     range's contracts in now. All four tests are done. Next: step 7's follow-up on its branch.
+  - Step 7's follow-up runs as a background subagent on Opus at high effort, in step 7's worktree, committing
+    to its branch only (no merge, no push). It covers the size box, the "white kept" check, the font-aware tag
+    fit, `kind` and `parts`, an upload-check function, and test 2's two builder bugs.
 
 - 2026-11-19: Slant costs measured, at RJ's request, with 15 drafts of the test order (docs/CHARGES.md).
   Shipping depends a little on zone ($5.73 to Idaho, $6.93 to WV, $8.95 to Hawaii), and it barely grows with
