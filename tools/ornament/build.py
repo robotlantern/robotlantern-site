@@ -3,7 +3,7 @@
 base.stl     white backing: outline = art silhouette + rim, pocket for the stencil, hanging tab
 stencil.stl  one connected sheet of the drawing's colour, press-fits into the pocket
 
-Run: python build.py ART.png OUTDIR [--width 80]   (requirements.txt; an order goes through make.py)
+Run: python build.py ART.png OUTDIR [--width 80 --height 85]   (requirements.txt; an order goes through make.py)
 """
 import argparse, json
 from pathlib import Path
@@ -17,7 +17,11 @@ import manifold3d as m3, trimesh
 
 ap = argparse.ArgumentParser()
 ap.add_argument('art'); ap.add_argument('out')
-ap.add_argument('--width', type=float, default=80.0, help='art width, mm')
+ap.add_argument('--width', type=float, default=80.0, help='art box width, mm: the art is scaled to fit the box')
+ap.add_argument('--height', type=float, default=85.0, help='art box height, mm (added 2026-11-19; before, width only)')
+ap.add_argument('--max-base-w', type=float, default=90.0, help='widest base that passes, mm')
+ap.add_argument('--max-base-h', type=float, default=125.0, help='tallest base that passes, mm (ring and tag included)')
+ap.add_argument('--min-white-kept', type=float, default=0.8, help='fail below this share of the drawing\'s cut-outs kept')
 ap.add_argument('--min-line', type=float, default=1.0, help='thinnest red, mm')
 ap.add_argument('--min-gap', type=float, default=1.0, help='thinnest white cut, mm')
 ap.add_argument('--bridge', type=float, default=1.8, help='bridge width, mm (1.2 until 2026-11-19)')
@@ -38,112 +42,45 @@ ap.add_argument('--stencil-col', default='#d61a1a')
 ap.add_argument('--name', default='', help='text for the name tag; empty = no tag')
 ap.add_argument('--font', default='allerta', help='stencil font key in nametag.STENCILS')
 ap.add_argument('--tag-h', type=float, default=17.0, help='visible tag height, mm')
-ap.add_argument('--tag-w', type=float, default=0.8, help='tag width as a share of the art width (clamped 50-72 mm)')
+ap.add_argument('--tag-w', type=float, default=0.8, help='tag width as a share of the art width (clamped 64-72 mm, nametag.tag_width)')
 ap.add_argument('--rim', type=float, default=2.0, help='white rim outside the stencil, mm')
 a = ap.parse_args()
 out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
 
-im = np.asarray(Image.open(a.art).convert('RGB')).astype(int)
-# ink = anything clearly not white (the brief asks for one ink colour on pure white)
-red = np.pad(np.linalg.norm(im - 255, axis=2) > a.ink, 60)
-ys, xs = np.nonzero(red)
-pad = 40
-red = red[ys.min() - pad:ys.max() + pad, xs.min() - pad:xs.max() + pad]
-s = a.width / (xs.max() - xs.min() + 1)          # mm per px
-disk = lambda mm: cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * max(1, round(mm / 2 / s)) + 1,) * 2)
-log = {}
-
-# 1. drop specks, fatten thin red, fill thin white cuts
-lab, n = nd.label(red, np.ones((3, 3)))
-area = nd.sum(red, lab, range(1, n + 1)) * s * s
-red = np.isin(lab, [i + 1 for i in range(n) if area[i] >= a.speck])
-log['specks_dropped'] = int(sum(area < a.speck))
-r8 = red.astype(np.uint8)
-thin = red & ~cv2.morphologyEx(r8, cv2.MORPH_OPEN, disk(a.min_line)).astype(bool)
-red = red | cv2.dilate(thin.astype(np.uint8), disk(a.min_line * 0.6)).astype(bool)
-log['thin_red_mm2'] = round(float(thin.sum() * s * s), 1)
-before = red.sum()
-red = cv2.morphologyEx(red.astype(np.uint8), cv2.MORPH_CLOSE, disk(a.min_gap)).astype(bool)
-log['thin_gaps_filled_mm2'] = round(float((red.sum() - before) * s * s), 1)
-
-# 1b. thicken necks: a strip narrower than --neck that is the only thing holding two wide parts together
-# (a 1 mm one nearly broke on the first print). Dead-end tips touch one part only and are left as drawn.
-necks = []
-if a.neck > 0:
-    wide = cv2.morphologyEx(red.astype(np.uint8), cv2.MORPH_OPEN, disk(a.neck)).astype(bool)
-    wlab, _ = nd.label(wide, np.ones((3, 3)))
-    clab, cn = nd.label(red & ~wide, np.ones((3, 3)))
-    edt = nd.distance_transform_edt(red)
-    grow = np.zeros_like(red)
-    for i in range(1, cn + 1):
-        c = clab == i
-        touch = np.unique(wlab[cv2.dilate(c.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)])
-        if len(touch[touch > 0]) < 2: continue
-        w = 2 * edt[c].max() * s                      # neck width, mm
-        r = max(1, round((a.neck - w) / 2 / s) + 1)
-        grow |= cv2.dilate(c.astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1,) * 2)).astype(bool)
-        necks.append(round(float(w), 2))
-    red = red | grow
-log['necks_widened_mm'] = necks
-
-# 2. bridge every island to the main sheet by its shortest path
-bridges = []
-while True:
-    lab, n = nd.label(red, np.ones((3, 3)))
-    if n <= 1: break
-    sizes = nd.sum(red, lab, range(1, n + 1)); main = np.argmax(sizes) + 1
-    dist, (iy, ix) = nd.distance_transform_edt(lab != main, return_indices=True)
-    best = None
-    for i in range(1, n + 1):
-        if i == main: continue
-        d = np.where(lab == i, dist, np.inf); p = np.unravel_index(np.argmin(d), d.shape)
-        if best is None or d[p] < best[0]: best = (d[p], p, (iy[p], ix[p]))
-    _, (y0, x0), (y1, x1) = best
-    m = red.astype(np.uint8)
-    cv2.line(m, (int(x0), int(y0)), (int(x1), int(y1)), 1, max(2, round(a.bridge / s)))
-    red = m.astype(bool); bridges.append(round(float(best[0] * s), 2))
-log['bridges_mm'] = bridges
-warn = [f'bridge {b} mm > {a.max_bridge}' for b in bridges if b > a.max_bridge]
-
-def polys(mask, blur=1.2):
-    m = cv2.GaussianBlur(mask.astype(np.float32), (0, 0), blur) > 0.5
-    cs, hier = cv2.findContours(m.astype(np.uint8), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
-    ps = []
-    for j, c in enumerate(cs):
-        if hier[0][j][3] != -1 or len(c) < 4: continue
-        holes = [cs[h][:, 0] for h in range(len(cs)) if hier[0][h][3] == j and len(cs[h]) >= 4]
-        ps.append(Polygon(c[:, 0], holes).buffer(0))
-    g = unary_union(ps).simplify(0.6)
-    return affinity.scale(g, s, -s, origin=(0, 0))   # mm, y up
-
-sheet = polys(red)
-sil = Polygon(max(sheet.geoms, key=lambda g: g.area).exterior) if sheet.geom_type == 'MultiPolygon' else Polygon(sheet.exterior)
-sheet = sheet.intersection(sil)
+# 1-2. ink, scale to the box, cleanup, bridges, sheet and silhouette: drawing.py, shared with the upload check
+import sys; sys.path.insert(0, str(Path(__file__).parent))
+from drawing import prepare, unpinch, drop_small
+rep, geo = prepare(a.art, width=a.width, height=a.height, min_line=a.min_line, min_gap=a.min_gap, neck=a.neck,
+                   bridge=a.bridge, speck=a.speck, ink=a.ink, max_bridge=a.max_bridge, min_white_kept=a.min_white_kept)
+s, sheet, sil = geo['s'], geo['sheet'], geo['sil']
+log = {k: rep[k] for k in ('specks_dropped', 'thin_red_mm2', 'thin_gaps_filled_mm2', 'necks_widened_mm', 'bridges_mm')}
+warn = list(rep['problems'])
 if a.name:
     # name tag: base material hanging below the head; the stencil sheet covers it as a plate with the
     # name cut through, so the letters show the base colour. Stencil fonts keep the plate one piece.
-    import sys; sys.path.insert(0, str(Path(__file__).parent))
-    from nametag import fit
+    from nametag import fit, tag_width, PAD_X, PAD_BOTTOM, PAD_TOP, MIN_TEXT_H, MAX_TEXT_H
     from shapely.geometry import box
     x0, y0, x1, y1 = sil.bounds; cxs = (x0 + x1) / 2
-    tw = min(72.0, max(50.0, a.tag_w * (x1 - x0)))
+    tw = tag_width(x1 - x0, a.tag_w)
     overlap = 5.0
     while True:
         tag = box(cxs - tw / 2, y0 - a.tag_h, cxs + tw / 2, y0 + overlap).buffer(-4).buffer(4)
         if unary_union([sil, tag]).geom_type == 'Polygon' or overlap > 30: break
         overlap += 2.0
-    tbox = box(cxs - tw / 2 + 3.5, y0 - a.tag_h + 3.0, cxs + tw / 2 - 3.5, y0 - 1.5)
-    text, cap, tw_ = fit(a.name, a.font, tbox, max_h=11.0, min_h=5.0)
+    tbox = box(cxs - tw / 2 + PAD_X, y0 - a.tag_h + PAD_BOTTOM, cxs + tw / 2 - PAD_X, y0 - PAD_TOP)
+    text, cap, tw_ = fit(a.name, a.font, tbox, max_h=MAX_TEXT_H, min_h=MIN_TEXT_H)
     text = text.buffer(-0.2)                      # thin the letters a hair so the font's bridges print
     sil = Polygon(unary_union([sil, tag]).exterior)
     sheet_notext = unary_union([sheet, tag])
-    sheet = sheet_notext.difference(text)
+    sheet = drop_small(sheet_notext.difference(text), 0.01)   # what ext() would skip anyway
     plate = sheet.intersection(tag)
     log['tag'] = dict(name=a.name, font=a.font, cap_mm=round(cap, 1), width_mm=round(tw, 1), overlap_mm=overlap,
                       thin_red_mm2=round(plate.difference(plate.buffer(-a.min_line / 2).buffer(a.min_line / 2)).area, 2),
                       pieces=1 if sheet.geom_type == 'Polygon' else len(sheet.geoms))
     if tw_: warn.append(tw_)
     if sheet.geom_type != 'Polygon': warn.append(f"tag text leaves {len(sheet.geoms) - 1} loose pieces (font not stencil-safe for this text)")
+sheet, pinches = unpinch(sheet, a.min_line)
+if pinches: log['pinches_widened'] = pinches
 cx, cy = sil.centroid.x, sil.centroid.y
 sheet = affinity.translate(sheet, -cx, -cy); sil = affinity.translate(sil, -cx, -cy)
 if a.name:
@@ -218,6 +155,9 @@ log.update(base_mm=[round(v, 1) for v in B.extents], stencil_mm=[round(v, 1) for
            stencil_cm3=round(S.volume / 1000, 2))
 if log['stencil_bodies'] != 1: warn.append('STENCIL IS NOT ONE PIECE')
 if not (B.is_watertight and S.is_watertight): warn.append('MESH NOT WATERTIGHT')
+if B.extents[0] > a.max_base_w + 1e-6 or B.extents[1] > a.max_base_h + 1e-6:
+    warn.append(f'base {B.extents[0]:.1f} x {B.extents[1]:.1f} mm is over the {a.max_base_w:g} x {a.max_base_h:g} mm limit')
+log.update(art_mm=rep['art_mm'], white_mm2=rep['white_mm2'], white_kept=rep['white_kept'], pieces=rep['pieces'])
 log['warnings'] = warn
 
 # 4. flat preview: white base, shadowed pocket wall, red sheet

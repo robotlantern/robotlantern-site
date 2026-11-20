@@ -88,6 +88,8 @@ def checks(rep: dict, tag: bool) -> dict:
         'stencil_one_piece': rep['stencil_bodies'] == 1,
         'watertight': bool(rep['base_watertight'] and rep['stencil_watertight']),
         'bridges_ok': all(b <= MAX_BRIDGE for b in rep['bridges_mm']),
+        'size_ok': rep['base_mm'][0] <= rep['max_base_w'] and rep['base_mm'][1] <= rep['max_base_h'],
+        'white_kept': rep['white_kept'] is None or rep['white_kept'] >= rep['min_white_kept'],
         'no_warnings': not rep['warnings'],
     }
     if tag:
