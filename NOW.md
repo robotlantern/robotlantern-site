@@ -441,6 +441,9 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
     the measured figures. Step 7's follow-up still waits, because this test also runs that branch's builder.
     It found the Davisson SVG in printdb (model 30, the soda-can cap), and recommended four contract changes
     before launch; decision 29 takes them. The subagent couldn't write its report, so the orchestrator saved it.
+  - Test 4 (objects and gag gifts) runs as a background subagent on Sonnet at high effort: it's mostly
+    listing, drawing and building, with less judgement than tests 2 and 3. Findings in
+    `../ornaments-design-session/objects-01/FINDINGS.md`. Step 7's follow-up waits for it, as before.
 
 - 2026-11-19: Slant costs measured, at RJ's request, with 15 drafts of the test order (docs/CHARGES.md).
   Shipping depends a little on zone ($5.73 to Idaho, $6.93 to WV, $8.95 to Hawaii), and it barely grows with
