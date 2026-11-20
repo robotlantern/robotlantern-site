@@ -247,9 +247,10 @@ step off (`[x]`) when it's done.
        `../ornaments-design-session/agents-01/tools/validate.py` is the prototype; it refused three islands that `make.py` bridged.
      - Two builder bugs: the tag join on a ragged fur bottom ("tag text leaves 1 loose pieces"), and a 2.0 mm
        island giving "STENCIL IS NOT ONE PIECE" and "MESH NOT WATERTIGHT". The runs are in `../ornaments-design-session/agents-01/runs/`.
-8. [ ] **Agent** · After 1: Privacy pass over everything `rebuild` would publish, files and history (AGENTS.md
+8. [x] **Agent** · After 1: Privacy pass over everything `rebuild` would publish, files and history (AGENTS.md
    rule 7). Then push `rebuild` to GitHub (decision 22) and make the desktop app see the GitHub remote, so
    cloud sessions can start. Report anything that had to change.
+   Done 2026-11-20: history rewritten (see the log), `rebuild` on GitHub at `8eadc43`, tracking `origin`.
 9. [ ] **Agent** · The order Worker for the ornament (docs/ORDERS.md, "Contracts"):
    - The drawings API to OpenAI, with decision 21's caps and an off switch.
    - Ornament orders that point to a drawing.
@@ -446,6 +447,15 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-20: RJ asked for the full scrub: the family member's name, the family-photo descriptions, and the
+  pet names with years and the death notes. A subagent rewrote the commits after `main` with
+  `git filter-repo --replace-text` (rules in `.private/research/privacy-replace.txt`, a backup bundle beside
+  them). `main` kept `d7f3161`; the tips' trees are unchanged except `tools/cutout/run_batch.py`, whose
+  docstring example had two pet name-and-year pairs. New tips: `rebuild` `8eadc43`, step 7's branch
+  `d88d422` (its worktree moved with it). Both were force-pushed to `bilbo`, `rebuild` to `samwise`, and the
+  old objects pruned there. `rebuild` is now on GitHub. Any checkout of the old history must rebase. Next:
+  steps 9, 10 and 19, one at a time as subagents, each in its own worktree.
 
 - 2026-11-19 (night): RJ made the OpenAI key and loaded $30 (step 3, docs/CHARGES.md), approved Workers Paid
   and up to $5 of paid test calls, and asked for steps 8, 9, 10 and 19 to run one at a time as subagents
