@@ -267,6 +267,7 @@ function renderTries() {
     const img = Object.assign(document.createElement('img'), { src: t.url, alt: '' });
     const span = document.createElement('span');
     span.textContent = d.kind === 'upload' ? (t.check.ok ? 'Your drawing' : 'Your drawing: won’t print') : t.check.ok ? `Try ${t.n}` : `Try ${t.n}: won’t print`;
+    r.setAttribute('aria-label', span.textContent);
     lab.append(r, img, span);
     row.append(lab);
   }
@@ -289,6 +290,7 @@ function renderGallery() {
     const lab = document.createElement('label');
     lab.className = 'pick';
     const r = Object.assign(document.createElement('input'), { type: 'radio', name: 'ready', value: id, checked: d.staticId === id });
+    r.setAttribute('aria-label', x.label);
     r.addEventListener('change', () => pickStatic(x, id));
     const img = Object.assign(document.createElement('img'), { src: x.url, alt: x.alt, loading: 'lazy' });
     const span = document.createElement('span');
@@ -674,6 +676,10 @@ async function ownDrawing(file) {
     const t = await addTry(holder, 1, blob);
     if (!t.check.ok) { say(out, `We can't use it. ${explain(t.check)} Ask for a new image rather than editing this one.`, true); return; }
     say(out, 'It passes. Sending it…');
+    // An own drawing belongs to a made subject; from a ready-made one, it takes the first made subject.
+    if (subjectOf(d.subject).source === 'static') {
+      Object.assign(d, { subject: (P.subjects.find((s) => s.source !== 'static') || P.subjects[0]).id, staticId: null });
+    }
     const subject = subjectOf(d.subject).source === 'static' ? null : d.subject;
     const res = await api('drawings', {
       method: 'POST',

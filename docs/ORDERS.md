@@ -54,6 +54,7 @@ No order reaches Slant until it has passed the checks and RJ has processed it.
 | Briefs | `products/cutout-ornament/briefs/pet.md`, `person.md` | The GPT Image prompt for each subject. Bundled into the Worker at deploy, like the catalog |
 | The page | `src/pages/shop/[slug].astro`, `src/scripts/shop/` | Photo, crop, drawing, preview, choices, order, thank-you page |
 | Ornament preview | `src/scripts/shop/stencil-ornament.js` | Draws the ornament from a drawing (below) |
+| Drawing check | `src/scripts/shop/stencil-drawing.js` | `drawing.py`'s `check_drawing` and the own-drawing checks, in the browser. It agrees with the builder on pass or fail, pieces and bridges; its "white kept" reads about 0.04 lower (pixels, not the vector proof), so it errs strict |
 | Fonts | `public/shop/fonts/` | The five stencil fonts (OFL), for the page and the builder alike: `allerta-stencil.ttf`, `saira-stencil-one.ttf`, `big-shoulders-stencil.ttf` (the variable font; use wght 800, opsz 72), `emblema-one.ttf`, `wallpoet.ttf`, each with its `OFL-<name>.txt`. Keys as in `nametag.py`: `allerta`, `saira`, `big-shoulders`, `emblema`, `wallpoet` |
 | Worker | `shop-worker/` | Drawings, orders, checkout, webhook, queue, Slant drafts |
 | Recipe | `tools/ornament/` | Drawing and choices → `base.stl`, `stencil.stl`, `proof.png`, `build.json` |
@@ -89,7 +90,8 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 ```
 
 - **Colours:** Slant's PLAs, from the picker's `colours.json` (scratch folder), each with Slant's filament id,
-  its hex value and whether it's offered. Clear is off, because the tree shows through it.
+  its hex value and whether it's offered. Clear is off, because the tree shows through it. `pairs` lists the
+  suggested pairs the page offers (`{"base", "stencil", "label"}`, by choice id); the Worker ignores it.
 - **`drawing.subjects`** (decision 26): each subject is data, with its brief, label and crop hint. Adding `person`
   (decision 25) or `place` (a church, a school, a childhood home) is a brief and an entry here, not code. Nothing
   in the Worker, page or routine names a subject. `model` and `quality` live here too, so a cheaper model is a
@@ -105,7 +107,7 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
   ```
   A subject's `source` is `made` when missing. `drawing` is a path under `products/cutout-ornament/`: a
   1024 × 1024 two-colour PNG that passed `make.py` with `text` in `font`. The file is public, because the page
-  and `product.json` show it. A published drawing is never edited: a redraw is a new file name (`-2.png`), and
+  and `product.json` show it: the site publishes it as `/shop/<slug>/<drawing>` (`src/pages/shop/[slug]/static/`). A published drawing is never edited: a redraw is a new file name (`-2.png`), and
   `sha256` pins it. The page shows a ready-made subject's designs as a gallery in place of the photo step, with
   `text` as the tag's starting text.
 - **Text:** 16 characters is a ceiling, not a promise. The text must also fit the tag in the chosen font (text

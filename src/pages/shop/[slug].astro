@@ -236,7 +236,8 @@ const subjects = d.drawing!.subjects;
   @font-face { font-family: 'RL Wallpoet'; src: url(/shop/fonts/wallpoet.ttf) format('truetype'); font-display: swap; }
 </style>
 
-<style>
+<!-- Global, because the script builds most of the controls; this page's CSS loads only on this page. -->
+<style is:global>
   .maker { width: min(70rem, 100% - 2 * var(--edge)); margin: 1.2rem auto 0; }
   .maker__head h1 { margin: 0 0 .4rem; font: 400 clamp(2rem, 6vw, 2.8rem)/1.05 var(--serif); letter-spacing: -.02em; }
   .lede { margin: 0 0 .3rem; color: var(--muted); font: 1.08rem/1.5 var(--serif); max-width: 40rem; }
@@ -255,7 +256,9 @@ const subjects = d.drawing!.subjects;
   @media (max-width: 51.99rem) {
     /* Phones: keep the ornament in view while choosing. */
     .stage-col { position: sticky; top: 0; z-index: 5; margin-inline: calc(-1 * var(--edge)); padding: .4rem var(--edge) .5rem; background: rgba(4, 6, 13, .92); backdrop-filter: blur(6px); }
-    .stage { height: min(40vh, 22rem); aspect-ratio: auto; max-width: 100%; }
+    /* Square and centred, so the menu's logo in the corner sits beside it rather than on it. */
+    .stage { width: min(34vh, 20rem, 100% - 7rem); margin-inline: auto; }
+    .stage__chosen { text-align: center; font-size: .82rem; }
     .stage__note { display: none; }
   }
 
@@ -332,7 +335,8 @@ const subjects = d.drawing!.subjects;
   .swatches .val { color: var(--text); margin-left: .4rem; }
   .swatches__row { display: grid; gap: .45rem; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); }
   .sw { position: relative; display: block; aspect-ratio: 1; min-width: 44px; min-height: 44px; cursor: pointer; }
-  .sw input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .sw input { position: absolute; z-index: 1; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .sw i, .sw b { pointer-events: none; }
   .sw i { position: absolute; inset: 0; border-radius: .55rem; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3); }
   .sw b { position: absolute; left: 3px; bottom: 3px; padding: 1px 3px; border-radius: 3px; background: rgba(255, 255, 255, .85); color: #222; font: 700 8px/1.2 var(--sans); letter-spacing: .03em; pointer-events: none; }
   .sw input:checked ~ i { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3), 0 0 0 3px var(--night), 0 0 0 5px var(--lantern); }
