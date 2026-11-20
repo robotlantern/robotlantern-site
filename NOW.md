@@ -405,6 +405,10 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
     waits until it's done, because the test runs that branch's builder. It recommended agent files, an
     own-drawing upload and agent caps at launch; decision 28 takes that, and docs/ORDERS.md has the contracts.
     The subagent couldn't write its own report file, so the orchestrator saved it from its final message.
+  - Test 3 (logos) runs as a background subagent on Opus at medium effort, for the same reason as test 2:
+    findings in `../ornaments-design-session/logos-01/FINDINGS.md`. It looks for the Davisson Brothers logo
+    locally first, uses other logos for local tests only, makes no Slant calls, and estimates inlay costs from
+    the measured figures. Step 7's follow-up still waits, because this test also runs that branch's builder.
 
 - 2026-11-19: Slant costs measured, at RJ's request, with 15 drafts of the test order (docs/CHARGES.md).
   Shipping depends a little on zone ($5.73 to Idaho, $6.93 to WV, $8.95 to Hawaii), and it barely grows with
