@@ -1,0 +1,9 @@
+{
+  "_about": "The drawing caps (NOW.md decisions 21 and 28; docs/ORDERS.md, Caps). Changing one means a deploy. Raising one is RJ's call.",
+  "perVisitorPerDay": 6,
+  "agentDrawingsPerDay": 10,
+  "uploadsPerVisitorPerDay": 20,
+  "dollarsPerDay": 10,
+  "costPerDrawing": 0.06,
+  "kvWritesWarn": 600
+}

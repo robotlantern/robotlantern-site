@@ -1,6 +1,7 @@
 // The shop's order Worker (docs/SHOP.md, docs/ORDERS.md): Stripe calls it when a payment completes,
-// it passes printed items to Gelato as draft orders, and it takes photo orders at /api/.
-// Deploy with tools/shop/worker-deploy.sh.
+// it passes printed items to Gelato as draft orders, makes the ornament's drawings, takes photo orders
+// at /api/, serves the order routines' queue and drafts Slant orders (only ever as a dry run in the
+// sandbox). Deploy with tools/shop/worker-deploy.sh.
 {
   "name": "shop",
   "main": "index.js",
@@ -8,6 +9,13 @@
   "observability": { "enabled": true },
   // Bundles the photo products' shop files into catalog.json before every build.
   "build": { "command": "python3 ../tools/orders/catalog.py" },
-  // Photo orders' files, in Stripe's sandbox. The live namespace is bound at launch (docs/SHOP.md).
-  "kv_namespaces": [{ "binding": "ORDERS_TEST", "id": "d64249f1e9b94db9a4d11b5258b897f0" }]
+  // stub-drawing.png is the sandbox's stand-in for an OpenAI drawing (drawings.js).
+  "rules": [{ "type": "Data", "globs": ["**/*.png"], "fallthrough": false }],
+  // Photo orders and drawings: the sandbox's namespace and the live one. The host picks between them.
+  "kv_namespaces": [
+    { "binding": "ORDERS_TEST", "id": "d64249f1e9b94db9a4d11b5258b897f0" },
+    { "binding": "ORDERS_LIVE", "id": "601e6e24f9e8462eb5f612b06fc8b9a7" }
+  ],
+  // The purge that's due, daily at 09:17 UTC (docs/ORDERS.md, "Privacy and retention").
+  "triggers": { "crons": ["17 9 * * *"] }
 }
