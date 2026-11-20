@@ -503,7 +503,7 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   The orchestrator lowered the page's "white kept" refusal to 0.77, because its port reads about 0.04 under the
   builder's 0.8 and was refusing drawings the builder accepts (0.81, 0.83).
 
-  Step 14 still needs:
+  Step 14 still needs (RJ said he'll do the drawing):
   - one real drawing on the page after 19:00 Eastern, when the cap resets;
   - RJ on his phone at the preview;
   - the thank-you page after a hosted 4242 payment.
