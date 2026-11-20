@@ -469,6 +469,12 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   so step 12 takes the recommended yes. He asked the orchestrator to stop after step 8 and wait for the
   next quota reset, so steps 9, 10 and 19 start after it.
 
+  Step 8's privacy pass (`.private/research/privacy-pass-2026-11-19.md`): today's files are clean, and the
+  scanners found no secrets, so nothing needs changing. But three old commits on `rebuild` name a family
+  member in `product.md` (removed 2026-11-17), against decision 15. Nothing was pushed. The fix rewrites only
+  the commits after `main` with `git filter-repo --replace-text`, which `main` survives unchanged (tested in a
+  copy), and then force-pushes to `bilbo` and `samwise`. That's hard to undo, so it waits for RJ's yes.
+
   Steps 8, 9 and 10 commit on their own branches or worktrees. Nothing is merged without RJ, and step 8's
   push to GitHub waits for the orchestrator to review the privacy pass.
 
