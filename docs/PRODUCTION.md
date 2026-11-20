@@ -34,7 +34,7 @@ environment variable that other people can read.
 | Stripe live webhook secret | `stripe.env` `STRIPE_WEBHOOK_SECRET_LIVE` | `STRIPE_WEBHOOK_SECRET_LIVE` | — |
 | Slant key | `slant.env` `SLANT_API_KEY` | `SLANT_API_KEY` (drafts) | network secret for `slant3dapi.com` |
 | Queue tokens | `orders.env` `ORDERS_QUEUE_TOKEN_LIVE` / `_TEST` | `QUEUE_TOKEN_LIVE` / `_TEST` | network secrets for `robotlantern.com` / `shop.robotlantern.workers.dev` |
-| Proof-link key | `orders.env` `PROOF_LINK_SECRET` (step 9 makes it) | `PROOF_LINK_SECRET` | — |
+| Proof-link key | `orders.env` `PROOF_LINK_SECRET` (made 2026-11-20) | `PROOF_LINK_SECRET` | — |
 
 Agents load Worker secrets from these files with `wrangler secret put`, never by pasting them anywhere. RJ
 pastes the cloud's network secrets himself (NOW.md step 5). A network secret is added by the cloud's proxy to
@@ -117,7 +117,8 @@ proof link are fine.
 2. For each newly shipped order: get the name and email from `/api/orders/<id>/contact`, and create a Gmail
    draft (not a sent email) to the customer with the tracking link. Use the template in
    `tools/orders/templates/shipped.md`, which step 11 writes.
-3. `run.py purge --due --live`: deletes the photos 60 days after shipping.
+3. `run.py purge --due --live`: deletes the photos 60 days after shipping (`POST /api/purge`). The Worker's
+   daily cron does the same, so this is a second chance, not the only one.
 4. Read `GET /api/stats`. If anything is stuck, flagged, near a cap, or the OpenAI balance looks low, email RJ
    a summary. Otherwise send nothing.
 
@@ -148,7 +149,7 @@ RJ's part:
 | Drawings per visitor per day | `shop-worker/limits.json` | 6 |
 | Estimated spend per day | `shop-worker/limits.json` | $10 |
 | Orders per week | `shop.json` `weeklyCap` | 25 |
-| Drawings or orders off | KV `switch:drawings`, `switch:orders` | `python3 tools/orders/switch.py drawings off --live` (step 9 writes it) |
+| Drawings or orders off | KV `switch:drawings`, `switch:orders` | `python3 tools/orders/switch.py drawings off --live` (on Sarcean: it needs the Cloudflare token) |
 | Slant | Slant's dashboard | nothing is charged until RJ processes a draft |
 
 Raising a cap, buying credit or turning auto-recharge on is RJ's call. Agents switch drawings off on their own
