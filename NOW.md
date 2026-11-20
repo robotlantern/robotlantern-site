@@ -351,6 +351,31 @@ step off (`[x]`) when it's done.
       in the sandbox (free), and pay one sandbox order with it to check tax and the webhook. Step 16 makes the
       live one.
     - Push to `samwise` for RJ's phone. Fix what breaks.
+
+    Progress 2026-11-20 (subagent, on `rebuild` in the main checkout):
+    - [x] Merged 7, 9, 10 and 19 (the orchestrator).
+    - [x] Price: `shop.json` has decision 20's tiers, no `provisional`, still `listed: false`; synced to the
+      sandbox (photo products sync only the product and shipping rate) and the Worker redeployed. The page's
+      tier line now reads "$22 each for 1; … $8.50 each for 50 … Over 50, write to us for a quote".
+    - [x] `allow_promotion_codes: true` on the Worker's Checkout Session. The sandbox has the `AGAIN` coupon
+      ($3 off, 100 uses, until the end of 2026-12-10 Eastern) and promotion code.
+    - [x] A sandbox order through the real page (built locally): two designs, an own drawing (a production-model
+      drawing from the model test) and a ready-made one, $34, `AGAIN` applied on Stripe's page → $31 + $2.17 WV
+      tax = $33.17. The webhook marked it paid with that total. Paid through Stripe's API with the test card, as
+      `test_order.py` does, because the hosted page's fields are in iframes the browser pane couldn't fill.
+    - [ ] **The real drawing wasn't made.** The page's drawing request got the per-visitor cap's 429: this IP
+      already made 6 real drawings on 2026-11-20 (UTC) in earlier tests. No call reached OpenAI. The cap resets
+      at 00:00 UTC (19:00 Eastern). Then: one "Make my drawing" on the page, and nothing else unstubbed.
+    - [x] The run by hand, with the new `tools/orders/run.py` (`status`, `build`, `flag`, `slant`, `email`):
+      both designs built with every check passing, proofs match the previews, Slant uploads and quotes ($7.49 of
+      parts for two ornaments), the Worker's dry run (4 items, one box), and the "Ready for Slant" email written
+      to the order's `.private/orders/` folder, not sent (no mail credential for RJ's address here).
+    - [x] Checked at 375 px and 1024–1280 px: no sideways scroll, controls labelled. Pushed to `bilbo` and `samwise`.
+    - [ ] RJ: try the preview on the phone. `run.py track` and `purge` are step 15's.
+    - Seen on the way: the page's drawing check refused the model test's labrador (builder: white kept 0.81,
+      passes; the page reads about 0.04 lower, so it refuses). Of the five production-model test drawings that
+      pass the builder, two (0.81, 0.83) sit in that gap, so a real customer can lose a try to it. Worth
+      deciding before launch whether the page's threshold should match the builder's.
 15. [ ] **Agent** · After 5, 8 and 14: Production routines (docs/PRODUCTION.md, decision 23):
     - Create `rl-orders` and `rl-daily` in `rl-production`.
     - Run each once against the sandbox, and check the email that reaches RJ.
