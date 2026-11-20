@@ -26,7 +26,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 SHOP = ROOT / 'products/cutout-ornament/shop.json'
 FONTS = ('allerta', 'saira', 'big-shoulders', 'emblema', 'wallpoet')   # nametag.STENCILS
-TEXT = {'max': 16, 'allowed': "A-Za-z0-9 '&.-"}                          # shop.json "text", until it exists
+TEXT = {'max': 16, 'allowed': "A-Za-z0-9 '&.,!?-"}                        # shop.json "text", until it exists
 MAX_BRIDGE = 3.0
 
 
@@ -92,7 +92,7 @@ def checks(rep: dict, tag: bool) -> dict:
     }
     if tag:
         t = rep.get('tag') or {}
-        c['tag_fits'] = t.get('pieces') == 1 and not any('too long' in w or 'no glyphs' in w for w in rep['warnings'])
+        c['tag_fits'] = t.get('pieces') == 1 and not any('too long' in w or 'no glyph' in w for w in rep['warnings'])
     return c
 
 
