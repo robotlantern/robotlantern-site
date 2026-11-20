@@ -172,7 +172,7 @@ step off (`[x]`) when it's done.
 ### Tonight: RJ's setup (each one unblocks agents; any order)
 
 1. [x] **RJ** · Answer decisions 21–24 in one reply: all four confirmed (2026-11-19).
-2. [ ] **RJ** · Cloudflare ([docs/HOSTING.md](docs/HOSTING.md), "Cutover"):
+2. [x] **RJ** · Cloudflare ([docs/HOSTING.md](docs/HOSTING.md), "Cutover"):
    - In the dashboard, add robotlantern.com on the Free plan. Stop when it shows two nameservers, and don't
      change anything at the registrar yet.
    - Under My Profile → API Tokens, edit the agents' token to add Zone · DNS · Edit and Zone · Workers
@@ -464,6 +464,10 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   models' fine hatching was filled in by the builder. It spent $2.79 of the $5, and OpenAI asked for no
   verification. The alias has no dated snapshot yet, so pin one when it appears. People drew a little
   heavier than with Codex, from only two photos tested.
+
+  RJ finished step 2 (Cloudflare) and switched on Workers Paid. He didn't say yes or no to SPF and DMARC,
+  so step 12 takes the recommended yes. He asked the orchestrator to stop after step 8 and wait for the
+  next quota reset, so steps 9, 10 and 19 start after it.
 
   Steps 8, 9 and 10 commit on their own branches or worktrees. Nothing is merged without RJ, and step 8's
   push to GitHub waits for the orchestrator to review the privacy pass.
