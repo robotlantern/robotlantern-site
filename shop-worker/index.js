@@ -295,6 +295,8 @@ async function checkout(request, env, mode, id) {
     shipping_address_collection: { allowed_countries: ['US'] },
     shipping_options: [{ shipping_rate: ids.shippingRate }],
     automatic_tax: { enabled: true },
+    // Promotion codes such as AGAIN (NOW.md decision 20) are made in Stripe, not here.
+    allow_promotion_codes: true,
     expires_at: expires,
     success_url: `${site}/shop/thanks/?order=${id}`,
     cancel_url: `${site}/shop/${rec.product}/`,
