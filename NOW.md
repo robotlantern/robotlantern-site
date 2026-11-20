@@ -177,7 +177,11 @@ step off (`[x]`) when it's done.
      change anything at the registrar yet.
    - Under My Profile → API Tokens, edit the agents' token to add Zone · DNS · Edit and Zone · Workers
      Routes · Edit for robotlantern.com.
-   - Say yes or no to SPF and DMARC for mail (yes recommended).
+   - Say yes or no to SPF and DMARC for mail (yes recommended). **Yes to both (RJ, 2026-11-19).**
+   - Progress 2026-11-19: zone added on Free, status pending. Cloudflare's nameservers are
+     `sofia.ns.cloudflare.com` and `yew.ns.cloudflare.com`. The scan imported all 12 old records and the five
+     GitHub Pages ones are DNS-only. The agents' token reads the zone but can't write DNS (Authentication
+     error on create), so it still needs Zone · DNS · Edit and Zone · Workers Routes · Edit.
    - Under Security → Settings → Bot traffic → "AI Crawler and Agent access policies", set "dots, OpenAI" to
      Allow, and keep Bot Fight Mode off. Blocking training crawlers is fine, but allow user-driven and search
      agents (ChatGPT-User, OAI-SearchBot, Claude-User, PerplexityBot), or assistants can't read the shop
@@ -293,7 +297,9 @@ step off (`[x]`) when it's done.
 12. [ ] **Agent** · After 2: DNS (docs/HOSTING.md, "Cutover"):
     - Enter every record in Cloudflare and compare them with the old host's.
     - Keep the GitHub Pages records, DNS-only, until step 16.
-    - Add SPF and DMARC if RJ said yes.
+    - Add SPF (`v=spf1 include:_spf.google.com ~all`) and DMARC (`v=DMARC1; p=none`, no reports address yet). RJ said yes.
+    - Checked 2026-11-19: the DKIM value at the old host matches docs/HOSTING.md, and DNSSEC is off there
+      (no DS at .com, no DNSKEY).
     - Give RJ the two nameservers.
 13. [ ] **RJ** · After 12: At DomainRegistry.com, replace the nameservers with Cloudflare's two. Mail and the
     old site keep working while the change spreads. Cloudflare emails you when the site is active, so tell an
