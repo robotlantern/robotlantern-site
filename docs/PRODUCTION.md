@@ -100,7 +100,10 @@ commit, not a routine edit. They check out `rebuild` until launch and `main` aft
    go on to the next order.
 4. `run.py slant <id>`: uploads every design's two STLs, quotes them, and asks the Worker for the draft. The order moves to
    `drafted`.
-5. Email RJ, one email per order (below).
+5. Email RJ, one email per order (below). `run.py email <id>` prints it, with the signed proof links.
+
+`run.py` has `status`, `build`, `flag`, `slant` and `email` (step 14, 2026-11-20). `track` and `purge`, for
+the daily run, are still to write (step 15).
 
 **Never:** process, cancel or edit a Slant order; refund; email a customer; change a cap or a switch;
 make a new drawing; or put anything from an order into Git, a log or an email body. Order IDs and the signed
