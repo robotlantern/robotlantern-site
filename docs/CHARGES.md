@@ -34,7 +34,12 @@ and Shopify on 2026-09-23 (see [Sources](#sources)). Slant's orders were checked
   decision 5). The stencil ornament adds two costs: OpenAI drawings, which are capped, and the Slant order
   RJ processes for each sale (both below).
 - **OpenAI API:** from NOW.md step 3, a project with prepaid credit and auto-recharge off (decision 21).
-  No key existed before 2026-11-19.
+  RJ made a project key on 2026-11-19 (in `openai.env`), loaded $30 of credit with auto-recharge off, and set
+  the key to expire after 30 days, so a new key is needed before 2026-12-19. That's mid-season. The key has
+  full permissions: RJ didn't restrict it. It sees eleven GPT Image models (`GET /v1/models`, free).
+  **Test allowance (RJ, 2026-11-19):** up to $5 of that credit for calls that check or confirm something for
+  the pipeline, such as choosing the model. Drawings for anything else still go through Codex. Log each paid
+  test run's count and estimated cost in NOW.md.
 
 ## The stencil ornament, per order (measured 2026-11-19)
 
@@ -137,7 +142,7 @@ Not re-checked for billing detail; confirm on Cloudflare's pricing pages before 
 | Moving the domain's nameservers to Cloudflare, DNS | Free |
 | Workers requests that run code (the shop's order Worker, the photo-order API, the counted short links in LOG.md task 17) | Free up to 100,000 a day; the paid plan is a monthly fee |
 | Workers KV on the Free plan (photo uploads, docs/ORDERS.md) | Free: 1 GB stored, 100,000 reads and 1,000 writes a day, values up to 25 MiB (checked 2026-11-10). The Free plan has no bill to run up. Keep the account on it: Workers Paid is a monthly fee |
-| Workers CPU on the Free plan | 10 ms per request, which is why uploads stream straight into KV (docs/ORDERS.md). More CPU means Workers Paid (a monthly fee, $5 when last seen): only on RJ's go, if the drawings endpoint can't fit |
+| Workers CPU on the Free plan | 10 ms per request, which is why uploads stream straight into KV (docs/ORDERS.md). More CPU means Workers Paid ($5 a month). **RJ approved Workers Paid on 2026-11-19.** He switches it on in the dashboard, since it takes his card. It also lifts the KV limit of 1,000 writes a day |
 | R2 storage (large files, later) | Free up to 10 GB and 1M writes / 10M reads a month; downloads free. Needs a card on file, so going over bills automatically: add a spending check before turning it on |
 | Web Analytics, Bot Fight Mode | Free, but they break the privacy page's claims (LOG.md, task 9) |
 | Anything under Billing, a paid plan or add-on, or Registrar (buying or transferring a domain) | Costs money. The API token can do these: agents never call them. |
