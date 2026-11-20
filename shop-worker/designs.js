@@ -528,7 +528,8 @@ export async function purgeDesigns(kv, rec, keepEvidence) {
     await kv.delete(key);
     deleted.push(name);
   }
-  for (const d of rec.designs) {
+  // An unpaid order leaves its drawings alone: the customer may order them again, and they expire anyway.
+  for (const d of rec.status === 'paid' ? rec.designs : []) {
     if (!d.drawing?.id) continue;
     for (const key of await keys(kv, `file:drawing:${d.drawing.id}/`)) await kv.delete(key);
     await kv.delete(`drawing:${d.drawing.id}`);

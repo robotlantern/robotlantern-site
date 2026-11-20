@@ -190,6 +190,8 @@ def pull(mode):
         if status not in (200, 404):
             print(f'{oid}: the Worker said {status}; try again later')
             continue
+        if (rec or {}).get('kind') == 'designs':
+            continue  # an order of designs (the stencil ornament): the order run handles it, not this queue
         if not order:
             slug = s['metadata'].get('product') or (rec or {}).get('product')
             p = shop_file(slug)
