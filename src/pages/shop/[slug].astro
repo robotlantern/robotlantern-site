@@ -47,7 +47,10 @@ const fonts = option('font').choices;
 const orderBy = d.orderBy ? new Date(`${d.orderBy}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' }) : null;
 const tierText = tiers.length === 1
   ? `${money(tiers[0].each)} each, with US shipping included`
-  : tiers.map((t, i) => `${money(t.each)} each for ${t.from}${tiers[i + 1] ? `–${tiers[i + 1].from - 1}` : ' or more'}`).join('; ') + ', with US shipping included';
+  : tiers.map((t, i) => {
+      const last = tiers[i + 1] ? tiers[i + 1].from - 1 : d.pricing!.maxPerOrder;
+      return `${money(t.each)} each for ${t.from}${last > t.from ? `–${last}` : ''}`;
+    }).join('; ') + `, with US shipping included. Over ${d.pricing!.maxPerOrder}, write to us for a quote`;
 const ready = d.drawing!.subjects.flatMap((s) => (s.designs ?? []).map((x) => new URL(staticUrl(x.drawing), site).href));
 const url = new URL(`/shop/${slug}/`, site).href;
 const offer = {

@@ -136,7 +136,31 @@
     "tiers": [
       {
         "from": 1,
-        "each": 29
+        "each": 22
+      },
+      {
+        "from": 2,
+        "each": 17
+      },
+      {
+        "from": 3,
+        "each": 15
+      },
+      {
+        "from": 6,
+        "each": 13
+      },
+      {
+        "from": 12,
+        "each": 11
+      },
+      {
+        "from": 25,
+        "each": 9.5
+      },
+      {
+        "from": 50,
+        "each": 8.5
       }
     ],
     "maxPerOrder": 50,
@@ -427,12 +451,36 @@
     }
   ],
   "pairs": [
-    { "base": "white", "stencil": "red", "label": "Classic" },
-    { "base": "white", "stencil": "green", "label": "Classic green" },
-    { "base": "esun-bone-white", "stencil": "brown", "label": "Gingerbread" },
-    { "base": "tan", "stencil": "white", "label": "Iced gingerbread" },
-    { "base": "black", "stencil": "gold", "label": "Formal" },
-    { "base": "white", "stencil": "blue", "label": "Winter" }
+    {
+      "base": "white",
+      "stencil": "red",
+      "label": "Classic"
+    },
+    {
+      "base": "white",
+      "stencil": "green",
+      "label": "Classic green"
+    },
+    {
+      "base": "esun-bone-white",
+      "stencil": "brown",
+      "label": "Gingerbread"
+    },
+    {
+      "base": "tan",
+      "stencil": "white",
+      "label": "Iced gingerbread"
+    },
+    {
+      "base": "black",
+      "stencil": "gold",
+      "label": "Formal"
+    },
+    {
+      "base": "white",
+      "stencil": "blue",
+      "label": "Winter"
+    }
   ],
   "differ": [
     [
@@ -452,7 +500,6 @@
   "weeklyCap": 25,
   "orderBy": "2026-12-10",
   "listed": false,
-  "provisional": "The price is a placeholder until NOW.md step 19, and step 11 writes the copy.",
   "stripe": {
     "test": {
       "product": "prod_Vf4xlEGwD29YMH",
