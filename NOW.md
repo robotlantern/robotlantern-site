@@ -268,7 +268,7 @@ step off (`[x]`) when it's done.
    Done 2026-11-20 on branch `worktree-agent-af0a6a7f26dbcebeb` (`74fe72a`, on `bilbo`; step 14 merges it). For
    step 16: load the live Stripe keys, `SLANT_API_KEY`, `SLANT_PLATFORM_ID`, `QUEUE_TOKEN_LIVE` and
    `PROOF_LINK_SECRET` as live secrets, and set the API route. `shop.json` is `listed: false` until step 19's price.
-10. [ ] **Agent** · The product page, `/shop/cutout-ornament/` (docs/ORDERS.md, "The page"):
+10. [x] **Agent** · The product page, `/shop/cutout-ornament/` (docs/ORDERS.md, "The page"):
     - Photo, square crop on the head, and the drawing request (stubbed until step 9 lands).
     - The preview drawn in the browser from the drawing.
     - The scratch folder's picker (colours, pairs, swap, name tag, self-hosted fonts).
@@ -282,6 +282,10 @@ step off (`[x]`) when it's done.
       JSON-LD (docs/ORDERS.md, "The page", "Own drawings" and "Agents").
 
     Check it at 375 px on the preview host, with a drawing made for the test.
+    Done 2026-11-20 on branch `worktree-agent-a36f57cfeca845bb9` (`2881d37`, on `bilbo`; built on step 9's branch,
+    so step 14 merges this one). Checked locally at 375 and 1280 px against the sandbox Worker. Still to do
+    after step 14: a real phone on the preview host, and one sandbox checkout paid by hand with 4242 (Stripe's
+    hCaptcha stops automated payment).
 11. [ ] **Agent** · After 1 and 19: Words and pages:
     - Privacy, terms, shipping and returns for this product: OpenAI makes the drawing, Slant prints and
       ships, the remake promise, and how long things take.
@@ -450,6 +454,14 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-20: Step 10 (subagent, Opus, high effort) built the product page on a branch based on step 9's.
+  `npm run build` passes and the 125 tag-fit cases agree with the Worker. The page's drawing check matches
+  `check_drawing` on all 13 test drawings. Its brief said no paid calls, but a test routing gap let three
+  "Try again" requests reach OpenAI: three drawings, about $0.16 measured, of a drawn test card. Test spending
+  is now about $3.01 of RJ's $5. The sandbox's per-visitor cap stopped further leaks, and later runs were
+  stubbed. Lesson for later test briefs: stub at the Worker (`X-Stub`), not by intercepting browser requests.
+  Step 19 runs next.
 
 - 2026-11-20: Step 9 (subagent, Opus, high effort) built the order Worker on its own branch and deployed it to
   the sandbox Worker. The new KV namespace `shop-orders-live` was free. 119 checks pass in `test_order.py`.
