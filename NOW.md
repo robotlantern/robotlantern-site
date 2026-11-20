@@ -128,6 +128,23 @@ MeltBot.
     - Money moves only on Stripe's page, by the customer or their wallet with their approval. We never take
       payment tokens or card details through our API.
     - `preview.jpg` and `build.json` kept 180 days after shipping (amends decision 6).
+29. **Logos after launch, with the launch contracts ready for them** (orchestrator's call under RJ's direction,
+    2026-11-19, from test 3). Tracing needs no image model: a file-type check sorts SVG, vector PDF, flat
+    raster and unsuitable files, and all 14 test files were sorted correctly. Stencil bridges spoil most
+    multi-part logos, which is RJ's case for the inlay: a base with pockets plus loose insert pieces. Four
+    contract changes before launch keep logos as data later (docs/ORDERS.md):
+    - `design.json` gets `kind` (`stencil` by default).
+    - `build.json` lists its `parts`, and the Slant draft takes those parts instead of counting two per
+      design. This is the one change that would hurt to retrofit.
+    - Each design is priced through `price(design)` with the product file's `pricing.modifiers`, empty at
+      launch.
+    - `source` values `vector` and `trace`, with `art.svg` and `layers.png`, are reserved; options are checked
+      generically against the product file.
+
+    **The price flag for inlays:** a one-colour inlay costs the same as a stencil. Each extra colour adds about
+    $1.20 at Slant, if Slant prints all of one colour's pieces as one multi-body part; if it charges per piece,
+    costs balloon. One free quote of a multi-body STL settles it. Logo orders need the owner's written OK
+    (draft terms in `../ornaments-design-session/logos-01/FINDINGS.md`), and every one goes to `needs-rj` for a rights check.
 
 RJ processes every Slant order himself (decision 14 stands). That's the one recurring cost.
 
@@ -199,6 +216,8 @@ step off (`[x]`) when it's done.
      for example). Good builds score 0.9–1.1.
    - The name-tag fit test as a function the page can mirror, so the page refuses text that won't fit before
      checkout. Counting 16 characters isn't enough: "Fairmont General" fails.
+   - From test 3 (decision 29): `kind` in `design.json` (exit 2 on an unknown kind), and `parts` in
+     `build.json`. Keep the size box from decision 27 a parameter, because wide logos want 110 × 80 mm.
    - From test 2 (decision 28):
      - The builder's cleanup and bridge measurement as a function, for the page's upload check.
        `../ornaments-design-session/agents-01/tools/validate.py` is the prototype; it refused three islands that `make.py` bridged.
@@ -336,6 +355,17 @@ does other things.
     photo.
   - Marketing: the courthouse, the covered bridge, the country church and the lighthouse (public domain).
     Never use institutions' names or logos in our copy.
+- **Agent + RJ** · Logos (decision 29; `../ornaments-design-session/logos-01/FINDINGS.md`):
+  - RJ's Davisson Brothers ornament: built from his printdb cap SVG, it passes at 110 × 60 mm and is blobby
+    at 80 mm. It's one piece, so it comes out the same as a stencil or an inlay. Show or sell it only with the
+    band's written OK.
+  - Fold `logo.py` (detection and tracing) and `inlay.py` into `tools/ornament/`, with pegs on large inserts.
+  - A "colour edges kept" check: the WV seal merged into one red disc and the flag lost its stars, with every
+    check passing.
+  - RJ: print an insert-fit coupon on MeltBot (0.05, 0.10 and 0.15 mm per side), and one free Slant quote of a
+    multi-body STL.
+  - SVG and PDF upload (pdf.js), EPS and AI refused, one colour choice per logo colour, the rights checkbox, and
+    the policy clause.
 - **Agent** · Agents, the week after launch (decision 28; `../ornaments-design-session/agents-01/FINDINGS.md`):
   - A review link from `POST /api/orders` for agents that don't browse, and `/api/openapi.json`.
   - Verify Web Bot Auth signatures ourselves (Cloudflare's field needs Enterprise).
@@ -409,6 +439,8 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
     findings in `../ornaments-design-session/logos-01/FINDINGS.md`. It looks for the Davisson Brothers logo
     locally first, uses other logos for local tests only, makes no Slant calls, and estimates inlay costs from
     the measured figures. Step 7's follow-up still waits, because this test also runs that branch's builder.
+    It found the Davisson SVG in printdb (model 30, the soda-can cap), and recommended four contract changes
+    before launch; decision 29 takes them. The subagent couldn't write its report, so the orchestrator saved it.
 
 - 2026-11-19: Slant costs measured, at RJ's request, with 15 drafts of the test order (docs/CHARGES.md).
   Shipping depends a little on zone ($5.73 to Idaho, $6.93 to WV, $8.95 to Hawaii), and it barely grows with

@@ -97,6 +97,10 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 - **`pricing`** (decision 26): each ornament in an order is priced by the tier its order's total count falls
   in, and shipping is included. `maxPerOrder` and `maxDesigns` cap an order. Step 19 sets the numbers; the
   values above are placeholders.
+  - `pricing.modifiers` (decision 29): a list, empty at launch. Each design is priced on its own:
+    `price(design)` is the tier's `each` plus the sum of the modifiers that apply to it (for example
+    `{"when": {"kind": "inlay"}, "add": 3}`, or a per-extra-colour amount). The Worker and the page use the same
+    function, so a logo inlay's surcharge is data, not code.
 - **Price** comes from the product file, which is bundled into the Worker at deploy. The browser shows a price
   but never sets one.
 
@@ -106,6 +110,10 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
   `X-Subject: <subject id>`, which has to be one of the product file's subjects. The answer is `201 {"id", "n": 1, "left": 2, "image"}`, where
   `image` is the drawing as base64 PNG and `id` is 12 characters from the order-ID alphabet.
 - **`POST /api/drawings/<id>/again`**: the next try with the same photo, until `left` is 0.
+- **`source`** on a drawing is `made` (GPT Image) or `upload` (an own drawing). `vector` (a customer's SVG or
+  PDF) and `trace` (a flat raster traced on the page) are reserved for logos (decision 29). Those are stored
+  the same way, plus `art.svg` and `layers.png` (an indexed PNG: 0 is the background, 1–4 the logo's colours)
+  beside `<n>.png`. `make.py` ignores files it doesn't need.
 - **`POST /api/drawings` with `X-Source: upload`** (decision 28): the body is the customer's own drawing, a
   1024 × 1024 PNG (`image/png`, at most 4 MB) that the page made from their file. The Worker reads only the PNG
   signature and IHDR (width, height), never decodes it, and stores it as try 1:
@@ -161,7 +169,9 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 
   `price` is the total the page showed. The Worker works it out again from `pricing` and refuses a mismatch.
   For each design, the Worker checks that the drawing exists and try `n` was made, and that each option is one
-  of the product file's choices. Base and stencil can't be the same colour. The text has to fit `text`: it's
+  of the product file's choices: each key in `options` must be an option id in the product file, and each
+  value one of its choices, with no option id named in code (decision 29). Base and stencil can't be the same
+  colour. The text has to fit `text`: it's
   needed when the tag is `yes` and dropped when it's `no`. It also checks `maxPerOrder` and `maxDesigns`.
   Designs are numbered `1`, `2`, … in list order.
 - `PUT /api/orders/<id>/<k>/preview.jpg` for each design `k`, then `POST /api/orders/<id>/checkout`. Checkout
@@ -181,7 +191,7 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 | `GET /api/queue` | Orders not yet `shipped`, `cancelled` or `purged`: id, product, state, paid date |
 | `GET /api/orders/<id>` | The record (exists) |
 | `GET /api/orders/<id>/<k>/<file>` | Design `k`'s `design.json`, `photo.jpg`, `drawing.png`, `preview.jpg`, or an `out/` file |
-| `PUT /api/orders/<id>/<k>/out/<name>` | Stores design `k`'s `proof.png` (at most 5 MB), `base.stl`, `stencil.stl` (at most 25 MB), `build.json` |
+| `PUT /api/orders/<id>/<k>/out/<name>` | Stores design `k`'s `proof.png` (at most 5 MB), `build.json`, and each STL its `parts` list names (at most 25 MB each) |
 | `PATCH /api/orders/<id>` | `{"state", "note"}`, only along the arrows in "States" below |
 | `POST /api/orders/<id>/slant` | Drafts the Slant order (below) |
 | `GET /api/orders/<id>/contact` | The customer's name and email from Stripe, only for a shipping email, and only once shipped |
@@ -196,8 +206,9 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 
 `POST /api/orders/<id>/slant` with
 `{"items": [{"design": 1, "part": "base", "fileId", "filamentId", "quantity"}, {"design": 1, "part": "stencil", …}, …]}`:
-two items per design, each with that design's quantity. The Worker checks that the items match the order's
-designs and quantities.
+one item per part in each design's `build.json` `parts`, each with that design's quantity (decision 29). A
+stencil design has two, the base and the stencil; other kinds will have more. The Worker checks that the items
+match each design's parts list for list, and the order's quantities, rather than counting two a design.
 
 1. The order must be `built`. If it already has `slant.state`, the call returns what's recorded and does
    nothing else, so a retry can never make a second draft.
@@ -219,7 +230,12 @@ Nothing in our code processes a Slant order. Only RJ does, in Slant's dashboard.
 - `base.stl` and `stencil.stl`, posed for printing: the base face up, the stencil face down with its pegs up.
 - `proof.png`, the builder's preview in the order's colours, with the tag.
 - `build.json`, the builder's report and the checks: the stencil is one piece, both meshes are watertight, no
-  bridge is over 3 mm, the tag text fits, and no warnings.
+  bridge is over 3 mm, the tag text fits, and no warnings. It lists what Slant prints (decision 29):
+  `"parts": [{"part": "base", "file": "base.stl", "colour": "white"}, {"part": "stencil", "file": "stencil.stl",
+  "colour": "red"}]`. The routine uploads every listed file and never assumes two.
+
+`design.json` has `kind`: `"stencil"`, the default when it's missing, or after launch `"inlay"` (a base with
+pockets and loose insert pieces, for logos). `make.py` exits 2 on a kind it doesn't build.
 
 It exits non-zero if a check fails. The same folder always gives the same files. The builder may drop specks,
 thicken thin lines and add bridges, and the proof shows that. It never adds or removes a feature the customer
