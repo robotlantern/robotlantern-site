@@ -488,6 +488,29 @@ does other things.
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
 
+- 2026-11-20: The orchestrator merged steps 7, 9, 10 and 19 into `rebuild` on RJ's word (one NOW.md conflict,
+  `rebuild`'s kept). The step 14 subagent (Opus, high effort):
+  - set decision 20's tiers in `shop.json` and the sandbox;
+  - allowed promotion codes, and created `AGAIN` in Stripe's sandbox;
+  - wrote `tools/orders/run.py` (status, build, flag, slant, email; `track` and `purge` are step 15's);
+  - placed sandbox order `q28nsjccnah1` through the page: an own drawing plus the coal bucket, $34 less
+    `AGAIN`, plus WV tax, $33.17. It was paid through Stripe's API, because the hosted page's hCaptcha stops
+    automation.
+
+  The order run built both designs with every check passing, made the Slant uploads and quotes ($7.49 in
+  parts), and did the draft dry run. The email is in `.private/orders/q28nsjccnah1/`, not sent. No real
+  drawing was made: this IP had hit the six-a-day sandbox cap from earlier tests, so there's no OpenAI spend.
+  The orchestrator lowered the page's "white kept" refusal to 0.77, because its port reads about 0.04 under the
+  builder's 0.8 and was refusing drawings the builder accepts (0.81, 0.83).
+
+  Step 14 still needs:
+  - one real drawing on the page after 19:00 Eastern, when the cap resets;
+  - RJ on his phone at the preview;
+  - the thank-you page after a hosted 4242 payment.
+
+  For step 16: the sandbox has no `SLANT_PLATFORM_ID`; `kvWrites` is above the 600 warning line from tests;
+  Stripe's checkout lines carry no design detail; and the docs have no Slant dashboard link for the email.
+
 - 2026-11-20: RJ said yes to step 19's price and the `AGAIN` code (decision 20). Step 14 applies them to
   `shop.json` and the Worker's checkout.
 

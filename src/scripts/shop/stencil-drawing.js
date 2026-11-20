@@ -8,7 +8,7 @@
 //   cleanup    drop ink islands under 2 mm2; fatten ink thinner than 1 mm; fill white gaps thinner than 1 mm;
 //              widen connecting necks thinner than 1.8 mm
 //   bridges    join every island to the main piece by its shortest path, 1.8 mm wide; over 3 mm fails
-//   white kept cut-out area after all that / cut-out area in the drawing; under 0.8 fails
+//   white kept cut-out area after all that / cut-out area in the drawing; under 0.77 fails here (0.8 in the builder, which reads ~0.04 higher)
 //
 // OpenCV's elliptical kernels are disks here, measured with an exact distance transform, and "white kept" is
 // counted on pixels rather than on the builder's vector outline, so a figure can differ from build.json's
@@ -16,7 +16,7 @@
 
 export const DEFAULTS = {
   width: 80, height: 85, minLine: 1.0, minGap: 1.0, neck: 1.8, bridge: 1.8, speck: 2.0,
-  ink: 120, maxBridge: 3.0, minWhiteKept: 0.8,
+  ink: 120, maxBridge: 3.0, minWhiteKept: 0.77, // the builder's 0.8, less this port's ~0.04 lower reading (steps 10, 14)
 };
 const PAD = 40;
 // More islands than this after cleanup isn't a drawing the builder should bridge one by one.
