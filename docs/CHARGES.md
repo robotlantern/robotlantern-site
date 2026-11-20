@@ -165,7 +165,8 @@ wires the Worker (step 9) checks [OpenAI's pricing page](https://openai.com/api/
 
 | Action | Cost |
 | --- | --- |
-| One drawing (GPT Image edit, 1024 × 1024) | Billed in tokens. About $0.05 at medium quality and $0.17–0.21 at high, plus a cent or two for the photo going in |
+| One drawing (GPT Image edit, 1024 × 1024) | Billed in tokens. Measured 2026-11-19 with `gpt-image-2.6-sunburst`: $0.053 at medium (production) and $0.063 at high, photo included. `costPerDrawing` is 0.06. `gpt-image-2` at high was $0.22 |
+| Model tests | $2.79 of the $5 test allowance spent on 2026-11-19 (42 calls, `../ornaments-design-session/model-ab-01/`) |
 | Prepaid credit | RJ buys it. With auto-recharge off, the balance is a hard cap |
 | Auto-recharge, a raised limit, other models, fine-tuning, a ChatGPT plan | Not used. Agents never turn any of these on |
 

@@ -458,6 +458,13 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   4. Step 10.
   5. Step 19.
 
+  The A/B test chose **`gpt-image-2.6-sunburst` at medium quality** for production (`costPerDrawing` 0.06,
+  so about 166 drawings a day under the $10 cap). It was the only API option whose drawings look like Codex's:
+  5 of 6 passed the builder, the same as at high quality. `gpt-image-1-mini` lost the likeness, and the 2.5
+  models' fine hatching was filled in by the builder. It spent $2.79 of the $5, and OpenAI asked for no
+  verification. The alias has no dated snapshot yet, so pin one when it appears. People drew a little
+  heavier than with Codex, from only two photos tested.
+
   Steps 8, 9 and 10 commit on their own branches or worktrees. Nothing is merged without RJ, and step 8's
   push to GitHub waits for the orchestrator to review the privacy pass.
 

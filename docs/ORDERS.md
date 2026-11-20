@@ -72,7 +72,7 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 {
   "fulfillment": "slant",
   "photo": { "via": "drawing", "crop": "square", "edge": 1024 },
-  "drawing": { "model": "<GPT Image model>", "quality": "high", "size": "1024x1024", "triesPerPhoto": 3,
+  "drawing": { "model": "gpt-image-2.6-sunburst", "quality": "medium", "size": "1024x1024", "triesPerPhoto": 3,
                "subjects": [ { "id": "pet", "label": "Pet", "brief": "briefs/pet.md",
                                "crop": "Fit your pet's head and shoulders in the square" } ] },
   "pricing": { "tiers": [ { "from": 1, "each": 29 } ], "maxPerOrder": 50, "maxDesigns": 12 },
