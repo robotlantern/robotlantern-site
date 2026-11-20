@@ -251,7 +251,7 @@ step off (`[x]`) when it's done.
    rule 7). Then push `rebuild` to GitHub (decision 22) and make the desktop app see the GitHub remote, so
    cloud sessions can start. Report anything that had to change.
    Done 2026-11-20: history rewritten (see the log), `rebuild` on GitHub at `8eadc43`, tracking `origin`.
-9. [ ] **Agent** · The order Worker for the ornament (docs/ORDERS.md, "Contracts"):
+9. [x] **Agent** · The order Worker for the ornament (docs/ORDERS.md, "Contracts"):
    - The drawings API to OpenAI, with decision 21's caps and an off switch.
    - Ornament orders that point to a drawing.
    - The queue endpoints, signed proof links, and purge of the new files.
@@ -265,6 +265,9 @@ step off (`[x]`) when it's done.
 
    Extend `tools/orders/test_order.py` with OpenAI stubbed, and make one real drawing call after step 3.
    Deploy to the sandbox Worker.
+   Done 2026-11-20 on branch `worktree-agent-af0a6a7f26dbcebeb` (`74fe72a`, on `bilbo`; step 14 merges it). For
+   step 16: load the live Stripe keys, `SLANT_API_KEY`, `SLANT_PLATFORM_ID`, `QUEUE_TOKEN_LIVE` and
+   `PROOF_LINK_SECRET` as live secrets, and set the API route. `shop.json` is `listed: false` until step 19's price.
 10. [ ] **Agent** · The product page, `/shop/cutout-ornament/` (docs/ORDERS.md, "The page"):
     - Photo, square crop on the head, and the drawing request (stubbed until step 9 lands).
     - The preview drawn in the browser from the drawing.
@@ -447,6 +450,15 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-20: Step 9 (subagent, Opus, high effort) built the order Worker on its own branch and deployed it to
+  the sandbox Worker. The new KV namespace `shop-orders-live` was free. 119 checks pass in `test_order.py`.
+  One real drawing call (a drawn test cat) cost about $0.053 of the test allowance, so about $2.85 of $5 is
+  used. Contract changes are in docs/ORDERS.md on that branch: the text and colour rules became product-file
+  data, there are proof links per design, `POST /api/purge` and a daily cron, and `switch:drawings` stops only
+  OpenAI drawings. Step 10 starts from step 9's branch, so the page uses the real API and the same
+  `shop.json`. The OpenAI key expires around 2026-12-19, so replace it and load it into the Worker again
+  before then.
 
 - 2026-11-20: RJ asked for the full scrub: the family member's name, the family-photo descriptions, and the
   pet names with years and the death notes. A subagent rewrote the commits after `main` with
