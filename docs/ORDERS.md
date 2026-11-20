@@ -6,9 +6,9 @@ the only one at launch** (NOW.md, decisions 16–25). How it runs day to day, wh
 about orders are in [PRODUCTION.md](PRODUCTION.md).
 
 Built and tested in Stripe's sandbox (2026-11-13): order intake at `/api/orders` in the shop Worker on the
-`shop-orders-test` KV namespace, the webhook's paid step, and `tools/orders/queue.py`. The rest of this page is
-what NOW.md steps 7, 9 and 10 build, in parallel, against these contracts. If a contract has to change, change it
-here first and say so in NOW.md's log.
+`shop-orders-test` KV namespace, the webhook's paid step, and `tools/orders/queue.py`. The Worker's half of the
+contracts below was built and tested in the sandbox on 2026-11-20 (step 9: `shop-worker/`, `tools/orders/test_order.py
+--product cutout-ornament`). If a contract has to change, change it here first and say so in NOW.md's log.
 
 ## The flow (stencil ornament)
 
@@ -54,6 +54,7 @@ No order reaches Slant until it has passed the checks and RJ has processed it.
 | Briefs | `products/cutout-ornament/briefs/pet.md`, `person.md` | The GPT Image prompt for each subject: each file is the prompt text, sent as is. Bundled into the Worker at deploy, like the catalog |
 | The page | `src/pages/shop/[slug].astro`, `src/scripts/shop/` | Photo, crop, drawing, preview, choices, order, thank-you page |
 | Ornament preview | `src/scripts/shop/stencil-ornament.js` | Draws the ornament from a drawing (below) |
+| Drawing check | `src/scripts/shop/stencil-drawing.js` | `drawing.py`'s `check_drawing` and the own-drawing checks, in the browser. It agrees with the builder on pass or fail, pieces and bridges; its "white kept" reads about 0.04 lower (pixels, not the vector proof), so it errs strict |
 | Fonts | `public/shop/fonts/` | The five stencil fonts (OFL), for the page and the builder alike: `allerta-stencil.ttf`, `saira-stencil-one.ttf`, `big-shoulders-stencil.ttf` (the variable font; use wght 800, opsz 72), `emblema-one.ttf`, `wallpoet.ttf`, each with its `OFL-<name>.txt`. Keys as in `nametag.py`: `allerta`, `saira`, `big-shoulders`, `emblema`, `wallpoet` |
 | Worker | `shop-worker/` | Drawings, orders, checkout, webhook, queue, Slant drafts |
 | Recipe | `tools/ornament/` | Drawing and choices → `base.stl`, `stencil.stl`, `proof.png`, `build.json` |
@@ -89,7 +90,8 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 ```
 
 - **Colours:** Slant's PLAs, from the picker's `colours.json` (scratch folder), each with Slant's filament id,
-  its hex value and whether it's offered. Clear is off, because the tree shows through it.
+  its hex value and whether it's offered. Clear is off, because the tree shows through it. `pairs` lists the
+  suggested pairs the page offers (`{"base", "stencil", "label"}`, by choice id); the Worker ignores it.
 - **`drawing.subjects`** (decision 26): each subject is data, with its brief, label and crop hint. Adding `person`
   (decision 25) or `place` (a church, a school, a childhood home) is a brief and an entry here, not code. Nothing
   in the Worker, page or routine names a subject. `model` and `quality` live here too, so a cheaper model is a
@@ -105,13 +107,20 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
   ```
   A subject's `source` is `made` when missing. `drawing` is a path under `products/cutout-ornament/`: a
   1024 × 1024 two-colour PNG that passed `make.py` with `text` in `font`. The file is public, because the page
-  and `product.json` show it. A published drawing is never edited: a redraw is a new file name (`-2.png`), and
+  and `product.json` show it: the site publishes it as `/shop/<slug>/<drawing>` (`src/pages/shop/[slug]/static/`). A published drawing is never edited: a redraw is a new file name (`-2.png`), and
   `sha256` pins it. The page shows a ready-made subject's designs as a gallery in place of the photo step, with
   `text` as the tag's starting text.
 - **Text:** 16 characters is a ceiling, not a promise. The text must also fit the tag in the chosen font (text
   at least 5 mm tall), so the page runs the builder's own fit function and offers only the fonts where the text
   fits. The tag is at least `minTagWidth` mm wide, however narrow the art. A ready-made design's `font` is the one
-  its `text` was checked in (decisions 27 and 30).
+  its `text` was checked in (decisions 27 and 30). The Worker runs the same test from
+  `shop-worker/tag-metrics.json`, each character's advance and outline bounds measured by
+  `tools/orders/tag_metrics.py` with `nametag.py` (rerun it when a font changes; `node shop-worker/tagfit.test.mjs`
+  checks the two agree).
+- **Rules as data** (decision 29), so the Worker names no option: `text.when` (`{"tag": "yes"}`) says when the
+  text is needed, `text.font` names the option that holds the font, `differ` (`[["base", "stencil"]]`) lists
+  options that can't share a choice, and an option's `default` fills it when an order leaves it out (the font,
+  when there's no tag).
 - **`pricing`** (decision 26): each ornament in an order is priced by the tier its order's total count falls
   in, and shipping is included. `maxPerOrder` and `maxDesigns` cap an order. Step 19 sets the numbers; the
   values above are placeholders.
@@ -121,13 +130,16 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
     amount). The Worker and the page use the same
     function, so a logo inlay's surcharge is data, not code.
 - **Price** comes from the product file, which is bundled into the Worker at deploy. The browser shows a price
-  but never sets one.
+  but never sets one. A drawing product has `pricing` instead of `price`, and `shipping: 0`, so Checkout shows
+  shipping as included.
 
 ### Drawings API (the Worker)
 
 - **`POST /api/drawings`**: the body is the 1024 × 1024 JPEG (`image/jpeg`, at most 4 MB) with the header
   `X-Subject: <subject id>`, which has to be one of the product file's subjects. The answer is `201 {"id", "n": 1, "left": 2, "image"}`, where
-  `image` is the drawing as base64 PNG and `id` is 12 characters from the order-ID alphabet.
+  `image` is the drawing as base64 PNG and `id` is 12 characters from the order-ID alphabet. The answer also
+  carries `source`, `subject` and `expires`. `X-Product` names the product; it can be left out while only one
+  product makes drawings.
 - **`POST /api/drawings/<id>/again`**: the next try with the same photo, until `left` is 0.
 - **`source`** on a drawing is `made` (GPT Image) or `upload` (an own drawing). `vector` (a customer's SVG or
   PDF) and `trace` (a flat raster traced on the page) are reserved for logos (decision 29). Those are stored
@@ -141,20 +153,27 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
   `201 {"id", "n": 1, "left": 0, "source": "upload"}`, with no image echoed back. There's no OpenAI call, and it
   counts only against `uploadsPerVisitorPerDay`. `/again` refuses an upload with `409`. It's stored as
   `drawing:<id>` with `source: "upload"` and `file:drawing:<id>/1.png`, with no `photo.jpg`, and expires after
-  two days unless paid.
+  two days unless paid. `X-Subject` is optional on an upload.
 - **Refusals:**
   - `429 {"error", "retryAfter"}` when the visitor's or the day's cap is reached.
   - `503` when drawings are switched off.
-  - `502` when OpenAI fails. A failed call doesn't use up a try.
+  - `502` when OpenAI fails, and `422 {"moderation": true}` when it won't draw the photo. A failed call doesn't
+    use up a try or count against a cap.
+  - `400` for a subject that isn't made (or is ready-made), or a photo that isn't the product's `photo.edge`
+    square; `415` for the wrong type; `409` once `left` is 0.
 - **Storage:** KV `drawing:<id>` (the record: subject, tries, created), `file:drawing:<id>/photo.jpg` and
   `file:drawing:<id>/<n>.png`, all expiring after two days unless an order is paid.
 - **The OpenAI call:** images edit, `model`/`quality`/`size` from the product file, the brief for the subject,
   one image, PNG out. Send a `user` value: the visitor's daily hash (below).
-- **CPU:** the free plan gives a request 10 ms of CPU. Build the multipart body from KV bytes without decoding the
-  image, and don't `JSON.parse` OpenAI's answer of a megabyte or more in the Worker if that busts the limit.
-  Instead, stream it into KV and to the page as it comes, and let the page and the routine take the PNG out.
-  If neither fits, stop and tell RJ: Workers Paid is a charge (CHARGES.md).
-- **Caps** (decision 21; numbers in `shop-worker/limits.json`, so changing one means a deploy):
+- **CPU:** Workers Paid is on (RJ, 2026-11-19), so a request may use far more than the free plan's 10 ms. The
+  Worker sends the photo as multipart form data, parses OpenAI's JSON and decodes the PNG itself. It still never
+  decodes an image: sizes come from the JPEG's SOF marker and the PNG's IHDR.
+- **The sandbox's stub:** in test mode only, a request with the queue's token and `X-Stub: <run name>` gets
+  `shop-worker/stub-drawing.png` (the builder's test cat) instead of an OpenAI call, counted in a pool of its own
+  and never in the spend. `test_order.py` uses it unless `--real-drawing` is given.
+- **Caps** (decision 21; numbers in `shop-worker/limits.json`, so changing one means a deploy). The drawings
+  and dollars counted today and this month cover both modes, since there's one OpenAI key: they live in the
+  live namespace. The visitor counts and switches are per mode:
   - `triesPerPhoto` (3).
   - `perVisitorPerDay` (6), counted under a SHA-256 of the IP address and that day's salt. It's kept one
     day and never logged.
@@ -165,11 +184,14 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
     per-IP count would shut them all out after six drawings. An unverified header can only move a request
     into this smaller pool, never past a cap.
   - `uploadsPerVisitorPerDay` (20): own-drawing uploads, counted like `perVisitorPerDay`.
-  - Free-plan KV allows 1,000 writes a day across everything, and a drawing writes about five keys, so a busy
-    day hits that before the dollar cap. `GET /api/stats` reports writes today, and `rl-daily` warns above 600.
+  - KV writes: a drawing writes about six keys. Workers Paid lifts the free plan's 1,000 a day (a million a
+    month are included), but `GET /api/stats` still reports the Worker's own count of writes today, and
+    `rl-daily` warns above `kvWritesWarn` (600) as a sign of abuse.
   - KV counters can overshoot by a few in a burst. The OpenAI balance is the hard cap behind them.
-- **Switches:** KV `switch:drawings` and `switch:orders` set to `off` stop new drawings or new orders at once.
-  The page then says to come back later.
+- **Switches:** KV `switch:drawings` and `switch:orders` set to `off` stop new drawings, or new orders and
+  checkouts, within a minute (`tools/orders/switch.py`). Refusals carry `"off": true`, and
+  `GET /api/products/<slug>` shows `drawings` and `orders` as booleans, so the page can say to come back later.
+  `switch:drawings` stops only OpenAI drawings: own drawings and ready-made designs cost nothing and go on.
 
 ### Orders
 
@@ -188,7 +210,11 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
     "version": "<the page's build id>" }
   ```
 
-  `price` is the total the page showed. The Worker works it out again from `pricing` and refuses a mismatch.
+  `price` is the total the page showed. The Worker works it out again from `pricing` and refuses a mismatch
+  with `409 {"error", "price", "each"}`, so the page can show the right one. The answer is
+  `201 {"id", "count", "price", "expires", "designs": [{"k", "each", "quantity"}], "files": ["1/preview.jpg", …]}`.
+  An order expires with the first of its drawings to expire, at most two days. A refused design's error says
+  `Design <k>:` and carries `design`, plus `option` or `text` where that's the problem.
   A design's `drawing` is `{"id", "n"}` (a made or uploaded drawing) or `{"static": "<subject>/<design>"}`, for
   example `{"static": "gag/toilet"}` (decision 30). For a ready-made design, the Worker checks that the pair is in
   the product file, reads and writes no drawing record, and puts `source: "static"` and the product file's
@@ -226,12 +252,16 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
 | `PATCH /api/orders/<id>` | `{"state", "note"}`, only along the arrows in "States" below |
 | `POST /api/orders/<id>/slant` | Drafts the Slant order (below) |
 | `GET /api/orders/<id>/contact` | The customer's name and email from Stripe, only for a shipping email, and only once shipped |
-| `GET /api/orders/<id>/link/proof.png` | A signed link to the proof that lasts seven days, for RJ's email |
+| `GET /api/orders/<id>/link/proof.png` | `{"expires", "links": [{"design", "url"}]}`: a signed link to each design's proof that lasts seven days, for RJ's email. The link is `/api/proofs/<mode>/<id>/<k>/proof.png?e=&s=` and needs no token |
 | `GET /api/stats` | Drawings and estimated dollars today and this month, orders this week, the switches |
-| `DELETE /api/orders/<id>` | Purge (exists). Now also the `out/` files and the drawing's files. The record stays, without the design's photo or drawing references |
+| `DELETE /api/orders/<id>` | Purge now (exists). Now also the `out/` files and the drawing's files. The record stays, without the design's photo or drawing references. `?keep=evidence` keeps each `preview.jpg` and `out/build.json`, as the 60-day purge does |
+| `POST /api/purge` | The purge that's due (below), now; `?dry=1` lists it. The Worker's daily cron (09:17 UTC) runs the same in both modes |
 
 **States:** `paid → built → drafted → processed → shipped → purged`. `needs-rj` can come from any state before
-`processed`, and goes back to `built` once RJ has sorted it out. `cancelled` follows a full refund.
+`processed`, and goes back to `built` once RJ has sorted it out. `cancelled` follows a full refund. `PATCH` can't
+make `drafted` (only the Slant call does) or `purged` (only a purge), `built` needs every design's `build.json`
+and `proof.png`, and `shipped` takes `tracking` too. `status` stays the payment's (`open`, `checkout`, `paid`);
+`state` is the order's progress from paid on.
 
 ### Slant drafts (the Worker)
 
@@ -248,8 +278,15 @@ match each design's parts list for list, and the order's quantities, rather than
    `SLANT_PLATFORM_ID`.
 3. It records `slant: {orderId, printingCost, deliveryCost, drafted}`, moves the order to `drafted`, and
    returns that.
-4. **In the sandbox, it never calls Slant.** It returns the request it would have sent, marked `dryRun`.
-   Slant can't cancel or delete a draft (CHARGES.md).
+4. **In the sandbox, it never calls Slant.** It returns the request it would have sent, marked `dryRun`, with
+   each address field shown as `(from Stripe)`, and records `slant.state = "dry-run"` and `drafted`, so the run
+   can go on. Slant can't cancel or delete a draft (CHARGES.md). It only calls Slant in live mode with
+   `SLANT_API_KEY` set, which is added at launch.
+5. If Slant's answer isn't a draft, the Worker can't know whether one was made, so it records
+   `slant.state = "failed"` and moves the order to `needs-rj`, and a retry returns that. RJ looks in Slant's
+   dashboard before clearing it.
+
+The filament in each item must be the Slant id of its part's colour in the product file.
 
 Nothing in our code processes a Slant order. Only RJ does, in Slant's dashboard.
 
@@ -396,7 +433,8 @@ characters, text and brand marks.
 - With an own drawing (decision 28), we never get the photo. The customer's assistant, and whoever runs it,
   sees it under their own terms.
 - Unpaid photos and drawings expire after two days. Photos and everything made from them are deleted from KV
-  60 days after the order ships or is cancelled, except `preview.jpg` and `build.json`. Those stay 180 days
+  60 days after the order ships or is cancelled, except `preview.jpg` and `build.json`. The Worker's daily cron
+  does this (`POST /api/purge` runs it on demand). Those stay 180 days
   after shipping as evidence of what the customer approved, because a card dispute can come up to about 120
   days after delivery (decision 28). The order record, without photos, stays for seven years.
 - OpenAI keeps API inputs and outputs for up to 30 days to monitor abuse, and doesn't train on them by default
@@ -407,8 +445,10 @@ characters, text and brand marks.
 ## Testing
 
 - `python3 tools/orders/test_order.py` places a photo order end to end in the sandbox. It uses a drawn test
-  picture, never anyone's photo, and refuses a live key. Step 9 extends it to drawings, with OpenAI stubbed
-  unless `--real-drawing` is given. A real drawing costs money and counts against the cap.
+  picture, never anyone's photo, and refuses a live key. `--product cutout-ornament` runs the ornament end to
+  end (drawings, an order of three designs, the queue, a proof link, the Slant dry run, the purge), with OpenAI
+  stubbed unless `--real-drawing` is given. A real drawing costs about $0.06 and counts against the cap. It
+  toggles the sandbox's switches for a minute or two.
 - Stripe's sandbox and test cards for every checkout, and the sandbox KV namespace for test orders.
 - Slant: upload and quote freely. Drafts only as dry runs in tests.
 - The recipe: a drawing made for the test, in Git; family drawings only locally.

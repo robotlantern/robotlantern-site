@@ -124,24 +124,61 @@ const photoOptions = z.array(z.object({
   label: z.string(),
   choices: z.array(z.object({ id, label: z.string(), add: z.number().min(0).default(0) }).passthrough()).min(1),
 }));
+// A product made from a drawing (the stencil ornament; docs/ORDERS.md, "The product file"): the customer's
+// photo becomes a drawing, an order holds several designs, and tiers price it instead of one price.
+const subject = z.object({
+  id,
+  label: z.string(),
+  source: z.enum(['made', 'static']).default('made'),
+  brief: z.string().optional(),
+  crop: z.string().optional(),
+  cropMode: z.enum(['fill', 'fit']).default('fill'),
+  designs: z.array(z.object({
+    id, label: z.string(), drawing: z.string(), sha256: z.string().regex(/^[0-9a-f]{64}$/),
+    text: z.string(), font: z.string(), alt: z.string(),
+  })).optional(),
+}).passthrough().superRefine((s, ctx) => {
+  const need = (message: string) => ctx.addIssue({ code: 'custom', path: [s.id], message });
+  if (s.source === 'static' && !s.designs?.length) need('a ready-made subject lists its designs');
+  if (s.source === 'made' && (!s.brief || !s.crop)) need('a made subject needs a brief and a crop hint');
+});
+const drawing = z.object({
+  model: z.string(),
+  quality: z.string(),
+  size: z.string(),
+  triesPerPhoto: z.number().int().positive(),
+  subjects: z.array(subject).min(1),
+});
+const pricing = z.object({
+  tiers: z.array(z.object({ from: z.number().int().positive(), each: z.number().positive() })).min(1),
+  maxPerOrder: z.number().int().positive(),
+  maxDesigns: z.number().int().positive(),
+  modifiers: z.array(z.object({ when: z.record(z.string(), z.string()), add: z.number() })).default([]),
+});
 const shop = defineCollection({
   loader: glob({ pattern: '*/shop.json', base: './products', generateId: folderId }),
   schema: z.object({
     name: z.string(),
     description: z.string().optional(),
-    price: z.number().positive(),
+    // A drawing product has pricing instead.
+    price: z.number().positive().optional(),
     shipping: z.number().min(0),
     taxCode: z.string().optional(),
-    fulfillment: z.enum(['gelato', 'self']),
+    fulfillment: z.enum(['gelato', 'self', 'slant']),
     stock: z.number().int().positive().optional(),
     options: z.union([fixedOptions, photoOptions]).optional(),
-    // Photo products only (docs/ORDERS.md).
-    photo: z.object({
-      minEdge: z.number().int().positive(),
-      crop: z.string().regex(/^(circle|free|rect:\d+x\d+)$/),
-      subject: z.boolean(),
-      count: z.number().int().positive().default(1),
-    }).optional(),
+    // Photo products only (docs/ORDERS.md). A drawing product's is { via: "drawing", crop, edge }.
+    photo: z.union([
+      z.object({
+        minEdge: z.number().int().positive(),
+        crop: z.string().regex(/^(circle|free|rect:\d+x\d+)$/),
+        subject: z.boolean(),
+        count: z.number().int().positive().default(1),
+      }),
+      z.object({ via: z.literal('drawing'), crop: z.literal('square'), edge: z.number().int().positive() }),
+    ]).optional(),
+    drawing: drawing.optional(),
+    pricing: pricing.optional(),
     preview: z.string().optional(),
     recipe: z.string().optional(),
     weeklyCap: z.number().int().min(0).optional(),
@@ -152,8 +189,16 @@ const shop = defineCollection({
     listed: z.boolean().default(false),
     stripe: z.object({ test: stripeIds.optional(), live: stripeIds.optional() }).default({}),
   }).passthrough().superRefine((p, ctx) => {
-    if (!p.photo) return;
     const need = (path: string, message: string) => ctx.addIssue({ code: 'custom', path: [path], message });
+    if (p.drawing) {
+      if (!p.pricing) need('pricing', 'a drawing product is priced by pricing.tiers');
+      if (p.price !== undefined) need('price', 'a drawing product has pricing, not price');
+      if (!p.photo || !('via' in p.photo)) need('photo', 'a drawing product has photo.via "drawing"');
+      if (p.weeklyCap === undefined) need('weeklyCap', 'a drawing product needs weeklyCap');
+      return;
+    }
+    if (p.price === undefined) need('price', 'a product needs a price');
+    if (!p.photo || 'via' in p.photo) return;
     for (const key of ['preview', 'recipe', 'weeklyCap'] as const) {
       if (p[key] === undefined) need(key, `a photo product needs ${key}`);
     }

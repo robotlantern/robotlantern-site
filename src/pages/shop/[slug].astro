@@ -1,0 +1,373 @@
+---
+// A product made from a drawing (docs/ORDERS.md, "The page"): photo, crop and drawing, or a ready-made design,
+// or the customer's own drawing; the ornament drawn in the browser in their colours, with the name tag; a
+// quantity for each design and more designs in the same order; then the Worker's checkout. Everything the page
+// says about subjects, colours, fonts and prices comes from products/<slug>/shop.json, so no subject is named
+// here. The controls are plain, labelled HTML, so an assistant can operate the page (decision 28).
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  return (await getCollection('shop')).filter((p) => p.data.drawing).map((p) => ({ params: { slug: p.id }, props: { p } }));
+}
+
+const { p } = Astro.props;
+const d = p.data;
+const slug = p.id;
+const site = Astro.site!;
+const option = (id: string) => (d.options as any[]).find((o) => o.id === id);
+const money = (n: number) => `$${n % 1 ? n.toFixed(2) : n}`;
+const tiers = d.pricing!.tiers;
+const staticUrl = (file: string) => `/shop/${slug}/${file}`;
+
+// What the browser needs, without Stripe IDs, filament IDs, briefs or caps.
+const data = {
+  slug,
+  name: d.name,
+  edge: (d.photo as any).edge,
+  triesPerPhoto: d.drawing!.triesPerPhoto,
+  subjects: d.drawing!.subjects.map((s) => ({
+    id: s.id, label: s.label, source: s.source, crop: s.crop ?? null, cropMode: s.cropMode,
+    designs: s.designs?.map((x) => ({ id: x.id, label: x.label, url: staticUrl(x.drawing), text: x.text, font: x.font, alt: x.alt })),
+  })),
+  pricing: d.pricing,
+  options: (d.options as any[]).map((o) => ({
+    id: o.id, label: o.label, default: o.default,
+    choices: o.choices.map((c: any) => ({ id: c.id, label: c.label, hex: c.hex, add: c.add || 0 })),
+  })),
+  differ: (d as any).differ ?? [],
+  pairs: (d as any).pairs ?? [],
+  text: (d as any).text,
+  orderBy: d.orderBy ?? null,
+  version: new Date().toISOString().slice(0, 16),
+};
+
+const colours = option('base').choices.length;
+const fonts = option('font').choices;
+const orderBy = d.orderBy ? new Date(`${d.orderBy}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' }) : null;
+const tierText = tiers.length === 1
+  ? `${money(tiers[0].each)} each, with US shipping included`
+  : tiers.map((t, i) => `${money(t.each)} each for ${t.from}${tiers[i + 1] ? `–${tiers[i + 1].from - 1}` : ' or more'}`).join('; ') + ', with US shipping included';
+const ready = d.drawing!.subjects.flatMap((s) => (s.designs ?? []).map((x) => new URL(staticUrl(x.drawing), site).href));
+const url = new URL(`/shop/${slug}/`, site).href;
+const offer = {
+  '@type': 'Offer',
+  url,
+  price: tiers[0].each.toFixed(2),
+  priceCurrency: 'USD',
+  availability: 'https://schema.org/MadeToOrder',
+  itemCondition: 'https://schema.org/NewCondition',
+  ...(tiers.length > 1 && {
+    priceSpecification: tiers.map((t) => ({
+      '@type': 'UnitPriceSpecification', price: t.each.toFixed(2), priceCurrency: 'USD',
+      eligibleQuantity: { '@type': 'QuantitativeValue', minValue: t.from },
+    })),
+  }),
+  shippingDetails: {
+    '@type': 'OfferShippingDetails',
+    shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'USD' },
+    shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' },
+  },
+  seller: { '@type': 'Organization', name: 'Robot Lantern LLC' },
+};
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: d.name,
+  description: d.description,
+  url,
+  image: ready,
+  brand: { '@type': 'Brand', name: 'Robot Lantern' },
+  material: 'PLA',
+  offers: offer,
+};
+const subjects = d.drawing!.subjects;
+---
+<Base title={d.name} description={d.description} section="shop">
+  <Fragment slot="head">
+    <link rel="alternate" type="application/json" href="product.json">
+    <link rel="preload" href="/shop/fonts/allerta-stencil.ttf" as="font" type="font/ttf" crossorigin>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
+  </Fragment>
+
+  <main class="maker" id="maker">
+    <header class="maker__head">
+      <h1>{d.name}</h1>
+      <p class="lede">{d.description}</p>
+      <p class="price-line">{tierText}.</p>
+    </header>
+
+    <div class="maker__grid">
+      <div class="stage-col">
+        <div class="stage">
+          <canvas id="preview" width="720" height="720" role="img" aria-label="Your ornament"></canvas>
+          <p class="stage__empty" id="stage-empty">Your ornament shows here.</p>
+        </div>
+        <p class="stage__note">Small details are tidied for printing. Colours on screen are close, not exact.</p>
+        <p class="stage__chosen" id="chosen" aria-live="polite"></p>
+      </div>
+
+      <div class="steps">
+        <p class="editing" id="editing" hidden></p>
+
+        <fieldset class="step" id="subjects">
+          <legend>What's on it?</legend>
+          <div class="chips">
+            {subjects.map((s, i) => (
+              <label class="chip"><input type="radio" name="subject" value={s.id} checked={i === 0} /><span>{s.label}</span></label>
+            ))}
+          </div>
+        </fieldset>
+
+        <section class="step" id="made" aria-labelledby="made-h">
+          <h2 id="made-h">Photo</h2>
+          <p class="hint" id="crop-hint"></p>
+          <label class="file">
+            <span>Add a photo</span>
+            <input type="file" id="photo" accept="image/*" />
+          </label>
+          <div class="crop" id="crop" hidden>
+            <div class="crop__box" id="crop-box"><canvas id="crop-canvas" aria-label="Your photo, cropped to the square"></canvas></div>
+            <label class="zoom">Zoom <input type="range" id="zoom" min="1" max="4" step="0.01" value="1" /></label>
+            <p class="hint">Drag to move the photo in the square. Pinch, or use the slider, to zoom.</p>
+          </div>
+          <button type="button" class="act" id="draw" disabled>Make my drawing</button>
+          <p class="hint">Your photo stays on your device until you press this. Then it goes to OpenAI, which makes the drawing.</p>
+          <fieldset class="tries" id="tries" hidden>
+            <legend>Drawings</legend>
+            <div class="tries__row" id="tries-row"></div>
+          </fieldset>
+          <button type="button" class="act act--quiet" id="again" hidden>Try again</button>
+          <p class="status" id="draw-status" aria-live="polite"></p>
+
+          <div class="own">
+            <label class="file file--quiet">
+              <span>I have my own drawing</span>
+              <input type="file" id="own" accept="image/png,image/jpeg,image/webp" />
+            </label>
+            <p class="hint">A square red-on-white drawing to <a href="drawing-spec.json">our drawing spec</a>. We check it here before it's sent, and no photo is sent. Using an AI assistant? <a href="ai/">Here's what it can do.</a></p>
+            <p class="status" id="own-status" aria-live="polite"></p>
+          </div>
+        </section>
+
+        <fieldset class="step" id="gallery" hidden>
+          <legend>Pick a design</legend>
+          <div class="gallery" id="gallery-row"></div>
+        </fieldset>
+
+        <section class="step" aria-labelledby="colours-h">
+          <h2 id="colours-h">Colours</h2>
+          <div class="pairs" id="pairs" role="group" aria-label="Suggested pairs"></div>
+          <fieldset class="swatches" id="base">
+            <legend>Base <span class="val" id="base-val"></span></legend>
+            <div class="swatches__row"></div>
+          </fieldset>
+          <button type="button" class="act act--quiet" id="swap">Swap base and stencil</button>
+          <fieldset class="swatches" id="stencil">
+            <legend>Stencil <span class="val" id="stencil-val"></span></legend>
+            <div class="swatches__row"></div>
+          </fieldset>
+          <p class="note" id="close-note" hidden>These two colours are close, so the design may be hard to see.</p>
+        </section>
+
+        <section class="step" aria-labelledby="tag-h">
+          <h2 id="tag-h">Name tag</h2>
+          <label class="check"><input type="checkbox" id="tag" checked /> Add a name tag</label>
+          <div class="tag-body" id="tag-body">
+            <label class="field">Text on the tag
+              <input type="text" id="tag-text" maxlength={d.text.max} autocomplete="off" spellcheck="false" />
+            </label>
+            <label class="field">Font
+              <select id="font">
+                {fonts.map((f: any) => <option value={f.id}>{f.label}</option>)}
+              </select>
+            </label>
+            <p class="status" id="tag-status" aria-live="polite"></p>
+          </div>
+        </section>
+
+        <section class="step" aria-labelledby="qty-h">
+          <h2 id="qty-h" class="sr">Quantity</h2>
+          <label class="field field--qty">How many of this design
+            <input type="number" id="quantity" min="1" max={d.pricing!.maxPerOrder} step="1" value="1" inputmode="numeric" />
+          </label>
+        </section>
+      </div>
+    </div>
+
+    <section class="order" aria-labelledby="order-h">
+      <h2 id="order-h">Your order</h2>
+      <ol class="designs" id="designs"></ol>
+      <button type="button" class="act act--quiet" id="add">Add another design</button>
+      <p class="total" id="total" aria-live="polite"></p>
+      <p class="note" id="closed" hidden></p>
+      <button type="button" class="act act--main" id="order">Order</button>
+      <p class="status" id="order-status" aria-live="polite"></p>
+      <p class="hint">You pay on Stripe's checkout page, which also takes the address. We never see your card.</p>
+    </section>
+
+    <section class="facts" aria-labelledby="facts-h">
+      <h2 id="facts-h">About it</h2>
+      <ul>
+        <li>Two 3D-printed parts in PLA: a stencil of your drawing pressed onto a base in a second colour, with a ring to hang it.</li>
+        <li>The drawing fits 8 × 8.5 cm (about 3 × 3⅓ inches); the base adds a 2 mm rim, and the name tag hangs 1.7 cm below.</li>
+        <li>Any two of {colours} colours, base and stencil. The name tag is cut through the stencil in one of {fonts.length} stencil fonts.</li>
+        <li>{tierText}. Up to {d.pricing!.maxDesigns} designs and {d.pricing!.maxPerOrder} ornaments in one order, shipped in one box.</li>
+        <li>Made to order, printed and shipped by Slant 3D. US addresses only.</li>
+        {orderBy && <li>Order by {orderBy} for Christmas.</li>}
+        <li>If it arrives broken or doesn't match the preview, we remake it for free or refund you.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script type="application/json" id="product-data" set:html={JSON.stringify(data)} />
+</Base>
+
+<script>
+  import { start } from '../../scripts/shop/cutout-page.js';
+  start();
+</script>
+
+<style is:global>
+  @font-face { font-family: 'RL Allerta Stencil'; src: url(/shop/fonts/allerta-stencil.ttf) format('truetype'); font-display: swap; }
+  @font-face { font-family: 'RL Saira Stencil One'; src: url(/shop/fonts/saira-stencil-one.ttf) format('truetype'); font-display: swap; }
+  @font-face { font-family: 'RL Big Shoulders Stencil'; src: url(/shop/fonts/big-shoulders-stencil.ttf) format('truetype'); font-weight: 100 900; font-display: swap; }
+  @font-face { font-family: 'RL Emblema One'; src: url(/shop/fonts/emblema-one.ttf) format('truetype'); font-display: swap; }
+  @font-face { font-family: 'RL Wallpoet'; src: url(/shop/fonts/wallpoet.ttf) format('truetype'); font-display: swap; }
+</style>
+
+<!-- Global, because the script builds most of the controls; this page's CSS loads only on this page. -->
+<style is:global>
+  .maker { width: min(70rem, 100% - 2 * var(--edge)); margin: 1.2rem auto 0; }
+  .maker__head h1 { margin: 0 0 .4rem; font: 400 clamp(2rem, 6vw, 2.8rem)/1.05 var(--serif); letter-spacing: -.02em; }
+  .lede { margin: 0 0 .3rem; color: var(--muted); font: 1.08rem/1.5 var(--serif); max-width: 40rem; }
+  .price-line { margin: 0 0 1.4rem; font: 1rem/1.4 var(--serif); color: var(--lantern); }
+  .maker__grid { display: grid; gap: 1.6rem; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 52rem) {
+    .maker__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: start; }
+    .stage-col { position: sticky; top: 1rem; }
+  }
+  .stage { position: relative; border-radius: 1.2rem; overflow: hidden; background: radial-gradient(circle at 50% 42%, #cfd3da, #9aa2b0 75%); aspect-ratio: 1; }
+  .stage canvas { display: block; width: 100%; height: 100%; }
+  .stage__empty { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: #2b3242; font: 1.05rem/1.4 var(--serif); }
+  .stage__empty[hidden] { display: none; }
+  .stage__note { margin: .6rem .2rem 0; color: var(--faint); font: .82rem/1.45 var(--sans); }
+  .stage__chosen { margin: .3rem .2rem 0; color: var(--muted); font: .9rem/1.45 var(--sans); }
+  @media (max-width: 51.99rem) {
+    /* Phones: keep the ornament in view while choosing. */
+    .stage-col { position: sticky; top: 0; z-index: 5; margin-inline: calc(-1 * var(--edge)); padding: .4rem var(--edge) .5rem; background: rgba(4, 6, 13, .92); backdrop-filter: blur(6px); }
+    /* Square and centred, so the menu's logo in the corner sits beside it rather than on it. */
+    .stage { width: min(34vh, 20rem, 100% - 7rem); margin-inline: auto; }
+    .stage__chosen { text-align: center; font-size: .82rem; }
+    .stage__note { display: none; }
+  }
+
+  .steps { display: grid; gap: 1.1rem; }
+  .step { margin: 0; padding: 1.1rem; border: 0; border-radius: 1rem; background: var(--panel); box-shadow: 0 0 0 1px var(--line); min-width: 0; }
+  .step[hidden] { display: none; }
+  .step h2, .step > legend, .order h2, .facts h2 { margin: 0 0 .7rem; padding: 0; color: var(--lantern); font: 700 .74rem/1.3 var(--sans); letter-spacing: .14em; text-transform: uppercase; }
+  .step > legend { float: left; width: 100%; }
+  .step > legend + * { clear: both; }
+  .editing { margin: 0; padding: .6rem .9rem; border-radius: .7rem; background: rgba(255, 210, 138, .1); color: var(--lantern); font: .9rem/1.4 var(--sans); }
+  .hint { margin: .5rem 0 0; color: var(--faint); font: .84rem/1.5 var(--sans); }
+  .status { margin: .5rem 0 0; color: var(--text); font: .92rem/1.5 var(--sans); min-height: 0; }
+  .status:empty { display: none; }
+  .status.bad, .note { color: #ffd6a0; }
+  .note { margin: .6rem 0 0; padding: .5rem .8rem; border-radius: .6rem; background: rgba(240, 160, 64, .12); font: .88rem/1.45 var(--sans); }
+  .note[hidden] { display: none; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .chip { position: relative; display: inline-flex; }
+  .chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .chip span { display: inline-flex; align-items: center; min-height: 44px; padding: .5rem 1rem; border: 1px solid var(--line); border-radius: 99px; color: var(--text); font: .95rem/1 var(--sans); }
+  .chip input:checked + span { background: var(--text); color: var(--night); border-color: var(--text); font-weight: 600; }
+  .chip input:checked + span::before { content: '✓ '; white-space: pre; }
+  .chip input:focus-visible + span { outline: 2px solid var(--lantern); outline-offset: 2px; }
+
+  .act { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; margin-top: .8rem; padding: .7rem 1.3rem; border: 0; border-radius: 99px; background: var(--lantern); color: var(--night); cursor: pointer; font: 700 .8rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+  .act:hover { background: #fff0cf; }
+  .act:disabled { opacity: .4; cursor: default; background: var(--lantern); }
+  .act[hidden] { display: none; }
+  .act--quiet { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px var(--line); }
+  .act--quiet:hover { background: transparent; color: var(--lantern); box-shadow: inset 0 0 0 1px var(--lantern); }
+  .act--quiet:disabled { background: transparent; }
+  .act--main { width: 100%; min-height: 54px; font-size: .9rem; }
+
+  .file { display: inline-flex; position: relative; }
+  .file span { display: inline-flex; align-items: center; min-height: 48px; padding: .7rem 1.3rem; border-radius: 99px; background: var(--text); color: var(--night); font: 700 .8rem/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
+  .file--quiet span { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px var(--line); }
+  .file input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+  .file:focus-within span { outline: 2px solid var(--lantern); outline-offset: 2px; }
+  .own { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+
+  .crop { margin-top: .9rem; }
+  .crop[hidden] { display: none; }
+  .crop__box { width: min(100%, 22rem); aspect-ratio: 1; border-radius: .6rem; overflow: hidden; background: #fff; touch-action: none; cursor: grab; }
+  .crop__box canvas { display: block; width: 100%; height: 100%; }
+  .zoom { display: flex; align-items: center; gap: .8rem; margin-top: .6rem; color: var(--muted); font: .9rem/1 var(--sans); }
+  .zoom input { flex: 1; max-width: 16rem; min-height: 44px; accent-color: var(--lantern); }
+
+  .tries { margin: .9rem 0 0; padding: 0; border: 0; }
+  .tries[hidden] { display: none; }
+  .tries legend { margin-bottom: .4rem; color: var(--muted); font: .85rem/1 var(--sans); }
+  .tries__row, .gallery { display: grid; gap: .6rem; grid-template-columns: repeat(auto-fill, minmax(6.2rem, 1fr)); }
+  .pick { position: relative; display: block; cursor: pointer; }
+  .pick input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .pick img, .pick canvas { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: .6rem; background: #fff; box-shadow: 0 0 0 1px var(--line); }
+  .pick span { display: block; margin-top: .3rem; color: var(--muted); font: .8rem/1.3 var(--sans); }
+  .pick input:checked ~ img, .pick input:checked ~ canvas { box-shadow: 0 0 0 3px var(--night), 0 0 0 5px var(--lantern); }
+  .pick input:checked ~ span { color: var(--lantern); font-weight: 600; }
+  .pick input:checked ~ span::before { content: '✓ '; }
+  .pick input:focus-visible ~ img, .pick input:focus-visible ~ canvas { outline: 2px solid var(--lantern); outline-offset: 4px; }
+  .pick input:disabled ~ img, .pick input:disabled ~ canvas { opacity: .45; }
+  .pick input:disabled { cursor: not-allowed; }
+
+  .pairs { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .9rem; }
+  .pair { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: .3rem .9rem .3rem .3rem; border: 1px solid var(--line); border-radius: 99px; background: transparent; color: var(--text); cursor: pointer; font: .85rem/1 var(--sans); }
+  .pair[aria-pressed='true'] { border-color: var(--lantern); box-shadow: inset 0 0 0 1px var(--lantern); }
+  .pair[aria-pressed='true']::after { content: '✓'; color: var(--lantern); }
+  .dot { position: relative; width: 32px; height: 32px; border-radius: 50%; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .35); }
+  .dot i { position: absolute; inset: 0; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+
+  .swatches { margin: 0; padding: 0; border: 0; min-width: 0; }
+  .swatches legend { margin-bottom: .5rem; color: var(--muted); font: .85rem/1 var(--sans); }
+  .swatches .val { color: var(--text); margin-left: .4rem; }
+  .swatches__row { display: grid; gap: .45rem; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); }
+  .sw { position: relative; display: block; aspect-ratio: 1; min-width: 44px; min-height: 44px; cursor: pointer; }
+  .sw input { position: absolute; z-index: 1; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .sw i, .sw b { pointer-events: none; }
+  .sw i { position: absolute; inset: 0; border-radius: .55rem; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3); }
+  .sw b { position: absolute; left: 3px; bottom: 3px; padding: 1px 3px; border-radius: 3px; background: rgba(255, 255, 255, .85); color: #222; font: 700 8px/1.2 var(--sans); letter-spacing: .03em; pointer-events: none; }
+  .sw input:checked ~ i { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3), 0 0 0 3px var(--night), 0 0 0 5px var(--lantern); }
+  .sw input:checked ~ i::after { content: ''; position: absolute; inset: 30%; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 2px #000; }
+  .sw input:focus-visible ~ i { outline: 2px solid var(--lantern); outline-offset: 5px; }
+  .sw input:disabled ~ i { opacity: .35; background-image: linear-gradient(to top right, transparent calc(50% - 1.5px), var(--text) calc(50% - 1.5px), var(--text) calc(50% + 1.5px), transparent calc(50% + 1.5px)) !important; }
+  .sw input:disabled { cursor: not-allowed; }
+  #swap { margin: .7rem 0 .9rem; }
+
+  .check { display: flex; align-items: center; gap: .6rem; min-height: 44px; cursor: pointer; font: .95rem/1.3 var(--sans); }
+  .check input { width: 22px; height: 22px; accent-color: var(--lantern); }
+  .tag-body[hidden] { display: none; }
+  .field { display: grid; gap: .35rem; margin-top: .7rem; color: var(--muted); font: .85rem/1.3 var(--sans); }
+  .field input, .field select { min-height: 46px; padding: .55rem .8rem; border: 1px solid var(--line); border-radius: .6rem; background: rgba(2, 4, 10, .6); color: var(--text); font: 1.05rem/1.2 var(--sans); }
+  .field--qty input { width: 7rem; }
+
+  .order { margin-top: 2rem; padding: 1.2rem; border-radius: 1rem; background: var(--panel); box-shadow: 0 0 0 1px var(--line); }
+  .designs { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+  .designs li { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: .3rem .9rem; align-items: center; padding: .6rem; border-radius: .8rem; box-shadow: 0 0 0 1px var(--line); }
+  .designs li[aria-current='true'] { box-shadow: 0 0 0 2px var(--lantern); }
+  .designs canvas, .designs .blank { grid-row: span 2; width: 4.2rem; height: 4.2rem; border-radius: .5rem; background: #b8bdc7; }
+  .designs .what { color: var(--text); font: .92rem/1.35 var(--sans); }
+  .designs .what em { display: block; font-style: normal; color: var(--faint); font-size: .82rem; }
+  .designs .row { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+  .designs .row button { min-height: 44px; margin: 0; padding: .4rem .9rem; font-size: .72rem; }
+  .designs .row label { display: inline-flex; align-items: center; gap: .4rem; color: var(--muted); font: .85rem/1 var(--sans); }
+  .designs .row input { width: 4.4rem; min-height: 44px; padding: .3rem .5rem; border: 1px solid var(--line); border-radius: .5rem; background: rgba(2, 4, 10, .6); color: var(--text); font: 1rem/1 var(--sans); }
+  .total { margin: 1rem 0 0; font: 1.25rem/1.4 var(--serif); }
+  .total small { display: block; color: var(--muted); font: .85rem/1.4 var(--sans); }
+
+  .facts { margin-top: 2rem; }
+  .facts ul { margin: 0; padding-left: 1.2rem; color: var(--muted); font: 1rem/1.6 var(--serif); }
+  .facts li + li { margin-top: .3rem; }
+</style>

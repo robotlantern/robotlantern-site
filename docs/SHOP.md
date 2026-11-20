@@ -122,5 +122,5 @@ the state certificate exists (docs/SALES-TAX.md; NOW.md).
 3. `python3 tools/shop/sync.py --live`, set `SHOP_MODE` to `live`, deploy the site.
 4. Stripe's email for successful payments on (it's how self-shipped orders reach RJ), and its email
    receipts to customers.
-5. Photo products: the live KV namespace bound to the Worker, and `robotlantern.com/api/*` routed to it
-   ([ORDERS.md](ORDERS.md)).
+5. Photo products: `robotlantern.com/api/*` routed to the Worker ([ORDERS.md](ORDERS.md)). The live KV
+   namespace, `shop-orders-live`, has been bound since 2026-11-20.

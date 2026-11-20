@@ -1,0 +1,30 @@
+---
+// Where Stripe's checkout returns after payment (shop-worker/index.js, success_url: /shop/thanks/?order=<id>).
+// It only shows the order's ID from the address; it asks the Worker nothing.
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Thank you" section="shop">
+  <meta slot="head" name="robots" content="noindex">
+  <main class="reading thanks">
+    <h1>Thank you</h1>
+    <p>Your order is in. Stripe emails your receipt.</p>
+    <p id="order-line" hidden>Your order number is <strong id="order-id"></strong>. Keep it in case you need to write to us.</p>
+    <p>Each ornament is built from the preview you approved and checked before it goes to print. Slant 3D prints it and ships it to the address you gave at checkout, and we email you when it's on its way.</p>
+    <p>If it arrives broken or doesn't match the preview, we remake it for free or refund you.</p>
+    <p><a href="/shop/">Back to the shop</a></p>
+  </main>
+</Base>
+
+<script>
+  const id = new URLSearchParams(location.search).get('order');
+  if (id && /^[0-9a-z]{12}$/.test(id)) {
+    document.getElementById('order-id')!.textContent = id;
+    document.getElementById('order-line')!.hidden = false;
+  }
+</script>
+
+<style>
+  .thanks { padding-block: 2rem; font: 1.1rem/1.7 var(--serif); }
+  h1 { margin: 0 0 1rem; font: 400 2.4rem/1.05 var(--serif); }
+  strong { font: 600 1rem var(--mono); letter-spacing: .04em; color: var(--lantern); }
+</style>
