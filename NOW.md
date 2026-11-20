@@ -181,7 +181,7 @@ step off (`[x]`) when it's done.
    - Progress 2026-11-19: zone added on Free, status pending. Cloudflare's nameservers are
      `sofia.ns.cloudflare.com` and `yew.ns.cloudflare.com`. The scan imported all 12 old records and the five
      GitHub Pages ones are DNS-only. The agents' token reads the zone but can't write DNS (Authentication
-     error on create), so it still needs Zone · DNS · Edit and Zone · Workers Routes · Edit.
+     error on create); RJ re-scoped it and DNS writes work (SPF and DMARC added, verified on Cloudflare's servers).
    - Under Security → Settings → Bot traffic → "AI Crawler and Agent access policies", set "dots, OpenAI" to
      Allow, and keep Bot Fight Mode off. Blocking training crawlers is fine, but allow user-driven and search
      agents (ChatGPT-User, OAI-SearchBot, Claude-User, PerplexityBot), or assistants can't read the shop
