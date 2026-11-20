@@ -1,0 +1,145 @@
+{
+ "_source": "Slant 3D's PLA filaments (GET /v2/api/filaments), snapshot 2026-11-17. hex is Slant's reported colour. make.py uses this when products/cutout-ornament/shop.json doesn't give a choice's hex or Slant id. Clear is off: the tree shows through it.",
+ "colours": {
+  "black": {
+   "name": "PLA BLACK",
+   "slant": "76fe1f79-3f1e-43e4-b8f4-61159de5b93c",
+   "hex": "#000000",
+   "finish": "plain",
+   "offered": true
+  },
+  "blue": {
+   "name": "PLA BLUE",
+   "slant": "8cfbf30a-2995-486e-a1e8-8f7d41488f1e",
+   "hex": "#0000cc",
+   "finish": "plain",
+   "offered": true
+  },
+  "esun-bone-white": {
+   "name": "PLA+ ESUN BONE WHITE",
+   "slant": "ad1dbeb2-7519-4ef7-a4c3-eb6d161493fc",
+   "hex": "#f9f6ee",
+   "finish": "plain",
+   "offered": true
+  },
+  "brown": {
+   "name": "PLA BROWN",
+   "slant": "195d4a9e-c06b-470b-bf6e-4ca15b862221",
+   "hex": "#6b430a",
+   "finish": "plain",
+   "offered": true
+  },
+  "clear": {
+   "name": "PLA CLEAR",
+   "slant": "b7c9212d-742f-42d0-88e6-f78ba21892d5",
+   "hex": "#ffffff",
+   "finish": "clear",
+   "offered": false
+  },
+  "gold": {
+   "name": "PLA GOLD",
+   "slant": "278023e9-62e8-4657-b6c4-577fbffe7487",
+   "hex": "#d5b510",
+   "finish": "plain",
+   "offered": true
+  },
+  "gray": {
+   "name": "PLA GRAY",
+   "slant": "d7977dd2-9dc4-433a-9d9c-a9cc09bc165f",
+   "hex": "#666666",
+   "finish": "plain",
+   "offered": true
+  },
+  "green": {
+   "name": "PLA GREEN",
+   "slant": "6484baac-fcf4-4e1d-a1a4-7480b89c7e07",
+   "hex": "#26a269",
+   "finish": "plain",
+   "offered": true
+  },
+  "esun-mint": {
+   "name": "PLA+ ESUN MINT",
+   "slant": "be63f8c5-8c1c-450d-b343-6708029ae065",
+   "hex": "#95e8c3",
+   "finish": "plain",
+   "offered": true
+  },
+  "marble": {
+   "name": "PLA MARBLE",
+   "slant": "bb405c27-451b-4783-8c01-81945b4a4ba7",
+   "hex": "#b9b4b1",
+   "finish": "marble",
+   "offered": true
+  },
+  "matte-black": {
+   "name": "PLA MATTE BLACK",
+   "slant": "97e187cd-3051-4463-9f0c-59e361afc10e",
+   "hex": "#000000",
+   "finish": "matte",
+   "offered": true
+  },
+  "matte-blue": {
+   "name": "PLA MATTE BLUE",
+   "slant": "e3023238-9d59-4bf0-a0f0-223708c8e6b9",
+   "hex": "#4ddbd4",
+   "finish": "matte",
+   "offered": true
+  },
+  "matte-muted-red": {
+   "name": "PLA MATTE MUTED RED",
+   "slant": "b5a59cee-48fc-461b-ae5f-8d9ead9ce411",
+   "hex": "#ff5f2e",
+   "finish": "matte",
+   "offered": true
+  },
+  "orange": {
+   "name": "PLA ORANGE",
+   "slant": "50b13324-63a0-4c06-a02b-8c1c15a3acd5",
+   "hex": "#ff7300",
+   "finish": "plain",
+   "offered": true
+  },
+  "pink": {
+   "name": "PLA PINK",
+   "slant": "1ffdded1-56ed-42aa-b07f-9e5f25a93fce",
+   "hex": "#ea5dcb",
+   "finish": "plain",
+   "offered": true
+  },
+  "purple": {
+   "name": "PLA PURPLE",
+   "slant": "16cc520a-c5f6-4337-95a7-14f7f8d95e0f",
+   "hex": "#9c0cdf",
+   "finish": "plain",
+   "offered": true
+  },
+  "red": {
+   "name": "PLA RED",
+   "slant": "92b84110-6e43-4fc9-88aa-8f63967bb2d5",
+   "hex": "#f91010",
+   "finish": "plain",
+   "offered": true
+  },
+  "tan": {
+   "name": "PLA TAN",
+   "slant": "11572791-2e31-45d4-9fce-e27d4405e995",
+   "hex": "#d49459",
+   "finish": "plain",
+   "offered": true
+  },
+  "white": {
+   "name": "PLA WHITE",
+   "slant": "8f598975-6fdd-45a5-80a7-aafaa9b9015e",
+   "hex": "#ffffff",
+   "finish": "plain",
+   "offered": true
+  },
+  "yellow": {
+   "name": "PLA YELLOW",
+   "slant": "a72a0ac4-d957-47ee-ac82-c55ac34b0780",
+   "hex": "#f5c211",
+   "finish": "plain",
+   "offered": true
+  }
+ }
+}

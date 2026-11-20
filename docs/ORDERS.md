@@ -51,7 +51,7 @@ No order reaches Slant until it has passed the checks and RJ has processed it.
 | Module | Lives in | Job |
 | --- | --- | --- |
 | Product file | `products/cutout-ornament/shop.json` | Price, options and what they add, photo needs, drawing model and brief, weekly cap, Stripe IDs |
-| Briefs | `products/cutout-ornament/briefs/pet.md`, `person.md` | The GPT Image prompt for each subject. Bundled into the Worker at deploy, like the catalog |
+| Briefs | `products/cutout-ornament/briefs/pet.md`, `person.md` | The GPT Image prompt for each subject: each file is the prompt text, sent as is. Bundled into the Worker at deploy, like the catalog |
 | The page | `src/pages/shop/[slug].astro`, `src/scripts/shop/` | Photo, crop, drawing, preview, choices, order, thank-you page |
 | Ornament preview | `src/scripts/shop/stencil-ornament.js` | Draws the ornament from a drawing (below) |
 | Fonts | `public/shop/fonts/` | The five stencil fonts (OFL), for the page and the builder alike: `allerta-stencil.ttf`, `saira-stencil-one.ttf`, `big-shoulders-stencil.ttf` (the variable font; use wght 800, opsz 72), `emblema-one.ttf`, `wallpoet.ttf`, each with its `OFL-<name>.txt`. Keys as in `nametag.py`: `allerta`, `saira`, `big-shoulders`, `emblema`, `wallpoet` |
@@ -270,7 +270,8 @@ Nothing in our code processes a Slant order. Only RJ does, in Slant's dashboard.
 `design.json` has `kind`: `"stencil"`, the default when it's missing, or after launch `"inlay"` (a base with
 pockets and loose insert pieces, for logos). `make.py` exits 2 on a kind it doesn't build.
 
-It exits non-zero if a check fails. The same folder always gives the same files. The builder may drop specks,
+It exits 1 if a check fails and 2 if the design is invalid. A colour's hex comes from the product file's choice, or
+from `tools/ornament/colours.json` (keyed `white`, `red`, `matte-black`…) until the product file gives one. The same folder always gives the same files. The builder may drop specks,
 thicken thin lines and add bridges, and the proof shows that. It never adds or removes a feature the customer
 saw.
 

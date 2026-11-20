@@ -585,6 +585,9 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   still can't be deleted, and they don't expire. RJ will run a Codex research brief on what Slant keeps
   (`.private/research/slant-api-brief.md`). New decision 26: any subject, several ornaments to an order.
 
+- 2026-11-19: Step 7 done: `tools/ornament/` (builder, name tag, `make.py`, `slant.py`, test), the five fonts in
+  `public/shop/fonts/`, and the pet and person briefs. `make.py` reproduces build-v6 byte for byte for two pets;
+  Slant's upload host is recorded in docs/PRODUCTION.md.
 - 2026-11-19: RJ confirmed decisions 21–24 and asked for price research before the price is set (step 19,
   decision 20). Step 7 started in its own session at medium effort. Steps 9 and 10 wait for RJ's
   orchestration rules.
