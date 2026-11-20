@@ -72,15 +72,12 @@ MeltBot.
     approves is the proof. The routine checks the build against it, and anything that doesn't match goes to
     RJ ("Needs you") rather than to Slant.
 20. **Defaults the agents have taken** (2026-11-19; RJ changes any of them by saying so):
-    - **Price: open, pending step 19's research** (RJ, 2026-11-19). RJ wants margins as low as is sustainable,
-      to sell volume in a crowded space. $29 with US shipping and the name tag included is a placeholder for
-      building and testing until step 19 sets the price and any volume promotion.
-      **Step 19's proposal, waiting for RJ's yes** (`products/cutout-ornament/pricing.md` on branch
-      `worktree-agent-ace7fbf82c065561a`): per ornament by the order's count, shipping and tag included: 1 $22,
-      2 $17, 3 $15, 6 $13, 12 $11, 25 $9.50, 50 $8.50; over 50 by quote. No separate launch price. One
-      promotion code, `AGAIN`, $3 off, 100 uses, until 2026-12-10, shown on the thanks page and the shipping
-      email. Margin is 41–53% expected and 35–41% in the bad case. The code needs `allow_promotion_codes: true`
-      on the Worker's Checkout Session (step 14).
+    - **Price: set by RJ, 2026-11-20, from step 19** (`products/cutout-ornament/pricing.md`). RJ wants margins
+      as low as is sustainable, to sell volume in a crowded space. It's per ornament, by the order's total count,
+      with US shipping and the name tag included: 1 $22, 2 $17, 3 $15, 6 $13, 12 $11, 25 $9.50, 50 $8.50; over
+      50 by quote. No separate launch price. One promotion code, `AGAIN`: $3 off, 100 uses, until 2026-12-10,
+      shown on the thanks page and in the shipping email. Margin is 41–53% expected and 35–41% in the bad case.
+      Revisit after the acceptance order and the first ten paid orders.
     - **Orders:** a weekly cap of 25, and "order by Dec 10 for Christmas" until the acceptance order
       shows Slant's real timing.
     - **Remake promise:** a free remake or a refund if it arrives broken or doesn't match the preview.
@@ -342,12 +339,17 @@ step off (`[x]`) when it's done.
 
 ### Integrate, launch, accept
 
-14. [ ] **Agent** · After 7, 9 and 10: Integration:
+14. [ ] **Agent** · After 7, 9, 10 and 19: Integration:
     - Merge the branches into `rebuild`.
     - Place one sandbox order through the real page with a stand-in photo: a real drawing, which counts
       against the cap, and Stripe's test card.
     - Do the order run by hand from this checkout, as docs/PRODUCTION.md describes it: build, checks, proof,
       Slant upload and quote, the Worker's draft dry run, and the email to RJ.
+    - Merge step 19's branch too (`pricing.md`), and apply decision 20's price: the tiers in `shop.json`'s
+      `pricing.tiers` in place of the $29 placeholder, dropping "provisional", and synced to Stripe's sandbox.
+    - Set `allow_promotion_codes: true` on the Worker's Checkout Session. Create the `AGAIN` coupon and code
+      in the sandbox (free), and pay one sandbox order with it to check tax and the webhook. Step 16 makes the
+      live one.
     - Push to `samwise` for RJ's phone. Fix what breaks.
 15. [ ] **Agent** · After 5, 8 and 14: Production routines (docs/PRODUCTION.md, decision 23):
     - Create `rl-orders` and `rl-daily` in `rl-production`.
@@ -460,6 +462,9 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-20: RJ said yes to step 19's price and the `AGAIN` code (decision 20). Step 14 applies them to
+  `shop.json` and the Worker's checkout.
 
 - 2026-11-20: Step 19 (subagent, Sonnet, high effort) proposed the price ladder now in decision 20, waiting for
   RJ's yes. Etsy refused every fetch with a 403, so the Etsy figures come from search summaries. Slant publishes
