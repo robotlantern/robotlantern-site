@@ -6,11 +6,12 @@
 Reads `design.json` and `drawing.png` from the folder and writes `out/`:
   base.stl, stencil.stl   posed for printing (base face up; stencil face down, pegs up)
   proof.png               the builder's preview in the order's colours, with the tag
-  build.json              the design, the builder's report and the checks
+  build.json              the design, the parts Slant prints, the builder's report and the checks
 
-Exits 1 if a check fails (the files are still written, so the proof can be looked at), 2 if the design
-itself is invalid. The same folder always gives the same files. Run it with the Python that has
-requirements.txt installed (/opt/rl/bin/python in the cloud).
+`kind` defaults to "stencil", the only kind built so far. Exits 1 if a check fails (the files are still
+written, so the proof can be looked at), 2 if the design itself is invalid. The same folder always gives
+the same files. Run it with the Python that has requirements.txt installed (/opt/rl/bin/python in the
+cloud).
 """
 from __future__ import annotations
 
@@ -27,6 +28,7 @@ ROOT = HERE.parents[1]
 SHOP = ROOT / 'products/cutout-ornament/shop.json'
 FONTS = ('allerta', 'saira', 'big-shoulders', 'emblema', 'wallpoet')   # nametag.STENCILS
 TEXT = {'max': 16, 'allowed': "A-Za-z0-9 '&.,!?-"}                        # shop.json "text", until it exists
+KINDS = ('stencil',)                                                       # design.json "kind"; "inlay" after launch
 MAX_BRIDGE = 3.0
 
 
@@ -57,6 +59,9 @@ def read_design(folder: Path) -> tuple[dict, list[str]]:
     d = json.loads((folder / 'design.json').read_text())
     if d.get('product') != 'cutout-ornament':
         raise Invalid(f"product {d.get('product')!r} is not cutout-ornament")
+    kind = d.setdefault('kind', 'stencil')
+    if kind not in KINDS:
+        raise Invalid(f'kind {kind!r} is not one this builder makes ({", ".join(KINDS)})')
     shop = json.loads(SHOP.read_text()) if SHOP.exists() else {}
     o = d.get('options') or {}
     for k in ('base', 'stencil', 'tag'):
@@ -128,10 +133,14 @@ def make(folder: Path) -> int:
         rep.pop(k, None)
     c = checks(rep, design['options']['tag'] == 'yes')
     ok = all(c.values())
-    kept = {k: design.get(k) for k in ('product', 'drawing', 'options')}
+    kept = {k: design.get(k) for k in ('product', 'kind', 'drawing', 'options')}
     if design['options']['tag'] == 'yes':
         kept['text'] = design['text']
-    report = {'ok': ok, 'checks': c, 'design': kept, 'colours': design['_colours'], 'builder': rep}
+    # what Slant prints: the routine uploads every listed file and never assumes two (docs/ORDERS.md)
+    o = design['options']
+    parts = [{'part': 'base', 'file': 'base.stl', 'colour': o['base']},
+             {'part': 'stencil', 'file': 'stencil.stl', 'colour': o['stencil']}]
+    report = {'ok': ok, 'checks': c, 'design': kept, 'parts': parts, 'colours': design['_colours'], 'builder': rep}
     (out / 'build.json').write_text(json.dumps(report, indent=1) + '\n')
     print(json.dumps({'ok': ok, 'checks': c, 'warnings': rep['warnings']}, indent=1))
     return 0 if ok else 1
