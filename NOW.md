@@ -290,17 +290,17 @@ step off (`[x]`) when it's done.
     after step 14: a real phone on the preview host, and one sandbox checkout paid by hand with 4242 (Stripe's
     hCaptcha stops automated payment).
 11. [ ] **Agent** · After 1 and 19: Words and pages:
-    - Privacy, terms, shipping and returns for this product: OpenAI makes the drawing, Slant prints and
+    - [x] Privacy, terms, shipping and returns for this product: OpenAI makes the drawing, Slant prints and
       ships, the remake promise, and how long things take.
-    - The product's copy and FAQ, and `shop.json` with decision 20's price and options.
-    - The home page leading with the product: one plain section and a link, with the sunset scroll kept.
-    - Decision 28's agent files, from `../ornaments-design-session/agents-01/drafts/`: `public/llms.txt`, the
+    - [x] The product's copy and FAQ, and `shop.json` with decision 20's price and options.
+    - [x] The home page leading with the product: one plain section and a link, with the sunset scroll kept.
+    - [x] Decision 28's agent files, from `../ornaments-design-session/agents-01/drafts/`: `public/llms.txt`, the
       "Ordering with an AI assistant" page, `drawing-spec.json`, and `product.json` built from `shop.json`.
       Check the prices and dates against step 19. Decision 30: `product.json` lists the ready-made designs,
       and `llms.txt` says they need no photo.
-    - Decision 30: the "Gag gifts" and "Appalachian" subjects in `shop.json`, from
+    - [x] Decision 30: the "Gag gifts" and "Appalachian" subjects in `shop.json`, from
       `products/cutout-ornament/static/designs.json`, and copy for the gallery.
-    - In the terms and privacy pages, test 2's text on consent for people and children, no logos or
+    - [x] In the terms and privacy pages, test 2's text on consent for people and children, no logos or
       characters, an assistant acting for the customer, and the own-drawing route (`../ornaments-design-session/agents-01/FINDINGS.md`,
       "Policy and privacy text").
 
