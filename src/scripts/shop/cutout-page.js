@@ -244,6 +244,7 @@ function renderSubject() {
   $('made').hidden = !made;
   $('gallery').hidden = made;
   if (made) {
+    $('made-blurb').textContent = s.blurb || '';
     $('crop-hint').textContent = s.crop || '';
     $('made-h').textContent = s.label;
     renderCrop();
@@ -283,6 +284,7 @@ function renderGallery() {
   const d = design();
   const s = subjectOf(d.subject);
   $('gallery').querySelector('legend').textContent = s.label;
+  $('gallery-blurb').textContent = s.blurb || '';
   const row = $('gallery-row');
   row.replaceChildren();
   for (const x of s.designs) {

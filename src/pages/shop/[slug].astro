@@ -4,8 +4,10 @@
 // quantity for each design and more designs in the same order; then the Worker's checkout. Everything the page
 // says about subjects, colours, fonts and prices comes from products/<slug>/shop.json, so no subject is named
 // here. The controls are plain, labelled HTML, so an assistant can operate the page (decision 28).
+import fs from 'node:fs';
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import { renderMarkdown } from '../../lib/markdown';
 
 export async function getStaticPaths() {
   return (await getCollection('shop')).filter((p) => p.data.drawing).map((p) => ({ params: { slug: p.id }, props: { p } }));
@@ -27,7 +29,7 @@ const data = {
   edge: (d.photo as any).edge,
   triesPerPhoto: d.drawing!.triesPerPhoto,
   subjects: d.drawing!.subjects.map((s) => ({
-    id: s.id, label: s.label, source: s.source, crop: s.crop ?? null, cropMode: s.cropMode,
+    id: s.id, label: s.label, blurb: (s as any).blurb ?? null, source: s.source, crop: s.crop ?? null, cropMode: s.cropMode,
     designs: s.designs?.map((x) => ({ id: x.id, label: x.label, url: staticUrl(x.drawing), text: x.text, font: x.font, alt: x.alt })),
   })),
   pricing: d.pricing,
@@ -85,6 +87,17 @@ const jsonld = {
   offers: offer,
 };
 const subjects = d.drawing!.subjects;
+
+// The questions under the page (products/<slug>/faq.md). The Markdown pipeline reads $…$ as maths, so the
+// file names no prices: the price line above carries them, from the tiers.
+const faqFile = `products/${slug}/faq.md`;
+const faqMd = fs.existsSync(faqFile) ? fs.readFileSync(faqFile, 'utf8') : '';
+if (faqMd.includes('$')) throw new Error(`${faqFile}: no "$" (it would render as maths); the page shows prices from the tiers`);
+const faq = faqMd && await renderMarkdown(faqMd);
+
+// Listing photos (decision 10): our own prints, named in shop.json's "images" and kept in
+// public/images/shop/<slug>/. None exist yet (NOW.md step 6), so this section shows nothing until they do.
+const photos = d.images;
 ---
 <Base title={d.name} description={d.description} section="shop">
   <Fragment slot="head">
@@ -124,6 +137,7 @@ const subjects = d.drawing!.subjects;
 
         <section class="step" id="made" aria-labelledby="made-h">
           <h2 id="made-h">Photo</h2>
+          <p class="hint" id="made-blurb"></p>
           <p class="hint" id="crop-hint"></p>
           <label class="file">
             <span>Add a photo</span>
@@ -135,7 +149,7 @@ const subjects = d.drawing!.subjects;
             <p class="hint">Drag to move the photo in the square. Pinch, or use the slider, to zoom.</p>
           </div>
           <button type="button" class="act" id="draw" disabled>Make my drawing</button>
-          <p class="hint">Your photo stays on your device until you press this. Then it goes to OpenAI, which makes the drawing.</p>
+          <p class="hint">Your photo stays on your device until you press this. Then it goes to OpenAI, which makes the drawing (<a href="/privacy/">what happens to it</a>). Use a photo you have the right to use. If it shows a person, have their OK; for a child, a parent's or guardian's.</p>
           <fieldset class="tries" id="tries" hidden>
             <legend>Drawings</legend>
             <div class="tries__row" id="tries-row"></div>
@@ -155,6 +169,7 @@ const subjects = d.drawing!.subjects;
 
         <fieldset class="step" id="gallery" hidden>
           <legend>Pick a design</legend>
+          <p class="hint gallery__blurb" id="gallery-blurb"></p>
           <div class="gallery" id="gallery-row"></div>
         </fieldset>
 
@@ -221,6 +236,24 @@ const subjects = d.drawing!.subjects;
         <li>If it arrives broken or doesn't match the preview, we remake it for free or refund you.</li>
       </ul>
     </section>
+
+    {photos.length > 0 && (
+      <section class="photos" aria-labelledby="photos-h">
+        <h2 id="photos-h">Printed examples</h2>
+        <div class="photos__row">
+          {photos.map((src) => <img src={src} alt="A printed stencil ornament, one of our own examples" loading="lazy" />)}
+        </div>
+        <p class="hint">Our own prints, shown as examples.</p>
+      </section>
+    )}
+
+    {faq && (
+      <section class="faq" aria-labelledby="faq-h">
+        <h2 id="faq-h">Questions</h2>
+        <div class="faq__body" set:html={faq} />
+        <p class="hint">More: <a href="/shipping/">Shipping</a>, <a href="/returns/">Returns and refunds</a>, <a href="/privacy/">Privacy</a>, <a href="/terms/">Terms</a>. Anything else: <a href="mailto:help@robotlantern.com">help@robotlantern.com</a>.</p>
+      </section>
+    )}
   </main>
 
   <script type="application/json" id="product-data" set:html={JSON.stringify(data)} />
@@ -373,4 +406,16 @@ const subjects = d.drawing!.subjects;
   .facts { margin-top: 2rem; }
   .facts ul { margin: 0; padding-left: 1.2rem; color: var(--muted); font: 1rem/1.6 var(--serif); }
   .facts li + li { margin-top: .3rem; }
+  .hint a, .faq a { color: var(--link, var(--lantern)); }
+  .gallery__blurb { margin: 0 0 .8rem; }
+  .gallery__blurb:empty { display: none; }
+
+  .photos, .faq { margin-top: 2rem; }
+  .photos h2, .faq h2 { margin: 0 0 .7rem; padding: 0; color: var(--lantern); font: 700 .74rem/1.3 var(--sans); letter-spacing: .14em; text-transform: uppercase; }
+  .photos__row { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 1fr)); }
+  .photos__row img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: .8rem; }
+  .faq__body { max-width: 44rem; color: var(--muted); font: 1rem/1.6 var(--serif); }
+  .faq__body h3 { margin: 1.4rem 0 .3rem; color: var(--text); font: 600 1.02rem/1.35 var(--sans); }
+  .faq__body h3:first-child { margin-top: 0; }
+  .faq__body p { margin: 0; }
 </style>
