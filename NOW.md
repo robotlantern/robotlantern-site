@@ -305,13 +305,19 @@ step off (`[x]`) when it's done.
       "Policy and privacy text").
 
     docs/PAGES.md's rules apply.
-12. [ ] **Agent** · After 2: DNS (docs/HOSTING.md, "Cutover"):
+12. [x] **Agent** · After 2: DNS (docs/HOSTING.md, "Cutover"):
     - Enter every record in Cloudflare and compare them with the old host's.
     - Keep the GitHub Pages records, DNS-only, until step 16.
     - Add SPF (`v=spf1 include:_spf.google.com ~all`) and DMARC (`v=DMARC1; p=none`, no reports address yet). RJ said yes.
     - Checked 2026-11-19: the DKIM value at the old host matches docs/HOSTING.md, and DNSSEC is off there
       (no DS at .com, no DNSKEY).
     - Give RJ the two nameservers.
+    - Done 2026-11-20: Cloudflare has all 13 old records (5 MX, DKIM, Google verification, 4 GitHub Pages `A`,
+      `www` CNAME, the `_github-pages-challenge` TXT, which the import had missed and was added) plus SPF and
+      DMARC, all DNS-only. Both Cloudflare nameservers answer the same as the old host for every name, apart
+      from the new SPF and DMARC. The old host has nothing outside docs/HOSTING.md's table. DNSSEC is off at
+      Cloudflare; turning it on (and adding the DS at the registrar) is a post-cutover option, not before.
+      **RJ's nameservers for step 13: `sofia.ns.cloudflare.com` and `yew.ns.cloudflare.com`.**
 13. [ ] **RJ** · After 12: At DomainRegistry.com, replace the nameservers with Cloudflare's two. Mail and the
     old site keep working while the change spreads. Cloudflare emails you when the site is active, so tell an
     agent then.

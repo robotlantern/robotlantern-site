@@ -45,6 +45,11 @@ Read from the current DNS host (`ns1.hosting.businessidentity.llc`) on 2026-10-0
 zone transfers, so these come from asking for each common name one by one. A record under an
 unusual name would be missed: compare with the DNS host's own list when RJ is signed in there.
 
+Rechecked 2026-11-20 (step 12) against about 60 common names, including mail, Microsoft and email-service
+names: the old host still answers exactly this table, nothing more. Cloudflare's zone now holds every row,
+all DNS-only, with Cloudflare's automatic TTL. Its import had missed the `_github-pages-challenge` TXT,
+which was added by hand.
+
 | Name | Type | Value | TTL | Purpose |
 | --- | --- | --- | --- | --- |
 | `@` | A | 185.199.108.153 | 60 | GitHub Pages (old site). **Drop at cutover** |
@@ -66,13 +71,13 @@ Checked and absent: AAAA and CAA on `@`, **SPF** (no `v=spf1` TXT on `@`), **DMA
 wildcard.
 
 **Mail has no SPF or DMARC record today.** Google Workspace mail works without them, but more
-of it lands in spam, and the shop will send receipts and order mail as robotlantern.com. Proposed
-for the cutover, if RJ agrees (Google's recommended values):
+of it lands in spam, and the shop will send receipts and order mail as robotlantern.com. RJ said yes
+(2026-11-19), and both are in Cloudflare's zone since step 12, so they go live with the nameserver switch:
 
 | Name | Type | Value |
 | --- | --- | --- |
 | `@` | TXT | `v=spf1 include:_spf.google.com ~all` |
-| `_dmarc` | TXT | `v=DMARC1; p=none; rua=mailto:<an address RJ reads>` |
+| `_dmarc` | TXT | `v=DMARC1; p=none` (no reports address yet; add `rua=mailto:…` when RJ picks one) |
 
 `p=none` only reports; it changes no delivery. Cloudflare Email Routing (the order Worker's
 email, LOG.md task 7) adds its own SPF include when it's turned on.
