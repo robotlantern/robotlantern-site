@@ -23,6 +23,10 @@ Read [README.md](README.md) for direction and [NOW.md](NOW.md) for current state
    - **robotlantern.com DNS isn't on Porkbun.** RJ changes it by hand at the registrar's DNS host
      until cutover moves the nameservers to Cloudflare (NOW.md, steps 2, 12 and 13).
      Prepare the exact records and hand them over.
+   - **Off-LAN mode (since 2026-11-21, until RJ ends it):** don't push to `bilbo` or `samwise`. Their push
+     URLs are disabled in this checkout's Git config. Commit on Sarcean, and preview with
+     `tools/site-deploy.sh` (https://site.robotlantern.workers.dev) or a local dev server instead of rl.rblt.io.
+     NOW.md, "Start here", says how to end it.
    - **Pushing `main` deploys the live site.** Ask first. Pushing `rebuild` to `bilbo` (the primary)
      and to `samwise` (the preview) is free ([docs/PREVIEW.md](docs/PREVIEW.md)). Pushing `rebuild` to GitHub
      needs NOW.md decision 22 and a privacy pass first (step 8). After that, every push is public, so rule 7

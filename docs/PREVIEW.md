@@ -1,5 +1,8 @@
 # Previews on Samwise
 
+> **Paused in off-LAN mode (2026-11-21).** Don't push to `bilbo` or `samwise`. Preview on
+> https://site.robotlantern.workers.dev with `tools/site-deploy.sh` instead. NOW.md, "Start here", has the details.
+
 Status: adopted and set up 2026-09-25. Since the LAN restructuring of 2026-10-28, Git's primary is
 Bilbo, and Samwise only publishes the previews (checked working 2026-11-10).
 

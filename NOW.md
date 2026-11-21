@@ -1,8 +1,21 @@
 # Now
 
-_Last updated 2026-11-19._
+_Last updated 2026-11-21._
 
 ## Start here
+
+**Off-LAN mode (RJ, 2026-11-21, until he ends it).** Samwise and Bilbo are reachable only over the VPN, and
+we don't push to either.
+- `git config remote.{bilbo,samwise}.pushurl` is set to a dead value, so a push fails. All three remotes held
+  `4fb75cd` when it started. `fetch` still works over the VPN.
+- To preview, run `tools/site-deploy.sh`, which deploys the committed tip of `rebuild` to
+  https://site.robotlantern.workers.dev (free, reachable from the phone). The shop Worker already allows that
+  origin, and allows `localhost` for `npm run dev`. Wherever a step says "push to `samwise`", do this instead.
+- Cloud routines and GitHub are unaffected: `rebuild` tracks `origin` (GitHub).
+- A read-only snapshot of printdb's filament, spool, Slant and model tables is in
+  `.private/samwise-snapshot-2026-11-21/printdb/`. Live printdb needs the VPN, and nothing is written to it.
+- To end it: `git config --unset remote.bilbo.pushurl` and the same for `samwise`, then push `rebuild` and any
+  new branches to `bilbo` and `samwise`. Then delete this block and the matching rule in AGENTS.md.
 
 **Goal (RJ, 2026-11-19): launch on 2026-11-20, in the afternoon, with one product working end to end.** Someone
 orders on robotlantern.com, Stripe takes the payment, Slant 3D prints and ships, and our backend handles
@@ -356,7 +369,7 @@ step off (`[x]`) when it's done.
     - Set `allow_promotion_codes: true` on the Worker's Checkout Session. Create the `AGAIN` coupon and code
       in the sandbox (free), and pay one sandbox order with it to check tax and the webhook. Step 16 makes the
       live one.
-    - Push to `samwise` for RJ's phone. Fix what breaks.
+    - Push to `samwise` for RJ's phone (in off-LAN mode, `tools/site-deploy.sh` instead). Fix what breaks.
 
     Progress 2026-11-20 (subagent, on `rebuild` in the main checkout):
     - [x] Merged 7, 9, 10 and 19 (the orchestrator).
@@ -493,6 +506,10 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-21: Off-LAN mode began (see "Start here"). Pushes to `bilbo` and `samwise` are disabled, the
+  preview moves to site.robotlantern.workers.dev, and printdb is snapshotted to `.private/`. Checked that
+  `npm run build` passes on Sarcean, and cached `wrangler@4` (4.166.0) for `tools/site-deploy.sh`.
 
 - 2026-11-20 (evening): Step 11 (subagent, Opus, high effort), merged into `rebuild`:
   - the policy pages for the ornament: privacy, terms, shipping, returns and credits;
