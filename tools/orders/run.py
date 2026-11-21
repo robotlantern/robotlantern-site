@@ -112,8 +112,14 @@ def status(w, args):
 def build(w, args):
     oid = args.id
     rec = w.need('GET', f'orders/{oid}')
-    if rec.get('state') != 'paid':
-        raise SystemExit(f'{oid} is {rec.get("state") or rec.get("status")}; build takes a paid order')
+    # needs-rj too, so an order can be built again once RJ has fixed what stopped it.
+    if rec.get('state') not in ('paid', 'needs-rj'):
+        raise SystemExit(f'{oid} is {rec.get("state") or rec.get("status")}; build takes a paid or needs-rj order')
+    # A Python without the builder's packages would fail every design and flag a good order.
+    try:
+        import cv2, numpy, trimesh  # noqa: F401
+    except ImportError as e:
+        raise SystemExit(f'{e}: run this with the builder\'s Python (tools/ornament/requirements.txt); nothing changed')
     p = product_file(rec['product'])
     statics = {f'{s["id"]}/{d["id"]}': d for s in p['drawing']['subjects'] for d in s.get('designs', [])}
     top = folder_for(oid)

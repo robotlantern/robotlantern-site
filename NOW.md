@@ -339,7 +339,7 @@ step off (`[x]`) when it's done.
 
 ### Integrate, launch, accept
 
-14. [ ] **Agent** · After 7, 9, 10 and 19: Integration:
+14. [x] **Agent** · After 7, 9, 10 and 19: Integration:
     - Merge the branches into `rebuild`.
     - Place one sandbox order through the real page with a stand-in photo: a real drawing, which counts
       against the cap, and Stripe's test card.
@@ -487,6 +487,17 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-20 (evening): RJ finished step 14 on his phone at the preview. He made one real drawing ($0.06, the
+  only one today; test spending is about $3.06 of $5), ordered with `AGAIN` and Stripe's 4242 card on the
+  hosted page, and saw the thank-you page. His order `6c9gx53vc0gk` (one design, tag "Briar"):
+  - built with every check passing (white kept 0.92), and the proof matches the preview;
+  - Slant upload and quote: $3.75 in parts;
+  - draft dry run: `drafted`.
+
+  `run.py build` had run under a Python without the builder's packages and flagged the good order
+  `needs-rj`. It now refuses to start without them, and it builds a `needs-rj` order again. Step 14 is done.
+  Next for agents: 11 (words and pages), 12 (DNS) and 15 (routines, after RJ's step 5).
 
 - 2026-11-20: The orchestrator merged steps 7, 9, 10 and 19 into `rebuild` on RJ's word (one NOW.md conflict,
   `rebuild`'s kept). The step 14 subagent (Opus, high effort):
