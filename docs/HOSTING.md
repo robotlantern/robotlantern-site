@@ -29,7 +29,7 @@ launch (NOW.md steps 2, 12, 13 and 16):
    GitHub Pages records (the four `A` records and the `www` CNAME) **DNS-only** (grey cloud), so the old page
    keeps working and GitHub can still renew its certificate. Mail must keep working throughout, so the MX and
    DKIM records go in first. SPF and DMARC are added if RJ said yes.
-3. **RJ switches the nameservers** at DomainRegistry.com (step 13). Cloudflare emails him when the zone is
+3. **RJ switches the nameservers** in the Northwest Registered Agent portal (step 13). Cloudflare emails him when the zone is
    active. Until then, both hosts answer the same records, so nothing breaks while it spreads.
 4. **At launch** (step 16): in the `site` Worker, Settings → Domains & Routes, add the custom domains
    `robotlantern.com` and `www.robotlantern.com`, which replace the GitHub Pages records (delete them), and

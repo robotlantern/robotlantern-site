@@ -20,7 +20,7 @@ Read [README.md](README.md) for direction and [NOW.md](NOW.md) for current state
    - **Don't route around a block.** If RJ has declined a permission or a command, or a
      credential is missing, stop and ask. Don't use browser automation, computer use or
      screenshots as a workaround. Those tools are fine when they're the right tool for the job.
-   - **robotlantern.com DNS isn't on Porkbun.** RJ changes it by hand at the registrar's DNS host
+   - **robotlantern.com DNS isn't on Porkbun.** RJ changes it by hand in the Northwest Registered Agent portal
      until cutover moves the nameservers to Cloudflare (NOW.md, steps 2, 12 and 13).
      Prepare the exact records and hand them over.
    - **Off-LAN mode (since 2026-11-21, until RJ ends it):** don't push to `bilbo` or `samwise`. Their push

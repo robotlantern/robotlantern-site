@@ -332,9 +332,19 @@ step off (`[x]`) when it's done.
       from the new SPF and DMARC. The old host has nothing outside docs/HOSTING.md's table. DNSSEC is off at
       Cloudflare; turning it on (and adding the DS at the registrar) is a post-cutover option, not before.
       **RJ's nameservers for step 13: `sofia.ns.cloudflare.com` and `yew.ns.cloudflare.com`.**
-13. [ ] **RJ** · After 12: At DomainRegistry.com, replace the nameservers with Cloudflare's two. Mail and the
-    old site keep working while the change spreads. Cloudflare emails you when the site is active, so tell an
-    agent then.
+13. [ ] **RJ** · After 12: In the Northwest Registered Agent portal (Services → Domains → the domain →
+    Nameserver Settings), replace the nameservers with Cloudflare's two. Mail and the old site keep working
+    while the change spreads. Cloudflare emails you when the site is active, so tell an agent then.
+    - Status 2026-11-21: RJ saved "External nameservers" = `sofia.ns.cloudflare.com` and
+      `yew.ns.cloudflare.com` in the Northwest portal. The old `ns1/ns2.hosting.businessidentity.llc` still
+      answered when checked right before. Waiting on Cloudflare's "active" email. When it comes: an agent
+      checks `dig NS robotlantern.com`, that MX, SPF, DKIM and DMARC answer, and then checks the box.
+    - The domain's registry expiry is **2026-12-11** (WHOIS, 2026-11-21). WHOIS lists the registrar as
+      DomainRegistry.com LLC, which is Northwest's back end (not confirmed; RJ's login is Northwest). Check
+      auto-renew at Northwest. RJ is considering transferring registration to Cloudflare Registrar once the
+      zone is active: needs the auth code from Northwest, the domain unlocked and DNSSEC off, and costs one
+      year's renewal at Cloudflare (a charge, already listed in docs/CHARGES.md: RJ's go-ahead). If it hasn't
+      completed by about 2026-12-05, renew at Northwest instead.
 
 19. [x] **Agent** · Price research (RJ, 2026-11-19). RJ's instinct is margins as low as sustainable, to sell volume
     in a crowded space where the idea alone doesn't show how competitive we are.
