@@ -16,10 +16,23 @@ import { splitMessages } from '../lib/conversation';
 import { convertMathDelimiters, renderMarkdown } from '../lib/markdown';
 import { getAuthors, authorOf, shortDate } from '../lib/authors';
 import { brand, OVALOID, ovaloidAt, turnFor, collapseFor } from '../lib/brand';
+import { marks } from '../lib/section-marks';
+import { drawingProducts, money, orderByText } from '../lib/drawing-product';
 
 const all = await getAuthors();
 const noCites = (html: string) => html.replace(/<sup class="cite">.*?<\/sup>/g, '');
 const firstParagraphs = (md: string, n: number) => md.split(/\n\s*\n/).filter((b) => !b.startsWith('#')).slice(0, n).join('\n\n');
+
+// Card 0 (step 11): the shop's one product leads, drawn from the shop mark's four stars. It shows ready-made
+// drawings, the only honest pictures until the listing photos exist (decision 10; NOW.md step 6).
+const product = (await drawingProducts())[0];
+const pd = product?.data;
+const tiers = pd?.pricing!.tiers ?? [];
+const productPics = (pd?.drawing!.subjects ?? []).flatMap((s) => s.designs ?? []).filter((_, i) => i % 3 === 0).slice(0, 4)
+  .map((x) => ({ src: `/shop/${product!.id}/${x.drawing}`, alt: x.alt }));
+const productBy = product && orderByText(product);
+const shopStars = marks.shop.stars;
+const shopMid = [(Math.min(...shopStars.map((t) => t[0])) + Math.max(...shopStars.map((t) => t[0]))) / 2, (Math.min(...shopStars.map((t) => t[1])) + Math.max(...shopStars.map((t) => t[1]))) / 2];
 
 // Card 1: the opening of "It's Always the Pleiades", drawn from the Pleiades.
 const chat = (await getCollection('conversations')).find((c) => c.id === 'its-always-the-pleiades')!;
@@ -324,6 +337,11 @@ const restLetters = wm.letters.filter((d) => !tParts.has(d));
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 20'%3E%3Cpath d='M0 0H8C8 10 11 17 16 20 10.5 20.6 4.5 19.6 0 17z'/%3E%3C/svg%3E") no-repeat;
   }
   .home-footer { max-width: 40rem; margin: 0 auto; }
+  /* The shop card: a plain section and a link (step 11). The drawings are the ready-made designs as drawn. */
+  .card__lede { margin: 0 0 1.2rem; color: var(--text); font: 400 1.08rem/1.6 var(--serif); }
+  .card__pics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .6rem; margin: 0 0 1.2rem; padding: 0; list-style: none; }
+  .card__pics img { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: .6rem; background: #fff; }
+  .card__price { margin: 0 0 1rem; color: var(--muted); font: .95rem/1.5 var(--sans); }
 
   /* With the script, a card waits for its trigger, then draws (about .8s) and fills. Scrolling
      back past the trigger reverses it. --wait staggers several cards crossed in one flick. */
@@ -397,6 +415,27 @@ const restLetters = wm.letters.filter((d) => !tParts.has(d));
   <div class="intro" aria-hidden="true"></div>
 
   <main class="cards">
+    {product && (
+      <article class="card card--shop" data-card style="--star-x: calc(50% + 6rem)">
+        <svg class="card__outline" aria-hidden="true"><path pathLength="1" /></svg>
+        <span class="card__star" aria-hidden="true">
+          <svg width="40" height="40" viewBox="-20 -20 40 40">
+            <circle class="glow" r="12" />
+            {shopStars.map(([x, y, hw], i) => <path d={OVALOID} transform={ovaloidAt((x - shopMid[0]) * 7, (y - shopMid[1]) * 7, Math.max(2.4, hw * 16), turnFor(`shop-${i}`))} />)}
+          </svg>
+        </span>
+        <div class="card__body">
+          <h2><a href={`/shop/${product.id}/`}>{pd!.name}</a></h2>
+          <p class="card__lede">Your pet, a person you love, or one of our own designs, cut as a stencil and pressed onto a second colour. 3D-printed to order and shipped to you.</p>
+          <ul class="card__pics" aria-label="Some of our ready-made designs">
+            {productPics.map((x) => <li><img src={x.src} alt={x.alt} width="160" height="160" loading="lazy" /></li>)}
+          </ul>
+          <p class="card__price">{money(tiers[0].each)} for one, down to {money(tiers[tiers.length - 1].each)} each for {tiers[tiers.length - 1].from}. US shipping included.{productBy && ` Order by ${productBy} for Christmas.`}</p>
+          <a class="card__more" href={`/shop/${product.id}/`}>Make yours</a>
+        </div>
+      </article>
+    )}
+
     <article class="card" data-card style="--star-x: 3.2rem">
       <svg class="card__outline" aria-hidden="true"><path pathLength="1" /></svg>
       <span class="card__star" aria-hidden="true">
