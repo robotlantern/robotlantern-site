@@ -289,7 +289,7 @@ step off (`[x]`) when it's done.
     so step 14 merges this one). Checked locally at 375 and 1280 px against the sandbox Worker. Still to do
     after step 14: a real phone on the preview host, and one sandbox checkout paid by hand with 4242 (Stripe's
     hCaptcha stops automated payment).
-11. [ ] **Agent** · After 1 and 19: Words and pages:
+11. [x] **Agent** · After 1 and 19: Words and pages:
     - [x] Privacy, terms, shipping and returns for this product: OpenAI makes the drawing, Slant prints and
       ships, the remake promise, and how long things take.
     - [x] The product's copy and FAQ, and `shop.json` with decision 20's price and options.
@@ -487,6 +487,22 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-20 (evening): Step 11 (subagent, Opus, high effort), merged into `rebuild`:
+  - the policy pages for the ornament: privacy, terms, shipping, returns and credits;
+  - the product's FAQ and copy, with `AGAIN` on the thanks page and in `tools/orders/templates/shipped.md`;
+  - the home page leading with the product;
+  - the agent files, generated from `shop.json` at build time;
+  - `tools/shop/check_build.py`, which checks links and agent files.
+
+  Calls for RJ to approve or change:
+  - "ships within 5 business days" and delivery in 2–5 business days, with cancel-for-refund on delay;
+  - order records kept 7 years;
+  - hooks and ribbon not included;
+  - the FAQ's PLA heat and "not a toy" notes.
+
+  Not a lawyer's review: the EU/UK paragraph and the "final sale" wording for made-to-order goods are open.
+  The step 17 acceptance order should confirm the timing.
 
 - 2026-11-20 (evening): RJ finished step 14 on his phone at the preview. He made one real drawing ($0.06, the
   only one today; test spending is about $3.06 of $5), ordered with `AGAIN` and Stripe's 4242 card on the
