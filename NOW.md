@@ -74,6 +74,7 @@ MeltBot.
     Listing photos are our own Meltbot prints, marked as examples.
 15. **The ornament designs stay out of printdb and Git** (RJ, 2026-11-17). They come from family photos. Code
     and generic briefs may go in the repo; family drawings, photos and names may not.
+    Amended 2026-11-21: RJ directed that a collage of real pet prints be published as examples; people stay out until after launch.
 16. **Customer drawings come from GPT Image through OpenAI's API** (RJ, 2026-11-19), not RJ's subscription.
     So a customer's photo goes to OpenAI before they order, and the privacy page says so first (step 11).
     Right after launch, cheaper models and settings are tested.

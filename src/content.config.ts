@@ -186,6 +186,9 @@ const shop = defineCollection({
     // Why the price isn't final. The order Worker won't sell a provisional product live.
     provisional: z.string().optional(),
     images: z.array(z.string()).default([]),
+    // Shown with the listing photos: one alt for the set, and the visible caption under it.
+    imagesAlt: z.string().optional(),
+    imagesCaption: z.string().optional(),
     listed: z.boolean().default(false),
     stripe: z.object({ test: stripeIds.optional(), live: stripeIds.optional() }).default({}),
   }).passthrough().superRefine((p, ctx) => {

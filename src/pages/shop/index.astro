@@ -62,6 +62,7 @@ const drawings = (p: (typeof products)[number]) => (p.data.drawing?.subjects ?? 
   .shop { width: min(64rem, 100% - 2 * var(--edge)); margin: 2rem auto 0; display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); }
   .item { padding: 1.2rem; border-radius: 1.2rem; background: var(--night); box-shadow: 0 0 0 1px var(--line); }
   .item img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: .8rem; margin-bottom: 1rem; }
+  .item > a > img { aspect-ratio: auto; object-fit: contain; }
   .item__drawings { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; margin: 0 0 1rem; padding: 0; list-style: none; }
   .item__drawings img { margin: 0; border-radius: .5rem; background: #fff; object-fit: contain; }
   h2 { margin: 0 0 .4rem; font: 400 1.6rem/1.1 var(--serif); }
