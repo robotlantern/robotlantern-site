@@ -222,7 +222,7 @@ step off (`[x]`) when it's done.
    - Create the environments `rl-production` and `rl-dev` exactly as listed, pasting each network secret
      from the file named there.
    - Leave only Gmail connected for routines (connect it if it isn't).
-6. [ ] **RJ** · Prints and photos:
+6. [x] **RJ** · Prints and photos (real photos received 2026-11-21; pet collage on the product page; people photos kept private; generated product photos follow RJ's guidance later):
    - On MeltBot, print `Orn-Stencils-Tray-1` (the heads) and then `Orn-Stencils-Tray-2` (Tucker), in ELEGOO
      Matte Ruby Red.
    - Put Tucker and the three heads together. Photograph them with Buster, front-on against a plain
@@ -494,6 +494,7 @@ does other things.
 
 ## Parked
 
+- Generated product photos and the hero video (RJ's concept, 2026-11-21); people ornaments after launch.
 - Brand merch and the stargazing blankets, until after launch (decision 2).
 - The photo jack-o'-lantern (3d-modeling `jack-o-lantern/`), for Halloween 2027.
 - Essay: why the machines have names. Post: what "the model" means in a chat app.
@@ -709,3 +710,4 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   as build-v6, and their bases were printed on three trays.
 - 2026-11-19: Secret Santa tag pair and QR snowflakes. Test v1 and its results, the v2 coupon, and the
   snowflake prototypes are in docs/LOG.md.
+- 2026-11-21: Step 6 done. Five real photos arrived; the two pet photos became one collage on the product page and shop card, and the three people photos stay in `.private/`. Previewed at site.robotlantern.workers.dev.
