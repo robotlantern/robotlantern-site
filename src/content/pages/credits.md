@@ -1,7 +1,7 @@
 ---
 title: Credits & licenses
 description: Everything this site is built from, who made it, and the license notices that come with it.
-updated: 2026-11-10
+updated: 2026-11-20
 ---
 
 Robot Lantern is built from RJ's writing and photos, conversations with AI models, open-source software and open science data. This page credits all of it and carries the notices those licenses ask for.
@@ -68,6 +68,7 @@ The ESA data is used here non-commercially: the interactive is free, carries no 
 - [KaTeX](https://katex.org), for math. © 2013–2020 Khan Academy and other contributors, MIT License (full text below).
 - KaTeX's fonts. © 2009–2010 Design Science, Inc., © 2014–2018 Khan Academy, licensed under the [SIL Open Font License 1.1](https://openfontlicense.org), with Reserved Font Names KaTeX_AMS, KaTeX_Main and the other KaTeX_ family names. The license is also embedded in each font file.
 - three.js, in The Sky, Unprojected (above).
+- The five stencil fonts on the ornament's page and its name tags, each licensed under the [SIL Open Font License 1.1](https://openfontlicense.org), with the license beside each font file: Allerta Stencil, © 2010 Matt McInerney, with Reserved Font Name Allerta ([license](/shop/fonts/OFL-allerta-stencil.txt)); Saira Stencil One, © 2019 The Saira Stencil Project Authors ([license](/shop/fonts/OFL-saira-stencil-one.txt)); Big Shoulders Stencil, © 2019 The Big Shoulders Project Authors ([license](/shop/fonts/OFL-big-shoulders-stencil.txt)); Emblema One, © 2011 Sorkin Type Co, with Reserved Font Names Emblema and Emblema One ([license](/shop/fonts/OFL-emblema-one.txt)); and Wallpoet, © 2011 Lars Berggren, with Reserved Font Name Wallpoet ([license](/shop/fonts/OFL-wallpoet.txt)).
 - The site's own scripts, written for this site.
 
 **Used to build the site** (nothing from these runs in your browser):
@@ -76,7 +77,7 @@ The ESA data is used here non-commercially: the interactive is free, carries no 
 - [unified](https://unifiedjs.com), remark-parse, remark-gfm, remark-math, remark-rehype, rehype-raw, rehype-katex, rehype-stringify and hast-util-to-html, from the unified collective, MIT License.
 - [yaml](https://eemeli.org/yaml/) by Eemeli Aro, ISC License.
 
-**Services:** Stripe takes payment for the shop, and Cloudflare hosts the site and its order service.
+**Services:** Stripe takes payment for the shop, and Cloudflare hosts the site and its order service. OpenAI's image model draws the ornaments made from photos, and Slant 3D prints and ships them.
 
 ## AI models
 

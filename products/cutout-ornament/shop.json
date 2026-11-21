@@ -1,6 +1,6 @@
 {
   "name": "Stencil ornament",
-  "description": "A two-part ornament from your photo: a stencil over a coloured base, with an optional name tag. US shipping included.",
+  "description": "A two-part 3D-printed ornament from your photo or one of our designs: a stencil pressed onto a base in a second colour, with an optional name tag. US shipping included.",
   "shipping": 0,
   "fulfillment": "slant",
   "photo": {
@@ -17,18 +17,21 @@
       {
         "id": "pet",
         "label": "Pet",
+        "blurb": "A photo of your pet's face, as clear and close as you have. We redraw it as a stencil.",
         "brief": "briefs/pet.md",
         "crop": "Fit your pet's head and shoulders in the square"
       },
       {
         "id": "person",
         "label": "Person",
+        "blurb": "A photo of one person's face, looking at the camera. We redraw it as a stencil.",
         "brief": "briefs/person.md",
         "crop": "Fit the person's head and hair in the square"
       },
       {
         "id": "gag",
         "label": "Gag gifts",
+        "blurb": "Our own drawings, for the person who has everything. No photo needed: pick one and change the tag to suit.",
         "source": "static",
         "designs": [
           {
@@ -81,6 +84,7 @@
       {
         "id": "appalachian",
         "label": "Appalachian",
+        "blurb": "Our own drawings of home, for West Virginians near and far. No photo needed: pick one and change the tag to suit.",
         "source": "static",
         "designs": [
           {
@@ -499,6 +503,12 @@
   },
   "weeklyCap": 25,
   "orderBy": "2026-12-10",
+  "promotion": {
+    "code": "AGAIN",
+    "off": 3,
+    "until": "2026-12-10",
+    "for": "a second order"
+  },
   "listed": false,
   "stripe": {
     "test": {
