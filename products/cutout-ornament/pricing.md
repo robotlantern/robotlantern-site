@@ -113,6 +113,26 @@ margin hits zero (break-even): $13.75 for one, $10 for two, $9 for three, $7.75 
 price barely depends on the rate. It depends on Slant's box: a single's $10.95 is half the price, so one remake
 costs a single's whole margin.
 
+### How many drawings a sale can carry (2026-11-21)
+
+Read this when paid drawings feel scary. Before drawings, the worst ordinary sale (one ornament at $22, shipped to
+WV) leaves **$9.78**: $22 minus Slant ($10.95), Stripe ($0.94) and the remake reserve ($0.33). At $0.06 a drawing:
+
+| Case | Left for drawings | Drawings per sale to break even | People who draw, per buyer (3 tries each, buyer 2) |
+| --- | --- | --- | --- |
+| Single, WV | $9.78 | about 160 (0.6%) | about 1 in 55 (1.8%) |
+| Single, Hawaii, with `AGAIN` | $4.79 | about 80 (1.25%) | about 1 in 27 (3.7%) |
+
+- The 20% draw-to-buy rate assumed above has about ten times the headroom that break-even needs.
+- The $10-a-day cap allows about 167 drawings, so one single sale pays for the most a day can spend.
+- The OpenAI balance is prepaid with auto-recharge off, so the worst case is losing what's loaded.
+- A healthier target is drawings at about 10% of a sale's margin: one sale per ~17 drawings. `GET /api/stats`
+  shows the real ratio, so check it alongside the first ten paid orders.
+- **Decided 2026-11-21:** customer drawings stay on the API. Running them through Codex on RJ's ChatGPT plan was
+  ruled out. Codex is too slow for a live preview, and it would put customers' requests on a personal plan (the
+  consumer terms forbid programmatic extraction of output). It would also send customer photos outside the API's
+  data policy, which ORDERS.md promises. Codex stays for drawings that aren't for customers (docs/CHARGES.md).
+
 ## Competitors (seen 2026-11-20)
 
 "Page" means I read the page itself. "Snippet" means only a search engine's summary of it. **Etsy returned 403 to
