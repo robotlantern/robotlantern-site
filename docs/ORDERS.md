@@ -395,6 +395,12 @@ characters, text and brand marks.
     the tag rule, price tiers, limits and the order-by date, but never Stripe IDs, filament IDs or caps. It
     also lists each ready-made design (id, label, `alt`, the drawing's URL, suggested `text`), so an assistant
     can order one by naming it, and `llms.txt` says those need no photo or drawing (decision 30).
+- **Where they come from** (step 11): all four are built at build time, so prices and dates can't drift from
+  `shop.json`. `src/pages/llms.txt.ts` and `src/pages/shop/[slug]/product.json.ts` (with
+  `src/lib/drawing-product.ts`) read the product file; the AI page is `products/<slug>/ai.md` under a facts box
+  from the product file; `drawing-spec.json` is `products/<slug>/drawing-spec.json`, and the build stops if its
+  subjects aren't the product file's photo subjects. After `npm run build`, `python3 tools/shop/check_build.py`
+  checks every internal link and that the agent files match the product file.
 - **A person pays.** Money moves only on Stripe's hosted Checkout, paid by the customer or by their own
   wallet with their approval. We take no card details, payment tokens or credentials through our API.
 - **A person sees the preview.** Checkout is reachable only from the page, after it has rendered and uploaded

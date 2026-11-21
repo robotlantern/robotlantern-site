@@ -1,7 +1,14 @@
 ---
 // Where Stripe's checkout returns after payment (shop-worker/index.js, success_url: /shop/thanks/?order=<id>).
 // It only shows the order's ID from the address; it asks the Worker nothing.
+import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+
+// The second-order code (decision 20), from the product file. Stripe holds the real coupon; this is only its
+// copy, shown here and in the shipping email so that only people who've bought see it.
+const promo = (await getCollection('shop')).map((p) => (p.data as any).promotion).find(Boolean) as
+  { code: string; off: number; until: string; for: string } | undefined;
+const until = promo && new Date(`${promo.until}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' });
 ---
 <Base title="Thank you" section="shop">
   <meta slot="head" name="robots" content="noindex">
@@ -9,13 +16,19 @@ import Base from '../../layouts/Base.astro';
     <h1>Thank you</h1>
     <p>Your order is in. Stripe emails your receipt.</p>
     <p id="order-line" hidden>Your order number is <strong id="order-id"></strong>. Keep it in case you need to write to us.</p>
-    <p>Each ornament is built from the preview you approved and checked before it goes to print. Slant 3D prints it and ships it to the address you gave at checkout, and we email you when it's on its way.</p>
+    <p>Each ornament is built from the preview you approved and checked before it goes to print. Slant 3D prints it and ships it to the address you gave at checkout, and we email you a tracking link when it's on its way, within 5 business days.</p>
     <p>If it arrives broken or doesn't match the preview, we remake it for free or refund you.</p>
+    {promo && (
+      <p class="promo" id="promo" data-until={promo.until}>Ordering another? Use the code <strong>{promo.code}</strong> on Stripe's checkout page for ${promo.off} off {promo.for}, until {until}. Share it if you like.</p>
+    )}
     <p><a href="/shop/">Back to the shop</a></p>
   </main>
 </Base>
 
 <script>
+  // The code ends at the end of its day, Eastern time; hide it after that, even before the next build.
+  const promo = document.getElementById('promo');
+  if (promo && Date.now() > Date.parse(`${promo.dataset.until}T23:59:59-05:00`)) promo.hidden = true;
   const id = new URLSearchParams(location.search).get('order');
   if (id && /^[0-9a-z]{12}$/.test(id)) {
     document.getElementById('order-id')!.textContent = id;
@@ -26,5 +39,7 @@ import Base from '../../layouts/Base.astro';
 <style>
   .thanks { padding-block: 2rem; font: 1.1rem/1.7 var(--serif); }
   h1 { margin: 0 0 1rem; font: 400 2.4rem/1.05 var(--serif); }
+  .promo { padding: .8rem 1rem; border-radius: .8rem; background: var(--panel); box-shadow: 0 0 0 1px var(--line); }
+  .promo[hidden] { display: none; }
   strong { font: 600 1rem var(--mono); letter-spacing: .04em; color: var(--lantern); }
 </style>

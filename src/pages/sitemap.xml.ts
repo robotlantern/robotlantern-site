@@ -9,6 +9,8 @@ export const GET: APIRoute = async ({ site }) => {
     ...(await getCollection('essays')).map((e) => `/thoughts/${e.id}/`),
     ...(await getCollection('conversations')).map((c) => `/chats/${c.id}/`),
     ...(await getCollection('pages')).map((p) => `/${p.id}/`),
+    // Products made from a drawing, and their page for AI assistants (decision 28).
+    ...(await getCollection('shop')).filter((p) => p.data.drawing).flatMap((p) => [`/shop/${p.id}/`, `/shop/${p.id}/ai/`]),
   ];
   const urls = paths.map((p) => `  <url><loc>${new URL(p, site)}</loc></url>`).join('\n');
   return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`, {

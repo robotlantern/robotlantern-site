@@ -1,0 +1,101 @@
+{
+  "spec": "robotlantern-stencil-drawing",
+  "version": "2026-11-20",
+  "product": "cutout-ornament",
+  "what": "One image that Robot Lantern's builder cuts into a two-part 3D-printed ornament: a stencil sheet in one colour laid on a base in another. Red marks the stencil sheet; white is everything else.",
+  "upload": "https://robotlantern.com/shop/cutout-ornament/ (choose \"I have my own drawing\")",
+  "instructions": "https://robotlantern.com/shop/cutout-ornament/ai/",
+  "productData": "https://robotlantern.com/shop/cutout-ornament/product.json",
+  "make": {
+    "with": "an image model (GPT Image, Gemini, Midjourney or similar), from the customer's photo, as one new picture",
+    "ifNoImageModel": "stop: don't draw it with code or SVG; send the customer to the product page to add their photo, and we make the drawing",
+    "handOver": "the image exactly as the image model made it: save that file, or show it to the customer to download; never redraw it because the file couldn't be found",
+    "never": [
+      "trace or threshold the photo with code",
+      "draw it as SVG or shapes",
+      "resize, recolour, sharpen or otherwise edit the generated image with code"
+    ],
+    "ifItBreaksARule": "generate a new image; don't fix it with code. If several were made, pick the one that keeps the likeness best and breaks no rule"
+  },
+  "file": {
+    "format": ["image/png", "image/jpeg", "image/webp"],
+    "square": "within 2%",
+    "minPx": 1024,
+    "maxPx": 4096,
+    "maxBytes": 4194304,
+    "transparency": false,
+    "normalisedBy": "us, in the customer's browser: squared to 1024 x 1024; every pixel more than 120 (RGB distance) from white becomes ink (#E01010), the rest white",
+    "note": "PNG is best; JPEG blurs the edges"
+  },
+  "colours": {
+    "ink": "#E01010",
+    "background": "#FFFFFF",
+    "rule": "exactly two flat colours: no grey, shading, gradients, texture or a third colour"
+  },
+  "composition": {
+    "subjectWidthShare": 0.8,
+    "centred": true,
+    "whiteMarginAllRound": true,
+    "noFrame": "no frame, border, box or background shape: the subject's own outline is the edge of the red",
+    "scaledTo": "the red is scaled to fit a box 80 mm wide and 85 mm tall, so a tall drawing prints narrower"
+  },
+  "style": {
+    "look": "bold poster stencil or linocut: the subject mostly solid red, its features as white cut-outs",
+    "onePiece": "all the red is one connected shape: no floating dots, strokes or islands, and nothing red inside a white cut-out; join a detail that would float to its neighbour with a short red bridge",
+    "filledCutouts": "every white cut-out is a filled white shape; never a thin white line round a red shape",
+    "minRedLinePct": 2,
+    "minWhiteGapPct": 2,
+    "outlinePct": 2.5,
+    "outline": "a continuous red border runs all the way round the outside, so the outer edge is one closed shape",
+    "fewShapes": "few, chunky shapes; eyes are bold shapes, not dots; fur, hair and freckles are a few bold shapes",
+    "eyes": "bold filled shapes: a white eye with a solid red pupil, or a solid red eye in a white socket; never a thin outline or a tiny dot"
+  },
+  "subjects": [
+    {
+      "id": "pet",
+      "draw": "the pet's head and the top of its neck only, keeping its likeness, markings and expression exactly",
+      "leaveOut": ["body", "collar and tags", "people", "background", "other animals"],
+      "several": "draw only the one whose head is largest and nearest the centre"
+    },
+    {
+      "id": "person",
+      "draw": "the person's head, hair and the top of the neck, plus anything worn on the head, keeping the likeness, face shape, hair and expression exactly; never change the expression",
+      "leaveOut": ["shoulders", "clothes", "hands", "background", "other people"],
+      "several": "draw only the one whose face is largest and nearest the centre",
+      "consent": "the customer has the person's OK; for a child, the customer is their parent or guardian or has one's OK"
+    }
+  ],
+  "readyMade": "the ready-made designs in product.json need no drawing: order one by its id on the product page",
+  "never": [
+    "text, letters or numbers (the name goes on a separate tag)",
+    "logos or brand marks",
+    "cartoon or film characters, or other people's artwork",
+    "anything the customer doesn't have the right to use"
+  ],
+  "printed": {
+    "artBoxMm": [80, 85],
+    "minFeatureMm": 1.0,
+    "neckAndBridgeMm": 1.8,
+    "maxBridgeMm": 3.0,
+    "note": "at 80 mm wide, 2% of a 1024 px image is about 1.6 mm; the builder drops red specks under 2 mm2, thickens red thinner than 1 mm and fills white gaps thinner than 1 mm, so thinner detail is lost or merged"
+  },
+  "checks": {
+    "refused": [
+      "not PNG, JPEG or WebP; over 4 MB; not square (within 2%); under 1024 or over 4096 px; or transparent",
+      "no red at all",
+      "looks like a photo or shaded art (more than 6% of pixels between ink and white)",
+      "fills the whole image (a frame, a background box, or the subject cut off by the edges), or one shape covers more than 80% of the image",
+      "no features: less than 3% of the shape cut out",
+      "more than one piece after the builder's cleanup, with an island more than 3 mm from the rest at print size, or more than 60 loose pieces",
+      "white kept under 0.8: the cleanup would fill in so much of the white that features the customer saw disappear (thin white lines are the usual cause)"
+    ],
+    "warned": [
+      "soft edges or light shading (made exactly two colours)",
+      "the art touching the edge of the image",
+      "the art under half the image width (scaled up, so it may print rougher)",
+      "the ink isn't red (it still prints in the stencil colour the customer chooses)"
+    ],
+    "where": "the page runs these checks in the browser before anything is sent, and says what's wrong in words; the same builder runs again after payment"
+  },
+  "instructionsTested": "spec v5 (2026-11-19): 9 stand-in photos, a usable drawing from every one, 67% of single tries usable"
+}

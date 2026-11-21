@@ -1,7 +1,7 @@
 ---
 title: Privacy
-description: What robotlantern.com collects (next to nothing), what happens to a photo you order with, and the privacy policy for the Robot Lantern Uploader.
-updated: 2026-11-10
+description: What robotlantern.com collects (next to nothing), exactly what happens to a photo you order an ornament with and when it's deleted, and the privacy policy for the Robot Lantern Uploader.
+updated: 2026-11-20
 ---
 
 Robot Lantern LLC, a West Virginia company, runs robotlantern.com. This page says what happens to information about you when you use the site, email
@@ -11,50 +11,75 @@ us or order something. If anything here is unclear, write to
 ## The short version
 
 The site doesn't track you. It has no accounts, comments, analytics, ads, cookies or third-party
-scripts. Your information goes to the web host when you visit, to our mailbox if you write to us,
-and to our order service, Stripe and the carrier if you order. A photo you order with is kept
-private, and it's deleted 60 days after your order ships. We don't sell personal information, and
-we don't share it for advertising.
+scripts. If you order an ornament from a photo, the photo goes to OpenAI, which makes the drawing,
+and to our order service, which keeps it until 60 days after your order ships. Slant 3D, which
+prints and ships the ornament, never gets the photo. Stripe takes your payment. We don't sell
+personal information, and we don't share it for advertising.
 
 ## Reading the site
 
 The pages load their text, images, fonts and scripts only from robotlantern.com and make no
 requests to other sites. The interactive pages under Builds, including "The Sky, Unprojected",
-work the same way, and so does ordering from a photo. Nothing is saved in your browser.
+work the same way, and so does the ornament's page: it talks only to our own order service, and
+paying is the one step that takes you to another site, Stripe's. Nothing is saved in your browser.
 
-## Ordering from a photo
+## Ordering an ornament from a photo
 
-**In your browser.** When you add a photo, your browser prepares it on your phone or computer. It
-turns the photo the right way up, shrinks it if it's very large, and makes a fresh copy without the
-hidden details cameras add, such as where the photo was taken. Cropping, picking out the subject and
-the preview happen in your browser too. Your photo isn't sent anywhere until you order.
+**In your browser.** When you add a photo, your browser turns it the right way up and you crop it
+to a square. Your browser then makes a fresh copy of the square, 1024 pixels across, without the
+hidden details cameras add, such as where the photo was taken. Nothing has left your phone or
+computer yet.
 
-**What we keep.** When you order, the page sends us the prepared photo, your crop and choices, the
-outline of any subject you picked, and the preview you saw. Our order service stores them on
-Cloudflare, then takes you to Stripe to pay. Once you've paid, RJ copies the order to his computer
-and makes the files for printing and cutting from it, with a proof to check against your preview.
+**When you press "Make my drawing".** The cropped square goes to our order service, which runs on
+Cloudflare. It sends the photo to **OpenAI**, whose image model redraws it as a two-colour stencil,
+and keeps the photo and the drawing. "Try again" sends the same photo to OpenAI for another
+drawing, up to three in all. OpenAI handles the photo under its
+[API data policy](https://developers.openai.com/api/docs/guides/your-data): it doesn't train its models
+on it, and it keeps it, and the drawing, for up to 30 days to watch for abuse, or longer if the law
+requires. If its safety checks flag an image, it may keep that image for review.
 
-**Who sees it.** Only RJ, and the AI agents that help him run orders. When an agent looks at a
-photo, the company behind the agent's AI model (Anthropic or OpenAI) processes the picture too,
-under its own terms. We never post your photo, or use it to advertise anything, without your
-written OK.
+**When you order.** The page sends us your choices (colours, the name tag's text and font, how
+many) and the preview you saw. Stripe takes the payment and the shipping address. Then:
+
+- An AI agent (Claude, made by Anthropic) builds the two print files from your drawing and checks
+  them against your preview. Anthropic processes what the agent works on, under its own terms.
+- The print files go to **Slant 3D**, which prints the ornament and ships it to you. Slant gets
+  the print files, your name and your shipping address, but not your photo or your email address.
+  It handles them under its own privacy policy.
+- RJ approves each order before it's printed, and he or an agent looks at your photo only if
+  something needs checking.
+
+We never post your photo, or use it to advertise anything, without your written OK.
 
 **How long we keep it.**
 
-- If you don't pay, your upload deletes itself after two days.
-- Your photo and everything made from it are deleted from Cloudflare and from RJ's computer 60
-  days after your order ships, or after it's cancelled. That includes a photo you email us for your
-  order: we delete it from our mailbox too.
-- We keep a record of the order, without any photos, for seven years, for tax: what you bought,
-  your choices, what you paid and the dates.
+- **If you don't order,** your photo and its drawings delete themselves after two days.
+- **Your photo, its drawings and the print files** are deleted 60 days after your order ships, or
+  after it's cancelled.
+- **Your preview and the build report** (a short record of how the print files were made and
+  checked) are kept 180 days after your order ships, then deleted. They show what you approved,
+  in case a payment is disputed: a card dispute can come up to about four months after delivery.
+- **A record of the order**, with no photos or drawings, is kept for seven years, for tax: what
+  you bought, your choices (including the tag's text), what you paid and the dates.
+- If RJ runs an order by hand on his own computer, the copy there is deleted on the same
+  schedule.
 
-**Photos of children.** Many of the photos people order with show children. They're handled like
-every other photo, under the rules above. If the child isn't yours, check with a parent before you
-order.
+**If you or your AI assistant make the drawing.** If you upload your own drawing ("I have my own
+drawing"), we receive only the drawing, never your photo, and nothing goes to OpenAI. Your
+assistant's provider handles the photo under its own terms. We keep the drawing like any other:
+two days if you don't order, and 60 days after your order ships if you do.
 
-**Print partners.** For now, RJ makes every piece himself. Later, Slant 3D may print some
-products. For those, Slant gets the print file made from your photo, not the photo itself, along
-with the name and address to ship to. It handles them under its own privacy policy.
+**Ready-made designs** need no photo at all.
+
+**Limits on drawings.** To stop anyone running up our drawing bill, the order service counts how
+many drawings each visitor makes in a day. It counts them under a scrambled code made from your IP
+address with a key that changes every day, keeps the count for one day, and never writes it to a
+log. OpenAI gets the same day's code with each drawing, to help it spot abuse, but not your IP
+address.
+
+**Photos of people and children.** Only send a photo of someone if they've said yes, and for a
+child, if you're their parent or guardian or have one's OK. Photos of people are handled like every
+other photo, under the rules above.
 
 ## Paying with Stripe
 
@@ -67,12 +92,15 @@ When you check out, you leave robotlantern.com for a page run by Stripe.
   its own purposes, such as preventing fraud. It uses your email to send your receipt.
 - **We** see the order in Stripe: your name, email, shipping address, what you bought and what you
   paid, with the card's brand and last four digits. We use it to make and ship your order, answer
-  questions about it, handle refunds and keep the records the law requires.
+  questions about it, handle refunds and keep the records the law requires. Our order service
+  doesn't copy your name, email or address into its own records. It passes your name and address
+  from Stripe to Slant for shipping.
 
 ## Shipping
 
-To ship your order, RJ gives your name and address to the carrier, which handles them under its own
-privacy policy. So does any service used to buy the postage.
+Slant 3D ships your order with a carrier, which gets your name and address and handles them under
+its own privacy policy. When your order ships, an agent reads your name and email from Stripe and
+drafts an email to you with the tracking link, in our mailbox. RJ sends it.
 
 ## The web host
 
@@ -82,8 +110,8 @@ to deliver the site and keep it secure, and it keeps them as its own privacy sta
 describes. We don't receive those records for the pages you read. At most, the host shows us
 totals, such as how many requests a page got.
 
-Our order service runs on Cloudflare too. Its records hold the same kind of details, and Cloudflare
-shows them to us for three days, so we can find and fix problems.
+Our order service runs on Cloudflare too. Its logs hold order numbers, never what's in an order,
+and Cloudflare shows them to us for three days, so we can find and fix problems.
 
 See the [Cloudflare Privacy Policy](https://www.cloudflare.com/privacypolicy/).
 
@@ -94,7 +122,9 @@ If you email [help@robotlantern.com](mailto:help@robotlantern.com) or
 write. We use it to reply, and we don't add you to any list. If you write to
 [signup@robotlantern.com](mailto:signup@robotlantern.com) to hear when a product is ready, we use
 your address only to tell you. We don't send newsletters or other marketing email. Messages stay in
-the mailbox, which is hosted by Google Workspace, until we delete them or you ask us to.
+the mailbox, which is hosted by Google Workspace, until we delete them or you ask us to. If you
+email us a photo for an order, we delete it from the mailbox on the same schedule as the order's
+other photos.
 
 ## Links to other sites
 
@@ -105,16 +135,17 @@ link, that site's own privacy policy applies.
 
 This site isn't aimed at children, and we don't knowingly collect information from anyone under
 13. If you think a child has sent us personal information, tell us and we'll delete it. Photos of
-children that grown-ups order with are covered under "Ordering from a photo", above.
+children that grown-ups order with are covered under "Ordering an ornament from a photo", above.
 
 ## Your choices and rights
 
 You can ask us what we hold about you, ask for a copy, and ask us to correct or delete it.
 Email [admin@robotlantern.com](mailto:admin@robotlantern.com), or
 [help@robotlantern.com](mailto:help@robotlantern.com) about an order, and we'll answer within 30
-days. You can ask us to delete your photo before the 60 days are up. If your order isn't made yet,
-that cancels it, with a full refund. We may need to keep some order records for tax and accounting,
-and we'll tell you if so. For data Stripe holds for its own purposes, use
+days. You can ask us to delete your photo before the 60 days are up. If your order hasn't gone to
+print yet, that cancels it, with a full refund. We may need to keep some order records for tax and
+accounting, and we'll tell you if so. We can't delete what OpenAI keeps for its 30 days. For data
+Stripe holds for its own purposes, use
 [Stripe's privacy center](https://stripe.com/legal/privacy-center).
 
 If you're in the EU or UK: we use order details to carry out your purchase and to meet legal

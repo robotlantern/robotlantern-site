@@ -91,6 +91,9 @@ doesn't rely on reported hex values.
   doesn't match the preview.
 - **Fit:** Buster (v1) printed 2026-11-19 and fits. Thin necks are widened to 1.8 mm since then (build-v6).
 - **Listing photos:** Buster, Tucker and the heads from MeltBot, marked as examples (decisions 10 and 14).
+  Their slot: put the files in `public/images/shop/cutout-ornament/` and list them in `shop.json`'s `images`. The
+  product page then shows them as "Printed examples" ("Our own prints, shown as examples"), and the shop card
+  uses the first in place of the ready-made drawings.
 
 ## Next variants (after launch)
 
