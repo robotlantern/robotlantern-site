@@ -1,0 +1,53 @@
+---
+// "Ordering with an AI assistant" (decision 28; docs/ORDERS.md, "Agents"), at /shop/<slug>/ai/. The words are
+// products/<slug>/ai.md; the facts box above them comes from the product file, so its prices match the page's.
+// The Markdown pipeline reads $…$ as maths, so ai.md names no prices.
+import fs from 'node:fs';
+import Base from '../../../layouts/Base.astro';
+import { renderMarkdown } from '../../../lib/markdown';
+import { drawingProducts, orderByText, tierText, type DrawingProduct } from '../../../lib/drawing-product';
+
+export async function getStaticPaths() {
+  return (await drawingProducts())
+    .filter((p) => fs.existsSync(`products/${p.id}/ai.md`))
+    .map((p) => ({ params: { slug: p.id }, props: { p } }));
+}
+
+const p = Astro.props.p as DrawingProduct;
+const d = p.data;
+const file = `products/${p.id}/ai.md`;
+const md = fs.readFileSync(file, 'utf8');
+if (md.includes('$')) throw new Error(`${file}: no "$" (it would render as maths); prices come from the product file`);
+const html = await renderMarkdown(md);
+const by = orderByText(p);
+const ready = d.drawing!.subjects.filter((s) => s.source === 'static');
+const title = 'Ordering with an AI assistant';
+---
+<Base title={title} description={`How an AI assistant can help you order a ${d.name.toLowerCase()} from Robot Lantern, and what only you do.`} section="shop">
+  <Fragment slot="head">
+    <link rel="alternate" type="application/json" href="../product.json">
+  </Fragment>
+  <main class="reading ai">
+    <p class="back"><a href="../">{d.name}</a></p>
+    <h1>{title}</h1>
+    <ul class="facts">
+      <li>{tierText(p)}, with US shipping included. Every ornament is priced by the order's total count, up to {d.pricing!.maxPerOrder} ornaments and {d.pricing!.maxDesigns} designs.</li>
+      <li>US addresses only. Printed and shipped by Slant 3D.{by && ` Order by ${by} for Christmas.`}</li>
+      {ready.length > 0 && <li>Ready-made designs need no photo: {ready.map((s) => `${s.label} (${s.designs!.map((x) => x.label.toLowerCase()).join(', ')})`).join('; ')}.</li>}
+    </ul>
+    <div class="prose" set:html={html} />
+  </main>
+</Base>
+
+<style>
+  .ai { padding-block: 2.5rem 1rem; }
+  .back { margin: 0 0 1rem; font: .8rem/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; }
+  .back a { color: var(--muted); text-decoration: none; }
+  .back a::before { content: '← '; }
+  h1 { margin: 0 0 1.2rem; font: 400 2.4rem/1.05 var(--serif); }
+  .facts { margin: 0 0 2rem; padding: 1rem 1.2rem 1rem 2.2rem; border-radius: 1rem; background: var(--panel); box-shadow: 0 0 0 1px var(--line); color: var(--muted); font: .98rem/1.55 var(--serif); }
+  .facts li + li { margin-top: .35rem; }
+  .prose :global(h2) { font-size: 1.4rem; }
+  .prose :global(h3) { font-size: 1.12rem; }
+  .prose :global(p), .prose :global(li) { font-size: 1.02rem; overflow-wrap: break-word; }
+</style>

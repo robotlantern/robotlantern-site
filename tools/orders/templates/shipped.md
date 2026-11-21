@@ -4,8 +4,7 @@ It's a Gmail draft to the customer that RJ sends himself. Fill the {braces} and 
 
 - {first_name}: the first word of the name from /api/orders/<id>/contact. If it's empty or looks like a
   business, use "Hello," alone.
-- {order_id}, {tracking_url}: from the order record. {ornaments}: "your ornament" for one, "your
-  ornaments" for more.
+- {order_id}, {tracking_url}: from the order record.
 - The code paragraph: copy shop.json's "promotion" (code, off, until). Leave the paragraph out after its
   "until" date, or if shop.json has no promotion.
 - Nothing else from the order (no photo, drawing, tag text, address) goes in the email.
@@ -14,8 +13,7 @@ Subject: Your Robot Lantern order is on its way
 
 Hello {first_name},
 
-Good news: {ornaments} from order {order_id} has shipped from Slant 3D. You can follow the package
-here:
+Good news: your order {order_id} has shipped from Slant 3D. You can follow the package here:
 
 {tracking_url}
 
