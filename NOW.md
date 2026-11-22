@@ -216,7 +216,7 @@ step off (`[x]`) when it's done.
    - Under Tax → Registrations, add West Virginia, choosing "Start collecting immediately", with the
      Combined Sales and Use account number.
    - Turn on email receipts for successful payments, and your own email for successful payments.
-5. [ ] **RJ** · Claude cloud ([docs/PRODUCTION.md](docs/PRODUCTION.md), "Cloud environments"), at
+5. [x] **RJ** · Claude cloud ([docs/PRODUCTION.md](docs/PRODUCTION.md), "Cloud environments"), at
    claude.ai/code:
    - Connect GitHub, and give the Claude app access to `robotlantern/robotlantern-site`.
    - Create the environments `rl-production` and `rl-dev` exactly as listed, pasting each network secret
@@ -549,6 +549,9 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   - fast-forwarded `main` to `rebuild`, pushed both to GitHub, turned off GitHub Pages and deleted its
     challenge record. Nothing is announced (decision 24).
   Next: RJ's step 5, then step 15, then step 17.
+- 2026-11-22: RJ finished step 5 on the plane: GitHub connected, `rl-production` (three network secrets by host,
+  `SLANT_PLATFORM_ID`, the four hosts, the setup script) and `rl-dev`. Connectors are chosen per task, so that
+  part moves to step 15. Step 15 waits for the weekly usage reset (7 PM).
 
 - 2026-11-21: Off-LAN mode began (see "Start here"). Pushes to `bilbo` and `samwise` are disabled, the
   preview moves to site.robotlantern.workers.dev, and printdb is snapshotted to `.private/`. Checked that
