@@ -332,13 +332,14 @@ step off (`[x]`) when it's done.
       from the new SPF and DMARC. The old host has nothing outside docs/HOSTING.md's table. DNSSEC is off at
       Cloudflare; turning it on (and adding the DS at the registrar) is a post-cutover option, not before.
       **RJ's nameservers for step 13: `sofia.ns.cloudflare.com` and `yew.ns.cloudflare.com`.**
-13. [ ] **RJ** · After 12: In the Northwest Registered Agent portal (Services → Domains → the domain →
+13. [x] **RJ** · After 12: In the Northwest Registered Agent portal (Services → Domains → the domain →
     Nameserver Settings), replace the nameservers with Cloudflare's two. Mail and the old site keep working
     while the change spreads. Cloudflare emails you when the site is active, so tell an agent then.
-    - Status 2026-11-21: RJ saved "External nameservers" = `sofia.ns.cloudflare.com` and
-      `yew.ns.cloudflare.com` in the Northwest portal. The old `ns1/ns2.hosting.businessidentity.llc` still
-      answered when checked right before. Waiting on Cloudflare's "active" email. When it comes: an agent
-      checks `dig NS robotlantern.com`, that MX, SPF, DKIM and DMARC answer, and then checks the box.
+    - Done 2026-11-21: RJ saved "External nameservers" = `sofia.ns.cloudflare.com` and
+      `yew.ns.cloudflare.com` in the Northwest portal, and Cloudflare emailed that the zone is active.
+      Checked after: NS shows Cloudflare's two (system resolver, 1.1.1.1, 8.8.8.8); the 5 MX, SPF, DKIM, DMARC,
+      Google verification and the GitHub Pages `A`/`www`/challenge records all answer; robotlantern.com still
+      serves the old page (200). Step 16 swaps the GitHub Pages records for the Worker.
     - The domain's registry expiry is **2026-12-11** (WHOIS, 2026-11-21). WHOIS lists the registrar as
       DomainRegistry.com LLC, which is Northwest's back end (not confirmed; RJ's login is Northwest). Check
       auto-renew at Northwest. RJ is considering transferring registration to Cloudflare Registrar once the
