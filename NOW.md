@@ -341,7 +341,7 @@ step off (`[x]`) when it's done.
       Google verification and the GitHub Pages `A`/`www`/challenge records all answer; robotlantern.com still
       serves the old page (200). Step 16 swaps the GitHub Pages records for the Worker.
     - The domain's registry expiry is **2026-12-11** (WHOIS, 2026-11-21). WHOIS lists the registrar as
-      DomainRegistry.com LLC, which is Northwest's back end (not confirmed; RJ's login is Northwest). Check
+      DomainRegistry.com LLC, which is Northwest's back end (Northwest's terms, Oct 2026, say "DomainRegistry.com terms apply" to its free domains). Check
       auto-renew at Northwest. RJ is considering transferring registration to Cloudflare Registrar once the
       zone is active: needs the auth code from Northwest, the domain unlocked and DNSSEC off, and costs one
       year's renewal at Cloudflare (a charge, already listed in docs/CHARGES.md: RJ's go-ahead). If it hasn't
@@ -350,6 +350,11 @@ step off (`[x]`) when it's done.
       2026-11-22T00:38Z), expiry still 2026-12-11 until it completes (then 2027-12-11), nameservers unchanged.
       It completes when Northwest/DomainRegistry approves it, or by itself after 5 days (about 2026-11-27). RJ
       watches his email for an approval request. Done when WHOIS says registrar Cloudflare.
+    - RJ cancelled the "Business Domain" service in the Northwest portal after starting the transfer (Northwest's
+      confirmation email, 2026-11-22; only that service is listed). Northwest's terms say its free domain
+      is covered "while eligible", with a 60-day transfer lock and a standard fee for an early transfer. They don't say
+      whether a cancelled domain is released early. Treat 2026-12-11 as the hard stop: Northwest won't renew it.
+      WHOIS still showed pendingTransfer after the cancellation.
 
 19. [x] **Agent** · Price research (RJ, 2026-11-19). RJ's instinct is margins as low as sustainable, to sell volume
     in a crowded space where the idea alone doesn't show how competitive we are.
