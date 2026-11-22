@@ -1,6 +1,8 @@
 {
   "name": "Stencil ornament",
-  "images": ["/images/shop/cutout-ornament/real-prints.jpg"],
+  "images": [
+    "/images/shop/cutout-ornament/real-prints.jpg"
+  ],
   "imagesAlt": "Two printed stencil ornaments side by side: a dog with floppy ears in dark green on white, and a dog named Sam with pointed ears in blue on white",
   "imagesCaption": "Real photos of finished prints, shown as examples.",
   "description": "A two-part 3D-printed ornament from your photo or one of our designs: a stencil pressed onto a base in a second colour, with an optional name tag. US shipping included.",
@@ -517,6 +519,10 @@
     "test": {
       "product": "prod_Vf4xlEGwD29YMH",
       "shippingRate": "shr_1UdknV9i6BSa9eZ6C2wGD8YA"
+    },
+    "live": {
+      "product": "prod_Vfnp2jsPbLLIwD",
+      "shippingRate": "shr_1UeSDr8CVQIxrpUnCb32RPcP"
     }
   }
 }
