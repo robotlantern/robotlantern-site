@@ -1,7 +1,8 @@
 # Hosting on Cloudflare
 
-Set up 2026-10-01 ([LOG.md](LOG.md), task 9). Until cutover, robotlantern.com is still the old landing
-page on GitHub Pages; the new site runs on Cloudflare at a workers.dev address for checking.
+Set up 2026-10-01 ([LOG.md](LOG.md), task 9). Since cutover (2026-11-22), robotlantern.com and www are custom
+domains of the `site` Worker, and `/api/*` on both routes to the `shop` Worker. site.robotlantern.workers.dev is
+the same Worker, so it's no longer a separate preview. The cutover steps below are kept as a record.
 
 ## The site
 

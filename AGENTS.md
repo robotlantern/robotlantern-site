@@ -27,7 +27,9 @@ Read [README.md](README.md) for direction and [NOW.md](NOW.md) for current state
      URLs are disabled in this checkout's Git config. Commit on Sarcean, and preview with
      `tools/site-deploy.sh` (https://site.robotlantern.workers.dev) or a local dev server instead of rl.rblt.io.
      NOW.md, "Start here", says how to end it.
-   - **Pushing `main` deploys the live site.** Ask first. Pushing `rebuild` to `bilbo` (the primary)
+   - **`tools/site-deploy.sh` deploys the live site** (since cutover, 2026-11-22: the workers.dev address is the
+     same `site` Worker as robotlantern.com). Ask first, and deploy only `main`. Preview with `npm run dev`
+     until there's a separate preview Worker. Pushing `main` to GitHub doesn't deploy anything by itself. Pushing `rebuild` to `bilbo` (the primary)
      and to `samwise` (the preview) is free ([docs/PREVIEW.md](docs/PREVIEW.md)). Pushing `rebuild` to GitHub
      needs NOW.md decision 22 and a privacy pass first (step 8). After that, every push is public, so rule 7
      covers each commit.
@@ -56,8 +58,8 @@ Read [README.md](README.md) for direction and [NOW.md](NOW.md) for current state
 
 ## Branches
 
-- `main` is what's live at robotlantern.com. Until cutover, it's the old static landing page,
-  served by GitHub Pages from the branch root. After cutover, Cloudflare builds and serves it.
+- `main` is what's live at robotlantern.com, served by the `site` Worker on Cloudflare since cutover
+  (2026-11-22) and deployed with `tools/site-deploy.sh main`. GitHub Pages is off.
 - `rebuild` holds the new site until the first launch. Nothing from the old landing page carries
   over. It lives on Sarcean and Bilbo (the `bilbo` remote, Git's primary since 2026-10-28), and on
   GitHub once NOW.md step 8 has pushed it there, because cloud routines run from GitHub. Pushing it to

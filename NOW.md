@@ -1,6 +1,6 @@
 # Now
 
-_Last updated 2026-11-21._
+_Last updated 2026-11-22._
 
 ## Start here
 
@@ -8,9 +8,9 @@ _Last updated 2026-11-21._
 we don't push to either.
 - `git config remote.{bilbo,samwise}.pushurl` is set to a dead value, so a push fails. All three remotes held
   `4fb75cd` when it started. `fetch` still works over the VPN.
-- To preview, run `tools/site-deploy.sh`, which deploys the committed tip of `rebuild` to
-  https://site.robotlantern.workers.dev (free, reachable from the phone). The shop Worker already allows that
-  origin, and allows `localhost` for `npm run dev`. Wherever a step says "push to `samwise`", do this instead.
+- **Since cutover (2026-11-22), `tools/site-deploy.sh` deploys the live site**, not a preview: the workers.dev
+  address is the same Worker as robotlantern.com. Preview with `npm run dev`, and deploy only `main`, with RJ's OK. The shop Worker already allows that
+  origin, and allows `localhost` for `npm run dev`. Wherever a step says "push to `samwise`", use `npm run dev` instead.
 - Cloud routines and GitHub are unaffected: `rebuild` tracks `origin` (GitHub).
 - A read-only snapshot of printdb's filament, spool, Slant and model tables is in
   `.private/samwise-snapshot-2026-11-21/printdb/`. Live printdb needs the VPN, and nothing is written to it.
@@ -209,7 +209,7 @@ step off (`[x]`) when it's done.
    - In the project's limits, allow only the image models.
    - Create a project API key and save it as `OPENAI_API_KEY=` in `~/.codex/secrets/robot-lantern/openai.env`.
    - If the API asks for organization verification, do it under Settings → Organization (it wants ID).
-4. [ ] **RJ** · Stripe, live mode ([docs/SALES-TAX.md](docs/SALES-TAX.md), step 5):
+4. [x] **RJ** · Stripe, live mode ([docs/SALES-TAX.md](docs/SALES-TAX.md), step 5):
    - Under Developers → API keys, create a restricted key `shop-worker-live` with Checkout Sessions: Write,
      and Products and Shipping rates: Read. Save it as `STRIPE_SECRET_KEY_LIVE_WORKER=` in `stripe.env`.
      Step 16 says if the first live call needs anything more.
@@ -415,7 +415,7 @@ step off (`[x]`) when it's done.
     - Create `rl-orders` and `rl-daily` in `rl-production`.
     - Run each once against the sandbox, and check the email that reaches RJ.
     - Write down anything the cloud did differently.
-16. [ ] **Agent** · After 1, 3, 4, 11, 13 and 14: Soft launch (decision 24; docs/SHOP.md, "Launch"; docs/HOSTING.md,
+16. [x] **Agent** · After 1, 3, 4, 11, 13 and 14: Soft launch (decision 24; docs/SHOP.md, "Launch"; docs/HOSTING.md,
     "Cutover"):
     - The live Stripe objects (`sync.py --live`) and the live webhook.
     - The Worker's live secrets, loaded from the secrets folder.
@@ -509,6 +509,7 @@ does other things.
 
 ## Parked
 
+- A separate preview Worker, so a preview deploy can't reach robotlantern.com (since cutover, 2026-11-22).
 - Generated product photos and the hero video (RJ's concept, 2026-11-21); people ornaments after launch.
 - Brand merch and the stargazing blankets, until after launch (decision 2).
 - The photo jack-o'-lantern (3d-modeling `jack-o-lantern/`), for Halloween 2027.
@@ -523,6 +524,26 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-22: **Soft launch (step 16). robotlantern.com serves the new site, with the shop in live mode.**
+  RJ did step 4 on the plane: the Worker's restricted key `shop-worker-live` (Checkout Sessions write;
+  Products, Prices and Shipping rates read; Prices added because the webhook expands each line's price),
+  West Virginia registered and active in Stripe Tax, and both successful-payment emails on. The agent:
+  - created the live webhook with the agents' key (no dashboard step needed) and ran `sync.py --live`;
+  - loaded the Worker's live secrets. `ORDERS_QUEUE_TOKEN_LIVE` in `orders.env` was blank, so it was
+    generated; step 5's `rl-production` environment needs that value;
+  - set `SHOP_MODE` to live, listed the ornament, removed `CNAME` and `public/prototypes/` (tag
+    `sunset-scroll-v1` keeps it), and deployed both Workers;
+  - deleted the GitHub Pages records (snapshot in `.private/dns/`), attached `robotlantern.com` and
+    `www.robotlantern.com` to the `site` Worker, and routed `/api/*` on both to `shop`. The route wins
+    over the custom domain, as hoped. Mail records unchanged;
+  - checked the site, `llms.txt` and the product page (no console errors), and opened one live checkout
+    page for a coal ornament: $22, Stripe Tax on, `AGAIN` allowed, US shipping, thanks page on
+    robotlantern.com. Then expired it. **No live drawing was made**, to spend nothing; the acceptance
+    order (step 17) makes the first one;
+  - fast-forwarded `main` to `rebuild`, pushed both to GitHub, turned off GitHub Pages and deleted its
+    challenge record. Nothing is announced (decision 24).
+  Next: RJ's step 5, then step 15, then step 17.
 
 - 2026-11-21: Off-LAN mode began (see "Start here"). Pushes to `bilbo` and `samwise` are disabled, the
   preview moves to site.robotlantern.workers.dev, and printdb is snapshotted to `.private/`. Checked that
