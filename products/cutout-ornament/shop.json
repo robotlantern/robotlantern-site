@@ -514,7 +514,7 @@
     "until": "2026-12-10",
     "for": "a second order"
   },
-  "listed": false,
+  "listed": true,
   "stripe": {
     "test": {
       "product": "prod_Vf4xlEGwD29YMH",
