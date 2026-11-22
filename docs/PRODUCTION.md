@@ -164,7 +164,7 @@ RJ's part:
 | --- | --- | --- |
 | The OpenAI balance | OpenAI billing | prepaid, auto-recharge off (decision 21): the hard cap |
 | Tries per photo | `shop.json` `drawing.triesPerPhoto` | 3 |
-| Drawings per visitor per day | `shop-worker/limits.json` | 6 |
+| Drawings per visitor per day | `shop-worker/limits.json` | 24 (enough for `maxDesigns` 12 with one retry each) |
 | Estimated spend per day | `shop-worker/limits.json` | $10 |
 | Orders per week | `shop.json` `weeklyCap` | 25 |
 | Drawings or orders off | KV `switch:drawings`, `switch:orders` | `python3 tools/orders/switch.py drawings off --live` (on Sarcean: it needs the Cloudflare token) |

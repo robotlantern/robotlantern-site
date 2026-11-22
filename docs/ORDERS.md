@@ -175,7 +175,7 @@ recipes, `self` fulfilment). They come back when their lines open, and docs/LOG.
   and dollars counted today and this month cover both modes, since there's one OpenAI key: they live in the
   live namespace. The visitor counts and switches are per mode:
   - `triesPerPhoto` (3).
-  - `perVisitorPerDay` (6), counted under a SHA-256 of the IP address and that day's salt. It's kept one
+  - `perVisitorPerDay` (24; 6 until 2026-11-22), counted under a SHA-256 of the IP address and that day's salt. It's kept one
     day and never logged.
   - `dollarsPerDay` (10), counted as `costPerDrawing` × drawings. `costPerDrawing` is set from OpenAI's price
     for the model and quality, rounded up.

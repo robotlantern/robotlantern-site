@@ -97,8 +97,8 @@ MeltBot.
     - **Remake promise:** a free remake or a refund if it arrives broken or doesn't match the preview.
     - **Who's in it:** pets at launch. People are added once decision 25 says so.
 21. **Image spending** (confirmed by RJ, 2026-11-19). $25 of prepaid credit at OpenAI, with auto-recharge off, so the balance
-    is a hard cap. Our Worker also stops drawings at an estimated $10 a day, 3 tries per photo and 6
-    drawings per visitor a day.
+    is a hard cap. Our Worker also stops drawings at an estimated $10 a day, 3 tries per photo and 24
+    drawings per visitor a day (raised from 6 by RJ, 2026-11-22, so one order can hold 12 photo designs).
 22. **Put `rebuild` on GitHub** (confirmed by RJ, 2026-11-19). After the privacy pass (step 8), push `rebuild` to the public
     GitHub repo, because cloud routines can only run code from GitHub. Until now only `main` went there
     (docs/PREVIEW.md).
