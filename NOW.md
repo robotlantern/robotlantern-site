@@ -346,6 +346,10 @@ step off (`[x]`) when it's done.
       zone is active: needs the auth code from Northwest, the domain unlocked and DNSSEC off, and costs one
       year's renewal at Cloudflare (a charge, already listed in docs/CHARGES.md: RJ's go-ahead). If it hasn't
       completed by about 2026-12-05, renew at Northwest instead.
+    - Transfer started 2026-11-21 (RJ, at Cloudflare Registrar). Registry shows `pendingTransfer` (updated
+      2026-11-22T00:38Z), expiry still 2026-12-11 until it completes (then 2027-12-11), nameservers unchanged.
+      It completes when Northwest/DomainRegistry approves it, or by itself after 5 days (about 2026-11-27). RJ
+      watches his email for an approval request. Done when WHOIS says registrar Cloudflare.
 
 19. [x] **Agent** · Price research (RJ, 2026-11-19). RJ's instinct is margins as low as sustainable, to sell volume
     in a crowded space where the idea alone doesn't show how competitive we are.
