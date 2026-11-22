@@ -65,13 +65,16 @@ Created by RJ at claude.ai/code (NOW.md step 5). Both use the repository `robotl
   ```bash
   #!/bin/bash
   set -e
-  python3 -m venv /opt/rl
-  /opt/rl/bin/pip install -q numpy==2.5.3 opencv-python-headless==5.0.0.93 pillow==12.3.0 scipy==1.18.1 \
-    shapely==2.1.2 manifold3d==3.5.4 trimesh==5.1.1 fonttools==4.66.1
+  UV=$(command -v uv || echo /root/.local/bin/uv)
+  "$UV" python install 3.13
+  "$UV" venv --python 3.13 /opt/rl
+  "$UV" pip install --python /opt/rl/bin/python numpy==2.5.3 opencv-python-headless==5.0.0.93 pillow==12.3.0 \
+    scipy==1.18.1 shapely==2.1.2 manifold3d==3.5.4 trimesh==5.1.1 fonttools==4.66.1
   ```
 
-  These are the versions the builder runs on Sarcean. If one won't install on the cloud's Python, step 15 picks
-  the nearest that does, and records it here and in `tools/ornament/requirements.txt`.
+  These are the versions the builder runs on Sarcean. The cloud image's default `python3` is 3.11, too old for
+  numpy 2.5, so the script uses `uv` (preinstalled) with Python 3.13. A probe in `rl-dev` (2026-11-22) installed
+  all eight at these versions in about 5 seconds.
 
 ### `rl-dev`, for agents building things while RJ does something else
 
