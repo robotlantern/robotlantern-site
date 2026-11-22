@@ -91,8 +91,8 @@ edit.
 
 - **Schedules are cron in UTC**, at most hourly. `rl-orders` is `0 0-4,12-23 * * *` and `rl-daily` is
   `0 13 * * *`: 7:00–23:00 and 8:00 Eastern in winter, an hour later in summer. Not worth adjusting twice a year.
-- **Email goes through the Gmail connector, to the connected account's own address** (RJ), and to no one else.
-  The address isn't written here or in the prompts.
+- **Email goes through the Gmail connector to `orders@robotlantern.com`**, and to no one else. It's an alias of
+  RJ's mailbox ([EMAIL.md](EMAIL.md)), named in both routine prompts.
 - **Debugging:** each routine's runs and condensed logs are readable through `RemoteTrigger` (`list_runs`,
   `get_run_log`). Only RJ can delete a routine, at claude.ai/code/routines.
 
@@ -142,7 +142,7 @@ proof link are fine.
 
 ## Keeping RJ in the loop
 
-All mail goes to RJ only, and never to customers. RJ sends the customer drafts himself until he says
+All mail goes to RJ only, at `orders@`, and never to customers. RJ sends the customer drafts himself until he says
 otherwise.
 
 | When | From | Subject |

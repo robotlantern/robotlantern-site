@@ -538,7 +538,7 @@ Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
   Reruns: `rl-orders` said "Nothing to do" with the live token, and `rl-daily` ran `track`, `purge` and stats live
   and sent nothing. A one-off sent RJ the sandbox "Ready for Slant" email for `6c9gx53vc0gk` through Gmail, marked
   `[TEST]`. Two one-off routines (`rl-probe-python`, `rl-email-test`) have fired and can be deleted by RJ.
-  Open: routines find RJ's address from his sent mail, which turned up two addresses; the prompts should name it.
+  Both prompts now send to `orders@` (RJ: every alias reaches one mailbox; docs/EMAIL.md lists them).
   Next: RJ's acceptance order (step 17).
 
 - 2026-11-22: **Soft launch (step 16). robotlantern.com serves the new site, with the shop in live mode.**
