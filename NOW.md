@@ -411,7 +411,7 @@ step off (`[x]`) when it's done.
       passes; the page reads about 0.04 lower, so it refuses). Of the five production-model test drawings that
       pass the builder, two (0.81, 0.83) sit in that gap, so a real customer can lose a try to it. Worth
       deciding before launch whether the page's threshold should match the builder's.
-15. [ ] **Agent** · After 5, 8 and 14: Production routines (docs/PRODUCTION.md, decision 23):
+15. [x] **Agent** · After 5, 8 and 14: Production routines (docs/PRODUCTION.md, decision 23):
     - First, read the current official docs (RJ, 2026-11-22): "routines" may now be "scheduled tasks", and
       the desktop app also has a local scheduler, which is the wrong home (decision 17: cloud). Confirm how a
       cloud task picks its environment, branch, connectors (Gmail only, set per task) and schedule, then fix
@@ -529,6 +529,17 @@ does other things.
 ## Log
 
 Entries before 2026-11-19 are in [docs/LOG.md](docs/LOG.md).
+
+- 2026-11-22: **Step 15 done. `rl-orders` and `rl-daily` run in the cloud.** Created through the `RemoteTrigger`
+  API in `rl-production` on Sonnet 5.5, with Gmail only (RJ attached it in the routines page). `run.py` gained
+  `track` (reads Slant's order status, moves our record, prints newly shipped IDs) and `purge`. The first runs
+  failed in setup: the cloud's default Python is 3.11, too old for numpy 2.5. A probe in `rl-dev` showed the
+  preinstalled `uv` with Python 3.13 installs every pinned version in about 5 seconds, and RJ pasted that script.
+  Reruns: `rl-orders` said "Nothing to do" with the live token, and `rl-daily` ran `track`, `purge` and stats live
+  and sent nothing. A one-off sent RJ the sandbox "Ready for Slant" email for `6c9gx53vc0gk` through Gmail, marked
+  `[TEST]`. Two one-off routines (`rl-probe-python`, `rl-email-test`) have fired and can be deleted by RJ.
+  Open: routines find RJ's address from his sent mail, which turned up two addresses; the prompts should name it.
+  Next: RJ's acceptance order (step 17).
 
 - 2026-11-22: **Soft launch (step 16). robotlantern.com serves the new site, with the shop in live mode.**
   RJ did step 4 on the plane: the Worker's restricted key `shop-worker-live` (Checkout Sessions write;
