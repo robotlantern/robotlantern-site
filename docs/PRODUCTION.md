@@ -53,12 +53,13 @@ Created by RJ at claude.ai/code (NOW.md step 5). Both use the repository `robotl
     The upload's PUT carries its own signature, so it gets no network secret.
   - `robotlantern.com`
   - `shop.robotlantern.workers.dev`
-- **Network secrets:**
+- **Network secrets** (the settings dialog names each by its host and header only; there's no variable name):
   - `SLANT_API_KEY` → `slant3dapi.com`, as `Authorization: Bearer`.
   - `ORDERS_QUEUE_TOKEN_LIVE` → `robotlantern.com`, as `Authorization: Bearer`.
   - `ORDERS_QUEUE_TOKEN_TEST` → `shop.robotlantern.workers.dev`, as `Authorization: Bearer`.
 - **Environment variables:** `SLANT_PLATFORM_ID` (from `slant.env`). Nothing else.
-- **Connectors:** Gmail only.
+- **Connectors:** none on the environment. Each routine is created with an empty connector list, and RJ adds
+  Gmail to it at claude.ai/code/routines (the agent's session can't see the account's connector IDs).
 - **Setup script:**
 
   ```bash
@@ -80,8 +81,17 @@ Created by RJ at claude.ai/code (NOW.md step 5). Both use the repository `robotl
 
 ## Routines
 
-Step 15 creates them with RJ's OK (decision 23). Their prompts stay short and point here, so changing a run is a
-commit, not a routine edit. They check out `rebuild` until launch and `main` after.
+Created in step 15 (2026-11-22) with the `RemoteTrigger` API, and managed at claude.ai/code/routines. Each is a
+fresh cloud session in `rl-production` with a checkout of `robotlantern/robotlantern-site` (`main`, the default
+branch), on Sonnet 5.5. Their prompts stay short and point here, so changing a run is a commit, not a routine
+edit.
+
+- **Schedules are cron in UTC**, at most hourly. `rl-orders` is `0 0-4,12-23 * * *` and `rl-daily` is
+  `0 13 * * *`: 7:00–23:00 and 8:00 Eastern in winter, an hour later in summer. Not worth adjusting twice a year.
+- **Email goes through the Gmail connector, to the connected account's own address** (RJ), and to no one else.
+  The address isn't written here or in the prompts.
+- **Debugging:** each routine's runs and condensed logs are readable through `RemoteTrigger` (`list_runs`,
+  `get_run_log`). Only RJ can delete a routine, at claude.ai/code/routines.
 
 ### `rl-orders`: hourly, 7:00–23:00 Eastern
 
@@ -102,8 +112,9 @@ commit, not a routine edit. They check out `rebuild` until launch and `main` aft
    `drafted`.
 5. Email RJ, one email per order (below). `run.py email <id>` prints it, with the signed proof links.
 
-`run.py` has `status`, `build`, `flag`, `slant` and `email` (step 14, 2026-11-20). `track` and `purge`, for
-the daily run, are still to write (step 15).
+`run.py` has `status`, `build`, `flag`, `slant` and `email` (step 14), and `track` and `purge` for the daily run
+(step 15). `track` reads Slant's order (`DRAFT`, `SUBMITTED`, `PRINTING`, `SHIPPED`, `CANCELLED`) and only moves
+our record; it prints the newly shipped order IDs for step 2 of the daily run.
 
 **Never:** process, cancel or edit a Slant order; refund; email a customer; change a cap or a switch;
 make a new drawing; or put anything from an order into Git, a log or an email body. Order IDs and the signed

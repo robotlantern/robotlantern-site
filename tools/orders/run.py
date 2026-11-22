@@ -5,9 +5,11 @@
     python3 tools/orders/run.py flag <id> "<what's wrong>" [--live]   # to needs-rj, with the note
     python3 tools/orders/run.py slant <id> [--live]        # upload and quote every part, then the Worker's draft
     python3 tools/orders/run.py email <id> [--live]        # the "Ready for Slant" email to RJ, printed
+    python3 tools/orders/run.py track [--live]             # Slant's status: drafted → processed → shipped, with tracking
+    python3 tools/orders/run.py purge --due [--live]       # the purge that's due now (--dry lists it)
 
 The sandbox (shop.robotlantern.workers.dev) unless --live (robotlantern.com). In the sandbox the Worker's Slant
-draft is always a dry run. Nothing here processes, cancels or edits a Slant order, refunds, or emails anyone:
+draft is always a dry run. Nothing here processes, cancels or edits a Slant order (track only reads it), refunds, or emails anyone:
 `email` only prints the message for whoever sends it.
 
 `build` works in a folder per order, `.private/orders/<id>/<k>/` in a checkout that has `.private/` (Sarcean), or
@@ -227,11 +229,83 @@ def email(w, args):
     return 0
 
 
+def tracking_of(fulfillment):
+    """The tracking URL or number from Slant's untyped `fulfillment` object, wherever it sits."""
+    found = []
+
+    def walk(v, key=''):
+        if isinstance(v, dict):
+            for k, x in v.items():
+                walk(x, k)
+        elif isinstance(v, list):
+            for x in v:
+                walk(x, key)
+        elif isinstance(v, str) and v and 'track' in key.lower():
+            found.append(v)
+    walk(fulfillment or {})
+    urls = [v for v in found if v.startswith('http')]
+    return (urls or found or [None])[0]
+
+
+def track(w, args):
+    """Slant's status for drafted and processed orders. Reads Slant only; moves our record along."""
+    s = slantapi.Slant(secret('SLANT_API_KEY', 'slant.env'), secret('SLANT_PLATFORM_ID', 'slant.env'))
+    q = w.need('GET', 'queue')['queue']
+    shipped, rc = [], 0
+    for o in q:
+        if o['state'] not in ('drafted', 'processed'):
+            continue
+        oid = o['id']
+        sl = w.need('GET', f'orders/{oid}').get('slant') or {}
+        if sl.get('dryRun') or sl.get('state') == 'dry-run' or not sl.get('orderId'):
+            print(f'{oid}: {o["state"]}, no real Slant draft (sandbox dry run); skipped')
+            continue
+        try:
+            order = (s.request('GET', f'/orders/{sl["orderId"]}') or {}).get('order') or {}
+        except slantapi.SlantError as e:
+            print(f'{oid}: Slant error, will try again next run: {e}')
+            rc = 1
+            continue
+        st, state = order.get('status'), o['state']
+        if st in ('SUBMITTED', 'PRINTING', 'SHIPPED') and state == 'drafted':
+            w.need('PATCH', f'orders/{oid}', {'state': 'processed', 'note': f'Slant {st}'})
+            state = 'processed'
+        if st == 'SHIPPED' and state == 'processed':
+            tr = tracking_of(order.get('fulfillment'))
+            w.need('PATCH', f'orders/{oid}', {'state': 'shipped', 'note': 'Slant SHIPPED', 'tracking': tr or ''})
+            state = 'shipped'
+            shipped.append(oid)
+            if not tr:
+                print(f'{oid}: shipped, but Slant gave no tracking number yet')
+        elif st == 'CANCELLED':
+            if state == 'drafted':
+                flag(w, oid, 'Slant shows this order cancelled')
+            else:
+                print(f'{oid}: Slant shows it CANCELLED after processing; needs RJ')
+            rc = 1
+            continue
+        print(f'{oid}: Slant {st}, ours {state}')
+    print('Newly shipped: ' + (' '.join(shipped) if shipped else 'none'))
+    return rc
+
+
+def purge(w, args):
+    if not args.due:
+        raise SystemExit('purge takes --due (one order: DELETE /api/orders/<id>, by hand)')
+    res = w.need('POST', 'purge' + ('?dry=1' if args.dry else ''))
+    print(json.dumps(res, indent=1))
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
     ap.add_argument('--live', action='store_true')
     sub = ap.add_subparsers(dest='cmd', required=True)
     sub.add_parser('status')
+    sub.add_parser('track')
+    pg = sub.add_parser('purge')
+    pg.add_argument('--due', action='store_true')
+    pg.add_argument('--dry', action='store_true')
     for name in ('build', 'slant', 'email'):
         sub.add_parser(name).add_argument('id')
     f = sub.add_parser('flag')
@@ -243,7 +317,8 @@ def main():
     w = Worker('live' if args.live else 'test')
     if args.cmd == 'flag':
         return flag(w, args.id, args.note)
-    return {'status': status, 'build': build, 'slant': slant, 'email': email}[args.cmd](w, args)
+    return {'status': status, 'build': build, 'slant': slant, 'email': email, 'track': track,
+            'purge': purge}[args.cmd](w, args)
 
 
 if __name__ == '__main__':
