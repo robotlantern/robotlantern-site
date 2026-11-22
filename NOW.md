@@ -412,6 +412,11 @@ step off (`[x]`) when it's done.
       pass the builder, two (0.81, 0.83) sit in that gap, so a real customer can lose a try to it. Worth
       deciding before launch whether the page's threshold should match the builder's.
 15. [ ] **Agent** · After 5, 8 and 14: Production routines (docs/PRODUCTION.md, decision 23):
+    - First, read the current official docs (RJ, 2026-11-22): "routines" may now be "scheduled tasks", and
+      the desktop app also has a local scheduler, which is the wrong home (decision 17: cloud). Confirm how a
+      cloud task picks its environment, branch, connectors (Gmail only, set per task) and schedule, then fix
+      PRODUCTION.md's "Cloud environments" and "Routines" to match. Step 5's dialog names network secrets by
+      host only, with no variable name.
     - Create `rl-orders` and `rl-daily` in `rl-production`.
     - Run each once against the sandbox, and check the email that reaches RJ.
     - Write down anything the cloud did differently.
